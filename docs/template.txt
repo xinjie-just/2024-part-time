@@ -1,0 +1,12 @@
+Web 端后台管理系统
+现成模版：
+https://github.com/JS-banana/vite-vue3-ts
+
+https://github.com/llyyayx/vue3-antd-admin?tab=readme-ov-file
+
+https://github.com/ziping-li/ant-design-vue3-admin/tree/master
+
+自定义方法：
+https://blog.csdn.net/qq_44757034/article/details/128527546
+
+微信小程序：
