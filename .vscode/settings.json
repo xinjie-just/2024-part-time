@@ -5,9 +5,11 @@
         "commitlint",
         "pinia",
         "rushstack",
+        "sider",
         "stylelint",
         "stylelintignore",
         "unplugin",
-        "wangeditor"
+        "wangeditor",
+        "Withdrawe"
     ]
 }
