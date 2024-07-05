@@ -1,29 +1,29 @@
-import { RouteRecordRaw } from 'vue-router';
+import { IRouterType } from '@/models'
+import { AppstoreOutlined } from '@ant-design/icons-vue'
+import { h } from 'vue'
 
 // 店铺管理模块路由列表
-export const store: RouteRecordRaw[] = [
+export const store: IRouterType[] = [
   {
-    path: '/store/baseInfo',
-    name: 'baseInfo',
-    component: () => import('@/views/store/baseInfo.vue'),
-    meta: {
-      title: '基本信息',
-    },
-  },
-  {
-    path: '/store/updatePassword',
-    name: 'updatePassword',
-    component: () => import('@/views/store/updatePassword.vue'),
-    meta: {
-      title: '密码修改',
-    },
-  },
-  {
-    path: '/store/registerShop',
-    name: 'registerShop',
-    component: () => import('@/views/store/registerShop.vue'),
-    meta: {
-      title: '他店代注',
-    },
-  },
-];
+    path: '/store',
+    name: '店铺管理',
+    icon: () => h(AppstoreOutlined),
+    children: [
+      {
+        path: '/store/baseInfo',
+        name: '基本信息',
+        component: () => import('@/views/store/baseInfo.vue')
+      },
+      {
+        path: '/store/updatePassword',
+        name: '密码修改',
+        component: () => import('@/views/store/updatePassword.vue')
+      },
+      {
+        path: '/store/registerShop',
+        name: '他店代注',
+        component: () => import('@/views/store/registerShop.vue')
+      }
+    ]
+  }
+]
