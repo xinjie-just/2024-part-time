@@ -30,42 +30,30 @@
 </template>
 <script lang="ts" setup>
 
-import { reactive, watch, h, ref, onMounted, Ref } from 'vue';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  PieChartOutlined,
-  MailOutlined,
-  DesktopOutlined,
-  InboxOutlined,
-  AppstoreOutlined,
-} from '@ant-design/icons-vue';
+import { reactive, ref, onMounted, Ref } from 'vue';
+import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
 import router, { routes } from "@/routers";
 import { IRouterType } from '@/models';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+
 const state = reactive({
-  collapsed: false,
-  selectedKeys: ['1'],
-  openKeys: ['sub1'],
-  preOpenKeys: ['sub1'],
+  selectedKeys: [''],
+  openKeys: [''],
 });
 const collapsed = ref(false);
 const menus: Ref<IRouterType[]> = ref([]);
-watch(
-  () => state.openKeys,
-  (_val, oldVal) => {
-    state.preOpenKeys = oldVal;
-  },
-);
-const toggleCollapsed = () => {
-  state.collapsed = !state.collapsed;
-  state.openKeys = state.collapsed ? [] : state.preOpenKeys;
-};
 
 const onSelectMenu = ({ item }) => {
-  console.log("item", item);
   router.push(item.path);
 }
 
+/**
+ * 将菜单数据转换为 Ant Design 的菜单格式
+ * @param {IRouterType[]} menuData - 要转换的菜单数据数组
+ * @returns {IRouterType[]} 转换后的菜单数据数组
+ */
 function convertToAntdMenu(menuData: IRouterType[]): IRouterType[] {
   return menuData.map(menuItem => {
     if (menuItem.children && menuItem.children.length > 0) {
@@ -95,10 +83,26 @@ function convertToAntdMenu(menuData: IRouterType[]): IRouterType[] {
   });
 }
 
+// 刷新页面，将菜单置为选中，并且将一级菜单打开
+const handleMenu = () => {
+  const path = route.path;
+  state.selectedKeys = [path];
+  // 判断是否为二级菜单，取最后一个 "/" 看是否为第一个字符
+  const lastIndex = path.lastIndexOf("/");
+  let parentPath = "";
+  if (lastIndex !== 0) {
+    parentPath = path.substring(0, lastIndex);
+  }
+  // 找到 path 为 parentPath 的那个菜单的 label
+  const openKey = menus.value.find(item => item.path === parentPath)?.path;
+  state.openKeys = [openKey as string];
+}
+
 onMounted(() => {
   const newRoutes = routes.find(item => item.path === "/")?.children;
   const menuRoutes = newRoutes.filter(item => item.redirect !== "/");
   menus.value = convertToAntdMenu(menuRoutes);
+  handleMenu();
 })
 </script>
 <style lang="scss" scope>
