@@ -1,0 +1,86 @@
+<template>
+    <a-modal v-model:open="isVisible" title="添加店铺" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
+        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
+            <a-form-item label="店铺名称" name="storeName">
+                <a-input v-model:value="form.storeName" :maxlength="30" placeholder="2-30 位字符" />
+            </a-form-item>
+            <a-form-item label="手机号码" name="phone">
+                <a-input v-model:value="form.phone" :maxlength="11" placeholder="请输入正确手机号码" />
+            </a-form-item>
+            <a-form-item label="密码" name="password">
+                <a-input-password v-model:value="form.password" :maxlength="16" placeholder="6-16 位，必须包含数字和字母" />
+            </a-form-item>
+        </a-form>
+        <template #footer>
+            <a-button key="back" @click="onCancel">取消</a-button>
+            <a-button key="submit" type="primary" :loading="loading" :disabled="disabled"
+                @click="onSubmit">提交</a-button>
+        </template>
+    </a-modal>
+</template>
+
+<script setup lang="ts">
+import { IAddShop } from '@/models';
+import { Rule } from 'ant-design-vue/es/form';
+import { ref, reactive, UnwrapRef, computed } from 'vue';
+
+const emits = defineEmits(['cancel', 'confirm']);
+
+const isVisible = ref(true);
+const form: UnwrapRef<IAddShop> = reactive({
+    storeName: '',
+    phone: '',
+    password: '',
+});
+const formRef = ref();
+const loading = ref(false);
+const disabled = computed(() => {
+    const values = formRef.value?.getFieldsValue();
+    const storeNameDisabled = values?.storeName?.trim()?.length < 2;
+    const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
+    const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password?.trim());
+    return storeNameDisabled || phoneDisabled || passwordDisabled;
+});
+
+const rules: Record<string, Rule[]> = {
+    storeName: [
+        { transform: (value: string) => value.trim() },
+        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
+        { required: true, message: '请输入店铺名称', trigger: 'change' },
+        { min: 2, message: '2-30 位字符！', trigger: 'blur' },
+
+    ],
+    phone: [
+        { transform: (value: string) => value.trim() },
+        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
+        { required: true, message: '请输入手机号码', trigger: 'change' },
+        { pattern: /^1[3-9]\d{9}$/, message: '手机号码格式不正确！', trigger: 'blur' },
+    ],
+    password: [
+        { transform: (value: string) => value.trim() },
+        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
+        { required: true, message: '请输入密码', trigger: 'change' },
+        { pattern: /^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/, message: '6-16 位，必须包含数字和字母！', trigger: 'blur' },
+    ],
+};
+
+const onSubmit = async () => {
+    loading.value = true;
+    try {
+        await formRef.value?.validate();
+        console.log('表单验证成功', form);
+        // 这里可以添加提交表单的逻辑
+        setTimeout(() => {
+            loading.value = false;
+            emits('confirm');
+        }, 2000);
+    } catch (error) {
+        console.log('表单验证失败', error);
+    }
+};
+
+const onCancel = () => {
+    emits('cancel');
+};
+
+</script>

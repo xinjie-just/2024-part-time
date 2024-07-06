@@ -3,26 +3,24 @@
   <div class="page">
     <div class="container">
       <h1 class="title">登录</h1>
-      <a-form :label-col="{ span: 4 }" size="large" :wrapper-col="{ span: 20 }" :model="loginForm"
-        @submit="handleSubmit">
-        <a-form-item label="手机号" name="phone"
-          rules="[{ required: true, message: '请输入手机号!' }, { pattern: /^1[3-9]\d{9}$/, message: '手机号格式不正确!' }]">
-          <a-input v-model="loginForm.phone" placeholder="请输入手机号">
+      <a-form :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" size="large"
+        :wrapper-col="{ span: 20 }" :model="form">
+        <a-form-item label="手机号" name="phone">
+          <a-input v-model:value="form.phone" placeholder="请输入正确的手机号" :maxlength="11">
             <template #prefix>
-              <UserOutlined style="color: rgba(0, 0, 0, 0.25)" />
+              <PhoneOutlined style="color: rgba(0, 0, 0, 0.25)" />
             </template>
           </a-input>
         </a-form-item>
-        <a-form-item label="验证码" name="code" rules="[{ required: true, message: '请输入验证码!' }]">
-          <a-input v-model="loginForm.code" placeholder="请输入验证码">
+        <a-form-item label="验证码" name="code">
+          <a-input v-model:value="form.code" placeholder="请输入验证码（6 位数字）" :maxlength="6">
             <template #suffix>
               <a-button size="small" type="'primary'">获取验证码</a-button>
             </template>
           </a-input>
-
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 4, span: 20 }">
-          <a-button block type="primary" html-type="submit">
+          <a-button block type="primary" :disabled="disabled" @click="onSubmit">
             登录
           </a-button>
         </a-form-item>
@@ -32,21 +30,55 @@
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { UserOutlined } from '@ant-design/icons-vue';
+import { computed, reactive, ref, UnwrapRef } from 'vue';
+import { PhoneOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
+import { Rule } from 'ant-design-vue/es/form';
+
+interface ILogin {
+  phone: string;
+  code: string;
+}
 
 const router = useRouter();
+const formRef = ref();
 
-const loginForm = reactive({
+const form: UnwrapRef<ILogin> = reactive({
   phone: '',
   code: '',
 });
+const disabled = computed(() => {
+  const values = formRef.value?.getFieldsValue();
+  const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
+  const codeDisabled = !/^\d{6}$/.test(values?.code?.trim());
+  return phoneDisabled || codeDisabled;
+});
 
-const handleSubmit = (values: any) => {
-  console.log('Received values of form: ', values);
-  router.push('/');
-};  
+const rules: Record<string, Rule[]> = {
+  phone: [
+    { transform: (value: string) => value.trim() },
+    { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
+    { required: true, message: '请输入手机号码', trigger: 'change' },
+    { pattern: /^1[3-9]\d{9}$/, message: '手机号码格式不正确！', trigger: 'blur' },
+  ],
+  code: [
+    { transform: (value: string) => value.trim() },
+    { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
+    { required: true, message: '请输入验证码', trigger: 'change' },
+    { pattern: /^\d{6}$/, message: '验证码是 6 位数字！', trigger: 'blur' },
+  ],
+};
+
+const onSubmit = async () => {
+  try {
+    await formRef.value?.validate();
+    console.log('表单验证成功', form);
+    // 这里可以添加提交表单的逻辑  
+    router.push('/');
+  } catch (error) {
+    console.log('表单验证失败', error);
+  }
+};
 </script>
 <style lang="scss" scoped>
 .page {

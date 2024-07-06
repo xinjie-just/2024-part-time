@@ -20,9 +20,9 @@ export const store: IRouterType[] = [
         component: () => import('@/views/store/updatePassword.vue')
       },
       {
-        path: '/store/registerShop',
+        path: '/store/registerShopList',
         name: '他店代注',
-        component: () => import('@/views/store/registerShop.vue')
+        component: () => import('@/views/store/registerShopList.vue')
       }
     ]
   }
