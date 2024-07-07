@@ -10,19 +10,14 @@ export const store: IRouterType[] = [
     icon: () => h(AppstoreOutlined),
     children: [
       {
-        path: '/store/baseInfo',
-        name: '基本信息',
-        component: () => import('@/views/store/baseInfo.vue')
+        path: '/store/myStore',
+        name: '我的店铺',
+        component: () => import('@/views/store/myStore.vue')
       },
       {
-        path: '/store/updatePassword',
-        name: '密码修改',
-        component: () => import('@/views/store/updatePassword.vue')
-      },
-      {
-        path: '/store/registerShopList',
-        name: '他店代注',
-        component: () => import('@/views/store/registerShopList.vue')
+        path: '/store/agentShopList',
+        name: '代营店铺',
+        component: () => import('@/views/store/agentShopList.vue')
       }
     ]
   }

@@ -1,4 +1,4 @@
-<!-- 他店代注 -->
+<!-- 代营店铺 -->
 <template>
   <div class="search">
     <div class="search-item">

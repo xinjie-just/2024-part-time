@@ -20,6 +20,7 @@
     "ant-design-vue": "~4.2.3",
     "axios": "^1.7.2",
     "pinia": "^2.1.7",
+    "svg-captcha": "^1.4.0",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
   },

@@ -8,7 +8,7 @@ export const routes: any[] = [
   {
     path: '/',
     name: 'Layout',
-    redirect: '/store/baseInfo',
+    redirect: '/store/myStore',
     component: () => import('@/layouts/index.vue'),
     children: [
       ...store, // 店铺管理模块

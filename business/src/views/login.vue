@@ -6,21 +6,21 @@
       <a-form :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" size="large"
         :wrapper-col="{ span: 20 }" :model="form">
         <a-form-item label="手机号" name="phone">
-          <a-input v-model:value="form.phone" placeholder="请输入正确的手机号" :maxlength="11">
+          <a-input v-model:value="form.phone" placeholder="请输入正确的手机号" :maxlength="11" @pressEnter="onSubmit">
             <template #prefix>
               <PhoneOutlined style="color: rgba(0, 0, 0, 0.25)" />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item label="验证码" name="code">
-          <a-input v-model:value="form.code" placeholder="请输入验证码（6 位数字）" :maxlength="6">
+          <a-input v-model:value="form.code" placeholder="请输入验证码（6 位数字）" :maxlength="6" @pressEnter="onSubmit">
             <template #suffix>
               <a-button size="small" type="'primary'">获取验证码</a-button>
             </template>
           </a-input>
         </a-form-item>
         <a-form-item :wrapper-col="{ offset: 4, span: 20 }">
-          <a-button block type="primary" :disabled="disabled" @click="onSubmit">
+          <a-button block type="primary" :disabled="disabled || loading" :loading="loading" @click="onSubmit">
             登录
           </a-button>
         </a-form-item>
@@ -42,6 +42,7 @@ interface ILogin {
 
 const router = useRouter();
 const formRef = ref();
+const loading = ref(false);
 
 const form: UnwrapRef<ILogin> = reactive({
   phone: '',
@@ -73,8 +74,12 @@ const onSubmit = async () => {
   try {
     await formRef.value?.validate();
     console.log('表单验证成功', form);
-    // 这里可以添加提交表单的逻辑  
-    router.push('/');
+    // 这里可以添加提交表单的逻辑
+    loading.value = true;
+    setTimeout(() => {
+      loading.value = false;
+      router.push('/');
+    }, 2000)
   } catch (error) {
     console.log('表单验证失败', error);
   }
