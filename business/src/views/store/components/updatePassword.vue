@@ -1,14 +1,20 @@
+<!-- 修改密码 -->
 <template>
-    <a-modal v-model:open="isVisible" title="添加店铺" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
-        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
-            <a-form-item label="店铺名称" name="storeName">
-                <a-input v-model:value="form.storeName" :maxlength="30" placeholder="2-30 位字符" />
+    <a-modal v-model:open="isVisible" title="修改密码" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
+        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 6 }">
+            <a-form-item label="新密码" name="password">
+                <a-input v-model:value="form.password" type="password" :maxlength="16"
+                    placeholder="请输入密码（6-16 位，必须包含数字和字母）" />
             </a-form-item>
-            <a-form-item label="手机号码" name="phone">
-                <a-input v-model:value="form.phone" :maxlength="11" placeholder="请输入正确手机号码" />
+            <a-form-item label="重复新密码" name="checkPassword">
+                <a-input v-model:value="form.checkPassword" type="password" :maxlength="16"
+                    placeholder="请重复新密码（6-16 位，必须包含数字和字母）" />
             </a-form-item>
-            <a-form-item label="密码" name="password">
-                <a-input-password v-model:value="form.password" :maxlength="16" placeholder="6-16 位，必须包含数字和字母" />
+            <a-form-item label="图片验证码" name="imageCode">
+                <a-input-password v-model:value="form.imageCode" placeholder="请输入图片验证码" />
+            </a-form-item>
+            <a-form-item label="手机验证码" name="phoneCode">
+                <a-input-password v-model:value="form.phoneCode" :maxlength="6" placeholder="请输入手机验证码（6 位数字）" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -20,20 +26,24 @@
 </template>
 
 <script setup lang="ts">
-import { IAddShop } from '@/models';
+import { IUpdatePassword } from '@/models';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed } from 'vue';
 
 const emits = defineEmits(['cancel', 'confirm']);
 
 const isVisible = ref(true);
-const form: UnwrapRef<IAddShop> = reactive({
-    storeName: '',
-    phone: '',
+const form: UnwrapRef<IUpdatePassword> = reactive({
     password: '',
+    checkPassword: '',
+    imageCode: '',
+    phoneCode: ''
 });
 const formRef = ref();
 const loading = ref(false);
+
+
+
 const disabled = computed((): boolean => {
     const values = formRef.value?.getFieldsValue();
     const storeNameDisabled = values?.storeName?.trim()?.length < 2;

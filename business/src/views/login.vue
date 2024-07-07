@@ -48,7 +48,7 @@ const form: UnwrapRef<ILogin> = reactive({
   phone: '',
   code: '',
 });
-const disabled = computed(() => {
+const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
   const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
   const codeDisabled = !/^\d{6}$/.test(values?.code?.trim());
@@ -70,7 +70,7 @@ const rules: Record<string, Rule[]> = {
   ],
 };
 
-const onSubmit = async () => {
+const onSubmit = async (): Promise<void> => {
   try {
     await formRef.value?.validate();
     console.log('表单验证成功', form);

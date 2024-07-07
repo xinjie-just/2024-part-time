@@ -1,17 +1,18 @@
 {
-    "cSpell.words": [
-        "Antd",
-        "Appstore",
-        "browserslistrc",
-        "camelcase",
-        "commitlint",
-        "pinia",
-        "rushstack",
-        "sider",
-        "stylelint",
-        "stylelintignore",
-        "unplugin",
-        "wangeditor",
-        "Withdrawe"
-    ]
+  "cSpell.words": [
+    "Antd",
+    "Appstore",
+    "browserslistrc",
+    "camelcase",
+    "commitlint",
+    "pinia",
+    "popconfirm",
+    "rushstack",
+    "sider",
+    "stylelint",
+    "stylelintignore",
+    "unplugin",
+    "wangeditor",
+    "Withdrawe"
+  ]
 }
