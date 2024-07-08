@@ -1,20 +1,20 @@
 <!-- 修改密码 -->
 <template>
     <a-modal v-model:open="isVisible" title="修改密码" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
-        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 6 }">
+        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
             <a-form-item label="新密码" name="password">
-                <a-input v-model:value="form.password" type="password" :maxlength="16"
+                <a-input-password v-model:value="form.password" type="password" :maxlength="16"
                     placeholder="请输入密码（6-16 位，必须包含数字和字母）" />
             </a-form-item>
             <a-form-item label="重复新密码" name="checkPassword">
-                <a-input v-model:value="form.checkPassword" type="password" :maxlength="16"
+                <a-input-password v-model:value="form.checkPassword" type="password" :maxlength="16"
                     placeholder="请重复新密码（6-16 位，必须包含数字和字母）" />
             </a-form-item>
             <a-form-item label="图片验证码" name="imageCode">
-                <a-input-password v-model:value="form.imageCode" placeholder="请输入图片验证码" />
+                <a-input v-model:value="form.imageCode" placeholder="请输入图片验证码" />
             </a-form-item>
             <a-form-item label="手机验证码" name="phoneCode">
-                <a-input-password v-model:value="form.phoneCode" :maxlength="6" placeholder="请输入手机验证码（6 位数字）" />
+                <a-input v-model:value="form.phoneCode" :maxlength="6" placeholder="请输入手机验证码（6 位数字）" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { IUpdatePassword } from '@/models';
+import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed } from 'vue';
 
@@ -42,35 +43,55 @@ const form: UnwrapRef<IUpdatePassword> = reactive({
 const formRef = ref();
 const loading = ref(false);
 
-
-
 const disabled = computed((): boolean => {
     const values = formRef.value?.getFieldsValue();
-    const storeNameDisabled = values?.storeName?.trim()?.length < 2;
-    const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
     const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password?.trim());
-    return storeNameDisabled || phoneDisabled || passwordDisabled;
+    const checkPasswordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.checkPassword?.trim());
+    const imageCodeDisabled = values?.imageCode?.trim().length < 1;
+    const phoneCodeDisabled = !/^\d{6}$/.test(values?.phoneCode?.trim());
+    return passwordDisabled || checkPasswordDisabled || imageCodeDisabled || phoneCodeDisabled;
 });
 
-const rules: Record<string, Rule[]> = {
-    storeName: [
-        { transform: (value: string) => value.trim() },
-        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
-        { required: true, message: '请输入店铺名称', trigger: 'change' },
-        { min: 2, message: '2-30 位字符！', trigger: 'blur' },
 
-    ],
-    phone: [
+const validatePassword = async (_rule: Rule, value: string) => {
+    const password = value.trim();
+    if (password === '') {
+        return Promise.reject('请输入新密码');
+    } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(password)) {
+        return Promise.reject('新密码应该 6-16 位，必须包含数字和字母！');
+    } else {
+        if (form.checkPassword !== '') {
+            formRef.value.validateFields('checkPassword');
+        }
+        return Promise.resolve();
+    }
+};
+const validateCheckPassword = async (_rule: Rule, value: string) => {
+    const checkPassword = value.trim();
+    if (checkPassword === '') {
+        return Promise.reject('请重复新密码');
+    } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(checkPassword)) {
+        return Promise.reject('重复新密码应该 6-16 位，必须包含数字和字母！');
+    } else if (checkPassword !== form.password) {
+        return Promise.reject("两次输入新密码不匹配!");
+    } else {
+        return Promise.resolve();
+    }
+};
+
+const rules: Record<string, Rule[]> = {
+    password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
+    checkPassword: [{ required: true, validator: validateCheckPassword, trigger: 'blur' }],
+    imageCode: [
         { transform: (value: string) => value.trim() },
         { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
-        { required: true, message: '请输入手机号码', trigger: 'change' },
-        { pattern: /^1[3-9]\d{9}$/, message: '手机号码格式不正确！', trigger: 'blur' },
+        { required: true, message: '请输入图片验证码', trigger: 'change' },
     ],
-    password: [
+    phoneCode: [
         { transform: (value: string) => value.trim() },
         { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
-        { required: true, message: '请输入密码', trigger: 'change' },
-        { pattern: /^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/, message: '6-16 位，必须包含数字和字母！', trigger: 'blur' },
+        { required: true, message: '请输入手机验证码', trigger: 'change' },
+        { pattern: /^\d{6}$/, message: '手机验证码应该是 6 位数字！', trigger: 'blur' },
     ],
 };
 
@@ -82,6 +103,7 @@ const onSubmit = async (): Promise<void> => {
         // 这里可以添加提交表单的逻辑
         setTimeout(() => {
             loading.value = false;
+            message.success('密码修改成功');
             emits('confirm');
         }, 2000);
     } catch (error) {

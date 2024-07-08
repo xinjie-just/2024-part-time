@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import { IAddShop } from '@/models';
+import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed } from 'vue';
 
@@ -72,6 +73,7 @@ const onSubmit = async (): Promise<void> => {
         // 这里可以添加提交表单的逻辑
         setTimeout(() => {
             loading.value = false;
+            message.success('店铺添加成功');
             emits('confirm');
         }, 2000);
     } catch (error) {
