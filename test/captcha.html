@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>captcha</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="100" height="32"></canvas>
+
+    <script>
+      // TypeScript 类型注解（在纯 JavaScript 环境中运行时将被忽略）
+      // interface ImageTextOptions {
+      //     source: string;
+      //     charCount: number;
+      //     spacing: number;
+      //     textFont: string;
+      //     textColor: string;
+      //     bgColor: string;
+      // }
+
+      function generateRandomString(source, charCount) {
+        const chars = Array.from({ length: charCount }, () => {
+          const index = Math.floor(Math.random() * source.length);
+          return source[index];
+        });
+        return chars.join("");
+      }
+
+      function drawTextOnCanvas(canvas, options) {
+        const ctx = canvas.getContext("2d");
+
+        // 填充背景色
+        ctx.fillStyle = options.bgColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // 文本字体和颜色
+        ctx.font = options.textFont;
+        ctx.fillStyle = options.textColor;
+
+        // 计算文本起始位置和间隔
+        const textWidth = ctx.measureText(options.source.charAt(0)).width;
+        let x =
+          (canvas.width -
+            (textWidth * options.charCount +
+              options.spacing * (options.charCount - 1))) /
+          2;
+        let y = canvas.height / 2;
+
+        // 绘制每个字符并应用随机旋转
+        for (let i = 0; i < options.charCount; i++) {
+          const angle = Math.random() * 90 - 45; // -45deg 到 45deg
+          ctx.save(); // 保存当前画布状态
+          ctx.translate(x + i * (textWidth + options.spacing), y); // 移动到字符位置
+          ctx.rotate((angle * Math.PI) / 180); // 旋转画布
+          ctx.fillText(
+            options.source.charAt(
+              Math.floor(Math.random() * options.source.length)
+            ),
+            0,
+            0
+          ); // 绘制字符
+          ctx.restore(); // 恢复画布状态
+        }
+      }
+
+      // 示例用法
+      const options = {
+        source: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        charCount: 4,
+        spacing: 8,
+        textFont: "16px Arial",
+        textColor: "#333333", // 红色
+        bgColor: "#ffffff", // 蓝色
+      };
+
+      const canvas = document.getElementById("myCanvas");
+      drawTextOnCanvas(canvas, options);
+    </script>
+  </body>
+</html>
