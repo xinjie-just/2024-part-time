@@ -11,7 +11,11 @@
                     placeholder="请重复新密码（6-16 位，必须包含数字和字母）" />
             </a-form-item>
             <a-form-item label="图片验证码" name="imageCode">
-                <a-input v-model:value="form.imageCode" placeholder="请输入图片验证码" />
+                <a-input v-model:value="form.imageCode" placeholder="请输入图片验证码（不区分大小写）">
+                    <template #suffix>
+                        <canvas ref="canvasRef" width="80" height="22" class="canvas" @click="onChangeChars"></canvas>
+                    </template>
+                </a-input>
             </a-form-item>
             <a-form-item label="手机验证码" name="phoneCode">
                 <a-input v-model:value="form.phoneCode" :maxlength="6" placeholder="请输入手机验证码（6 位数字）" />
@@ -27,13 +31,24 @@
 
 <script setup lang="ts">
 import { IUpdatePassword } from '@/models';
+import { drawTextOnCanvas } from '@/utils';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
-import { ref, reactive, UnwrapRef, computed } from 'vue';
+import { ref, reactive, UnwrapRef, computed, onMounted, nextTick } from 'vue';
 
 const emits = defineEmits(['cancel', 'confirm']);
-
+const options = {
+    source: "ABDEGHQRSTUVWXYZabde23456789", // 取一些不容易混淆的字母和数字
+    charCount: 4,
+    spacing: 8,
+    textFont: '16px Arial',
+    textColor: '#333333', // 红色source: string
+    bgColor: "#ffffff"
+};
 const isVisible = ref(true);
+const canvasRef = ref(null);
+const randomText = ref('');
+
 const form: UnwrapRef<IUpdatePassword> = reactive({
     password: '',
     checkPassword: '',
@@ -78,21 +93,36 @@ const validateCheckPassword = async (_rule: Rule, value: string) => {
         return Promise.resolve();
     }
 };
+const validateImageCode = async (_rule: Rule, value: string) => {
+    const imageCode = value.trim().toLowerCase();
+    if (imageCode === '') {
+        return Promise.reject('请输入图片验证码');
+    } else if (imageCode !== randomText.value) {
+        return Promise.reject("图片验证码输入不正确!");
+    } else {
+        return Promise.resolve();
+    }
+};
 
 const rules: Record<string, Rule[]> = {
     password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
     checkPassword: [{ required: true, validator: validateCheckPassword, trigger: 'blur' }],
-    imageCode: [
-        { transform: (value: string) => value.trim() },
-        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
-        { required: true, message: '请输入图片验证码', trigger: 'change' },
-    ],
+    imageCode: [{ required: true, validator: validateImageCode, trigger: 'change' }],
     phoneCode: [
         { transform: (value: string) => value.trim() },
         { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
         { required: true, message: '请输入手机验证码', trigger: 'change' },
         { pattern: /^\d{6}$/, message: '手机验证码应该是 6 位数字！', trigger: 'blur' },
     ],
+};
+
+onMounted(async () => {
+    await nextTick();
+    getRandomText(canvasRef.value);
+});
+
+const getRandomText = (canvasRef): void => {
+    randomText.value = drawTextOnCanvas(canvasRef, options).toLowerCase();
 };
 
 const onSubmit = async (): Promise<void> => {
@@ -111,8 +141,18 @@ const onSubmit = async (): Promise<void> => {
     }
 };
 
+const onChangeChars = (): void => {
+    getRandomText(canvasRef.value);
+};
+
 const onCancel = (): void => {
     emits('cancel');
 };
 
 </script>
+
+<style lang="scss" scoped>
+.canvas {
+    cursor: pointer;
+}
+</style>
