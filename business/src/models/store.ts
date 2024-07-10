@@ -19,3 +19,12 @@ export interface IUpdatePassword {
   imageCode: string
   phoneCode: string
 }
+
+export interface IEditMyShop {
+  name: string
+  address: string
+  location: string
+  contact: string
+  contactPhone: string
+  introduce: string
+}

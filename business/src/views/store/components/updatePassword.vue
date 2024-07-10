@@ -3,22 +3,22 @@
     <a-modal v-model:open="isVisible" title="修改密码" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
             <a-form-item label="新密码" name="password">
-                <a-input-password v-model:value="form.password" type="password" :maxlength="16"
+                <a-input-password v-model:value="form.password" type="password" allowClear :maxlength="16"
                     placeholder="请输入密码（6-16 位，必须包含数字和字母）" />
             </a-form-item>
             <a-form-item label="重复新密码" name="checkPassword">
-                <a-input-password v-model:value="form.checkPassword" type="password" :maxlength="16"
+                <a-input-password v-model:value="form.checkPassword" type="password" allowClear :maxlength="16"
                     placeholder="请重复新密码（6-16 位，必须包含数字和字母）" />
             </a-form-item>
             <a-form-item label="图片验证码" name="imageCode">
-                <a-input v-model:value="form.imageCode" placeholder="请输入图片验证码（不区分大小写）">
+                <a-input v-model:value="form.imageCode" allowClear placeholder="请输入图片验证码（不区分大小写）">
                     <template #suffix>
                         <canvas ref="canvasRef" width="80" height="22" class="canvas" @click="onChangeChars"></canvas>
                     </template>
                 </a-input>
             </a-form-item>
             <a-form-item label="手机验证码" name="phoneCode">
-                <a-input v-model:value="form.phoneCode" :maxlength="6" placeholder="请输入手机验证码（6 位数字）" />
+                <a-input v-model:value="form.phoneCode" :maxlength="6" allowClear placeholder="请输入手机验证码（6 位数字）" />
             </a-form-item>
         </a-form>
         <template #footer>

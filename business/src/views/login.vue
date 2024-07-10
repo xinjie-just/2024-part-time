@@ -6,14 +6,15 @@
       <a-form :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" size="large"
         :wrapper-col="{ span: 20 }" :model="form">
         <a-form-item label="手机号" name="phone">
-          <a-input v-model:value="form.phone" placeholder="请输入正确的手机号" :maxlength="11" @pressEnter="onSubmit">
+          <a-input v-model:value="form.phone" placeholder="请输入正确的手机号" :maxlength="11" allowClear @pressEnter="onSubmit">
             <template #prefix>
               <PhoneOutlined style="color: rgba(0, 0, 0, 0.25)" />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item label="验证码" name="code">
-          <a-input v-model:value="form.code" placeholder="请输入验证码（6 位数字）" :maxlength="6" @pressEnter="onSubmit">
+          <a-input v-model:value="form.code" placeholder="请输入验证码（6 位数字）" :maxlength="6" allowClear
+            @pressEnter="onSubmit">
             <template #suffix>
               <a-button size="small" type="'primary'">获取验证码</a-button>
             </template>

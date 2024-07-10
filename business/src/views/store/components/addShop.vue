@@ -2,13 +2,14 @@
     <a-modal v-model:open="isVisible" title="添加店铺" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
             <a-form-item label="店铺名称" name="storeName">
-                <a-input v-model:value="form.storeName" :maxlength="30" placeholder="2-30 位字符" />
+                <a-input v-model:value="form.storeName" :maxlength="30" allowClear placeholder="2-30 位字符" />
             </a-form-item>
             <a-form-item label="手机号码" name="phone">
-                <a-input v-model:value="form.phone" :maxlength="11" placeholder="请输入正确手机号码" />
+                <a-input v-model:value="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
             </a-form-item>
             <a-form-item label="密码" name="password">
-                <a-input-password v-model:value="form.password" :maxlength="16" placeholder="6-16 位，必须包含数字和字母" />
+                <a-input-password v-model:value="form.password" :maxlength="16" allowClear
+                    placeholder="6-16 位，必须包含数字和字母" />
             </a-form-item>
         </a-form>
         <template #footer>

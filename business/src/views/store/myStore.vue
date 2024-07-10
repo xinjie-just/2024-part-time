@@ -3,7 +3,8 @@
   <a-descriptions :column="1" title="基本信息" bordered size="small" :label-style="{ width: '120px' }"
     :content-style="{ wordBreak: 'break-all' }">
     <template #extra>
-      <a-button type="primary" @click="onUpdatePassword">修改密码</a-button>
+      <a-button type="primary" @click="onEditMyShop">编辑</a-button>
+      <a-button type="primary" ghost @click="onUpdatePassword" class="update-password-btn">修改密码</a-button>
     </template>
     <a-descriptions-item label="店铺名称">店铺名称1店铺名称1店铺名称1店铺名称1店铺名称1店铺名称1</a-descriptions-item>
     <a-descriptions-item label="店铺地址">四川省成都市武侯区燃灯市东街14号</a-descriptions-item>
@@ -11,12 +12,13 @@
       <img src="https://via.placeholder.com/450X200" alt="地图位置" class="img">
     </a-descriptions-item>
     <a-descriptions-item label="店铺联系人">张三</a-descriptions-item>
-    <a-descriptions-item label="联系人电话">18227752005</a-descriptions-item>
+    <a-descriptions-item label="联系人电话">18227752001</a-descriptions-item>
     <a-descriptions-item
       label="店铺介绍">店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍</a-descriptions-item>
   </a-descriptions>
 
-  <update-password v-if="visible" @cancel="onCancel" @confirm="onConfirm" />
+  <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" @confirm="onConfirmUpdatePassword" />
+  <edit-my-shop v-if="editMyShopVisible" @cancel="onCancelEditMyShop" @confirm="onConfirmEditMyShop" />
 </template>
 
 
@@ -24,7 +26,9 @@
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 
 const updatePassword = defineAsyncComponent(() => import('./components/updatePassword.vue'));
-const visible = ref(false);
+const editMyShop = defineAsyncComponent(() => import('./components/editMyShop.vue'));
+const updatePasswordVisible = ref(false);
+const editMyShopVisible = ref(false);
 
 onMounted(() => {
   getDetails();
@@ -47,14 +51,26 @@ const getDetails = async (): Promise<void> => {
   // storeAddress.value = store.storeAddress;
 }
 
+
 const onUpdatePassword = (): void => {
-  visible.value = true;
+  updatePasswordVisible.value = true;
 }
-const onCancel = (): void => {
-  visible.value = false;
+const onCancelUpdatePassword = (): void => {
+  updatePasswordVisible.value = false;
 }
-const onConfirm = (): void => {
-  visible.value = false;
+const onConfirmUpdatePassword = (): void => {
+  updatePasswordVisible.value = false;
+  getDetails();
+}
+
+const onEditMyShop = (): void => {
+  editMyShopVisible.value = true;
+}
+const onCancelEditMyShop = (): void => {
+  editMyShopVisible.value = false;
+}
+const onConfirmEditMyShop = (): void => {
+  editMyShopVisible.value = false;
   getDetails();
 }
 </script>
@@ -68,5 +84,9 @@ const onConfirm = (): void => {
   min-height: 150px;
   height: auto;
   width: auto;
+}
+
+.update-password-btn {
+  margin-left: 16px;
 }
 </style>
