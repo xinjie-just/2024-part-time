@@ -16,9 +16,6 @@ function generateRandomString(source: string, charCount: number): string {
 }
 
 export const drawTextOnCanvas = (canvas: HTMLCanvasElement, options: ImageTextOptions) => {
-  console.log('canvas', canvas)
-  console.log('options', options)
-
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
   // 填充背景色

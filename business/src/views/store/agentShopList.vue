@@ -2,7 +2,7 @@
 <template>
   <div class="search">
     <div class="search-item">
-      <label for="storeName">店铺名称：</label>
+      <label class="label" for="storeName">店铺名称：</label>
       <a-input v-model:value="storeName" id="storeName" allowClear placeholder="请输入店铺名称" class="input"
         @pressEnter="onSearch" />
     </div>
@@ -202,34 +202,7 @@ const onCancelDelete = (): void => {
 </script>
 
 <style lang="scss" scoped>
-.pagination {
-  margin-top: 16px;
-  text-align: right;
-}
-
 .add-btn {
   margin-bottom: 16px;
-}
-
-.search {
-  display: flex;
-  margin-bottom: 16px;
-
-  .search-item {
-    display: flex;
-    align-items: center;
-
-    &:not(:last-of-type) {
-      margin-right: 24px;
-    }
-  }
-
-  .input {
-    width: 200px;
-  }
-
-  .reset-btn {
-    margin-left: 16px;
-  }
 }
 </style>

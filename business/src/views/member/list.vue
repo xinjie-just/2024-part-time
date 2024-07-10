@@ -2,11 +2,11 @@
 <template>
   <div class="search">
     <div class="search-item">
-      <label for="name">姓名：</label>
+      <label class="label" for="name">姓名：</label>
       <a-input v-model:value="name" id="name" allowClear placeholder="请输入姓名" class="input" @pressEnter="onSearch" />
     </div>
     <div class="search-item">
-      <label for="phone">手机号码：</label>
+      <label class="label" for="phone">手机号码：</label>
       <a-input v-model:value="phone" id="phone" allowClear placeholder="请输入手机号码" class="input" @pressEnter="onSearch" />
     </div>
     <div class="search-item">
@@ -193,27 +193,5 @@ const rowSelection = ref({
 
 .send-btn {
   margin-bottom: 16px;
-}
-
-.search {
-  display: flex;
-  margin-bottom: 16px;
-
-  .search-item {
-    display: flex;
-    align-items: center;
-
-    &:not(:last-of-type) {
-      margin-right: 24px;
-    }
-  }
-
-  .input {
-    width: 200px;
-  }
-
-  .reset-btn {
-    margin-left: 16px;
-  }
 }
 </style>
