@@ -19,8 +19,8 @@
     "@wangeditor/editor-for-vue": "^5.1.12",
     "ant-design-vue": "~4.2.3",
     "axios": "^1.7.2",
+    "dayjs": "^1.11.11",
     "pinia": "^2.1.7",
-    "svg-captcha": "^1.4.0",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"
   },

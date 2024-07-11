@@ -3,23 +3,13 @@
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" :width="256" collapsible>
       <div class="logo">logo</div>
       <a-menu v-model:openKeys="state.openKeys" v-model:selectedKeys="state.selectedKeys" mode="inline" theme="dark"
-        :inline-collapsed="state.collapsed" :items="menus" @click="onSelectMenu" class="menu"></a-menu>
+        :items="menus" @click="onSelectMenu" class="menu"></a-menu>
     </a-layout-sider>
     <a-layout>
       <a-layout-header class="header">
         <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />
         <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
       </a-layout-header>
-      <!-- <a-breadcrumb :routes="menus">
-        <template #itemRender="{ route }">
-          <span v-if="routes.indexOf(route) === routes.length - 1">
-            {{ route.name }}
-          </span>
-          <router-link v-else :to="'/'">
-            {{ route.name }}
-          </router-link>
-        </template>
-</a-breadcrumb> -->
       <a-layout-content class="content">
         <router-view #="{ Component }">
           <component :is="Component" />
@@ -30,7 +20,7 @@
 </template>
 <script lang="ts" setup>
 
-import { reactive, ref, onMounted, Ref } from 'vue';
+import { reactive, ref, onMounted, Ref, watch } from 'vue';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
 import router, { routes } from "@/routers";
 import { IRouterType } from '@/models';
@@ -49,12 +39,30 @@ const onSelectMenu = ({ item }) => {
   router.push(item.path);
 }
 
+watch(
+  () => route,
+  (to) => {
+    // 如果当前菜单被选中，将其设置为选中状态
+    state.selectedKeys = [to.path];
+    // 如果当前菜单有父菜单，则将父菜单设置为选中状态
+    // state.openKeys = [to.matched[to.matched.length - 1]?.path];
+  },
+  { immediate: true, deep: true }
+);
+
+onMounted(() => {
+  console.log("layout");
+  const newRoutes = routes.find(item => item.path === "/")?.children;
+  const menuRoutes = newRoutes.filter(item => item.redirect !== "/");
+  menus.value = convertToAntdMenu(menuRoutes);
+  handleMenu();
+})
 /**
  * 将菜单数据转换为 Ant Design 的菜单格式
  * @param {IRouterType[]} menuData - 要转换的菜单数据数组
  * @returns {IRouterType[]} 转换后的菜单数据数组
  */
-function convertToAntdMenu(menuData: IRouterType[]): IRouterType[] {
+const convertToAntdMenu = (menuData: IRouterType[]): IRouterType[] => {
   return menuData.map(menuItem => {
     if (menuItem.children && menuItem.children.length > 0) {
       // 如果有子菜单，则创建一个 SubMenu 类型的对象  
@@ -97,13 +105,6 @@ const handleMenu = () => {
   const openKey = menus.value.find(item => item.path === parentPath)?.path;
   state.openKeys = [openKey as string];
 }
-
-onMounted(() => {
-  const newRoutes = routes.find(item => item.path === "/")?.children;
-  const menuRoutes = newRoutes.filter(item => item.redirect !== "/");
-  menus.value = convertToAntdMenu(menuRoutes);
-  handleMenu();
-})
 </script>
 <style lang="scss" scope>
 .layout {
