@@ -1,7 +1,14 @@
 <!-- 账户提现 -->
 <template>
-  <div class="header">
-    <a-statistic title="可用余额（人民币）" :precision="2" prefix="¥" suffix="元" :value="totalMoney" />
+  <a-statistic title="可用余额（人民币）" :precision="2" prefix="¥" suffix="元" :value="totalMoney" class="statistic" />
+  <a-alert message="请输入提现金额，并选择银行账户" type="info" show-icon class="alert" />
+  <div class="handle">
+    <a-button type="primary" class="withdrawe-btn" :disabled="!(selectedIds.length && sum)" @click="onWithdrawe">
+      <template #icon>
+        <MoneyCollectOutlined />
+      </template>
+      提现
+    </a-button>
     <div class="sum-wrap">
       <label for="sum" class="label">提现金额：</label>
       <a-input-number v-model:value="sum" :min="0.01" :max="totalMoney" :precision="2" class="sum-input">
@@ -12,17 +19,12 @@
           <span>RMB</span>
         </template>
       </a-input-number>
-      <a-button type="primary" :disabled="!totalMoney" class="total-money-btn" @click="sum = totalMoney">全部金额</a-button>
+      <a-button type="link" :disabled="!totalMoney" class="total-money-btn" @click="sum = totalMoney">全部金额</a-button>
     </div>
   </div>
-  <a-button type="primary" class="withdrawe-btn" :disabled="!state.selectedRowKeys.length" @click="onWithdrawe">
-    <template #icon>
-      <MoneyCollectOutlined />
-    </template>
-    提现
-  </a-button>
-  <a-table :columns="columns" :dataSource="data" :row-selection="rowSelection" :pagination="false" size="small"
-    :scroll="{ x: 1000, y: 360 }" :loading="tableLoading" :row-key="'id'">
+  <a-table :columns="columns" :dataSource="data"
+    :row-selection="{ type: 'radio', selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false"
+    size="small" :scroll="{ x: 1000, y: 360 }" :loading="tableLoading" :row-key="'id'">
     <template #bodyCell="{ column, _, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
@@ -33,17 +35,20 @@
     :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
     :show-total="total => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination" @change="onChange" />
 
+  <confirm-account v-if="visible" @cancel="onCancel" @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, Ref, ref } from 'vue';
+import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
 import { MoneyCollectOutlined } from '@ant-design/icons-vue';
 import { IWithdrawe, IPage } from '@/models';
 
-type Key = string | number;
+const confirmAccount = defineAsyncComponent(() => import('./components/confirmAccount.vue'));
 
 const totalMoney = ref(112893);
 const sum = ref(0);
+const visible = ref(false);;
+const selectedIds: Ref<number[]> = ref([]);
 
 const result = [
   { id: 1, bank: "中国工商银行", name: '张三', account: '1234567890123456789', },
@@ -76,13 +81,13 @@ const columns = [
     width: 120,
   },
   {
-    title: '姓名',
+    title: '账户姓名',
     dataIndex: 'name',
     key: 'name',
     width: 120,
   },
   {
-    title: '银行账户',
+    title: '银行卡号',
     dataIndex: 'account',
     key: 'account',
     width: 120,
@@ -92,7 +97,6 @@ const columns = [
 onMounted(() => {
   getList();
 })
-
 
 const onChange = (current: number, pageSize: number): void => {
   page.value.current = current;
@@ -113,40 +117,39 @@ const getList = (): void => {
   }, 2000);
 };
 
-const state = reactive<{
-  selectedRowKeys: Key[];
-  loading: boolean;
-}>({
-  selectedRowKeys: [], // Check here to configure the default column
-  loading: false,
-});
-
-
-const onSelectChange = (selectedRowKeys: Key[]) => {
+const onSelectChange = (selectedRowKeys: number[]) => {
   console.log('selectedRowKeys changed: ', selectedRowKeys);
-  state.selectedRowKeys = selectedRowKeys;
+  selectedIds.value = selectedRowKeys;
 };
 
-const rowSelection = ref({
-  type: 'radio',
-  selectedRowKeys: state.selectedRowKeys,
-  onChange: onSelectChange,
-});
-
 const onWithdrawe = () => {
-  console.log('提现');
+  visible.value = true;
+}
+const onCancel = () => {
+  visible.value = false;
+}
+const onConfirm = () => {
+  visible.value = false;
+  selectedIds.value = [];
+  sum.value = 0;
 }
 </script>
 
 <style lang="scss" scoped>
-.header {
+.statistic {
+  margin-bottom: 16px;
+}
+
+.alert {
+  margin-bottom: 16px;
+}
+
+.handle {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e8e8e8;
 }
 
 .sum-wrap {
@@ -165,10 +168,6 @@ const onWithdrawe = () => {
 }
 
 .total-money-btn {
-  margin-left: 16px;
-}
-
-.withdrawe-btn {
-  margin-bottom: 16px;
+  margin-left: 8px;
 }
 </style>

@@ -16,13 +16,14 @@
         class="reset-btn">重置</a-button>
     </div>
   </div>
-  <a-button type="primary" class="send-btn" :disabled="selectedMemberId === 0" @click="onSend">
+  <a-button type="primary" class="send-btn" :disabled="!selectedIds.length" @click="onSend">
     <template #icon>
       <SendOutlined />
     </template>
     发送信息
   </a-button>
-  <a-table :columns="columns" :dataSource="data" :row-selection="rowSelection" :pagination="false" size="small"
+  <a-table :columns="columns" :dataSource="data"
+    :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false" size="small"
     :scroll="{ x: 1000, y: 400 }" :loading="tableLoading" :row-key="'id'">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
@@ -42,6 +43,7 @@
 import { onMounted, Ref, ref } from 'vue';
 import { SendOutlined } from '@ant-design/icons-vue';
 import { IMember, IPage } from '@/models';
+import { message, Modal } from 'ant-design-vue';
 const result = [
   { id: 1, nickName: '昵称1', avatar: 'https://via.placeholder.com/32X32', phone: '13800138000', registrationTime: '2023-01-01 12:00:00' },
   { id: 2, nickName: '昵称2', avatar: 'https://via.placeholder.com/32X32', phone: '13800138001', registrationTime: '2023-01-02 12:00:00' },
@@ -75,8 +77,7 @@ const page: Ref<IPage> = ref({
   pageSize: 10,
 });
 const data: Ref<IMember[]> = ref([]);
-const selectedMemberId = ref(0);
-const visible = ref(false);
+const selectedIds: Ref<number[]> = ref([]);
 const searchLoading = ref(false);
 const resetLoading = ref(false);
 const tableLoading = ref(false);
@@ -151,12 +152,29 @@ const onChange = (current: number, pageSize: number): void => {
 };
 
 const onSend = (): void => {
-  visible.value = true;
+  Modal.confirm({
+    title: '发送信息',
+    content: `您选中了 ${selectedIds.value.length} 个用户，确定要给它们发送信息吗？`,
+    okText: '发送',
+    cancelText: '取消',
+    onOk: () => {
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          message.success('信息发送成功');
+          getList();
+          resolve();
+        }, 1000);
+      }).catch(() => console.log('Oops errors!'));
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
 }
 const getList = (): void => {
   // 模拟获取列表操作，实际应从API获取数据
   tableLoading.value = true;
-  selectedMemberId.value = 0;
+  selectedIds.value = [];
   setTimeout(() => {
     page.value.total = result.length;
 
@@ -169,13 +187,10 @@ const getList = (): void => {
   }, 2000);
 };
 
-const rowSelection = ref({
-  type: 'radio',
-  onChange: (selectedRowKey: (number), selectedRow: IMember) => {
-    selectedMemberId.value = selectedRow.id;
-    console.log('onChange---', `selectedRowKey: ${selectedRowKey}`, 'selectedRow: ', selectedRow);
-  },
-});
+const onSelectChange = (selectedRowKeys: number[]) => {
+  console.log('selectedRowKeys changed: ', selectedRowKeys);
+  selectedIds.value = selectedRowKeys;
+};
 </script>
 
 <style lang="scss">
