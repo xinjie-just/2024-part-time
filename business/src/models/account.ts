@@ -9,3 +9,9 @@ export interface IWithdrawe {
   name: string
   account: string
 }
+
+export interface IAddAccount {
+  bank: string
+  name: string
+  account: string
+}

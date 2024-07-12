@@ -18,7 +18,7 @@
             </div>
             <div class="account-item">
                 <span class="key">银行卡号：</span>
-                <a-tooltip color="blue" title="1234567890123456789" placement="right" :overlay-class-name="'tips'">
+                <a-tooltip color="blue" title="1234567890123456789" placement="right" overlay-class-name="tips">
                     <span class="value">1234567890123456789</span>
                 </a-tooltip>
             </div>

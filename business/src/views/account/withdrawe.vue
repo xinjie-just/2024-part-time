@@ -3,31 +3,45 @@
   <a-statistic title="可用余额（人民币）" :precision="2" prefix="¥" suffix="元" :value="totalMoney" class="statistic" />
   <a-alert message="请输入提现金额，并选择银行账户" type="info" show-icon class="alert" />
   <div class="handle">
-    <a-button type="primary" class="withdrawe-btn" :disabled="!(selectedIds.length && sum)" @click="onWithdrawe">
-      <template #icon>
-        <MoneyCollectOutlined />
-      </template>
-      提现
-    </a-button>
     <div class="sum-wrap">
       <label for="sum" class="label">提现金额：</label>
-      <a-input-number v-model:value="sum" :min="0.01" :max="totalMoney" :precision="2" class="sum-input">
+      <a-input-number v-model:value="sum" :min="0.01" :max="totalMoney" :precision="2" placeholder="请输入（元）"
+        class="sum-input">
         <template #addonBefore>
           <span>￥</span>
         </template>
         <template #addonAfter>
-          <span>RMB</span>
+          <a-button type="link" :disabled="!totalMoney" size="small" class="total-money-btn"
+            @click="sum = totalMoney">全部金额</a-button>
         </template>
       </a-input-number>
-      <a-button type="link" :disabled="!totalMoney" class="total-money-btn" @click="sum = totalMoney">全部金额</a-button>
+      <a-button class="withdrawe-btn" :disabled="!(selectedIds.length && sum)" @click="onWithdrawe">
+        <template #icon>
+          <MoneyCollectOutlined />
+        </template>
+        提现
+      </a-button>
     </div>
+    <a-button type="primary" class="add-btn" @click="onAdd">
+      <template #icon>
+        <PlusOutlined />
+      </template>
+      添加账户
+    </a-button>
   </div>
+
   <a-table :columns="columns" :dataSource="data"
     :row-selection="{ type: 'radio', selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false"
     size="small" :scroll="{ x: 1000, y: 360 }" :loading="tableLoading" :row-key="'id'">
-    <template #bodyCell="{ column, _, index }">
+    <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
+      </template>
+      <template v-else-if="column.key === 'action'">
+        <a-popconfirm :title="`确认删除账户 ${record.name} 吗？`" ok-text="确定" cancel-text="取消"
+          @confirm="onConfirmDelete(record.id)" @cancel="onCancelDelete">
+          <a-button type="link">删除</a-button>
+        </a-popconfirm>
       </template>
     </template>
   </a-table>
@@ -36,18 +50,22 @@
     :show-total="total => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination" @change="onChange" />
 
   <confirm-account v-if="visible" @cancel="onCancel" @confirm="onConfirm" />
+  <add-account v-if="addVisible" @cancel="onCancelAdd" @confirm="onConfirmAdd" />
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
-import { MoneyCollectOutlined } from '@ant-design/icons-vue';
+import { MoneyCollectOutlined, PlusOutlined } from '@ant-design/icons-vue';
 import { IWithdrawe, IPage } from '@/models';
+import { message } from 'ant-design-vue';
 
 const confirmAccount = defineAsyncComponent(() => import('./components/confirmAccount.vue'));
+const addAccount = defineAsyncComponent(() => import('./components/addAccount.vue'));
 
 const totalMoney = ref(112893);
 const sum = ref(0);
-const visible = ref(false);;
+const visible = ref(false);
+const addVisible = ref(false);
 const selectedIds: Ref<number[]> = ref([]);
 
 const result = [
@@ -84,13 +102,20 @@ const columns = [
     title: '账户姓名',
     dataIndex: 'name',
     key: 'name',
-    width: 120,
+    width: 100,
   },
   {
     title: '银行卡号',
     dataIndex: 'account',
     key: 'account',
-    width: 120,
+    width: 160,
+  },
+  {
+    title: '操作',
+    key: 'action',
+    dataIndex: 'action',
+    width: 90,
+    fixed: 'right',
   },
 ];
 
@@ -122,6 +147,17 @@ const onSelectChange = (selectedRowKeys: number[]) => {
   selectedIds.value = selectedRowKeys;
 };
 
+const onConfirmDelete = (id: number): void => {
+  // 模拟删除操作，实际应从API删除数据
+  console.log('Deleting--id', id);
+  message.success('删除成功');
+  page.value.current = 1;
+  getList();
+}
+const onCancelDelete = (): void => {
+  message.info('您取消了删除');
+};
+
 const onWithdrawe = () => {
   visible.value = true;
 }
@@ -132,6 +168,17 @@ const onConfirm = () => {
   visible.value = false;
   selectedIds.value = [];
   sum.value = 0;
+}
+
+const onAdd = () => {
+  addVisible.value = true;
+}
+const onCancelAdd = () => {
+  addVisible.value = false;
+}
+const onConfirmAdd = () => {
+  addVisible.value = false;
+  getList();
 }
 </script>
 
@@ -163,11 +210,11 @@ const onConfirm = () => {
   }
 
   .sum-input {
-    width: 240px;
+    width: 280px;
   }
-}
 
-.total-money-btn {
-  margin-left: 8px;
+  .withdrawe-btn {
+    margin-left: 16px;
+  }
 }
 </style>
