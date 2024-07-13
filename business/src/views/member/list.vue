@@ -24,13 +24,21 @@
   </a-button>
   <a-table :columns="columns" :dataSource="data"
     :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false" size="small"
-    :scroll="{ x: 1000, y: 400 }" :loading="tableLoading" :row-key="'id'">
+    :scroll="{ x: 1000, y: 400 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
       <template v-if="column.key === 'avatar'">
-        <img :src="record.avatar" alt="头像" class="member-list-avatar" />
+        <a-popover trigger="click">
+          <template #title>
+            <span class="popover-title"> {{ record.nickName }}</span>
+          </template>
+          <template #content>
+            <img :src="record.avatar" alt="头像" title="点击查看" class="big-avatar" />
+          </template>
+          <img :src="record.avatar" alt="头像" title="点击查看" class="small-avatar" />
+        </a-popover>
       </template>
     </template>
   </a-table>
@@ -45,28 +53,28 @@ import { SendOutlined } from '@ant-design/icons-vue';
 import { IMember, IPage } from '@/models';
 import { message, Modal } from 'ant-design-vue';
 const result = [
-  { id: 1, nickName: '昵称1', avatar: 'https://via.placeholder.com/32X32', phone: '13800138000', registrationTime: '2023-01-01 12:00:00' },
-  { id: 2, nickName: '昵称2', avatar: 'https://via.placeholder.com/32X32', phone: '13800138001', registrationTime: '2023-01-02 12:00:00' },
-  { id: 3, nickName: '昵称3', avatar: 'https://via.placeholder.com/32X32', phone: '13800138002', registrationTime: '2023-01-03 12:00:00' },
-  { id: 4, nickName: '昵称4', avatar: 'https://via.placeholder.com/32X32', phone: '13800138003', registrationTime: '2023-01-04 12:00:00' },
-  { id: 5, nickName: '昵称5', avatar: 'https://via.placeholder.com/32X32', phone: '13800138004', registrationTime: '2023-01-05 12:00:00' },
-  { id: 6, nickName: '昵称6', avatar: 'https://via.placeholder.com/32X32', phone: '13800138005', registrationTime: '2023-01-06 12:00:00' },
-  { id: 7, nickName: '昵称7', avatar: 'https://via.placeholder.com/32X32', phone: '13800138006', registrationTime: '2023-01-07 12:00:00' },
-  { id: 8, nickName: '昵称8', avatar: 'https://via.placeholder.com/32X32', phone: '13800138007', registrationTime: '2023-01-08 12:00:00' },
-  { id: 9, nickName: '昵称9', avatar: 'https://via.placeholder.com/32X32', phone: '13800138008', registrationTime: '2023-01-09 12:00:00' },
-  { id: 10, nickName: '昵称10', avatar: 'https://via.placeholder.com/32X32', phone: '13800138009', registrationTime: '2023-01-10 12:00:00' },
-  { id: 11, nickName: '昵称11', avatar: 'https://via.placeholder.com/32X32', phone: '13800138010', registrationTime: '2023-01-11 12:00:00' },
-  { id: 12, nickName: '昵称12', avatar: 'https://via.placeholder.com/32X32', phone: '13800138011', registrationTime: '2023-01-12 12:00:00' },
-  { id: 13, nickName: '昵称13', avatar: 'https://via.placeholder.com/32X32', phone: '13800138012', registrationTime: '2023-01-13 12:00:00' },
-  { id: 14, nickName: '昵称14', avatar: 'https://via.placeholder.com/32X32', phone: '13800138013', registrationTime: '2023-01-14 12:00:00' },
-  { id: 15, nickName: '昵称15', avatar: 'https://via.placeholder.com/32X32', phone: '13800138014', registrationTime: '2023-01-15 12:00:00' },
-  { id: 16, nickName: '昵称16', avatar: 'https://via.placeholder.com/32X32', phone: '13800138015', registrationTime: '2023-01-16 12:00:00' },
-  { id: 17, nickName: '昵称17', avatar: 'https://via.placeholder.com/32X32', phone: '13800138016', registrationTime: '2023-01-17 12:00:00' },
-  { id: 18, nickName: '昵称18', avatar: 'https://via.placeholder.com/32X32', phone: '13800138017', registrationTime: '2023-01-18 12:00:00' },
-  { id: 19, nickName: '昵称19', avatar: 'https://via.placeholder.com/32X32', phone: '13800138018', registrationTime: '2023-01-19 12:00:00' },
-  { id: 20, nickName: '昵称20', avatar: 'https://via.placeholder.com/32X32', phone: '13800138019', registrationTime: '2023-01-20 12:00:00' },
-  { id: 21, nickName: '昵称21', avatar: 'https://via.placeholder.com/32X32', phone: '13800138020', registrationTime: '2023-01-21 12:00:00' },
-  { id: 22, nickName: '昵称22', avatar: 'https://via.placeholder.com/32X32', phone: '13800138021', registrationTime: '2023-01-22 12:00:00' },
+  { id: 1, nickName: '昵称1', avatar: 'https://via.placeholder.com/192X192', phone: '13800138000', registrationTime: '2023-01-01 12:00:00' },
+  { id: 2, nickName: '昵称2', avatar: 'https://via.placeholder.com/192X192', phone: '13800138001', registrationTime: '2023-01-02 12:00:00' },
+  { id: 3, nickName: '昵称3', avatar: 'https://via.placeholder.com/192X192', phone: '13800138002', registrationTime: '2023-01-03 12:00:00' },
+  { id: 4, nickName: '昵称4', avatar: 'https://via.placeholder.com/192X192', phone: '13800138003', registrationTime: '2023-01-04 12:00:00' },
+  { id: 5, nickName: '昵称5', avatar: 'https://via.placeholder.com/192X192', phone: '13800138004', registrationTime: '2023-01-05 12:00:00' },
+  { id: 6, nickName: '昵称6', avatar: 'https://via.placeholder.com/192X192', phone: '13800138005', registrationTime: '2023-01-06 12:00:00' },
+  { id: 7, nickName: '昵称7', avatar: 'https://via.placeholder.com/192X192', phone: '13800138006', registrationTime: '2023-01-07 12:00:00' },
+  { id: 8, nickName: '昵称8', avatar: 'https://via.placeholder.com/192X192', phone: '13800138007', registrationTime: '2023-01-08 12:00:00' },
+  { id: 9, nickName: '昵称9', avatar: 'https://via.placeholder.com/192X192', phone: '13800138008', registrationTime: '2023-01-09 12:00:00' },
+  { id: 10, nickName: '昵称10', avatar: 'https://via.placeholder.com/192X192', phone: '13800138009', registrationTime: '2023-01-10 12:00:00' },
+  { id: 11, nickName: '昵称11', avatar: 'https://via.placeholder.com/192X192', phone: '13800138010', registrationTime: '2023-01-11 12:00:00' },
+  { id: 12, nickName: '昵称12', avatar: 'https://via.placeholder.com/192X192', phone: '13800138011', registrationTime: '2023-01-12 12:00:00' },
+  { id: 13, nickName: '昵称13', avatar: 'https://via.placeholder.com/192X192', phone: '13800138012', registrationTime: '2023-01-13 12:00:00' },
+  { id: 14, nickName: '昵称14', avatar: 'https://via.placeholder.com/192X192', phone: '13800138013', registrationTime: '2023-01-14 12:00:00' },
+  { id: 15, nickName: '昵称15', avatar: 'https://via.placeholder.com/192X192', phone: '13800138014', registrationTime: '2023-01-15 12:00:00' },
+  { id: 16, nickName: '昵称16', avatar: 'https://via.placeholder.com/192X192', phone: '13800138015', registrationTime: '2023-01-16 12:00:00' },
+  { id: 17, nickName: '昵称17', avatar: 'https://via.placeholder.com/192X192', phone: '13800138016', registrationTime: '2023-01-17 12:00:00' },
+  { id: 18, nickName: '昵称18', avatar: 'https://via.placeholder.com/192X192', phone: '13800138017', registrationTime: '2023-01-18 12:00:00' },
+  { id: 19, nickName: '昵称19', avatar: 'https://via.placeholder.com/192X192', phone: '13800138018', registrationTime: '2023-01-19 12:00:00' },
+  { id: 20, nickName: '昵称20', avatar: 'https://via.placeholder.com/192X192', phone: '13800138019', registrationTime: '2023-01-20 12:00:00' },
+  { id: 21, nickName: '昵称21', avatar: 'https://via.placeholder.com/192X192', phone: '13800138020', registrationTime: '2023-01-21 12:00:00' },
+  { id: 22, nickName: '昵称22', avatar: 'https://via.placeholder.com/192X192', phone: '13800138021', registrationTime: '2023-01-22 12:00:00' },
 ];
 
 const name = ref<string>('');
@@ -194,19 +202,34 @@ const onSelectChange = (selectedRowKeys: number[]) => {
 </script>
 
 <style lang="scss">
-.member-list-avatar {
+.small-avatar {
   display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.big-avatar {
+  display: block;
+  max-width: 192px;
+  max-height: 192px;
+  width: auto;
+  height: auto;
   border-radius: 50%;
 }
 </style>
 
 <style lang="scss" scoped>
-.pagination {
-  margin-top: 16px;
-  text-align: right;
-}
-
 .send-btn {
   margin-bottom: 16px;
+}
+
+.popover-title {
+  display: block;
+  text-align: center;
+  margin: 8px auto;
+  max-width: 192px; // 不大于二维码图片宽度
+  word-break: break-all;
 }
 </style>

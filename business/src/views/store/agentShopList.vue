@@ -20,7 +20,7 @@
     添加
   </a-button>
   <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
-    :loading="tableLoading" :row-key="'id'">
+    :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}

@@ -135,11 +135,12 @@ const onSubmit = async (): Promise<void> => {
         // 这里可以添加提交表单的逻辑
         setTimeout(() => {
             loading.value = false;
-            message.success('店铺添加成功');
+            message.success(props.isEdit ? '店铺编辑成功' : '店铺添加成功');
             emits('confirm');
         }, 2000);
     } catch (error) {
         console.log('表单验证失败', error);
+        loading.value = false;
     }
 };
 

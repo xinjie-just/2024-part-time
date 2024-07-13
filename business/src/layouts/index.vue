@@ -10,7 +10,7 @@
         <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />
         <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
       </a-layout-header>
-      <a-layout-content class="content">
+      <a-layout-content ref="contentRef" class="content">
         <router-view #="{ Component }">
           <component :is="Component" />
         </router-view>

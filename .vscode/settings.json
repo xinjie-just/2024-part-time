@@ -7,6 +7,7 @@
     "commitlint",
     "pinia",
     "popconfirm",
+    "qrcode",
     "rushstack",
     "sider",
     "stylelint",

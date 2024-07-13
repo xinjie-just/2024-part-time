@@ -16,8 +16,8 @@
     </div>
     <div class="search-item">
       <label class="label" for="sources">来源：</label>
-      <a-select id="sources" ref="select" v-model:value="source" style="width: 120px" :options="options" @focus="focus"
-        @change="handleChange"></a-select>
+      <a-select id="sources" ref="select" v-model:value="source" style="width: 120px" :options="options"
+        placeholder="请选择来源" @focus="focus" @change="handleChange"></a-select>
     </div>
     <div class="search-item">
       <a-button type="primary" html-type="submit" :loading="searchLoading" :disabled="resetLoading || tableLoading"
@@ -27,13 +27,15 @@
     </div>
   </div>
   <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
-    :loading="tableLoading" :row-key="'id'">
+    :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
       <template v-else-if="column.key === 'source'">
-        {{ record.source === 1 ? '订单' : record.source === 2 ? '扣款' : '返点' }}
+        <a-tag v-if="record.source === 1" color="orange">订单</a-tag>
+        <a-tag v-else-if="record.source === 2" color="blue">扣款</a-tag>
+        <a-tag v-else-if="record.source === 3" color="purple">返点</a-tag>
       </template>
     </template>
   </a-table>
@@ -54,7 +56,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const source: Ref<null | number> = ref(1);
+const source: Ref<null | number> = ref(null);
 const options = ref<SelectProps['options']>([
   {
     value: 1,
@@ -117,7 +119,7 @@ const columns = [
     width: 80,
   },
   {
-    title: '金额（¥）',
+    title: '金额（元）',
     dataIndex: 'sum',
     key: 'sum',
     width: 120,

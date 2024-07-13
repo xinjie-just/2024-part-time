@@ -87,6 +87,7 @@ const onSubmit = async (): Promise<void> => {
         }, 2000);
     } catch (error) {
         console.log('表单验证失败', error);
+        loading.value = false;
     }
 };
 
