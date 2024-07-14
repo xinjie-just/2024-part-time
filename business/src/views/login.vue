@@ -52,7 +52,7 @@ const form: UnwrapRef<ILogin> = reactive({
 });
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
-  const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
+  const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone);
   const codeDisabled = !/^\d{6}$/.test(values?.code?.trim());
   return phoneDisabled || codeDisabled;
 });

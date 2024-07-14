@@ -65,7 +65,7 @@ const loading = ref(false);
 const disabled = computed((): boolean => {
     const values = formRef.value?.getFieldsValue();
     const nameDisabled = values?.name?.trim()?.length < 2;
-    const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
+    const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone);
     const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password?.trim());
     return nameDisabled || phoneDisabled || passwordDisabled;
 });

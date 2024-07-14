@@ -80,3 +80,18 @@ export interface IManageWishing {
   miniPrice: number
   digit: number
 }
+
+export interface IPKHandle {
+  id: number
+  name: string
+  phone: string
+  winningPercentage: number
+  points: number
+}
+
+export interface IAddPKHandle {
+  name: string
+  phone: string
+  winningPercentage: number
+  points: number
+}
