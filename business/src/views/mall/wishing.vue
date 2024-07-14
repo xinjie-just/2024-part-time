@@ -1,10 +1,19 @@
 <!-- 创意许愿 -->
 <template>
-  <h1>创意许愿</h1>
+  <a-tabs v-model:activeKey="activeKey" size="large" destroy-inactive-tab-pane>
+    <a-tab-pane key="1" tab="可许心愿">
+      <may-wishing />
+    </a-tab-pane>
+    <a-tab-pane key="3" tab="停许心愿">
+      <stop-wishing />
+    </a-tab-pane>
+  </a-tabs>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { defineAsyncComponent, ref } from 'vue';
+const activeKey = ref('1');
 
-<style lang="scss"></style>
-
-<style lang="scss" scoped></style>
+const mayWishing = defineAsyncComponent(() => import('./components/wishing/mayWishing.vue'));
+const stopWishing = defineAsyncComponent(() => import('./components/wishing/stopWishing.vue'));
+</script>

@@ -64,3 +64,19 @@ export interface IManageScan {
   miniPrice: number
   digit: number
 }
+
+export interface IMayWishing {
+  id: number
+  wishingName: string
+  referenceValue: number
+  QRCode: string
+}
+
+export interface IManageWishing {
+  name: string
+  title: string
+  introduce: string
+  referenceValue: number
+  miniPrice: number
+  digit: number
+}

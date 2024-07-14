@@ -108,7 +108,7 @@ const columns = [
   {
     title: '原价（元）',
     dataIndex: 'originalPrice',
-    key: 'avatar',
+    key: 'originalPrice',
     width: 110,
   },
   {

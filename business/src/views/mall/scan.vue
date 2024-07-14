@@ -2,10 +2,10 @@
 <template>
   <a-tabs v-model:activeKey="activeKey" size="large" destroy-inactive-tab-pane>
     <a-tab-pane key="1" tab="待售">
-      <for-sale></for-sale>
+      <for-sale />
     </a-tab-pane>
     <a-tab-pane key="3" tab="停售">
-      <out-of-sale></out-of-sale>
+      <out-of-sale />
     </a-tab-pane>
   </a-tabs>
 </template>
@@ -17,7 +17,3 @@ const activeKey = ref('1');
 const forSale = defineAsyncComponent(() => import('./components/scan/forSale.vue'));
 const outOfSale = defineAsyncComponent(() => import('./components/scan/outOfSale.vue'));
 </script>
-
-<style lang="scss"></style>
-
-<style lang="scss" scoped></style>
