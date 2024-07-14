@@ -12,7 +12,7 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="date">交易日期：</label>
-      <a-range-picker id="date" v-model:value="date" />
+      <a-range-picker id="date" v-model:value="date" :locale="locale" :disabled-date="disabledDate" />
     </div>
     <div class="search-item">
       <label class="label" for="sources">来源：</label>
@@ -50,10 +50,14 @@ import { onMounted, Ref, ref } from 'vue';
 import { MoneyCollectOutlined } from '@ant-design/icons-vue';
 import { IBalance, IPage } from '@/models';
 import { SelectProps } from 'ant-design-vue';
+import zhCN from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 import { useRouter } from 'vue-router';
 
+const locale = zhCN;
+dayjs.locale('zh-cn');
 const router = useRouter();
 
 const source: Ref<null | number> = ref(null);
@@ -141,6 +145,11 @@ const columns = [
 onMounted(() => {
   onSearch();
 })
+
+const disabledDate = (current: Dayjs) => {
+  // Can not select days before today and today
+  return current && current > dayjs().endOf('day');
+};
 
 const focus = () => {
   console.log('focus');

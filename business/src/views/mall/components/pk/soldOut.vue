@@ -7,7 +7,7 @@
     </div>
     <div class="search-item">
       <label class="label" for="date">出售日期：</label>
-      <a-range-picker id="date" v-model:value="date" />
+      <a-range-picker id="date" v-model:value="date" :locale="locale" :disabled-date="disabledDate" />
     </div>
     <div class="search-item">
       <a-button type="primary" html-type="submit" :loading="searchLoading" :disabled="resetLoading || tableLoading"
@@ -36,8 +36,10 @@
 import { createVNode, onMounted, Ref, ref } from 'vue';
 import { IPKSoldOut, IPage } from '@/models';
 import { message, Modal } from 'ant-design-vue';
+import zhCN from 'ant-design-vue/es/date-picker/locale/zh_CN';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 const result = [
@@ -65,6 +67,8 @@ const result = [
   { id: 22, orderId: '20240709122430001', goodsName: '商品名称22', originalPrice: 40, settlementPrice: 30, currentPrice: 35, sellTime: '2024-07-24 11:24:34' },
 ];
 
+const locale = zhCN;
+dayjs.locale('zh-cn');
 type RangeValue = [Dayjs, Dayjs];
 const date = ref<RangeValue>();
 const goodsName = ref<string>('');
@@ -145,6 +149,11 @@ const columns = [
 onMounted(() => {
   onSearch();
 })
+
+const disabledDate = (current: Dayjs) => {
+  // Can not select days before today and today
+  return current && current > dayjs().endOf('day');
+};
 
 const onSearch = (): void => {
   // 模拟搜索操作，实际应从API获取数据  

@@ -5,11 +5,11 @@
         <a-alert type="info" class="alert">
             <template #message>
                 <p>现价是指线上销售价</p>
-                <p>结算价必须 ≤（竞猜小价 * 10 * 竞猜位数）/ PK次数，否则不能提交</p>
+                <p>现价必须 ≤（竞猜小价 * 10 * 竞猜位数）/ 2，否则不能提交</p>
             </template>
         </a-alert>
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
-            <a-form-item label="PK 品名称" name="name">
+            <a-form-item label="商品名称" name="name">
                 <a-input v-model:value.trim="form.name" :maxlength="16" allowClear placeholder="2-16 位字符" />
             </a-form-item>
             <a-form-item label="商品标题" name="title">
@@ -26,16 +26,16 @@
                     <template #addonAfter>（元）</template>
                 </a-input-number>
             </a-form-item>
-            <a-form-item label="现价" name="currentPrice">
-                <a-input-number v-model:value="form.currentPrice" :min="0.01" :max="9999" :precision="2"
-                    placeholder="请输入现价" style="width: 100%">
+            <a-form-item label="结算价" name="settlementPrice">
+                <a-input-number v-model:value="form.settlementPrice" :min="0.01" :max="9999" :precision="2"
+                    placeholder="请输入结算价" style="width: 100%">
                     <template #addonBefore>￥</template>
                     <template #addonAfter>（元）</template>
                 </a-input-number>
             </a-form-item>
-            <a-form-item label="结算价" name="settlementPrice">
-                <a-input-number v-model:value="form.settlementPrice" :min="0.01" :max="9999" :precision="2"
-                    placeholder="请输入结算价" style="width: 100%">
+            <a-form-item label="现价" name="currentPrice">
+                <a-input-number v-model:value="form.currentPrice" :min="0.01" :max="9999" :precision="2"
+                    placeholder="请输入现价" style="width: 100%">
                     <template #addonBefore>￥</template>
                     <template #addonAfter>（元）</template>
                 </a-input-number>
@@ -51,10 +51,6 @@
                 <a-input-number v-model:value="form.digit" :min="1" :max="999" :precision="0" placeholder="请输入竞猜位数"
                     style="width: 100%" />
             </a-form-item>
-            <a-form-item label="PK 次数" name="time">
-                <a-input-number v-model:value="form.time" :min="1" :max="99" :precision="0" placeholder="请输入 PK 次数"
-                    style="width: 100%" />
-            </a-form-item>
         </a-form>
         <template #footer>
             <a-button key="back" @click="onCancel">取消</a-button>
@@ -65,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { IManagePK } from '@/models'
+import { IManageScan } from '@/models'
 import { message } from 'ant-design-vue'
 import { Rule } from 'ant-design-vue/es/form'
 import { ref, onMounted, computed, UnwrapRef, reactive } from 'vue'
@@ -77,7 +73,7 @@ const isVisible = ref(true)
 
 const formRef = ref()
 const loading = ref(false)
-const form: UnwrapRef<IManagePK> = reactive({
+const form: UnwrapRef<IManageScan> = reactive({
     name: '',
     title: '',
     introduce: '',
@@ -86,11 +82,10 @@ const form: UnwrapRef<IManagePK> = reactive({
     currentPrice: 0.01,
     miniPrice: 0.01,
     digit: 1,
-    time: 1 // 分母不能为 0，所以从 0 开始
 })
 const rules: Record<string, Rule[]> = {
     name: [
-        { required: true, message: '请输入PK 品名称', trigger: 'change' },
+        { required: true, message: '请输入商品名称', trigger: 'change' },
         { min: 2, message: '2-16 位字符！', trigger: 'blur' }
     ],
     title: [
@@ -105,8 +100,7 @@ const rules: Record<string, Rule[]> = {
     settlementPrice: [{ required: true, message: '请输入结算价', trigger: 'change' }],
     currentPrice: [{ required: true, message: '请输入现价', trigger: 'change' }],
     miniPrice: [{ required: true, message: '请输入竞猜小价', trigger: 'change' }],
-    digit: [{ required: true, message: '请输入竞猜位数', trigger: 'change' }],
-    time: [{ required: true, message: '请输入 PK 次数', trigger: 'change' }]
+    digit: [{ required: true, message: '请输入竞猜位数', trigger: 'change' }]
 }
 
 const disabled = computed((): boolean => {
@@ -119,10 +113,9 @@ const disabled = computed((): boolean => {
     const currentPriceDisabled = !values?.currentPrice;
     const miniPriceDisabled = !values?.miniPrice;
     const digitDisabled = !values?.digit;
-    const timeDisabled = !values?.time;
 
-    const price = values?.miniPrice * 10 * values?.digit / values?.time;
-    const priceDisabled = values?.settlementPrice > price;
+    const price = values?.miniPrice * 10 * values?.digit / 2;
+    const priceDisabled = values?.currentPrice > price;
     return (
         nameDisabled ||
         titleDisabled ||
@@ -132,24 +125,23 @@ const disabled = computed((): boolean => {
         currentPriceDisabled ||
         miniPriceDisabled ||
         digitDisabled ||
-        timeDisabled ||
         priceDisabled
     )
 })
 
 onMounted(() => {
-    console.log('goodsId', props.goodsId)
 })
 
 const onSubmit = async (): Promise<void> => {
     loading.value = true
     try {
         await formRef.value?.validate();
+        console.log('表单验证成功', form);
         // 这里可以添加提交表单的逻辑
         setTimeout(() => {
             loading.value = false;
             message.success(props.isEdit ? '商品编辑成功' : '商品添加成功');
-            emits('confirm')
+            emits('confirm');
         }, 1000)
     } catch (error) {
         console.log('表单验证失败', error);

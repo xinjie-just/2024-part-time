@@ -36,3 +36,31 @@ export interface IManagePK {
   digit: number
   time: number
 }
+
+export interface IScanForSale {
+  id: number
+  goodsName: string
+  originalPrice: number
+  settlementPrice: number
+  currentPrice: number
+  QRCode: string
+}
+
+export interface IScanOutOfSale {
+  id: number
+  goodsName: string
+  originalPrice: number
+  settlementPrice: number
+  currentPrice: number
+}
+
+export interface IManageScan {
+  name: string
+  title: string
+  introduce: string
+  originalPrice: number
+  settlementPrice: number
+  currentPrice: number
+  miniPrice: number
+  digit: number
+}
