@@ -6,14 +6,15 @@
       <a-form :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" size="large"
         :wrapper-col="{ span: 20 }" :model="form">
         <a-form-item label="手机号" name="phone">
-          <a-input v-model:value="form.phone" placeholder="请输入正确的手机号" :maxlength="11" allowClear @pressEnter="onSubmit">
+          <a-input v-model:value.number.trim="form.phone" placeholder="请输入正确的手机号码" :maxlength="11" allowClear
+            @pressEnter="onSubmit">
             <template #prefix>
               <PhoneOutlined style="color: rgba(0, 0, 0, 0.25)" />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item label="验证码" name="code">
-          <a-input v-model:value="form.code" placeholder="请输入验证码（6 位数字）" :maxlength="6" allowClear
+          <a-input v-model:value.number.trim="form.code" placeholder="请输入验证码（6 位数字）" :maxlength="6" allowClear
             @pressEnter="onSubmit">
             <template #suffix>
               <a-button size="small" type="'primary'">获取验证码</a-button>
@@ -58,14 +59,14 @@ const disabled = computed((): boolean => {
 
 const rules: Record<string, Rule[]> = {
   phone: [
-    { transform: (value: string) => value.trim() },
-    { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
+
+
     { required: true, message: '请输入手机号码', trigger: 'change' },
     { pattern: /^1[3-9]\d{9}$/, message: '手机号码格式不正确！', trigger: 'blur' },
   ],
   code: [
-    { transform: (value: string) => value.trim() },
-    { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
+
+
     { required: true, message: '请输入验证码', trigger: 'change' },
     { pattern: /^\d{6}$/, message: '验证码是 6 位数字！', trigger: 'blur' },
   ],

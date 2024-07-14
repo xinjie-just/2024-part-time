@@ -3,11 +3,13 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="name">姓名：</label>
-      <a-input v-model:value="name" id="name" allowClear placeholder="请输入姓名" class="input" @pressEnter="onSearch" />
+      <a-input v-model:value.trim="name" id="name" allowClear placeholder="请输入姓名" class="input"
+        @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="phone">手机号码：</label>
-      <a-input v-model:value="phone" id="phone" allowClear placeholder="请输入手机号码" class="input" @pressEnter="onSearch" />
+      <a-input v-model:value.number.trim="phone" id="phone" allowClear placeholder="请输入手机号码" class="input"
+        @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <a-button type="primary" html-type="submit" :loading="searchLoading" :disabled="resetLoading || tableLoading"

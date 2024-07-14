@@ -3,7 +3,7 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="goodsName">商品名称：</label>
-      <a-input v-model:value="goodsName" id="goodsName" allowClear placeholder="请输入商品名称" class="input"
+      <a-input v-model:value.trim="goodsName" id="goodsName" allowClear placeholder="请输入商品名称" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">

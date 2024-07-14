@@ -5,12 +5,13 @@
                 <a-select v-model:value="form.bank" allowClear :options="options" placeholder="请选择开户银行"></a-select>
             </a-form-item>
             <a-form-item label="账户姓名" name="name">
-                <a-input v-model:value="form.name" :maxlength="6" allowClear placeholder="请输入账户姓名（2-6 个字符）" />
+                <a-input v-model:value.trim="form.name" :maxlength="6" allowClear placeholder="请输入账户姓名（2-6 个字符）" />
             </a-form-item>
             <a-form-item label="银行卡号" name="account">
                 <a-tooltip :trigger="['focus']" placement="bottomLeft" color="blue" overlay-class-name="tips">
                     <template v-if="form.account" #title>{{ form.account }}</template>
-                    <a-input v-model:value="form.account" :maxlength="19" allowClear placeholder="请输入正确的银行卡号" />
+                    <a-input v-model:value.number.trim="form.account" :maxlength="19" allowClear
+                        placeholder="请输入正确的银行卡号" />
                 </a-tooltip>
             </a-form-item>
         </a-form>
@@ -61,14 +62,10 @@ const rules: Record<string, Rule[]> = {
         { required: true, message: '请选择银行', trigger: 'change' },
     ],
     name: [
-        { transform: (value: string) => value.trim() },
-        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
         { required: true, message: '请输入账户姓名', trigger: 'change' },
         { pattern: /^.{2,6}$/, message: '账户姓名应该 2-6 位！', trigger: 'blur' },
     ],
     account: [
-        { transform: (value: string) => value.trim() },
-        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
         { required: true, message: '请输入银行卡号', trigger: 'change' },
         { pattern: /^\d{16,19}$/, message: '请输入正确的银行卡号！', trigger: 'blur' },
     ],

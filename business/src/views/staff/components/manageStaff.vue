@@ -4,16 +4,16 @@
         :body-style="{ paddingTop: '24px', maxHeight: '500px', overflowY: 'scroll' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="姓名" name="name">
-                <a-input v-model:value="form.name" :maxlength="6" allowClear placeholder="2-6 位字符" />
+                <a-input v-model:value.trim="form.name" :maxlength="6" allowClear placeholder="2-6 位字符" />
             </a-form-item>
             <a-form-item label="昵称" name="nickName">
-                <a-input v-model:value="form.nickName" :maxlength="16" allowClear placeholder="2-16 位字符" />
+                <a-input v-model:value.trim="form.nickName" :maxlength="16" allowClear placeholder="2-16 位字符" />
             </a-form-item>
             <a-form-item label="手机号码" name="phone">
-                <a-input v-model:value="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
+                <a-input v-model:value.number.trim="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
             </a-form-item>
             <a-form-item label="密码" name="password">
-                <a-input-password v-model:value="form.password" :maxlength="16" allowClear
+                <a-input-password v-model:value.trim="form.password" :maxlength="16" allowClear
                     placeholder="6-16 位，必须包含数字和字母" />
             </a-form-item>
             <a-form-item label="权限" name="permission">
@@ -72,21 +72,15 @@ const disabled = computed((): boolean => {
 
 const rules: Record<string, Rule[]> = {
     name: [
-        { transform: (value: string) => value.trim() },
-        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
         { required: true, message: '请输入店铺名称', trigger: 'change' },
         { min: 2, message: '2-30 位字符！', trigger: 'blur' },
 
     ],
     phone: [
-        { transform: (value: string) => value.trim() },
-        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
         { required: true, message: '请输入手机号码', trigger: 'change' },
         { pattern: /^1[3-9]\d{9}$/, message: '手机号码格式不正确！', trigger: 'blur' },
     ],
     password: [
-        { transform: (value: string) => value.trim() },
-        { whitespace: true, message: '不能只包含空格！', trigger: 'change' },
         { required: true, message: '请输入密码', trigger: 'change' },
         { pattern: /^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/, message: '6-16 位，必须包含数字和字母！', trigger: 'blur' },
     ],

@@ -24,3 +24,15 @@ export interface IPKOutOfSale {
   settlementPrice: number
   currentPrice: number
 }
+
+export interface IManagePK {
+  name: string
+  title: string
+  introduce: string
+  originalPrice: number
+  settlementPrice: number
+  currentPrice: number
+  miniPrice: number
+  digit: number
+  time: number
+}
