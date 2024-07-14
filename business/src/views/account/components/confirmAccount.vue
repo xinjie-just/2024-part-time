@@ -45,7 +45,7 @@ const onConfirm = () => {
         loading.value = false;
         message.success('提现成功');
         emits('confirm');
-    }, 2000);
+    }, 1000);
 };
 
 const onCancel = () => {

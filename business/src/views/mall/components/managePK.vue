@@ -39,7 +39,7 @@ const onSubmit = async (): Promise<void> => {
             loading.value = false;
             message.success(props.isEdit ? '商品编辑成功' : '商品添加成功');
             emits('confirm');
-        }, 2000);
+        }, 1000);
     } catch (error) {
         console.log('表单验证失败', error);
         loading.value = false;

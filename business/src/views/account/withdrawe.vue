@@ -15,7 +15,8 @@
             @click="sum = totalMoney">全部金额</a-button>
         </template>
       </a-input-number>
-      <a-button class="withdrawe-btn" :disabled="!(selectedIds.length && sum)" @click="onWithdrawe">
+      <a-button type="primary" ghost class="withdrawe-btn" :disabled="!(selectedIds.length && sum)"
+        @click="onWithdrawe">
         <template #icon>
           <MoneyCollectOutlined />
         </template>
@@ -38,8 +39,9 @@
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm :title="`确认删除账户 ${record.name} 吗？`" ok-text="确定" cancel-text="取消"
-          @confirm="onConfirmDelete(record.id)" @cancel="onCancelDelete">
+        <a-popconfirm :title="`确认删除账户 ${record.name} 吗？`" ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
+          @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>
         </a-popconfirm>
       </template>
@@ -63,7 +65,7 @@ const confirmAccount = defineAsyncComponent(() => import('./components/confirmAc
 const addAccount = defineAsyncComponent(() => import('./components/addAccount.vue'));
 
 const totalMoney = ref(112893);
-const sum = ref(0);
+const sum = ref(1);
 const visible = ref(false);
 const addVisible = ref(false);
 const selectedIds: Ref<number[]> = ref([]);
@@ -139,7 +141,7 @@ const getList = (): void => {
     const endIndex = startIndex + page.value.pageSize;
     data.value = result.filter((_, index) => index >= startIndex && index < endIndex);
     tableLoading.value = false;
-  }, 2000);
+  }, 1000);
 };
 
 const onSelectChange = (selectedRowKeys: number[]) => {

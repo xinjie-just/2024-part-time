@@ -135,7 +135,7 @@ const onSubmit = async (): Promise<void> => {
             loading.value = false;
             message.success('密码修改成功');
             emits('confirm');
-        }, 2000);
+        }, 1000);
     } catch (error) {
         console.log('表单验证失败', error);
         loading.value = false;

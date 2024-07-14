@@ -192,7 +192,7 @@ const getList = (): void => {
     searchLoading.value = false;
     resetLoading.value = false;
     tableLoading.value = false;
-  }, 2000);
+  }, 1000);
 };
 
 const onSelectChange = (selectedRowKeys: number[]) => {

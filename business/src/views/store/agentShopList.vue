@@ -29,8 +29,9 @@
         <a-tag color="blue">{{ record.status }}</a-tag>
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm :title="`确认删除店铺 ${record.storeName} 吗？`" ok-text="确定" cancel-text="取消"
-          @confirm="onConfirmDelete(record.id)" @cancel="onCancelDelete">
+        <a-popconfirm :title="`确认删除店铺 ${record.storeName} 吗？`" ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
+          @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>
         </a-popconfirm>
       </template>
@@ -186,7 +187,7 @@ const getList = (): void => {
     searchLoading.value = false;
     resetLoading.value = false;
     tableLoading.value = false;
-  }, 2000);
+  }, 1000);
 };
 
 const onConfirmDelete = (id: number): void => {

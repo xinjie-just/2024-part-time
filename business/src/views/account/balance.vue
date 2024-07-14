@@ -164,7 +164,7 @@ const onReset = (): void => {
   // 假设重新从API获取数据  
   console.log('Resetting...');
 
-  // 重置表单和表格数据  
+  // 重置表单和表格数据
   date.value = [dayjs(''), dayjs('')];
   source.value = null;
   page.value.current = 1;
@@ -192,7 +192,7 @@ const getList = (): void => {
     searchLoading.value = false;
     resetLoading.value = false;
     tableLoading.value = false;
-  }, 2000);
+  }, 1000);
 };
 
 const onToWithdraw = (): void => {

@@ -29,8 +29,9 @@
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm :title="`确认删除员工 ${record.name} 吗？`" ok-text="确定" cancel-text="取消"
-          @confirm="onConfirmDelete(record.id)" @cancel="onCancelDelete">
+        <a-popconfirm :title="`确认删除员工 ${record.name} 吗？`" ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
+          @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>
         </a-popconfirm>
         <a-divider type="vertical" />
@@ -181,7 +182,7 @@ const getList = (): void => {
     searchLoading.value = false;
     resetLoading.value = false;
     tableLoading.value = false;
-  }, 2000);
+  }, 1000);
 };
 
 const onConfirmDelete = (id: number): void => {

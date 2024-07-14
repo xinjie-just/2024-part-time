@@ -19,7 +19,7 @@
     </template>
     添加
   </a-button>
-  <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
+  <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 340 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
@@ -40,8 +40,9 @@
       <template v-else-if="column.key === 'action'">
         <a-button type="link" @click="onEdit(record)">编辑</a-button>
         <a-divider type="vertical" />
-        <a-popconfirm :title="`确认停售商品 ${record.goodsName} 吗？`" ok-text="确定" cancel-text="取消"
-          @confirm="onConfirmStop(record.id)" @cancel="onCancelStop">
+        <a-popconfirm :title="`确认停售商品 ${record.goodsName} 吗？`" ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmStop(record.id)"
+          @cancel="onCancelStop">
           <a-button type="link">停售</a-button>
         </a-popconfirm>
       </template>
@@ -51,8 +52,7 @@
     :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
     :show-total="total => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination" @change="onChange" />
 
-  <manage-for-sale v-if="visible" :is-edit="isEdit" :goods-id="currentGoods.id" @cancel="onCancel"
-    @confirm="onConfirm" />
+  <manage-p-k v-if="visible" :is-edit="isEdit" :goods-id="currentGoods.id" @cancel="onCancel" @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
@@ -61,7 +61,7 @@ import { PlusOutlined } from '@ant-design/icons-vue';
 import { IPKForSale, IPage } from '@/models';
 import { message } from 'ant-design-vue';
 
-const manageForSale = defineAsyncComponent(() => import('./manageForSale.vue'));
+const managePK = defineAsyncComponent(() => import('../managePK.vue'));
 
 const result = [
   { id: 1, goodsName: '商品名称1', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
@@ -214,7 +214,7 @@ const getList = (): void => {
     searchLoading.value = false;
     resetLoading.value = false;
     tableLoading.value = false;
-  }, 2000);
+  }, 1000);
 };
 const onConfirmStop = (id: number): void => {
   // 模拟删除操作，实际应从API删除数据

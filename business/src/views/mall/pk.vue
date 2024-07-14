@@ -1,6 +1,6 @@
 <!-- PK 品 -->
 <template>
-  <a-tabs v-model:activeKey="activeKey">
+  <a-tabs v-model:activeKey="activeKey" size="large">
     <a-tab-pane key="1" tab="待售">
       <for-sale></for-sale>
     </a-tab-pane>

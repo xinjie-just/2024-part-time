@@ -80,7 +80,7 @@ const onSubmit = async (): Promise<void> => {
     setTimeout(() => {
       loading.value = false;
       router.push('/');
-    }, 2000)
+    }, 1000)
   } catch (error) {
     console.log('表单验证失败', error);
     loading.value = false;
