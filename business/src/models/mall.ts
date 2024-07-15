@@ -95,3 +95,33 @@ export interface IAddPKHandle {
   winningPercentage: number
   points: number
 }
+
+export interface IPKOrder {
+  id: number
+  orderId: string
+  PKName: string
+  phone: string
+  PKSum: number
+  goodsSum: number
+  sendFree: number // 1 表示送，0 表示不送
+  status: number // 1 已发货，0 表示未发货
+}
+
+export interface IScanOrder {
+  id: number
+  orderId: string
+  scanName: string
+  phone: string
+  goodsSum: number
+  sendFree: number // 1 表示送，0 表示不送
+}
+
+export interface IWishingOrder {
+  id: number
+  orderId: string
+  wishingName: string
+  phone: string
+  miniSum: number
+  bigSum: number
+  wishingResult: number // 1 已实现，0 未实现
+}

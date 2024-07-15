@@ -42,7 +42,11 @@ const getPopupContainer = (_, dialogContext) => {
   }
 
   .input {
-    width: 200px;
+    width: 180px;
+  }
+
+  .select {
+    width: 180px;
   }
 
   .reset-btn {
