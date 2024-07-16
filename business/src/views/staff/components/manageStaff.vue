@@ -1,7 +1,7 @@
 <!-- 添加或编辑员工 -->
 <template>
     <a-modal v-model:open="isVisible" :width="640" :title="props.isEdit ? '编辑员工' : '添加员工'"
-        :body-style="{ paddingTop: '24px', maxHeight: '500px', overflowY: 'scroll' }" @cancel="onCancel">
+        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="姓名" name="name">
                 <a-input v-model:value.trim="form.name" :maxlength="6" allowClear placeholder="2-6 位字符" />
@@ -17,18 +17,7 @@
                     placeholder="6-16 位，必须包含数字和字母" />
             </a-form-item>
             <a-form-item label="权限" name="permission">
-                <!-- TODO: Found 15 elements with non-unique id #form_item_permission -->
-                <div v-for="(option, index) of options" :key="index" class="checkbox-item">
-                    <a-checkbox>{{ option.label }}</a-checkbox>
-                    <template v-if="option.children?.length">
-                        <ul class="sub-list">
-                            <li v-for="(subOption, subIndex) of option.children" :key="`${index}${subIndex}`"
-                                class="checkbox-sub-item">
-                                <a-checkbox>{{ subOption.label }}</a-checkbox>
-                            </li>
-                        </ul>
-                    </template>
-                </div>
+                <a-tree checkable :tree-data="treeData"></a-tree>
             </a-form-item>
         </a-form>
         <template #footer>
@@ -40,9 +29,9 @@
 </template>
 
 <script setup lang="ts">
-import { IManageStaff, IStaffPermission } from '@/models';
+import { IManageStaff } from '@/models';
 import { routes } from "@/routers";
-import { message } from 'ant-design-vue';
+import { message, TreeProps } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed, onMounted, Ref } from 'vue';
 
@@ -57,8 +46,7 @@ const form: UnwrapRef<IManageStaff> = reactive({
     password: '',
     permission: []
 });
-
-const options: Ref<IStaffPermission[]> = ref([]);
+const treeData: Ref<TreeProps['treeData']> = ref([]);
 
 const formRef = ref();
 const loading = ref(false);
@@ -90,22 +78,20 @@ const transformMenu = (menuItems) => {
     return menuItems.map(item => {
         // 初始化当前项的转换结果  
         const transformedItem = {
-            value: item.path.substring(1),
-            label: item.name,
+            key: item.path.substring(1),
+            title: item.name,
             children: []
         };
-
         // 如果存在 children，则递归转换它们  
         if (item.children?.length > 0) {
             transformedItem.children = item.children.map(child => {
                 return {
-                    value: child.path.substring(1),
-                    label: child.name,
+                    key: child.path.substring(1),
+                    title: child.name,
                     children: [] // 如果 child 也有 children，可以在这里递归  
                 };
             });
         }
-
         return transformedItem;
     });
 }
@@ -116,9 +102,7 @@ onMounted(() => {
     console.log("permissionRoutes", permissionRoutes);
 
     // 转换数据  
-    options.value = transformMenu(permissionRoutes);
-
-    console.log("staffId", props.staffId);
+    treeData.value = transformMenu(permissionRoutes);
 })
 
 const onSubmit = async (): Promise<void> => {

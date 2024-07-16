@@ -1,6 +1,6 @@
 <!-- 确认提现账户 -->
 <template>
-    <a-modal v-model:open="visible" title="提现确认" :body-style="{ paddingTop: '24px', paddingBottom: '24px' }"
+    <a-modal v-model:open="visible" title="提现确认" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
         @cancel="onCancel">
         <a-alert message="请确认提现账户信息，提交后将不可修改" type="warning" show-icon />
         <template #footer>

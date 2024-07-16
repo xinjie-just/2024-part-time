@@ -2,75 +2,99 @@
 <template>
   <div class="page">
     <div class="container">
-      <h1 class="title">登录</h1>
-      <a-form :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" size="large"
-        :wrapper-col="{ span: 20 }" :model="form">
-        <a-form-item label="手机号" name="phone">
-          <a-input v-model:value.number.trim="form.phone" placeholder="请输入正确的手机号码" :maxlength="11" allowClear
-            @pressEnter="onSubmit">
+      <h1 class="title">登 录</h1>
+      <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form">
+        <a-form-item label="用户名" name="username">
+          <a-input v-model:value.trim="form.username" placeholder="请输入用户名" allowClear @pressEnter="onSubmit">
             <template #prefix>
-              <PhoneOutlined style="color: rgba(0, 0, 0, 0.25)" />
+              <UserOutlined />
             </template>
           </a-input>
         </a-form-item>
-        <a-form-item label="验证码" name="code">
-          <a-input v-model:value.number.trim="form.code" placeholder="请输入验证码（6 位数字）" :maxlength="6" allowClear
-            @pressEnter="onSubmit">
-            <template #suffix>
-              <a-button size="small" type="'primary'">获取验证码</a-button>
+        <a-form-item label="密码" name="password">
+          <a-input-password v-model:value.trim="form.password" :maxlength="16" placeholder="请输入密码（6-16 位，必须包含数字和字母）"
+            allowClear @pressEnter="onSubmit">
+            <template #prefix>
+              <LockOutlined />
             </template>
-          </a-input>
+          </a-input-password>
         </a-form-item>
-        <a-form-item :wrapper-col="{ offset: 4, span: 20 }">
-          <a-button block type="primary" :disabled="disabled || loading" :loading="loading" @click="onSubmit">
-            登录
-          </a-button>
+        <a-form-item name="remember">
+          <a-flex justify="space-between" :align="'center'">
+            <a-checkbox v-model:checked="form.remember">记住我</a-checkbox>
+            <a-button type="link" @click="onUpdatePassword" size="small">忘记密码</a-button>
+          </a-flex>
+        </a-form-item>
+        <a-form-item>
+          <a-button block type="primary" :disabled="disabled || loading" :loading="loading"
+            @click="onSubmit">登录</a-button>
         </a-form-item>
       </a-form>
     </div>
   </div>
+  <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" @confirm="onConfirmUpdatePassword" />
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, UnwrapRef } from 'vue';
-import { PhoneOutlined } from '@ant-design/icons-vue';
+import { computed, defineAsyncComponent, onMounted, reactive, ref, UnwrapRef } from 'vue';
+import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import { Rule } from 'ant-design-vue/es/form';
 
 interface ILogin {
-  phone: string;
-  code: string;
+  username: string;
+  password: string;
+  remember: boolean;
 }
+const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
+const updatePasswordVisible = ref(false);
 
 const router = useRouter();
 const formRef = ref();
 const loading = ref(false);
 
 const form: UnwrapRef<ILogin> = reactive({
-  phone: '',
-  code: '',
+  username: '',
+  password: '',
+  remember: false,
 });
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
-  const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone);
-  const codeDisabled = !/^\d{6}$/.test(values?.code?.trim());
-  return phoneDisabled || codeDisabled;
+  const usernameDisabled = !values?.username?.trim();
+  const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password.trim());
+  return usernameDisabled || passwordDisabled;
 });
 
+
+const validatePassword = async (_rule: Rule, value: string) => {
+  const password = value.trim();
+  if (password === '') {
+    return Promise.reject('请输入密码');
+  } else if (!/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(password)) {
+    return Promise.reject('密码应该 6-16 位，必须包含数字和字母！');
+  } else {
+    if (form.password !== '') {
+      formRef.value.validateFields('checkPassword');
+    }
+    return Promise.resolve();
+  }
+};
 const rules: Record<string, Rule[]> = {
-  phone: [
-
-
-    { required: true, message: '请输入手机号码', trigger: 'change' },
-    { pattern: /^1[3-9]\d{9}$/, message: '手机号码格式不正确！', trigger: 'blur' },
+  username: [
+    { required: true, message: '请输入用户名码', trigger: 'change' },
   ],
-  code: [
-
-
-    { required: true, message: '请输入验证码', trigger: 'change' },
-    { pattern: /^\d{6}$/, message: '验证码是 6 位数字！', trigger: 'blur' },
+  password: [
+    { required: true, validator: validatePassword, trigger: 'blur' },
   ],
 };
+
+onMounted(() => {
+  const username = localStorage.getItem('username');
+  if (username) {
+    form.username = username;
+    form.remember = true;
+  }
+})
 
 const onSubmit = async (): Promise<void> => {
   try {
@@ -80,6 +104,11 @@ const onSubmit = async (): Promise<void> => {
     loading.value = true;
     setTimeout(() => {
       loading.value = false;
+      if (form.remember) {
+        localStorage.setItem('username', form.username);
+      } else {
+        localStorage.removeItem('username');
+      }
       router.push('/');
     }, 1000)
   } catch (error) {
@@ -87,6 +116,16 @@ const onSubmit = async (): Promise<void> => {
     loading.value = false;
   }
 };
+
+const onUpdatePassword = (): void => {
+  updatePasswordVisible.value = true;
+}
+const onCancelUpdatePassword = (): void => {
+  updatePasswordVisible.value = false;
+}
+const onConfirmUpdatePassword = (): void => {
+  updatePasswordVisible.value = false;
+}
 </script>
 <style lang="scss" scoped>
 .page {

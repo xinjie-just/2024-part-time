@@ -1,7 +1,7 @@
 <!-- 添加或编辑商品 -->
 <template>
     <a-modal v-model:open="isVisible" :width="640" :title="props.isEdit ? '编辑商品' : '添加商品'"
-        :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
+        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-alert type="info" class="alert">
             <template #message>
                 <p>现价是指线上销售价</p>

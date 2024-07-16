@@ -9,6 +9,19 @@
       <a-layout-header class="header">
         <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />
         <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
+        <a-dropdown>
+          <!-- TODO:用户名 -->
+          <a class="ant-dropdown-link" @click.prevent>用户名
+            <DownOutlined />
+          </a>
+          <template #overlay>
+            <a-menu>
+              <a-menu-item @click="onUpdatePassword">修改密码</a-menu-item>
+              <a-menu-divider />
+              <a-menu-item @click="onLogout">退出</a-menu-item>
+            </a-menu>
+          </template>
+        </a-dropdown>
       </a-layout-header>
       <a-layout-content ref="contentRef" class="content">
         <router-view #="{ Component }">
@@ -17,16 +30,22 @@
       </a-layout-content>
     </a-layout>
   </a-layout>
+  <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" @confirm="onConfirmUpdatePassword" />
 </template>
 <script lang="ts" setup>
 
-import { reactive, ref, onMounted, Ref, watch } from 'vue';
-import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons-vue';
-import router, { routes } from "@/routers";
+import { reactive, ref, onMounted, Ref, watch, createVNode, defineAsyncComponent } from 'vue';
+import { MenuFoldOutlined, MenuUnfoldOutlined, DownOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { routes } from "@/routers";
 import { IRouterType } from '@/models';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { Modal } from 'ant-design-vue';
+
+const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
+const updatePasswordVisible = ref(false);
 
 const route = useRoute();
+const router = useRouter();
 
 const state = reactive({
   selectedKeys: [''],
@@ -105,6 +124,33 @@ const handleMenu = () => {
   const openKey = menus.value.find(item => item.path === parentPath)?.path;
   state.openKeys = [openKey as string];
 }
+
+const onLogout = () => {
+  Modal.confirm({
+    title: '您确定要退出吗？',
+    icon: createVNode(QuestionCircleOutlined),
+    okType: 'danger',
+    onOk() {
+      const username = localStorage.getItem('username');
+      localStorage.clear(); // 清除本地存储中的 token
+      sessionStorage.clear(); // 清除本地存储中的 token
+      if (username) {
+        localStorage.setItem('username', username);
+      }
+      router.push('/login');
+    }
+  });
+};
+
+const onUpdatePassword = (): void => {
+  updatePasswordVisible.value = true;
+}
+const onCancelUpdatePassword = (): void => {
+  updatePasswordVisible.value = false;
+}
+const onConfirmUpdatePassword = (): void => {
+  updatePasswordVisible.value = false;
+}
 </script>
 <style lang="scss" scope>
 .layout {
@@ -133,6 +179,7 @@ const handleMenu = () => {
     background-color: #fff;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding-right: 16px;
     padding-left: 0;
   }

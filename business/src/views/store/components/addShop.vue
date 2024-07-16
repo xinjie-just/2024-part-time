@@ -1,5 +1,6 @@
 <template>
-    <a-modal v-model:open="isVisible" title="添加店铺" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
+    <a-modal v-model:open="isVisible" title="添加店铺" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
+        @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
             <a-form-item label="店铺名称" name="storeName">
                 <a-input v-model:value.trim="form.storeName" :maxlength="30" allowClear placeholder="2-30 位字符" />

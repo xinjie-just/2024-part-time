@@ -21,11 +21,10 @@
   <edit-my-shop v-if="editMyShopVisible" @cancel="onCancelEditMyShop" @confirm="onConfirmEditMyShop" />
 </template>
 
-
 <script lang="ts" setup>
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 
-const updatePassword = defineAsyncComponent(() => import('./components/updatePassword.vue'));
+const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const editMyShop = defineAsyncComponent(() => import('./components/editMyShop.vue'));
 const updatePasswordVisible = ref(false);
 const editMyShopVisible = ref(false);
@@ -50,7 +49,6 @@ const getDetails = async (): Promise<void> => {
   // status.value = store.status;
   // storeAddress.value = store.storeAddress;
 }
-
 
 const onUpdatePassword = (): void => {
   updatePasswordVisible.value = true;

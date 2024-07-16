@@ -1,6 +1,7 @@
 <!-- 修改密码 -->
 <template>
-    <a-modal v-model:open="isVisible" title="修改密码" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
+    <a-modal v-model:open="isVisible" title="修改密码" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
+        @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
             <a-form-item label="新密码" name="password">
                 <a-input-password v-model:value.trim="form.password" type="password" allowClear :maxlength="16"
@@ -13,13 +14,19 @@
             <a-form-item label="图片验证码" name="imageCode">
                 <a-input v-model:value.trim="form.imageCode" allowClear placeholder="请输入图片验证码（不区分大小写）">
                     <template #suffix>
-                        <canvas ref="canvasRef" width="80" height="22" class="canvas" @click="onChangeChars"></canvas>
+                        <canvas ref="canvasRef" width="96" height="22" class="canvas" @click="onChangeChars"></canvas>
                     </template>
                 </a-input>
             </a-form-item>
             <a-form-item label="手机验证码" name="phoneCode">
                 <a-input v-model:value.number.trim="form.phoneCode" :maxlength="6" allowClear
-                    placeholder="请输入手机验证码（6 位数字）" />
+                    placeholder="请输入手机验证码（6 位数字）">
+                    <template #suffix>
+                        <span v-if="hasSendCode" class="countdown">{{ countdown
+                            }}s</span>
+                        <button v-else class="code-btn" @click="onSendPhoneCode">获取验证码</button>
+                    </template>
+                </a-input>
             </a-form-item>
         </a-form>
         <template #footer>
@@ -35,7 +42,7 @@ import { IUpdatePassword } from '@/models';
 import { drawTextOnCanvas } from '@/utils';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
-import { ref, reactive, UnwrapRef, computed, onMounted, nextTick } from 'vue';
+import { ref, reactive, UnwrapRef, computed, onMounted, nextTick, onBeforeUnmount } from 'vue';
 
 const emits = defineEmits(['cancel', 'confirm']);
 const options = {
@@ -58,6 +65,10 @@ const form: UnwrapRef<IUpdatePassword> = reactive({
 });
 const formRef = ref();
 const loading = ref(false);
+const hasSendCode = ref(false);
+const countdown = ref(0);
+const timer = ref(0);
+
 
 const disabled = computed((): boolean => {
     const values = formRef.value?.getFieldsValue();
@@ -145,14 +156,48 @@ const onChangeChars = (): void => {
     getRandomText(canvasRef.value);
 };
 
+const onSendPhoneCode = (): void => {
+    console.log('发送手机验证码');
+    hasSendCode.value = true;
+    countdown.value = 60;
+    timer.value = window.setInterval(() => {
+        countdown.value--;
+        if (countdown.value <= 0) {
+            hasSendCode.value = false;
+            countdown.value = 0;
+        }
+    }, 1000);
+};
+
 const onCancel = (): void => {
     emits('cancel');
 };
 
+onBeforeUnmount(() => {
+    clearTimeout(timer.value);
+});
 </script>
 
 <style lang="scss" scoped>
 .canvas {
     cursor: pointer;
+}
+
+.countdown {
+    width: 96px;
+    text-align: center;
+}
+
+.code-btn {
+    width: 96px;
+    text-align: center;
+    cursor: pointer;
+    color: #007bff;
+    background-color: transparent;
+
+    &:hover {
+        color: #69b1ff;
+    }
+
 }
 </style>

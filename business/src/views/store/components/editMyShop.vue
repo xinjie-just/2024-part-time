@@ -1,7 +1,7 @@
 <!-- 编辑我的店铺 -->
 <template>
-    <a-modal v-model:open="isVisible" :width="640" title="编辑我的店铺" :body-style="{ paddingTop: '24px' }"
-        @cancel="onCancel">
+    <a-modal v-model:open="isVisible" :width="640" title="编辑我的店铺"
+        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="店铺名称" name="name">
                 <a-input v-model:value.trim="form.name" :maxlength="30" allowClear placeholder="请输入店铺名称（2-30 位字符）" />

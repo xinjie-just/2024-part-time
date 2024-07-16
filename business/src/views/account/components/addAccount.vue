@@ -1,5 +1,6 @@
 <template>
-    <a-modal v-model:open="isVisible" title="添加账户" :width="560" :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
+    <a-modal v-model:open="isVisible" title="添加账户" :width="560"
+        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="开户银行" name="bank">
                 <a-select v-model:value="form.bank" allowClear :options="options" placeholder="请选择开户银行"></a-select>

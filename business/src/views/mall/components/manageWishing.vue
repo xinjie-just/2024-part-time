@@ -1,7 +1,7 @@
 <!-- 添加或编辑创意心愿 -->
 <template>
     <a-modal v-model:open="isVisible" :width="640" :title="props.isEdit ? '编辑创意心愿' : '添加创意心愿'"
-        :body-style="{ paddingTop: '24px' }" @cancel="onCancel">
+        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-alert type="info" class="alert">
             <template #message>
                 <p>参考价值必须 ≤ 投币小额 * 10 * 竞猜位数 / 2，否则不能保存</p>
