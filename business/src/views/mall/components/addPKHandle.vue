@@ -1,6 +1,6 @@
 <!-- 添加 PK 手 -->
 <template>
-    <a-modal v-model:open="isVisible" :width="640" title="添加 PK 手"
+    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" :width="640" title="添加 PK 手"
         :body-style="{ paddingTop: '24px', maxHeight: '500px', overflowY: 'scroll' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="PK 手名称" name="name">
@@ -21,7 +21,7 @@
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button key="back" @click="onCancel">取消</a-button>
+            <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
             <a-button key="submit" type="primary" :loading="loading" :disabled="disabled"
                 @click="onSubmit">提交</a-button>
         </template>

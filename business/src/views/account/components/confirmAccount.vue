@@ -1,10 +1,10 @@
 <!-- 确认提现账户 -->
 <template>
-    <a-modal v-model:open="visible" title="提现确认" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
-        @cancel="onCancel">
+    <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" title="提现确认"
+        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-alert message="请确认提现账户信息，提交后将不可修改" type="warning" show-icon />
         <template #footer>
-            <a-button key="back" @click="onCancel">取消</a-button>
+            <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
             <a-button key="submit" type="primary" :loading="loading" @click="onConfirm">提交</a-button>
         </template>
         <a-card title="账户信息" :bordered="false" class="account">

@@ -17,7 +17,7 @@
       label="店铺介绍">店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍</a-descriptions-item>
   </a-descriptions>
 
-  <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" @confirm="onConfirmUpdatePassword" />
+  <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" />
   <edit-my-shop v-if="editMyShopVisible" @cancel="onCancelEditMyShop" @confirm="onConfirmEditMyShop" />
 </template>
 
@@ -55,10 +55,6 @@ const onUpdatePassword = (): void => {
 }
 const onCancelUpdatePassword = (): void => {
   updatePasswordVisible.value = false;
-}
-const onConfirmUpdatePassword = (): void => {
-  updatePasswordVisible.value = false;
-  getDetails();
 }
 
 const onEditMyShop = (): void => {

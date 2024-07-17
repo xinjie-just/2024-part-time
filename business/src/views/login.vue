@@ -32,7 +32,8 @@
       </a-form>
     </div>
   </div>
-  <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" @confirm="onConfirmUpdatePassword" />
+
+  <update-password v-if="visible" @cancel="onCancel" />
 </template>
 
 <script setup lang="ts">
@@ -47,7 +48,7 @@ interface ILogin {
   remember: boolean;
 }
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
-const updatePasswordVisible = ref(false);
+const visible = ref(false);
 
 const router = useRouter();
 const formRef = ref();
@@ -109,7 +110,18 @@ const onSubmit = async (): Promise<void> => {
       } else {
         localStorage.removeItem('username');
       }
-      router.push('/');
+      // 登录后存一份 token，后续通过本地存储中有没有 token 来判断用户有没有登录
+      // 从 26 个小写英文字母中随机生成 11 位，作为一串随机字符串
+      const token = Math.random().toString(36).substring(2);
+      localStorage.setItem('token', token);
+
+      // 未登录情况下打开的页面路径
+      const path = localStorage.getItem("path");
+      if (path) {
+        router.push(path);
+      } else {
+        router.push('/');
+      }
     }, 1000)
   } catch (error) {
     console.log('表单验证失败', error);
@@ -118,13 +130,10 @@ const onSubmit = async (): Promise<void> => {
 };
 
 const onUpdatePassword = (): void => {
-  updatePasswordVisible.value = true;
+  visible.value = true;
 }
-const onCancelUpdatePassword = (): void => {
-  updatePasswordVisible.value = false;
-}
-const onConfirmUpdatePassword = (): void => {
-  updatePasswordVisible.value = false;
+const onCancel = (): void => {
+  visible.value = false;
 }
 </script>
 <style lang="scss" scoped>

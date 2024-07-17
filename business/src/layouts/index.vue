@@ -30,19 +30,19 @@
       </a-layout-content>
     </a-layout>
   </a-layout>
-  <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" @confirm="onConfirmUpdatePassword" />
+  <update-password v-if="visible" @cancel="onCancel" />
 </template>
 <script lang="ts" setup>
 
-import { reactive, ref, onMounted, Ref, watch, createVNode, defineAsyncComponent } from 'vue';
+import { reactive, ref, onMounted, Ref, watch, createVNode, defineAsyncComponent, onBeforeMount } from 'vue';
 import { MenuFoldOutlined, MenuUnfoldOutlined, DownOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
 import { routes } from "@/routers";
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
-import { Modal } from 'ant-design-vue';
+import { message, Modal } from 'ant-design-vue';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
-const updatePasswordVisible = ref(false);
+const visible = ref(false);
 
 const route = useRoute();
 const router = useRouter();
@@ -71,6 +71,13 @@ watch(
 
 onMounted(() => {
   console.log("layout");
+  const token = localStorage.getItem('token');
+  if (!token) {
+    const path = route.path;
+    localStorage.setItem("path", path);
+    message.error("请先登录");
+    router.push('/login');
+  }
   const newRoutes = routes.find(item => item.path === "/")?.children;
   const menuRoutes = newRoutes.filter(item => item.redirect !== "/");
   menus.value = convertToAntdMenu(menuRoutes);
@@ -143,13 +150,10 @@ const onLogout = () => {
 };
 
 const onUpdatePassword = (): void => {
-  updatePasswordVisible.value = true;
+  visible.value = true;
 }
-const onCancelUpdatePassword = (): void => {
-  updatePasswordVisible.value = false;
-}
-const onConfirmUpdatePassword = (): void => {
-  updatePasswordVisible.value = false;
+const onCancel = (): void => {
+  visible.value = false;
 }
 </script>
 <style lang="scss" scope>

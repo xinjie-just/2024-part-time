@@ -1,22 +1,19 @@
 <!-- 添加或编辑创意心愿 -->
 <template>
-    <a-modal v-model:open="isVisible" :width="640" :title="props.isEdit ? '编辑创意心愿' : '添加创意心愿'"
-        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
+    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" :width="800"
+        :title="props.isEdit ? '编辑创意心愿' : '添加创意心愿'" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
+        @cancel="onCancel">
         <a-alert type="info" class="alert">
             <template #message>
                 <p>参考价值必须 ≤ 投币小额 * 10 * 竞猜位数 / 2，否则不能保存</p>
             </template>
         </a-alert>
-        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
+        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="创意心愿名称" name="name">
                 <a-input v-model:value.trim="form.name" :maxlength="16" allowClear placeholder="2-16 位字符" />
             </a-form-item>
             <a-form-item label="创意心愿标题" name="title">
                 <a-input v-model:value.trim="form.title" :maxlength="16" allowClear placeholder="2-16 位字符" />
-            </a-form-item>
-            <a-form-item label="创意心愿介绍" name="introduce">
-                <a-textarea v-model:value.trim="form.introduce" :maxlength="200" show-count allowClear
-                    :auto-size="{ minRows: 2, maxRows: 6 }" placeholder="2-200 位字符" />
             </a-form-item>
             <a-form-item label="参考价值" name="referenceValue">
                 <a-input-number v-model:value="form.referenceValue" :min="0.01" :max="9999" :precision="2"
@@ -36,9 +33,16 @@
                 <a-input-number v-model:value="form.digit" :min="1" :max="999" :precision="0" placeholder="请输入竞猜位数"
                     style="width: 100%" />
             </a-form-item>
+            <a-form-item label="创意心愿介绍" name="introduce">
+                <!-- <a-textarea v-model:value.trim="form.introduce" :maxlength="200" show-count allowClear
+                    :auto-size="{ minRows: 2, maxRows: 6 }" placeholder="2-200 位字符" /> -->
+
+
+                <rich-text id="introduce" />
+            </a-form-item>
         </a-form>
         <template #footer>
-            <a-button key="back" @click="onCancel">取消</a-button>
+            <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
             <a-button key="submit" type="primary" :loading="loading" :disabled="disabled"
                 @click="onSubmit">提交</a-button>
         </template>
@@ -49,7 +53,9 @@
 import { IManageWishing } from '@/models'
 import { message } from 'ant-design-vue'
 import { Rule } from 'ant-design-vue/es/form'
-import { ref, onMounted, computed, UnwrapRef, reactive } from 'vue'
+import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue'
+
+const richText = defineAsyncComponent(() => import('@/components/richText.vue'));
 
 const emits = defineEmits(['cancel', 'confirm'])
 const props = defineProps<{ isEdit: boolean; goodsId: number }>()

@@ -1,5 +1,5 @@
 <template>
-    <a-modal v-model:open="isVisible" title="添加账户" :width="560"
+    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" title="添加账户" :width="560"
         :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="开户银行" name="bank">
@@ -17,7 +17,7 @@
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button key="back" @click="onCancel">取消</a-button>
+            <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
             <a-button key="submit" type="primary" :loading="loading" :disabled="disabled"
                 @click="onSubmit">提交</a-button>
         </template>

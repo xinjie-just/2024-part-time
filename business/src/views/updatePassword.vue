@@ -1,7 +1,9 @@
 <!-- 修改密码 -->
 <template>
-    <a-modal v-model:open="isVisible" title="修改密码" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
-        @cancel="onCancel">
+    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" title="修改密码"
+        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
+        <!-- 验证码发给店铺手机 -->
+        <a-alert message="短信验证码将发给店铺手机，请注意查收" type="info" show-icon close-text="知道了" class="alert" />
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
             <a-form-item label="新密码" name="password">
                 <a-input-password v-model:value.trim="form.password" type="password" allowClear :maxlength="16"
@@ -18,19 +20,25 @@
                     </template>
                 </a-input>
             </a-form-item>
-            <a-form-item label="手机验证码" name="phoneCode">
+            <a-form-item label="短信验证码" name="phoneCode">
                 <a-input v-model:value.number.trim="form.phoneCode" :maxlength="6" allowClear
-                    placeholder="请输入手机验证码（6 位数字）">
+                    placeholder="请输入短信验证码（6 位数字）">
                     <template #suffix>
                         <span v-if="hasSendCode" class="countdown">{{ countdown
-                            }}s</span>
-                        <button v-else class="code-btn" @click="onSendPhoneCode">获取验证码</button>
+                            }}s 后可重发</span>
+                        <template v-else>
+                            <button v-if="hasValidatedPhone" class="code-btn" @click="onSendPhoneCode">获取验证码</button>
+                            <a-popconfirm v-else :title="`短信验证码将发送到手机：${phone}，确认吗？`" placement="topRight" ok-text="确认"
+                                cancel-text="放弃" @confirm="onSendPhoneCode">
+                                <button class="code-btn">获取验证码</button>
+                            </a-popconfirm>
+                        </template>
                     </template>
                 </a-input>
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button key="back" @click="onCancel">取消</a-button>
+            <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
             <a-button key="submit" type="primary" :loading="loading" :disabled="disabled"
                 @click="onSubmit">提交</a-button>
         </template>
@@ -43,14 +51,17 @@ import { drawTextOnCanvas } from '@/utils';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed, onMounted, nextTick, onBeforeUnmount } from 'vue';
+import { useRouter } from 'vue-router';
 
-const emits = defineEmits(['cancel', 'confirm']);
+const router = useRouter();
+
+const emits = defineEmits(['cancel']);
 const options = {
     source: "ABDEGHQRSTUVWXYZabde23456789", // 取一些不容易混淆的字母和数字
     charCount: 4,
     spacing: 8,
     textFont: '16px Arial',
-    textColor: '#333333', // 红色source: string
+    textColor: '#333333',
     bgColor: "#ffffff"
 };
 const isVisible = ref(true);
@@ -68,7 +79,8 @@ const loading = ref(false);
 const hasSendCode = ref(false);
 const countdown = ref(0);
 const timer = ref(0);
-
+const phone = ref('13888888888'); // 店铺手机号码，用于接收短信验证码 // TODO: 从后端获取
+const hasValidatedPhone = ref(false); // 验证过手机号，重新发送时不再验证（退出登录除外）
 
 const disabled = computed((): boolean => {
     const values = formRef.value?.getFieldsValue();
@@ -121,12 +133,17 @@ const rules: Record<string, Rule[]> = {
     checkPassword: [{ required: true, validator: validateCheckPassword, trigger: 'blur' }],
     imageCode: [{ required: true, validator: validateImageCode, trigger: 'change' }],
     phoneCode: [
-        { required: true, message: '请输入手机验证码', trigger: 'change' },
-        { pattern: /^\d{6}$/, message: '手机验证码应该是 6 位数字！', trigger: 'blur' },
+        { required: true, message: '请输入短信验证码', trigger: 'change' },
+        { pattern: /^\d{6}$/, message: '短信验证码应该是 6 位数字！', trigger: 'blur' },
     ],
 };
 
 onMounted(async () => {
+    const validated = localStorage.getItem('hasValidatedPhone');
+    if (validated === 'true') {
+        hasValidatedPhone.value = true;
+    }
+
     await nextTick();
     getRandomText(canvasRef.value);
 });
@@ -144,7 +161,13 @@ const onSubmit = async (): Promise<void> => {
         setTimeout(() => {
             loading.value = false;
             message.success('密码修改成功');
-            emits('confirm');
+            const username = localStorage.getItem('username');
+            localStorage.clear(); // 清除本地存储中的 token
+            sessionStorage.clear(); // 清除本地存储中的 token
+            if (username) {
+                localStorage.setItem('username', username);
+            }
+            router.push('/login');
         }, 1000);
     } catch (error) {
         console.log('表单验证失败', error);
@@ -157,7 +180,10 @@ const onChangeChars = (): void => {
 };
 
 const onSendPhoneCode = (): void => {
-    console.log('发送手机验证码');
+    console.log('发送短信验证码');
+    hasValidatedPhone.value = true;
+    localStorage.setItem('hasValidatedPhone', JSON.stringify(true));
+
     hasSendCode.value = true;
     countdown.value = 60;
     timer.value = window.setInterval(() => {
@@ -165,6 +191,7 @@ const onSendPhoneCode = (): void => {
         if (countdown.value <= 0) {
             hasSendCode.value = false;
             countdown.value = 0;
+            clearTimeout(timer.value); // 避免定时器重复执行
         }
     }, 1000);
 };
@@ -179,6 +206,10 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
+.alert {
+    margin-bottom: 24px;
+}
+
 .canvas {
     cursor: pointer;
 }
@@ -186,6 +217,7 @@ onBeforeUnmount(() => {
 .countdown {
     width: 96px;
     text-align: center;
+    color: #007bff;
 }
 
 .code-btn {

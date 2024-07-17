@@ -1,30 +1,20 @@
-<!-- 富文本编辑器实例 -->
+<!-- 富文本编辑器实例，https://www.wangeditor.com/v5/for-frame.html#vue3 -->
 <template>
   <div style="border: 1px solid #ccc">
-    <Toolbar
-      style="border-bottom: 1px solid #ccc"
-      :editor="editorRef"
-      :defaultConfig="toolbarConfig"
-      :mode="mode"
-    />
-    <Editor
-      style="height: 500px; overflow-y: hidden"
-      v-model="valueHtml"
-      :defaultConfig="editorConfig"
-      :mode="mode"
-      @onCreated="handleCreated"
-    />
+    <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" mode="simple" />
+    <Editor style="height: 100px; overflow-y: hidden" v-model="valueHtml" :defaultConfig="editorConfig" mode="simple"
+      @onCreated="handleCreated" />
   </div>
 </template>
 
 <script setup lang="ts">
-import '@wangeditor/editor/dist/css/style.css' // 引入 css
+import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 
-import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
-import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 
 // 编辑器实例，必须用 shallowRef
-const editorRef = shallowRef()
+const editorRef = shallowRef();
 
 // 内容 HTML
 const valueHtml = ref('<p>hello</p>')

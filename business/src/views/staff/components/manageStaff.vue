@@ -1,7 +1,8 @@
 <!-- 添加或编辑员工 -->
 <template>
-    <a-modal v-model:open="isVisible" :width="640" :title="props.isEdit ? '编辑员工' : '添加员工'"
-        :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
+    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" :width="640"
+        :title="props.isEdit ? '编辑员工' : '添加员工'" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
+        @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="姓名" name="name">
                 <a-input v-model:value.trim="form.name" :maxlength="6" allowClear placeholder="2-6 位字符" />
@@ -21,7 +22,7 @@
             </a-form-item>
         </a-form>
         <template #footer>
-            <a-button key="back" @click="onCancel">取消</a-button>
+            <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
             <a-button key="submit" type="primary" :loading="loading" :disabled="disabled"
                 @click="onSubmit">提交</a-button>
         </template>
