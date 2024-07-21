@@ -1,10 +1,15 @@
 <!-- 修改密码 -->
 <template>
-    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" title="修改密码"
+    <a-modal v-model:open="isVisible" :width="640" :mask-closable="false" :keyboard="false" title="修改密码"
         :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <!-- 验证码发给店铺手机 -->
-        <a-alert message="短信验证码将发给店铺手机，请注意查收" type="info" show-icon close-text="知道了" class="alert" />
-        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
+        <a-alert type="info" show-icon close-text="知道了" class="alert">
+            <template #message>
+                <p>图片验证码不区分大小，但必须输入正确后才能获取短信验证码；</p>
+                <p>短信验证码将发给店铺手机，请注意查收。</p>
+            </template>
+        </a-alert>
+        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="新密码" name="password">
                 <a-input-password v-model:value.trim="form.password" type="password" allowClear :maxlength="16"
                     placeholder="请输入密码（6-16 位，必须包含数字和字母）" />
@@ -21,16 +26,18 @@
                 </a-input>
             </a-form-item>
             <a-form-item label="短信验证码" name="phoneCode">
-                <a-input v-model:value.number.trim="form.phoneCode" :maxlength="6" allowClear
-                    placeholder="请输入短信验证码（6 位数字）">
+                <a-input v-model:value.trim="form.phoneCode" :maxlength="6" allowClear placeholder="请输入短信验证码（6 位数字）">
                     <template #suffix>
                         <span v-if="hasSendCode" class="countdown">{{ countdown
-                            }}s 后可重发</span>
+                            }}s 后重发</span>
                         <template v-else>
-                            <button v-if="hasValidatedPhone" class="code-btn" @click="onSendPhoneCode">获取验证码</button>
+                            <button v-if="hasValidatedPhone" class="code-btn"
+                                :disabled="form.imageCode.trim().toLowerCase() !== randomText"
+                                @click="onSendPhoneCode">获取验证码</button>
                             <a-popconfirm v-else :title="`短信验证码将发送到手机：${phone}，确认吗？`" placement="topRight" ok-text="确认"
                                 cancel-text="放弃" @confirm="onSendPhoneCode">
-                                <button class="code-btn">获取验证码</button>
+                                <button class="code-btn"
+                                    :disabled="form.imageCode.trim().toLowerCase() !== randomText">获取验证码</button>
                             </a-popconfirm>
                         </template>
                     </template>
@@ -86,7 +93,7 @@ const disabled = computed((): boolean => {
     const values = formRef.value?.getFieldsValue();
     const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password?.trim());
     const checkPasswordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.checkPassword?.trim());
-    const imageCodeDisabled = values?.imageCode?.trim().length < 1;
+    const imageCodeDisabled = values?.imageCode?.trim().length < options.charCount;
     const phoneCodeDisabled = !/^\d{6}$/.test(values?.phoneCode?.trim());
     return passwordDisabled || checkPasswordDisabled || imageCodeDisabled || phoneCodeDisabled;
 });
@@ -127,15 +134,22 @@ const validateImageCode = async (_rule: Rule, value: string) => {
         return Promise.resolve();
     }
 };
+const validatePhoneCode = async (_rule: Rule, value: string) => {
+    const phoneCode = value.trim();
+    if (phoneCode === '') {
+        return Promise.reject('请输入短信验证码');
+    } else if (!/^\d{6}$/.test(phoneCode)) {
+        return Promise.reject("短信验证码应该是 6 位数字!");
+    } else {
+        return Promise.resolve();
+    }
+};
 
 const rules: Record<string, Rule[]> = {
     password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
     checkPassword: [{ required: true, validator: validateCheckPassword, trigger: 'blur' }],
-    imageCode: [{ required: true, validator: validateImageCode, trigger: 'change' }],
-    phoneCode: [
-        { required: true, message: '请输入短信验证码', trigger: 'change' },
-        { pattern: /^\d{6}$/, message: '短信验证码应该是 6 位数字！', trigger: 'blur' },
-    ],
+    imageCode: [{ required: true, validator: validateImageCode, trigger: 'blur' }],
+    phoneCode: [{ required: true, validator: validatePhoneCode, trigger: 'blur' }],
 };
 
 onMounted(async () => {
@@ -180,6 +194,13 @@ const onChangeChars = (): void => {
 };
 
 const onSendPhoneCode = (): void => {
+    // 先验证图片验证码是否输入正确
+    // const values = formRef.value?.getFieldsValue();
+    // const imageCode = values?.imageCode?.trim().toLowerCase();
+    // if (imageCode !== randomText.value) {
+    //     message.error('图片验证码输入不正确');
+    //     return;
+    // }
     console.log('发送短信验证码');
     hasValidatedPhone.value = true;
     localStorage.setItem('hasValidatedPhone', JSON.stringify(true));
@@ -227,8 +248,16 @@ onBeforeUnmount(() => {
     color: #007bff;
     background-color: transparent;
 
-    &:hover {
-        color: #69b1ff;
+    &[disabled] {
+        cursor: not-allowed;
+        color: rgba(0, 0, 0, 0.25);
+    }
+
+    &:not([disabled]) {
+        &:hover {
+            color: #69b1ff;
+        }
+
     }
 
 }

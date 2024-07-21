@@ -13,7 +13,7 @@
     </div>
     <div class="search-item">
       <label class="label" for="phone">用户手机号码：</label>
-      <a-input v-model:value.number.trim="phone" id="phone" allowClear placeholder="请输入用户手机号码" class="input"
+      <a-input v-model:value.trim="phone" id="phone" allowClear placeholder="请输入用户手机号码" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">

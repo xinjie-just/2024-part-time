@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>百度地图地址标注示例</title>
+    <style>
+      #container {
+        width: 600px;
+        height: 300px;
+        border: 1px solid #ccc;
+        margin: 20px auto;
+      }
+    </style>
+    <!-- 引入百度地图API -->
+    <script
+      type="text/javascript"
+      src="https://api.map.baidu.com/api?v=2.0&ak=vSsQEGeSnJiHZsxnIjnC5zVesUYR56Z5"
+    ></script>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <script>
+      // 初始化地图和标注地址的函数
+      function initMapAndMarkAddress(address) {
+        var map = new BMap.Map("container"); // 创建地图实例
+        var geocoder = new BMap.Geocoder(); // 创建地理编码实例
+
+        // 初始化地图，设置中心点（这里可以是一个大致的位置，稍后会通过地址进行修正）
+        map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+
+        // 使用地理编码服务解析地址
+        geocoder.getPoint(
+          address,
+          function (point) {
+            if (point) {
+              // 解析成功，将地图中心点移动到解析到的位置
+              map.centerAndZoom(point, 15); // 放大地图以便更清楚地看到标注点
+
+              // 创建标注并添加到地图上
+              var marker = new BMap.Marker(point);
+              map.addOverlay(marker);
+
+              // 可选：添加标注的标题（infoWindow）
+              var infoWindow = new BMap.InfoWindow(address);
+              marker.addEventListener("click", function () {
+                this.openInfoWindow(infoWindow);
+              });
+            } else {
+              alert("未找到该地址对应的点");
+            }
+          },
+          "成都市"
+        ); // 设置城市名，有助于提升解析准确率（可选）
+      }
+
+      // 调用函数，传入你想要标注的地址
+      initMapAndMarkAddress("四川省成都市双流区顺兴路一段468号");
+    </script>
+  </body>
+</html>

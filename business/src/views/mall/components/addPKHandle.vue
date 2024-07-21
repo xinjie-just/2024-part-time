@@ -7,7 +7,7 @@
                 <a-input v-model:value.trim="form.name" :maxlength="30" allowClear placeholder="2-30 位字符" />
             </a-form-item>
             <a-form-item label="手机号码" name="phone">
-                <a-input v-model:value.number.trim="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
+                <a-input v-model:value.trim="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
             </a-form-item>
             <a-form-item label="胜率" name="winningPercentage">
                 <a-input-number v-model:value="form.winningPercentage" :min="0.01" :max="99.99" :precision="2"

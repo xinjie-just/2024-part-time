@@ -11,8 +11,7 @@
             <a-form-item label="银行卡号" name="account">
                 <a-tooltip :trigger="['focus']" placement="bottomLeft" color="blue" overlay-class-name="tips">
                     <template v-if="form.account" #title>{{ form.account }}</template>
-                    <a-input v-model:value.number.trim="form.account" :maxlength="19" allowClear
-                        placeholder="请输入正确的银行卡号" />
+                    <a-input v-model:value.trim="form.account" :maxlength="19" allowClear placeholder="请输入正确的银行卡号" />
                 </a-tooltip>
             </a-form-item>
         </a-form>

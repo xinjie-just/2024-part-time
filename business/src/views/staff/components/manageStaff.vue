@@ -11,7 +11,7 @@
                 <a-input v-model:value.trim="form.nickName" :maxlength="16" allowClear placeholder="2-16 位字符" />
             </a-form-item>
             <a-form-item label="手机号码" name="phone">
-                <a-input v-model:value.number.trim="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
+                <a-input v-model:value.trim="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
             </a-form-item>
             <a-form-item label="密码" name="password">
                 <a-input-password v-model:value.trim="form.password" :maxlength="16" allowClear
@@ -54,7 +54,7 @@ const loading = ref(false);
 const disabled = computed((): boolean => {
     const values = formRef.value?.getFieldsValue();
     const nameDisabled = values?.name?.trim()?.length < 2;
-    const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone);
+    const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
     const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password?.trim());
     return nameDisabled || phoneDisabled || passwordDisabled;
 });

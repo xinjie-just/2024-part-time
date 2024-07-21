@@ -1,6 +1,6 @@
 <!-- 编辑我的店铺 -->
 <template>
-    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" :width="640" title="编辑我的店铺"
+    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" :width="800" title="编辑我的店铺"
         :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="店铺名称" name="name">
@@ -10,15 +10,14 @@
                 <a-input v-model:value.trim="form.address" :maxlength="50" allowClear placeholder="请输入店铺地址（2-50 位字符）" />
             </a-form-item>
             <a-form-item label="地图位置" name="location">
-                <a-input v-model:value.trim="form.location" allowClear placeholder="请选择地图位置" />
+                <baidu-map :address="'四川省成都市武侯区燃灯市东街14号'" :width="'100%'" :height="'300px'" />
             </a-form-item>
             <a-form-item label="店铺联系人" name="contact">
                 <a-input v-model:value.trim="form.contact" :maxlength="6" allowClear
                     placeholder="请输入店铺联系人（不超过 6 个字符 ）" />
             </a-form-item>
             <a-form-item label="联系人电话" name="contactPhone">
-                <a-input v-model:value.number.trim="form.contactPhone" :maxlength="11" allowClear
-                    placeholder="请输入正确的手机号码" />
+                <a-input v-model:value.trim="form.contactPhone" :maxlength="11" allowClear placeholder="请输入正确的手机号码" />
             </a-form-item>
             <a-form-item label="店铺介绍" name="introduce">
                 <a-textarea v-model:value.trim="form.introduce" :maxlength="200" show-count allowClear

@@ -9,7 +9,7 @@
     <a-descriptions-item label="店铺名称">店铺名称1店铺名称1店铺名称1店铺名称1店铺名称1店铺名称1</a-descriptions-item>
     <a-descriptions-item label="店铺地址">四川省成都市武侯区燃灯市东街14号</a-descriptions-item>
     <a-descriptions-item label="地图位置">
-      <img src="https://via.placeholder.com/450X200" alt="地图位置" class="img">
+      <baidu-map :address="'四川省成都市武侯区燃灯市东街14号'" :width="'100%'" :height="'300px'" />
     </a-descriptions-item>
     <a-descriptions-item label="店铺联系人">张三</a-descriptions-item>
     <a-descriptions-item label="联系人电话">18227752001</a-descriptions-item>
@@ -19,6 +19,7 @@
 
   <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" />
   <edit-my-shop v-if="editMyShopVisible" @cancel="onCancelEditMyShop" @confirm="onConfirmEditMyShop" />
+
 </template>
 
 <script lang="ts" setup>
@@ -26,6 +27,7 @@ import { defineAsyncComponent, onMounted, ref } from 'vue';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const editMyShop = defineAsyncComponent(() => import('./components/editMyShop.vue'));
+const baiduMap = defineAsyncComponent(() => import('@/components/baiduMap.vue'));
 const updatePasswordVisible = ref(false);
 const editMyShopVisible = ref(false);
 
