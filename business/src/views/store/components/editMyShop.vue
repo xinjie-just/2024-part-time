@@ -1,27 +1,29 @@
 <!-- 编辑我的店铺 -->
 <template>
-    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" :width="800" title="编辑我的店铺"
+    <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" :width="960" title="编辑我的店铺"
         :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
-        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
+        <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 3 }">
             <a-form-item label="店铺名称" name="name">
-                <a-input v-model:value.trim="form.name" :maxlength="30" allowClear placeholder="请输入店铺名称（2-30 位字符）" />
+                <a-input v-model:value.trim="form.name" :maxlength="30" allow-clear placeholder="请输入店铺名称（2-30 位字符）" />
             </a-form-item>
             <a-form-item label="店铺地址" name="address">
-                <a-input v-model:value.trim="form.address" :maxlength="50" allowClear placeholder="请输入店铺地址（2-50 位字符）" />
+                <a-input v-model:value.trim="form.address" :maxlength="50" allow-clear
+                    placeholder="请输入店铺地址（2-50 位字符）" />
             </a-form-item>
             <a-form-item label="地图位置" name="location">
                 <baidu-map :address="'四川省成都市武侯区燃灯市东街14号'" :width="'100%'" :height="'300px'" />
             </a-form-item>
             <a-form-item label="店铺联系人" name="contact">
-                <a-input v-model:value.trim="form.contact" :maxlength="6" allowClear
+                <a-input v-model:value.trim="form.contact" :maxlength="6" allow-clear
                     placeholder="请输入店铺联系人（不超过 6 个字符 ）" />
             </a-form-item>
             <a-form-item label="联系人电话" name="contactPhone">
-                <a-input v-model:value.trim="form.contactPhone" :maxlength="11" allowClear placeholder="请输入正确的手机号码" />
+                <a-input v-model:value.trim="form.contactPhone" :maxlength="11" allow-clear placeholder="请输入正确的手机号码" />
             </a-form-item>
             <a-form-item label="店铺介绍" name="introduce">
-                <a-textarea v-model:value.trim="form.introduce" :maxlength="200" show-count allowClear
-                    :auto-size="{ minRows: 2, maxRows: 6 }" placeholder="请输入店铺介绍（2-200 个字符）" />
+                <!-- <a-textarea v-model:value.trim="form.introduce" :maxlength="200" show-count allow-clear
+                    :auto-size="{ minRows: 2, maxRows: 6 }" placeholder="请输入店铺介绍（2-200 个字符）" /> -->
+                <rich-text id="introduce" />
             </a-form-item>
         </a-form>
         <template #footer>
@@ -36,10 +38,12 @@
 import { IEditMyShop } from '@/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
-import { ref, reactive, UnwrapRef, computed, onMounted } from 'vue';
+import { ref, reactive, UnwrapRef, computed, onMounted, defineAsyncComponent } from 'vue';
+
+const richText = defineAsyncComponent(() => import('@/components/richText.vue'));
 
 const emits = defineEmits(['cancel', 'confirm']);
-const isVisible = ref(true);
+const visible = ref(true);
 
 const form: UnwrapRef<IEditMyShop> = reactive({
     name: '',

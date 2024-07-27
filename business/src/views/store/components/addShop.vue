@@ -1,15 +1,15 @@
 <template>
-    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" title="添加店铺"
+    <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" title="添加店铺"
         :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
             <a-form-item label="店铺名称" name="storeName">
-                <a-input v-model:value.trim="form.storeName" :maxlength="30" allowClear placeholder="2-30 位字符" />
+                <a-input v-model:value.trim="form.storeName" :maxlength="30" allow-clear placeholder="2-30 位字符" />
             </a-form-item>
             <a-form-item label="手机号码" name="phone">
-                <a-input v-model:value.trim="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
+                <a-input v-model:value.trim="form.phone" :maxlength="11" allow-clear placeholder="请输入正确手机号码" />
             </a-form-item>
             <a-form-item label="密码" name="password">
-                <a-input-password v-model:value.trim="form.password" :maxlength="16" allowClear
+                <a-input-password v-model:value.trim="form.password" :maxlength="16" allow-clear
                     placeholder="6-16 位，必须包含数字和字母" />
             </a-form-item>
         </a-form>
@@ -29,7 +29,7 @@ import { ref, reactive, UnwrapRef, computed } from 'vue';
 
 const emits = defineEmits(['cancel', 'confirm']);
 
-const isVisible = ref(true);
+const visible = ref(true);
 const form: UnwrapRef<IAddShop> = reactive({
     storeName: '',
     phone: '',

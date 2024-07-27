@@ -1,17 +1,17 @@
 <template>
-    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" title="添加账户" :width="560"
+    <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" title="添加账户" :width="560"
         :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="开户银行" name="bank">
-                <a-select v-model:value="form.bank" allowClear :options="options" placeholder="请选择开户银行"></a-select>
+                <a-select v-model:value="form.bank" allow-clear :options="options" placeholder="请选择开户银行"></a-select>
             </a-form-item>
             <a-form-item label="账户姓名" name="name">
-                <a-input v-model:value.trim="form.name" :maxlength="6" allowClear placeholder="请输入账户姓名（2-6 个字符）" />
+                <a-input v-model:value.trim="form.name" :maxlength="6" allow-clear placeholder="请输入账户姓名（2-6 个字符）" />
             </a-form-item>
             <a-form-item label="银行卡号" name="account">
                 <a-tooltip :trigger="['focus']" placement="bottomLeft" color="blue" overlay-class-name="tips">
                     <template v-if="form.account" #title>{{ form.account }}</template>
-                    <a-input v-model:value.trim="form.account" :maxlength="19" allowClear placeholder="请输入正确的银行卡号" />
+                    <a-input v-model:value.trim="form.account" :maxlength="19" allow-clear placeholder="请输入正确的银行卡号" />
                 </a-tooltip>
             </a-form-item>
         </a-form>
@@ -31,7 +31,7 @@ import { ref, reactive, UnwrapRef, computed } from 'vue';
 
 const emits = defineEmits(['cancel', 'confirm']);
 
-const isVisible = ref(true);
+const visible = ref(true);
 const form: UnwrapRef<IAddAccount> = reactive({
     bank: 'ICBC',
     name: '',

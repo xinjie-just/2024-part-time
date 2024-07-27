@@ -1,7 +1,7 @@
 <!-- 账户提现 -->
 <template>
   <a-statistic title="可用余额（人民币）" :precision="2" prefix="¥" suffix="元" :value="totalMoney" class="statistic" />
-  <a-alert message="请输入提现金额，并选择银行账户" type="info" show-icon class="alert" />
+  <a-alert message="请输入提现金额，并选择银行账户后点击提现按钮" type="info" show-icon class="alert" />
   <div class="handle">
     <div class="sum-wrap">
       <label for="sum" class="label">提现金额：</label>
@@ -31,7 +31,7 @@
     </a-button>
   </div>
 
-  <a-table :columns="columns" :dataSource="data"
+  <a-table :columns="columns" :data-source="data"
     :row-selection="{ type: 'radio', selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false"
     size="small" :scroll="{ x: 1000, y: 360 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
@@ -39,7 +39,7 @@
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm :title="`确认删除账户 ${record.name} 吗？`" ok-text="确定"
+        <a-popconfirm placement="topRight" :title="`确认删除账户 ${record.name} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
           @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>

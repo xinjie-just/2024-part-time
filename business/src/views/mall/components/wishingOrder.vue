@@ -3,17 +3,17 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="orderId">订单编号：</label>
-      <a-input v-model:value.trim="orderId" id="orderId" allowClear placeholder="请输入订单编号" class="input"
+      <a-input v-model:value.trim="orderId" id="orderId" allow-clear placeholder="请输入订单编号" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="wishingName">心愿名称：</label>
-      <a-input v-model:value.trim="wishingName" id="wishingName" allowClear placeholder="请输入心愿名称" class="input"
+      <a-input v-model:value.trim="wishingName" id="wishingName" allow-clear placeholder="请输入心愿名称" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="phone">用户手机号码：</label>
-      <a-input v-model:value.trim="phone" id="phone" allowClear placeholder="请输入用户手机号码" class="input"
+      <a-input v-model:value.trim="phone" id="phone" allow-clear placeholder="请输入用户手机号码" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
@@ -29,15 +29,20 @@
         class="reset-btn">重置</a-button>
     </div>
   </div>
-  <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
+      <template v-if="column.key === 'status'">
+        <a-tag v-if="record.status === 1" color="green">成</a-tag>
+        <a-tag v-if="record.status === 0" color="orange">否</a-tag>
+      </template>
       <template v-if="column.key === 'wishingResult'">
         <a-tag v-if="record.wishingResult === 1" color="green">已实现</a-tag>
-        <a-tag v-if="record.wishingResult === 0" color="orange">未实现</a-tag>
+        <a-switch v-if="record.wishingResult === 0" :checked="false" checked-children="已实现" un-checked-children="未实现"
+          :loading="statusLoading" @change="onChangeWishingResult(index)" />
       </template>
     </template>
   </a-table>
@@ -49,9 +54,10 @@
 <script setup lang="ts">
 import { onMounted, Ref, ref } from 'vue';
 import { IWishingOrder, IPage } from '@/models';
+import { message } from 'ant-design-vue';
 const result = [
-  { id: 1, orderId: "订单编号1", wishingName: '心愿名称1', phone: '13800138000', miniSum: 100, bigSum: 2000, wishingResult: 1 },
-  { id: 2, orderId: "订单编号2", wishingName: '心愿名称2', phone: '13800138000', miniSum: 120, bigSum: 2000, wishingResult: 0 },
+  { id: 1, orderId: "订单编号1", wishingName: '心愿名称1', phone: '13800138000', miniSum: 100, bigSum: 2000, status: 0, wishingResult: 1 },
+  { id: 2, orderId: "订单编号2", wishingName: '心愿名称2', phone: '13800138000', miniSum: 120, bigSum: 2000, status: 1, wishingResult: 0 },
 ];
 
 const orderId = ref('');
@@ -67,6 +73,7 @@ const data: Ref<IWishingOrder[]> = ref([]);
 const searchLoading = ref(false);
 const resetLoading = ref(false);
 const tableLoading = ref(false);
+const statusLoading = ref(false);
 
 const columns = [
   {
@@ -88,6 +95,7 @@ const columns = [
     dataIndex: 'wishingName',
     key: 'wishingName',
     width: 220,
+    ellipsis: true,
     fixed: 'left',
   },
   {
@@ -106,6 +114,12 @@ const columns = [
     title: '大金额（元）',
     dataIndex: 'bigSum',
     key: 'bigSum',
+    width: 110,
+  },
+  {
+    title: '状态',
+    dataIndex: 'status',
+    key: 'status',
     width: 110,
   },
   {
@@ -164,6 +178,16 @@ const getList = (): void => {
     searchLoading.value = false;
     resetLoading.value = false;
     tableLoading.value = false;
+  }, 1000);
+};
+
+const onChangeWishingResult = (index: number) => {
+  statusLoading.value = true;
+  setTimeout(() => {
+    statusLoading.value = false;
+    result[index].wishingResult = 1;
+    message.success('许愿结果修改成功');
+    getList();
   }, 1000);
 };
 </script>

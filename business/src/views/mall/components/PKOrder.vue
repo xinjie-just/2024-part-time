@@ -3,22 +3,22 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="orderId">订单编号：</label>
-      <a-input v-model:value.trim="orderId" id="orderId" allowClear placeholder="请输入订单编号" class="input"
+      <a-input v-model:value.trim="orderId" id="orderId" allow-clear placeholder="请输入订单编号" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="PKName">PK 品名称：</label>
-      <a-input v-model:value.trim="PKName" id="PKName" allowClear placeholder="请输入 PK 品名称" class="input"
+      <a-input v-model:value.trim="PKName" id="PKName" allow-clear placeholder="请输入 PK 品名称" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="phone">用户手机号码：</label>
-      <a-input v-model:value.trim="phone" id="phone" allowClear placeholder="请输入用户手机号码" class="input"
+      <a-input v-model:value.trim="phone" id="phone" allow-clear placeholder="请输入用户手机号码" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="PKPhone">pK 手手机号码：</label>
-      <a-input v-model:value.trim="PKPhone" id="PKPhone" allowClear placeholder="请输入 PK 手手机号码" class="input"
+      <a-input v-model:value.trim="PKPhone" id="PKPhone" allow-clear placeholder="请输入 PK 手手机号码" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
@@ -39,7 +39,7 @@
         class="reset-btn">重置</a-button>
     </div>
   </div>
-  <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
@@ -54,8 +54,9 @@
           un-checked-children="未发货" @change="onChangeStatus" />
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm title="退款将原路返回" ok-text="确定" :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消"
-          @confirm="onConfirmRefund(record.id)" @cancel="onCancelRefund">
+        <a-popconfirm placement="topRight" title="参与竞猜的小价不退，其余款项将原路退回" ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmRefund(record.id)"
+          @cancel="onCancelRefund">
           <a-button type="link">退款</a-button>
         </a-popconfirm>
       </template>
@@ -111,6 +112,7 @@ const columns = [
     dataIndex: 'PKName',
     key: 'PKName',
     width: 220,
+    ellipsis: true,
     fixed: 'left',
   },
   {

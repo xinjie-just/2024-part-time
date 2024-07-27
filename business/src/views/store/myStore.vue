@@ -3,8 +3,9 @@
   <a-descriptions :column="1" title="基本信息" bordered size="small" :label-style="{ width: '120px' }"
     :content-style="{ wordBreak: 'break-all' }">
     <template #extra>
-      <a-button type="primary" @click="onEditMyShop">编辑</a-button>
-      <a-button type="primary" ghost @click="onUpdatePassword" class="update-password-btn">修改密码</a-button>
+      <a-button type="primary" @click="onEditMyShop" class="btn">编辑</a-button>
+      <a-button type="primary" ghost @click="onUpdatePassword" class="btn">修改密码</a-button>
+      <a-button type="default" @click="onUpgrade" class="btn">升级店铺</a-button>
     </template>
     <a-descriptions-item label="店铺名称">店铺名称1店铺名称1店铺名称1店铺名称1店铺名称1店铺名称1</a-descriptions-item>
     <a-descriptions-item label="店铺地址">四川省成都市武侯区燃灯市东街14号</a-descriptions-item>
@@ -23,7 +24,9 @@
 </template>
 
 <script lang="ts" setup>
-import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import { message, Modal } from 'ant-design-vue';
+import { createVNode, defineAsyncComponent, h, onMounted, ref } from 'vue';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const editMyShop = defineAsyncComponent(() => import('./components/editMyShop.vue'));
@@ -69,6 +72,33 @@ const onConfirmEditMyShop = (): void => {
   editMyShopVisible.value = false;
   getDetails();
 }
+const onUpgrade = (): void => {
+  Modal.confirm({
+    title: '升级店铺确认',
+    width: 520,
+    icon: createVNode(ExclamationCircleOutlined),
+    content: h('ul', { style: { padding: '16px 0', listStyleType: 'decimal' } }, [
+      h('li', { style: { lineHeight: '24px', marginBottom: '16px' } }, '升级店铺后，店铺性质变为“自营”。'),
+      h('li', { style: { lineHeight: '24px', } }, '升级后，店铺需要缴年费。缴费的逻辑为：账户的总收入达到*元时，账户自动扣费。'),
+    ]),
+    okText: '确认',
+    okType: 'danger',
+    cancelText: '取消',
+    onOk: () => {
+      return new Promise<void>((resolve) => {
+        setTimeout(() => {
+          message.success('店铺升级成功');
+          getDetails();
+          return resolve();
+        }, 1000);
+      }).catch(() => console.log('Oops errors!'));
+    },
+    onCancel() {
+      console.log('Cancel');
+    },
+  });
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -82,7 +112,9 @@ const onConfirmEditMyShop = (): void => {
   width: auto;
 }
 
-.update-password-btn {
-  margin-left: 16px;
+.btn {
+  &:not(:last-of-type) {
+    margin-right: 16px;
+  }
 }
 </style>

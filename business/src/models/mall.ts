@@ -42,7 +42,7 @@ export interface IScanForSale {
   goodsName: string
   originalPrice: number
   settlementPrice: number
-  currentPrice: number
+  minPrice: number
   QRCode: string
 }
 
@@ -51,7 +51,7 @@ export interface IScanOutOfSale {
   goodsName: string
   originalPrice: number
   settlementPrice: number
-  currentPrice: number
+  minPrice: number
 }
 
 export interface IManageScan {
@@ -123,5 +123,6 @@ export interface IWishingOrder {
   phone: string
   miniSum: number
   bigSum: number
+  status: number // 1 成，0 否
   wishingResult: number // 1 已实现，0 未实现
 }

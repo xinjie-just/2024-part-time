@@ -1,20 +1,20 @@
 <!-- 添加或编辑员工 -->
 <template>
-    <a-modal v-model:open="isVisible" :mask-closable="false" :keyboard="false" :width="640"
+    <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" :width="640"
         :title="props.isEdit ? '编辑员工' : '添加员工'" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
         @cancel="onCancel">
         <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
             <a-form-item label="姓名" name="name">
-                <a-input v-model:value.trim="form.name" :maxlength="6" allowClear placeholder="2-6 位字符" />
+                <a-input v-model:value.trim="form.name" :maxlength="6" allow-clear placeholder="2-6 位字符" />
             </a-form-item>
             <a-form-item label="昵称" name="nickName">
-                <a-input v-model:value.trim="form.nickName" :maxlength="16" allowClear placeholder="2-16 位字符" />
+                <a-input v-model:value.trim="form.nickName" :maxlength="16" allow-clear placeholder="2-16 位字符" />
             </a-form-item>
             <a-form-item label="手机号码" name="phone">
-                <a-input v-model:value.trim="form.phone" :maxlength="11" allowClear placeholder="请输入正确手机号码" />
+                <a-input v-model:value.trim="form.phone" :maxlength="11" allow-clear placeholder="请输入正确手机号码" />
             </a-form-item>
             <a-form-item label="密码" name="password">
-                <a-input-password v-model:value.trim="form.password" :maxlength="16" allowClear
+                <a-input-password v-model:value.trim="form.password" :maxlength="16" allow-clear
                     placeholder="6-16 位，必须包含数字和字母" />
             </a-form-item>
             <a-form-item label="权限" name="permission">
@@ -39,7 +39,7 @@ import { ref, reactive, UnwrapRef, computed, onMounted, Ref } from 'vue';
 const emits = defineEmits(['cancel', 'confirm']);
 const props = defineProps<{ isEdit: boolean, staffId: number }>();
 
-const isVisible = ref(true);
+const visible = ref(true);
 const form: UnwrapRef<IManageStaff> = reactive({
     name: '',
     nickName: '',

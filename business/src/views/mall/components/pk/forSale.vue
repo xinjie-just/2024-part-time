@@ -3,7 +3,7 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="goodsName">商品名称：</label>
-      <a-input v-model:value.trim="goodsName" id="goodsName" allowClear placeholder="请输入商品名称" class="input"
+      <a-input v-model:value.trim="goodsName" id="goodsName" allow-clear placeholder="请输入商品名称" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
@@ -19,7 +19,7 @@
     </template>
     添加
   </a-button>
-  <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 340 }"
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 340 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
@@ -40,7 +40,7 @@
       <template v-else-if="column.key === 'action'">
         <a-button type="link" @click="onEdit(record)">编辑</a-button>
         <a-divider type="vertical" />
-        <a-popconfirm :title="`确认停售商品 ${record.goodsName} 吗？`" ok-text="确定"
+        <a-popconfirm placement="topRight" :title="`确认停售商品 ${record.goodsName} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmStop(record.id)"
           @cancel="onCancelStop">
           <a-button type="link">停售</a-button>
@@ -122,6 +122,7 @@ const columns = [
     dataIndex: 'goodsName',
     key: 'goodsName',
     width: 220,
+    ellipsis: true,
     fixed: 'left',
   },
   {

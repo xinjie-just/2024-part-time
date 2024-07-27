@@ -25,11 +25,6 @@ export const mall: IRouterType[] = [
         component: () => import('@/views/mall/wishing.vue')
       },
       {
-        path: '/mall/upgradeShop',
-        name: '升级店铺',
-        component: () => import('@/views/mall/upgradeShop.vue')
-      },
-      {
         path: '/mall/pkHand',
         name: 'PK 手管理',
         component: () => import('@/views/mall/pkHand.vue')

@@ -3,12 +3,12 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="name">姓名：</label>
-      <a-input v-model:value.trim="name" id="name" allowClear placeholder="请输入姓名" class="input"
+      <a-input v-model:value.trim="name" id="name" allow-clear placeholder="请输入姓名" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="phone">手机号码：</label>
-      <a-input v-model:value.trim="phone" id="phone" allowClear placeholder="请输入手机号码" class="input"
+      <a-input v-model:value.trim="phone" id="phone" allow-clear placeholder="请输入手机号码" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
@@ -24,7 +24,7 @@
     </template>
     发送信息
   </a-button>
-  <a-table :columns="columns" :dataSource="data"
+  <a-table :columns="columns" :data-source="data"
     :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false" size="small"
     :scroll="{ x: 1000, y: 400 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, Ref, ref } from 'vue';
+import { h, onMounted, Ref, ref } from 'vue';
 import { SendOutlined } from '@ant-design/icons-vue';
 import { IMember, IPage } from '@/models';
 import { message, Modal } from 'ant-design-vue';
@@ -97,14 +97,14 @@ const columns = [
     title: '序号',
     dataIndex: 'index',
     key: 'index',
-    width: 80,
+    width: 70,
     fixed: 'left',
   },
   {
     title: '昵称',
     dataIndex: 'nickName',
     key: 'nickName',
-    width: 120,
+    width: 140,
     fixed: 'left',
   },
   {
@@ -164,7 +164,10 @@ const onChange = (current: number, pageSize: number): void => {
 const onSend = (): void => {
   Modal.confirm({
     title: '发送信息',
-    content: `您选中了 ${selectedIds.value.length} 个用户，确定要给它们发送信息吗？`,
+    content: h('div', { style: { lineHeight: '24px', padding: '16px 0' } }, [
+      h('p', { style: { marginBottom: '8px' } }, `您选中了 ${selectedIds.value.length} 个用户，确定要给它们发送信息吗？`),
+      h('p', { style: { fontWeight: 700 } }, "发送信息时，账户需要扣除 0.1 元/条的费用。"),
+    ]),
     okText: '发送',
     cancelText: '取消',
     onOk: () => {

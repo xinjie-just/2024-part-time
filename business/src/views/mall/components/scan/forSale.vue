@@ -3,7 +3,7 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="goodsName">商品名称：</label>
-      <a-input v-model:value.trim="goodsName" id="goodsName" allowClear placeholder="请输入商品名称" class="input"
+      <a-input v-model:value.trim="goodsName" id="goodsName" allow-clear placeholder="请输入商品名称" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
@@ -19,7 +19,7 @@
     </template>
     添加
   </a-button>
-  <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 340 }"
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 340 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
@@ -40,7 +40,7 @@
       <template v-else-if="column.key === 'action'">
         <a-button type="link" @click="onEdit(record)">编辑</a-button>
         <a-divider type="vertical" />
-        <a-popconfirm :title="`确认停售商品 ${record.goodsName} 吗？`" ok-text="确定"
+        <a-popconfirm placement="topRight" :title="`确认停售商品 ${record.goodsName} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmStop(record.id)"
           @cancel="onCancelStop">
           <a-button type="link">停售</a-button>
@@ -64,28 +64,28 @@ import { message } from 'ant-design-vue';
 const manageScan = defineAsyncComponent(() => import('../manageScan.vue'));
 
 const result = [
-  { id: 1, goodsName: '商品名称1', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 2, goodsName: '商品名称2', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 3, goodsName: '商品名称3', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 4, goodsName: '商品名称4', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 5, goodsName: '商品名称5', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 6, goodsName: '商品名称6', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 7, goodsName: '商品名称7', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 8, goodsName: '商品名称8', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 9, goodsName: '商品名称9', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 10, goodsName: '商品名称10', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 11, goodsName: '商品名称11', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 12, goodsName: '商品名称12', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 13, goodsName: '商品名称13', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 14, goodsName: '商品名称14', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 15, goodsName: '商品名称15', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 16, goodsName: '商品名称16', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 17, goodsName: '商品名称17', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 18, goodsName: '商品名称18', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 19, goodsName: '商品名称19', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 20, goodsName: '商品名称20', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 21, goodsName: '商品名称21', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
-  { id: 22, goodsName: '商品名称22', originalPrice: 40, settlementPrice: 30, currentPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 1, goodsName: '商品名称1', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 2, goodsName: '商品名称2', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 3, goodsName: '商品名称3', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 4, goodsName: '商品名称4', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 5, goodsName: '商品名称5', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 6, goodsName: '商品名称6', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 7, goodsName: '商品名称7', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 8, goodsName: '商品名称8', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 9, goodsName: '商品名称9', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 10, goodsName: '商品名称10', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 11, goodsName: '商品名称11', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 12, goodsName: '商品名称12', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 13, goodsName: '商品名称13', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 14, goodsName: '商品名称14', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 15, goodsName: '商品名称15', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 16, goodsName: '商品名称16', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 17, goodsName: '商品名称17', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 18, goodsName: '商品名称18', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 19, goodsName: '商品名称19', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 20, goodsName: '商品名称20', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 21, goodsName: '商品名称21', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
+  { id: 22, goodsName: '商品名称22', originalPrice: 40, settlementPrice: 30, minPrice: 35, QRCode: 'https://via.placeholder.com/32X32' },
 ];
 
 const goodsName = ref<string>('');
@@ -104,7 +104,7 @@ const currentGoods: Ref<IScanForSale> = ref({
   goodsName: '',
   originalPrice: 0,
   settlementPrice: 0,
-  currentPrice: 0,
+  minPrice: 0,
   QRCode: ''
 });
 const isEdit = ref(false);
@@ -122,6 +122,7 @@ const columns = [
     dataIndex: 'goodsName',
     key: 'goodsName',
     width: 220,
+    ellipsis: true,
     fixed: 'left',
   },
   {
@@ -137,10 +138,10 @@ const columns = [
     width: 110,
   },
   {
-    title: '现价（元）',
-    dataIndex: 'currentPrice',
-    key: 'currentPrice',
-    width: 110,
+    title: '竞猜小价（元）',
+    dataIndex: 'minPrice',
+    key: 'minPrice',
+    width: 130,
   },
   {
     title: '二维码',

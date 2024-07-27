@@ -3,12 +3,12 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="name">姓名：</label>
-      <a-input v-model:value.trim="name" id="name" allowClear placeholder="请输入姓名" class="input"
+      <a-input v-model:value.trim="name" id="name" allow-clear placeholder="请输入姓名" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="phone">手机号码：</label>
-      <a-input v-model:value.trim="phone" id="phone" allowClear placeholder="请输入手机号码" class="input"
+      <a-input v-model:value.trim="phone" id="phone" allow-clear placeholder="请输入手机号码" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
@@ -24,14 +24,14 @@
     </template>
     添加
   </a-button>
-  <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm :title="`确认删除员工 ${record.name} 吗？`" ok-text="确定"
+        <a-popconfirm placement="topRight" :title="`确认删除员工 ${record.name} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
           @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>
@@ -100,39 +100,39 @@ const columns = [
     title: '序号',
     dataIndex: 'index',
     key: 'index',
-    width: 80,
+    width: 70,
     fixed: 'left',
   },
   {
     title: '姓名',
     dataIndex: 'name',
     key: 'name',
-    width: 120,
+    width: 140,
     fixed: 'left',
   },
   {
     title: '昵称',
     dataIndex: 'nickName',
     key: 'nickName',
-    width: 120,
+    width: 140,
   },
   {
     title: '手机号码',
     dataIndex: 'phone',
     key: 'phone',
-    width: 150,
+    width: 130,
   },
   {
     title: '注册时间',
     dataIndex: 'registrationTime',
     key: 'registrationTime',
-    width: 170,
+    width: 160,
   },
   {
     title: '操作',
     key: 'action',
     dataIndex: 'action',
-    width: 140,
+    width: 130,
     fixed: 'right',
   },
 ];

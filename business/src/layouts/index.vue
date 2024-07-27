@@ -4,6 +4,18 @@
       <div class="logo">logo</div>
       <a-menu v-model:openKeys="state.openKeys" v-model:selectedKeys="state.selectedKeys" mode="inline" theme="dark"
         :items="menus" @click="onSelectMenu" class="menu"></a-menu>
+      <div :class="collapsed ? 'phone' : 'fold-phone phone'">
+        <a-tooltip v-if="collapsed" placement="right">
+          <template #title>
+            <span>客服电话：13012345678</span>
+          </template>
+          <PhoneOutlined class="phone-icon" />
+        </a-tooltip>
+        <template v-else>
+          <PhoneOutlined class="phone-icon" />
+          <span class="phone-num">客服电话：13012345678</span>
+        </template>
+      </div>
     </a-layout-sider>
     <a-layout>
       <a-layout-header class="header">
@@ -34,8 +46,8 @@
 </template>
 <script lang="ts" setup>
 
-import { reactive, ref, onMounted, Ref, watch, createVNode, defineAsyncComponent, onBeforeMount } from 'vue';
-import { MenuFoldOutlined, MenuUnfoldOutlined, DownOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { reactive, ref, onMounted, Ref, watch, createVNode, defineAsyncComponent } from 'vue';
+import { MenuFoldOutlined, MenuUnfoldOutlined, DownOutlined, QuestionCircleOutlined, PhoneOutlined } from '@ant-design/icons-vue';
 import { routes } from "@/routers";
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
@@ -177,6 +189,30 @@ const onCancel = (): void => {
   .menu {
     flex: 1;
     overflow-y: auto;
+  }
+
+  .phone {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    height: 64px;
+    line-height: 64px;
+    justify-content: center;
+
+    &.fold-phone {
+      padding-left: 24px;
+      justify-content: flex-start;
+    }
+
+    .phone-icon {
+      font-size: 18px;
+    }
+
+    .phone-num {
+      margin-left: 8px;
+    }
   }
 
   .header.header {

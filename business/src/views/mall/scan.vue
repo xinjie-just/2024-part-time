@@ -1,4 +1,4 @@
-<!-- 扫一扫 -->
+<!-- 线上商城-扫一扫 -->
 <template>
   <a-tabs v-model:activeKey="activeKey" size="large" destroy-inactive-tab-pane>
     <a-tab-pane key="1" tab="待售">

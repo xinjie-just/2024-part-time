@@ -3,17 +3,17 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="orderId">订单编号：</label>
-      <a-input v-model:value.trim="orderId" id="orderId" allowClear placeholder="请输入订单编号" class="input"
+      <a-input v-model:value.trim="orderId" id="orderId" allow-clear placeholder="请输入订单编号" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="scanName">扫一扫名称：</label>
-      <a-input v-model:value.trim="scanName" id="scanName" allowClear placeholder="请输入扫一扫名称" class="input"
+      <a-input v-model:value.trim="scanName" id="scanName" allow-clear placeholder="请输入扫一扫名称" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="phone">用户手机号码：</label>
-      <a-input v-model:value.trim="phone" id="phone" allowClear placeholder="请输入用户手机号码" class="input"
+      <a-input v-model:value.trim="phone" id="phone" allow-clear placeholder="请输入用户手机号码" class="input"
         @pressEnter="onSearch" />
     </div>
     <div class="search-item">
@@ -28,7 +28,7 @@
         class="reset-btn">重置</a-button>
     </div>
   </div>
-  <a-table :columns="columns" :dataSource="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
@@ -87,6 +87,7 @@ const columns = [
     dataIndex: 'scanName',
     key: 'scanName',
     width: 220,
+    ellipsis: true,
     fixed: 'left',
   },
   {
