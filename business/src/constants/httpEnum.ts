@@ -11,7 +11,7 @@ export enum EHTTPCodeEnum {
   '服务不可用' = '503',
   '网关超时' = '504',
   '不支持所请求http协议版本' = '505',
-  '请求失败,请检查您的网络设置' = '-1',
+  '请求失败,请检查您的网络设置' = '-1'
 }
 
 /**
@@ -25,7 +25,7 @@ export enum EResultEnum {
   '内部错误' = '005',
   '行为错误' = '006',
   '业务错误' = '010',
-  '通用异常' = '999',
+  '通用异常' = '999'
 }
 
 /**
@@ -36,7 +36,7 @@ export enum ERequestEnum {
   POST = 'POST',
   PATCH = 'PATCH',
   PUT = 'PUT',
-  DELETE = 'DELETE',
+  DELETE = 'DELETE'
 }
 
 /**
@@ -50,5 +50,5 @@ export enum EContentTypeEnum {
   // form-data 一般配合qs
   FORM_URLENCODED = 'application/x-www-form-urlencoded;charset=UTF-8',
   // form-data  上传
-  FORM_DATA = 'multipart/form-data;charset=UTF-8',
+  FORM_DATA = 'multipart/form-data;charset=UTF-8'
 }

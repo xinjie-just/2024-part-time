@@ -12,22 +12,54 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="date">交易日期：</label>
-      <a-range-picker id="date" v-model:value="date" :locale="locale" :disabled-date="disabledDate" />
+      <a-range-picker
+        id="date"
+        v-model:value="date"
+        :locale="locale"
+        :disabled-date="disabledDate"
+      />
     </div>
     <div class="search-item">
       <label class="label" for="sources">来源：</label>
-      <a-select id="sources" ref="select" v-model:value="source" style="width: 120px" :options="options"
-        placeholder="请选择来源" @focus="focus" @change="handleChange"></a-select>
+      <a-select
+        id="sources"
+        ref="select"
+        v-model:value="source"
+        style="width: 120px"
+        :options="options"
+        placeholder="请选择来源"
+        @focus="focus"
+        @change="handleChange"
+      ></a-select>
     </div>
     <div class="search-item">
-      <a-button type="primary" html-type="submit" :loading="searchLoading" :disabled="resetLoading || tableLoading"
-        @click="onSearch">搜索</a-button>
-      <a-button html-type="reset" :loading="resetLoading" :disabled="searchLoading || tableLoading" @click="onReset"
-        class="reset-btn">重置</a-button>
+      <a-button
+        type="primary"
+        html-type="submit"
+        :loading="searchLoading"
+        :disabled="resetLoading || tableLoading"
+        @click="onSearch"
+        >搜索</a-button
+      >
+      <a-button
+        html-type="reset"
+        :loading="resetLoading"
+        :disabled="searchLoading || tableLoading"
+        @click="onReset"
+        class="reset-btn"
+        >重置</a-button
+      >
     </div>
   </div>
-  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
-    :loading="tableLoading" row-key="id">
+  <a-table
+    :columns="columns"
+    :data-source="data"
+    :pagination="false"
+    size="small"
+    :scroll="{ x: 1000, y: 360 }"
+    :loading="tableLoading"
+    row-key="id"
+  >
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
@@ -39,10 +71,20 @@
       </template>
     </template>
   </a-table>
-  <a-pagination v-if="page.total" v-model:current="page.current" v-model:pageSize="page.pageSize"
-    :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
-    :show-total="total => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination" @change="onChange" />
-
+  <a-pagination
+    v-if="page.total"
+    v-model:current="page.current"
+    v-model:pageSize="page.pageSize"
+    :page-size-options="['10', '20', '30', '40', '50']"
+    show-size-changer
+    show-quick-jumper
+    :total="page.total"
+    :show-total="(total) => `共 ${total} 条`"
+    size="small"
+    :disabled="tableLoading"
+    class="pagination"
+    @change="onChange"
+  />
 </template>
 
 <script setup lang="ts">
@@ -64,16 +106,16 @@ const source: Ref<null | number> = ref(null);
 const options = ref<SelectProps['options']>([
   {
     value: 1,
-    label: '订单',
+    label: '订单'
   },
   {
     value: 2,
-    label: '扣款',
+    label: '扣款'
   },
   {
     value: 3,
-    label: '返点',
-  },
+    label: '返点'
+  }
 ]);
 
 type RangeValue = [Dayjs, Dayjs];
@@ -101,14 +143,13 @@ const result = [
   { id: 19, sum: 30.45, time: '2023-01-19 12:00:00', source: 1 },
   { id: 20, sum: 31.45, time: '2023-01-20 12:00:00', source: 3 },
   { id: 21, sum: 32.45, time: '2023-01-21 12:00:00', source: 3 },
-  { id: 22, sum: 33.45, time: '2023-01-22 12:00:00', source: 1 },
+  { id: 22, sum: 33.45, time: '2023-01-22 12:00:00', source: 1 }
 ];
-
 
 const page: Ref<IPage> = ref({
   total: 0,
   current: 1,
-  pageSize: 10,
+  pageSize: 10
 });
 const data: Ref<IBalance[]> = ref([]);
 const searchLoading = ref(false);
@@ -120,31 +161,31 @@ const columns = [
     title: '序号',
     dataIndex: 'index',
     key: 'index',
-    width: 80,
+    width: 80
   },
   {
     title: '金额（元）',
     dataIndex: 'sum',
     key: 'sum',
-    width: 120,
+    width: 120
   },
   {
     title: '交易时间',
     dataIndex: 'time',
     key: 'time',
-    width: 120,
+    width: 120
   },
   {
     title: '来源',
     dataIndex: 'source',
     key: 'source',
-    width: 120,
-  },
+    width: 120
+  }
 ];
 
 onMounted(() => {
   onSearch();
-})
+});
 
 const disabledDate = (current: Dayjs) => {
   // Can not select days before today and today
@@ -160,7 +201,7 @@ const handleChange = (value: string) => {
 };
 
 const onSearch = (): void => {
-  // 模拟搜索操作，实际应从API获取数据  
+  // 模拟搜索操作，实际应从API获取数据
   console.log('Searching with:');
   page.value.current = 1;
   page.value.pageSize = 10;
@@ -170,7 +211,7 @@ const onSearch = (): void => {
 };
 
 const onReset = (): void => {
-  // 假设重新从API获取数据  
+  // 假设重新从API获取数据
   console.log('Resetting...');
 
   // 重置表单和表格数据
@@ -207,7 +248,7 @@ const getList = (): void => {
 const onToWithdraw = (): void => {
   // 模拟跳转操作，实际应跳转到提现页面
   router.push('/account/withdrawe');
-}
+};
 </script>
 
 <style lang="scss" scoped>

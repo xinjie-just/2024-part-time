@@ -1,7 +1,7 @@
-import { App } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
-import { account, mall, member, staff, store } from './modules'
-import { createRouterGuards } from './routerGuards'
+import { App } from 'vue';
+import { createRouter, createWebHashHistory } from 'vue-router';
+import { account, mall, member, staff, store } from './modules';
+import { createRouterGuards } from './routerGuards';
 // import { IRouterType } from '@/models'
 
 export const routes: any[] = [
@@ -28,17 +28,17 @@ export const routes: any[] = [
     name: 'Login',
     component: () => import('@/views/login.vue')
   }
-]
+];
 
 const router = createRouter({
   // process.env.BASE_URL
   history: createWebHashHistory(''),
   routes
-})
+});
 
 export function setupRouter(app: App) {
-  app.use(router)
+  app.use(router);
   // 创建路由守卫
-  createRouterGuards(router)
+  createRouterGuards(router);
 }
-export default router
+export default router;

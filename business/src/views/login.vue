@@ -3,17 +3,34 @@
   <div class="page">
     <div class="container">
       <h1 class="title">登 录</h1>
-      <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form">
+      <a-form
+        layout="vertical"
+        :label-col="{ span: 4 }"
+        :rules="rules"
+        ref="formRef"
+        autocomplete="off"
+        :model="form"
+      >
         <a-form-item label="用户名" name="username">
-          <a-input v-model:value.trim="form.username" placeholder="请输入用户名" allow-clear @pressEnter="onSubmit">
+          <a-input
+            v-model:value.trim="form.username"
+            placeholder="请输入用户名"
+            allow-clear
+            @pressEnter="onSubmit"
+          >
             <template #prefix>
               <UserOutlined />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item label="密码" name="password">
-          <a-input-password v-model:value.trim="form.password" :maxlength="16" placeholder="请输入密码（6-16 位，必须包含数字和字母）"
-            allow-clear @pressEnter="onSubmit">
+          <a-input-password
+            v-model:value.trim="form.password"
+            :maxlength="16"
+            placeholder="请输入密码（6-16 位，必须包含数字和字母）"
+            allow-clear
+            @pressEnter="onSubmit"
+          >
             <template #prefix>
               <LockOutlined />
             </template>
@@ -26,8 +43,14 @@
           </a-flex>
         </a-form-item>
         <a-form-item>
-          <a-button block type="primary" :disabled="disabled || loading" :loading="loading"
-            @click="onSubmit">登录</a-button>
+          <a-button
+            block
+            type="primary"
+            :disabled="disabled || loading"
+            :loading="loading"
+            @click="onSubmit"
+            >登录</a-button
+          >
         </a-form-item>
       </a-form>
     </div>
@@ -57,7 +80,7 @@ const loading = ref(false);
 const form: UnwrapRef<ILogin> = reactive({
   username: '',
   password: '',
-  remember: false,
+  remember: false
 });
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
@@ -65,7 +88,6 @@ const disabled = computed((): boolean => {
   const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password.trim());
   return usernameDisabled || passwordDisabled;
 });
-
 
 const validatePassword = async (_rule: Rule, value: string) => {
   const password = value.trim();
@@ -81,12 +103,8 @@ const validatePassword = async (_rule: Rule, value: string) => {
   }
 };
 const rules: Record<string, Rule[]> = {
-  username: [
-    { required: true, message: '请输入用户名码', trigger: 'change' },
-  ],
-  password: [
-    { required: true, validator: validatePassword, trigger: 'blur' },
-  ],
+  username: [{ required: true, message: '请输入用户名码', trigger: 'change' }],
+  password: [{ required: true, validator: validatePassword, trigger: 'blur' }]
 };
 
 onMounted(() => {
@@ -95,7 +113,7 @@ onMounted(() => {
     form.username = username;
     form.remember = true;
   }
-})
+});
 
 const onSubmit = async (): Promise<void> => {
   try {
@@ -116,13 +134,13 @@ const onSubmit = async (): Promise<void> => {
       localStorage.setItem('token', token);
 
       // 未登录情况下打开的页面路径
-      const path = localStorage.getItem("path");
+      const path = localStorage.getItem('path');
       if (path) {
         router.push(path);
       } else {
         router.push('/');
       }
-    }, 1000)
+    }, 1000);
   } catch (error) {
     console.log('表单验证失败', error);
     loading.value = false;
@@ -131,10 +149,10 @@ const onSubmit = async (): Promise<void> => {
 
 const onUpdatePassword = (): void => {
   visible.value = true;
-}
+};
 const onCancel = (): void => {
   visible.value = false;
-}
+};
 </script>
 <style lang="scss" scoped>
 .page {

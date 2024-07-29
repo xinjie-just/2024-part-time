@@ -19,13 +19,13 @@ const MExamStatusMap = new Map([
   [51, '考试阶段，答题中'],
   [52, '考试阶段，已交卷'],
   [60, '考试结束，答案未公布'],
-  [70, '答案已公布'],
+  [70, '答案已公布']
 ]);
 
 const MExamProcessStatusMap = new Map([
   [10, '未开始'],
   [20, '考试中'],
-  [30, '已结束'],
+  [30, '已结束']
 ]);
 
 export { MExamStatusMap, MExamProcessStatusMap };

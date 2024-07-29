@@ -1,6 +1,6 @@
-import { IRouterType } from '@/models'
-import { DollarOutlined } from '@ant-design/icons-vue'
-import { h } from 'vue'
+import { IRouterType } from '@/models';
+import { DollarOutlined } from '@ant-design/icons-vue';
+import { h } from 'vue';
 
 // 账户管理模块路由列表
 export const account: IRouterType[] = [
@@ -21,4 +21,4 @@ export const account: IRouterType[] = [
       }
     ]
   }
-]
+];

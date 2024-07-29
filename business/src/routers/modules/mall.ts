@@ -1,6 +1,6 @@
-import { IRouterType } from '@/models'
-import { ShopOutlined } from '@ant-design/icons-vue'
-import { h } from 'vue'
+import { IRouterType } from '@/models';
+import { ShopOutlined } from '@ant-design/icons-vue';
+import { h } from 'vue';
 
 // 线上商城模块路由列表
 export const mall: IRouterType[] = [
@@ -36,4 +36,4 @@ export const mall: IRouterType[] = [
       }
     ]
   }
-]
+];

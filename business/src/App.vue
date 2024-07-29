@@ -17,7 +17,6 @@ const getPopupContainer = (_, dialogContext) => {
     return document.body;
   }
 };
-
 </script>
 
 <style lang="scss">

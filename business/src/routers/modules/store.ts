@@ -1,6 +1,6 @@
-import { IRouterType } from '@/models'
-import { AppstoreOutlined } from '@ant-design/icons-vue'
-import { h } from 'vue'
+import { IRouterType } from '@/models';
+import { AppstoreOutlined } from '@ant-design/icons-vue';
+import { h } from 'vue';
 
 // 店铺管理模块路由列表
 export const store: IRouterType[] = [
@@ -21,4 +21,4 @@ export const store: IRouterType[] = [
       }
     ]
   }
-]
+];

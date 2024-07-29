@@ -3,18 +3,43 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="goodsName">商品名称：</label>
-      <a-input v-model:value.trim="goodsName" id="goodsName" allow-clear placeholder="请输入商品名称" class="input"
-        @pressEnter="onSearch" />
+      <a-input
+        v-model:value.trim="goodsName"
+        id="goodsName"
+        allow-clear
+        placeholder="请输入商品名称"
+        class="input"
+        @pressEnter="onSearch"
+      />
     </div>
     <div class="search-item">
-      <a-button type="primary" html-type="submit" :loading="searchLoading" :disabled="resetLoading || tableLoading"
-        @click="onSearch">搜索</a-button>
-      <a-button html-type="reset" :loading="resetLoading" :disabled="searchLoading || tableLoading" @click="onReset"
-        class="reset-btn">重置</a-button>
+      <a-button
+        type="primary"
+        html-type="submit"
+        :loading="searchLoading"
+        :disabled="resetLoading || tableLoading"
+        @click="onSearch"
+        >搜索</a-button
+      >
+      <a-button
+        html-type="reset"
+        :loading="resetLoading"
+        :disabled="searchLoading || tableLoading"
+        @click="onReset"
+        class="reset-btn"
+        >重置</a-button
+      >
     </div>
   </div>
-  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 380 }"
-    :loading="tableLoading" row-key="id">
+  <a-table
+    :columns="columns"
+    :data-source="data"
+    :pagination="false"
+    size="small"
+    :scroll="{ x: 1000, y: 380 }"
+    :loading="tableLoading"
+    row-key="id"
+  >
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
@@ -22,19 +47,42 @@
       <template v-else-if="column.key === 'action'">
         <a-button type="link" @click="onEdit(record)">编辑</a-button>
         <a-divider type="vertical" />
-        <a-popconfirm placement="topRight" :title="`确认上架商品 ${record.goodsName} 吗？`" ok-text="确定"
-          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmPutaway(record.id)"
-          @cancel="onCancelPutaway">
+        <a-popconfirm
+          placement="topRight"
+          :title="`确认上架商品 ${record.goodsName} 吗？`"
+          ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }"
+          cancel-text="取消"
+          @confirm="onConfirmPutaway(record.id)"
+          @cancel="onCancelPutaway"
+        >
           <a-button type="link">上架</a-button>
         </a-popconfirm>
       </template>
     </template>
   </a-table>
-  <a-pagination v-if="page.total" v-model:current="page.current" v-model:pageSize="page.pageSize"
-    :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
-    :show-total="total => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination" @change="onChange" />
+  <a-pagination
+    v-if="page.total"
+    v-model:current="page.current"
+    v-model:pageSize="page.pageSize"
+    :page-size-options="['10', '20', '30', '40', '50']"
+    show-size-changer
+    show-quick-jumper
+    :total="page.total"
+    :show-total="(total) => `共 ${total} 条`"
+    size="small"
+    :disabled="tableLoading"
+    class="pagination"
+    @change="onChange"
+  />
 
-  <manage-scan v-if="visible" :is-edit="isEdit" :goods-id="currentGoods.id" @cancel="onCancel" @confirm="onConfirm" />
+  <manage-scan
+    v-if="visible"
+    :is-edit="isEdit"
+    :goods-id="currentGoods.id"
+    @cancel="onCancel"
+    @confirm="onConfirm"
+  />
 </template>
 
 <script setup lang="ts">
@@ -66,14 +114,14 @@ const result = [
   { id: 19, goodsName: '商品名称19', originalPrice: 40, settlementPrice: 30, minPrice: 35 },
   { id: 20, goodsName: '商品名称20', originalPrice: 40, settlementPrice: 30, minPrice: 35 },
   { id: 21, goodsName: '商品名称21', originalPrice: 40, settlementPrice: 30, minPrice: 35 },
-  { id: 22, goodsName: '商品名称22', originalPrice: 40, settlementPrice: 30, minPrice: 35 },
+  { id: 22, goodsName: '商品名称22', originalPrice: 40, settlementPrice: 30, minPrice: 35 }
 ];
 
 const goodsName = ref<string>('');
 const page: Ref<IPage> = ref({
   total: 0,
   current: 1,
-  pageSize: 10,
+  pageSize: 10
 });
 const data: Ref<IScanOutOfSale[]> = ref([]);
 const searchLoading = ref(false);
@@ -96,7 +144,7 @@ const columns = [
     dataIndex: 'index',
     key: 'index',
     width: 80,
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: '商品名称',
@@ -104,41 +152,41 @@ const columns = [
     key: 'goodsName',
     width: 220,
     ellipsis: true,
-    fixed: 'left',
+    fixed: 'left'
   },
   {
     title: '原价（元）',
     dataIndex: 'originalPrice',
     key: 'originalPrice',
-    width: 110,
+    width: 110
   },
   {
     title: '结算价（元）',
     dataIndex: 'settlementPrice',
     key: 'settlementPrice',
-    width: 110,
+    width: 110
   },
   {
     title: '竞猜小价（元）',
     dataIndex: 'minPrice',
     key: 'minPrice',
-    width: 110,
+    width: 110
   },
   {
     title: '操作',
     dataIndex: 'action',
     key: 'action',
     width: 160,
-    fixed: 'right',
-  },
+    fixed: 'right'
+  }
 ];
 
 onMounted(() => {
   onSearch();
-})
+});
 
 const onSearch = (): void => {
-  // 模拟搜索操作，实际应从API获取数据  
+  // 模拟搜索操作，实际应从API获取数据
   console.log('Searching with:', goodsName.value.trim());
   page.value.current = 1;
   page.value.pageSize = 10;
@@ -148,10 +196,10 @@ const onSearch = (): void => {
 };
 
 const onReset = (): void => {
-  // 假设重新从API获取数据  
+  // 假设重新从API获取数据
   console.log('Resetting...');
 
-  // 重置表单和表格数据  
+  // 重置表单和表格数据
   goodsName.value = '';
   page.value.current = 1;
   page.value.pageSize = 10;
@@ -186,7 +234,7 @@ const onConfirmPutaway = (id: number): void => {
   message.success('上架操作成功');
   page.value.current = 1;
   getList();
-}
+};
 const onCancelPutaway = (): void => {
   message.info('您取消了上架操作');
 };
@@ -195,15 +243,15 @@ const onEdit = (record: IScanOutOfSale): void => {
   isEdit.value = true;
   visible.value = true;
   currentGoods.value = record;
-}
+};
 const onCancel = (): void => {
   visible.value = false;
-}
+};
 const onConfirm = (): void => {
   visible.value = false;
   page.value.current = 1;
   getList();
-}
+};
 </script>
 
 <style lang="scss">

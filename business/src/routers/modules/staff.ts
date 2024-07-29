@@ -1,6 +1,6 @@
-import { IRouterType } from '@/models'
-import { UserSwitchOutlined } from '@ant-design/icons-vue'
-import { h } from 'vue'
+import { IRouterType } from '@/models';
+import { UserSwitchOutlined } from '@ant-design/icons-vue';
+import { h } from 'vue';
 
 // 员工管理模块路由列表
 export const staff: IRouterType[] = [
@@ -10,4 +10,4 @@ export const staff: IRouterType[] = [
     icon: () => h(UserSwitchOutlined),
     component: () => import('@/views/staff/list.vue')
   }
-]
+];

@@ -60,9 +60,9 @@ html {
   /* iOS禁止微信调整字体大小 */
 
   -webkit-text-size-adjust: 100% !important;
-     -moz-text-size-adjust: 100% !important;
-      -ms-text-size-adjust: 100% !important;
-          text-size-adjust: 100% !important;
+  -moz-text-size-adjust: 100% !important;
+  -ms-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
 //设置所有元素的盒模型，将内填充和边距算在宽或高之内
@@ -96,7 +96,7 @@ html {
 body,
 .page-body {
   // font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, 'Segoe UI', Arial,
-  // Roboto, 'PingFang SC', miui, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;  
+  // Roboto, 'PingFang SC', miui, 'Hiragino Sans GB', 'Microsoft Yahei', sans-serif;
   font-family:
     Inter,
     -apple-system,

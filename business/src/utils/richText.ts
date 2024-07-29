@@ -24,11 +24,14 @@ export const getImgList = (richText: string): string[] => {
   const imgElementList: string[] = [];
   const imgSrcList: string[] = [];
 
-  richText.replace(/<img [^>]*src=['"]([^'"]+)[^>]*>/g, (match: string, capture: string): string => {
-    imgSrcList.push(capture);
-    imgElementList.push(match);
-    return capture;
-  });
+  richText.replace(
+    /<img [^>]*src=['"]([^'"]+)[^>]*>/g,
+    (match: string, capture: string): string => {
+      imgSrcList.push(capture);
+      imgElementList.push(match);
+      return capture;
+    }
+  );
 
   // console.log('imgElementList', imgElementList);
   // console.log('imgSrcList', imgSrcList);
