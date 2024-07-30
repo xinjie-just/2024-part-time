@@ -5,6 +5,7 @@
     "browserslistrc",
     "camelcase",
     "commitlint",
+    "miniprogram",
     "pinia",
     "popconfirm",
     "Putaway",
