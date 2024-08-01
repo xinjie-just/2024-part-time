@@ -1,27 +1,32 @@
 {
   "pages": [
-    "pages/freePurchase/index",
-    "pages/wishingWell/index",
+    "pages/free-purchase/index",
+    "pages/wishing-well/index",
     "pages/mine/index"
   ],
   "tabBar": {
-    "custom": true,
-    "color": "#666666",
+    "color": "#000000",
     "selectedColor": "#0052d9",
     "backgroundColor": "#ffffff",
     "borderStyle": "black",
     "list": [
       {
-        "pagePath": "pages/freePurchase/index",
-        "text": "0 元购"
+        "pagePath": "pages/free-purchase/index",
+        "text": "0 元购",
+        "iconPath": "/assets/images/tab-bar/free-purchase.png",
+        "selectedIconPath": "/assets/images/tab-bar/free-purchase-active.png"
       },
       {
-        "pagePath": "pages/wishingWell/index",
-        "text": "许愿池"
+        "pagePath": "pages/wishing-well/index",
+        "text": "许愿池",
+        "iconPath": "/assets/images/tab-bar/wishing-well.png",
+        "selectedIconPath": "/assets/images/tab-bar/wishing-well-active.png"
       },
       {
         "pagePath": "pages/mine/index",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "/assets/images/tab-bar/mine.png",
+        "selectedIconPath": "/assets/images/tab-bar/mine-active.png"
       }
     ]
   },
