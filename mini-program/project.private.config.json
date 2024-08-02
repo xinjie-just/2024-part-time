@@ -8,6 +8,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "积分",
+          "pathName": "pages/mine/points/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "我的",
           "pathName": "pages/mine/index",
           "query": "",

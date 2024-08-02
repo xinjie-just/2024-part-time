@@ -1,0 +1,94 @@
+/* pages/mine/points/index.wxss */
+.page {
+  height: 100vh;
+}
+
+.notice-bar {
+  font-size: 36rpx;
+  height: 100rpx;
+  line-height: 100rpx;
+  color: #0052d9;
+  background-color: #f2f3ff;
+  padding: 0 48rpx;
+  margin-bottom: 24rpx;
+}
+
+.card {
+  max-height: calc(100vh - 100rpx - 24rpx);
+  border: 1px solid #ededed;
+  width: 710rpx;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 12rpx;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)
+}
+
+.header {
+  font-size: 32rpx;
+  line-height: 100rpx;
+  height: 100rpx;
+  padding: 0 24rpx;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.index {
+  width: 100rpx;
+}
+
+.time {
+  flex: 1;
+}
+
+.points {
+  width: 100rpx;
+}
+
+.source {
+  width: 110rpx;
+}
+
+.tag {
+  width: fit-content;
+  padding: 8rpx 24rpx;
+  border-radius: 4rpx;
+}
+
+.offline {
+  color: #d4380d;
+  background-color: #fff2e8;
+}
+
+.consumption {
+  color: #389e0d;
+  background-color: #f6ffed;
+}
+
+.pk {
+  color: #0958d9;
+  background-color: #e6f4ff;
+}
+
+.body {
+  padding: 24rpx;
+  max-height: calc(100vh - 100rpx - 24rpx - 100px);
+  overflow-y: auto;
+}
+
+.item {
+  font-size: 28rpx;
+  line-height: 1.8em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding-top: 16rpx;
+  padding-bottom: 16rpx;
+}
+
+.item:not(:last-of-type) {
+  border-bottom: 1px solid #fafafa;
+}

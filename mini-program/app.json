@@ -2,7 +2,8 @@
   "pages": [
     "pages/free-purchase/index",
     "pages/wishing-well/index",
-    "pages/mine/index"
+    "pages/mine/index",
+    "pages/mine/points/index"
   ],
   "tabBar": {
     "color": "#000000",

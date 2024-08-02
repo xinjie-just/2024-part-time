@@ -167,13 +167,9 @@ Page({
         break;
       }
       case 'point': {
-        Toast({
-          context: this,
-          selector: '#t-toast',
-          message: '你点击了积分菜单',
-          icon: '',
-          duration: 1000,
-        });
+        wx.navigateTo({
+          url: './points/index',
+        })
         break;
       }
       case 'coupon': {
