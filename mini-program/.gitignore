@@ -11,5 +11,6 @@ components/**/*.lock
 components/**/package-lock.json
 package-lock.json
 yarn.lock
+pnpm-lock.yaml
 project.private.config.json
 .eslintcache

@@ -1,38 +1,29 @@
 <!--积分-->
 <view class="page">
-  <view class="notice-bar">积分：{{totalPoints}}</view>
-  <view class="card">
-    <view class="header">
-      <view class="index">序号</view>
-      <view class="time">时间</view>
-      <view class="points">积分</view>
-      <view class="source">来源</view>
+  <view class="notice-bar">总积分：{{totalPoints}}</view>
+  <view class="table">
+    <view class="thead">
+      <view class="th index">序号</view>
+      <view class="th time">时间</view>
+      <view class="th points">积分</view>
+      <view class="th source">来源</view>
     </view>
-    <view class="body">
-      <view class="item">
-        <view class="index">1</view>
-        <view class="time">2024-08-02 20:20:00</view>
-        <view class="points">450</view>
-        <view class="source">
-          <text class="tag offline">线下</text>
+    <view class="tbody">
+      <van-loading wx:if="{{loading}}" size="48rpx" vertical custom-class="loading">加载中...</van-loading>
+      <block wx:else>
+        <view class="tr" wx:for="{{list}}" wx:key="id">
+          <view class="td index">{{ index + 1 }}</view>
+          <view class="td time">{{item.time}}</view>
+          <view class="td points">{{item.points}}</view>
+          <view class="td source">
+            <text wx:if="{{item.source === 1}}" class="tag offline">下线</text>
+            <text wx:if="{{item.source === 2}}" class="tag consumption">消费</text>
+            <text wx:if="{{item.source === 3}}" class="tag pk">PK</text>
+          </view>
         </view>
-      </view>
-      <view class="item">
-        <view class="index">2</view>
-        <view class="time">2024-08-03 20:20:00</view>
-        <view class="points">190</view>
-        <view class="source">
-          <text class="tag consumption">消费</text>
-        </view>
-      </view>
-      <view class="item">
-        <view class="index">3</view>
-        <view class="time">2024-08-04 20:20:00</view>
-        <view class="points">150</view>
-        <view class="source">
-          <text class="tag pk">PK</text>
-        </view>
-      </view>
+        <van-button wx:if="{{hasMoreData}}" loading="{{moreLoading}}" loading-text="加载更多..." type="info" plain hairline round custom-class="more-btn" bind:click="getMoreList">加载更多</van-button>
+        <view wx:else class="no-more-data">没有更多数据了 ~</view>
+      </block>
     </view>
   </view>
 </view>

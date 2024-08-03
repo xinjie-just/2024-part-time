@@ -1,4 +1,4 @@
 {
-  "component": true,
-  "navigationBarTitleText": "积分"
+  "navigationBarTitleText": "积分",
+  "usingComponents": {}
 }
