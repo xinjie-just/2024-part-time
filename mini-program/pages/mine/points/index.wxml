@@ -9,7 +9,9 @@
       <view class="th source">来源</view>
     </view>
     <view class="tbody">
-      <van-loading wx:if="{{loading}}" size="48rpx" vertical custom-class="loading">加载中...</van-loading>
+      <view wx:if="{{loading}}" class="loading">
+        <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
+      </view>
       <block wx:else>
         <view class="tr" wx:for="{{list}}" wx:key="id">
           <view class="td index">{{ index + 1 }}</view>
@@ -21,7 +23,9 @@
             <text wx:if="{{item.source === 3}}" class="tag pk">PK</text>
           </view>
         </view>
-        <van-button wx:if="{{hasMoreData}}" loading="{{moreLoading}}" loading-text="加载更多..." type="info" plain hairline round custom-class="more-btn" bind:click="getMoreList">加载更多</van-button>
+        <view wx:if="{{hasMoreData}}" class="more-btn">
+          <van-button wx:if="{{hasMoreData}}" loading="{{moreLoading}}" loading-text="加载更多..." type="info" plain hairline round bind:click="getMoreList">加载更多</van-button>
+        </view>
         <view wx:else class="no-more-data">没有更多数据了 ~</view>
       </block>
     </view>

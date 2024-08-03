@@ -37,7 +37,8 @@
   "lazyCodeLoading": "requiredComponents",
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",
-    "van-loading": "@vant/weapp/loading/index"
+    "van-loading": "@vant/weapp/loading/index",
+    "van-image": "@vant/weapp/image/index"
   },
   "window": {
     "backgroundTextStyle": "light",

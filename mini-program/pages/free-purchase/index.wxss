@@ -1,1 +1,40 @@
 /* pages/freePurchase/index.wxss */
+.page {
+  box-sizing: border-box;
+  height: 100vh;
+  padding: 32rpx 16rpx;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pk-btn {
+  margin-bottom: 32rpx;
+}
+
+.list {
+  background-color: #fff;
+  padding-right: 16rpx;
+  padding-left: 16rpx;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.item {
+  padding-top: 16rpx;
+  padding-bottom: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* .item:not(:last-of-type) {
+  border-bottom: 1px solid #f1f1f1;
+} */
+
+.title {
+  font-size: 32rpx;
+  font-weight: 500;
+  line-height: 1.6em;
+  margin-right: 16rpx;
+}

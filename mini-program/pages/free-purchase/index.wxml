@@ -1,2 +1,17 @@
 <!--pages/freePurchase/index.wxml-->
-<text>0 元购</text>
+<view class="page">
+  <van-button type="primary" type="info" block custom-class="pk-btn">PK 场</van-button>
+  <view wx:if="{{loading}}" class="loading">
+    <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
+  </view>
+  <view wx:else class="list">
+    <view class="item van-hairline--bottom" wx:for="{{list}}" wx:key="id">
+      <view class="title van-multi-ellipsis--l2">{{item.title}}</view>
+      <van-image width="136rpx" height="136rpx" fit="cover" src="{{item.imgSrc}}" />
+    </view>
+    <view wx:if="{{hasMoreData}}" class="more-btn">
+      <van-button loading="{{moreLoading}}" loading-text="加载更多..." type="info" plain hairline round bind:click="getMoreList">加载更多</van-button>
+    </view>
+    <view wx:else class="no-more-data">没有更多数据了 ~</view>
+  </view>
+</view>

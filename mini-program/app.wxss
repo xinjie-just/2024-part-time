@@ -2,6 +2,24 @@
 
 @import 'style/theme.wxss';
 
+@import '/miniprogram_npm/@vant/weapp/common/index.wxss';
+
+.loading {
+  text-align: center;
+  margin-top: 32rpx;
+  margin-bottom: 32rpx;
+}
+
+.more-btn {
+  text-align: center;
+  margin-top: 32rpx;
+  margin-bottom: 32rpx;
+}
+
+.more-btn .van-button {
+  min-width: 272rpx;
+}
+
 .no-more-data {
   margin-top: 32rpx;
   margin-bottom: 32rpx;

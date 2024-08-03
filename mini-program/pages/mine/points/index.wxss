@@ -95,20 +95,5 @@
 }
 
 .tr:not(:last-of-type) {
-  border-bottom: 1px solid #fafafa;
-}
-
-.loading.loading {
-  display: flex;
-  justify-content: center;
-  margin-top: 32rpx;
-  margin-bottom: 32rpx;
-}
-
-.more-btn.more-btn {
-  display: block;
-  margin: 32rpx auto;
-  width: fit-content;
-  height: 72rpx;
-  line-height: 72rpx;
+  border-bottom: 1px solid #f1f1f1;
 }
