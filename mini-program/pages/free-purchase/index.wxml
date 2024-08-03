@@ -5,7 +5,7 @@
     <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
   </view>
   <view wx:else class="list">
-    <view class="item van-hairline--bottom" wx:for="{{list}}" wx:key="id">
+    <view class="item van-hairline--bottom" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bind:tap="onViewDetails">
       <view class="title van-multi-ellipsis--l2">{{item.title}}</view>
       <van-image width="136rpx" height="136rpx" fit="cover" src="{{item.imgSrc}}" />
     </view>

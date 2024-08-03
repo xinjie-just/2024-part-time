@@ -8,6 +8,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "PK品详情",
+          "pathName": "pages/free-purchase/goods-details/index",
+          "query": "id=2",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "积分",
           "pathName": "pages/mine/points/index",
           "query": "",

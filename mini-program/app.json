@@ -3,7 +3,8 @@
     "pages/free-purchase/index",
     "pages/wishing-well/index",
     "pages/mine/index",
-    "pages/mine/points/index"
+    "pages/mine/points/index",
+    "pages/free-purchase/goods-details/index"
   ],
   "tabBar": {
     "color": "#000000",

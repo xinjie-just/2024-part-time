@@ -71,4 +71,11 @@ Page({
       this.getList(true);
     })
   },
+  onViewDetails(e) {
+    const data = e.currentTarget.dataset;
+    const id = data.id;
+    wx.navigateTo({
+      url: `./goods-details/index?id=${id}`,
+    })
+  }
 });

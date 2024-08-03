@@ -1,0 +1,17 @@
+<!--pages/free-purchase/goods-details/index.wxml-->
+<view class="page">
+  <view class="title">PK 品标题PK 品标题PK 品标题PK 品标题PK 品标题PK 品标题</view>
+  <view class="content">
+    <image src="/assets/images/free-purchase/details2.webp" mode="widthFix" />
+    <view>
+      pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容
+    </view>
+    <image src="/assets/images/free-purchase/details3.jpg" mode="widthFix" />
+    <view>
+      pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容
+    </view>
+    <image src="/assets/images/free-purchase/details4.webp" mode="widthFix" />
+    <image src="/assets/images/free-purchase/details5.webp" mode="widthFix" />
+    <image src="/assets/images/free-purchase/details6.webp" mode="widthFix" />
+  </view>
+</view>
