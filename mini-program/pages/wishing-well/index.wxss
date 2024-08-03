@@ -1,1 +1,16 @@
 /* pages/wishingWell/index.wxss */
+.page {
+  position: relative;
+  height: 100vh;
+}
+
+.wishing-well-bg {
+  width: 750rpx;
+}
+
+.notice {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}

@@ -1,2 +1,7 @@
-<!--pages/wishingWell/index.wxml-->
-<text>许愿池</text>
+<!-- pages/wishingWell/index.wxml -->
+<view class="page">
+  <image src="/assets/images/wishing-well/wishing-well-bg.png" mode="widthFix" class="wishing-well-bg" />
+  <view class="notice">
+    <van-notice-bar left-icon="volume-o" text="许下心愿，专人为您圆梦" />
+  </view>
+</view>
