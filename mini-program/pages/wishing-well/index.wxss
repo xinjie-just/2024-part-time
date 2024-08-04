@@ -13,4 +13,23 @@
   top: 0;
   left: 0;
   right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fffbe8;
+  padding: 16rpx 24rpx;
+  line-height: 48rpx;
+  font-size: 28rpx;
+}
+
+.notice .left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notice .text {
+  margin-left: 16rpx;
+  color: #ed6a0c;
+
 }

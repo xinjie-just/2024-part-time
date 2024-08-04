@@ -1,0 +1,46 @@
+/* pages/wishing-well/wishing/index.wxss */
+
+.page {
+  position: relative;
+}
+
+.wishes {
+  z-index: 9;
+  position: absolute;
+  top: 138rpx;
+  left: 156rpx;
+  right: 16rpx;
+  background-color: #fff;
+  box-shadow: 0 0 16rpx 8rpx rgba(200, 200, 200, 0.4);
+  border-radius: 8rpx;
+  max-height: 560rpx;
+  overflow-y: scroll;
+}
+
+.wish {
+  font-size: 28rpx;
+  line-height: 1.6em;
+  padding: 16rpx 32rpx;
+  word-break: break-all;
+}
+
+.wish:not(:last-of-type) {
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.footer {
+  margin-top: 64rpx;
+  text-align: center;
+}
+
+.footer .van-button {
+  width: 240rpx;
+}
+
+.cancel-btn {
+  margin-right: 32rpx;
+}
+
+/* .footer .van-button:not(:first-of-type) {
+  margin-left: 32rpx;
+} */

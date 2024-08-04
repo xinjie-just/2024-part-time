@@ -2,6 +2,12 @@
 <view class="page">
   <image src="/assets/images/wishing-well/wishing-well-bg.png" mode="widthFix" class="wishing-well-bg" />
   <view class="notice">
-    <van-notice-bar left-icon="volume-o" text="许下心愿，专人为您圆梦" />
+    <view class="left">
+      <van-icon name="volume-o" size="40rpx" color="#ed6a0c" />
+      <text class="text">许下心愿，专人为您圆梦</text>
+    </view>
+    <view class="right">
+      <van-button type="info" plain hairline round size="small" bind:click="onToWishing">许愿</van-button>
+    </view>
   </view>
 </view>
