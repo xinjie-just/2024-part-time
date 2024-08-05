@@ -5,7 +5,8 @@
     "pages/mine/index",
     "pages/mine/points/index",
     "pages/free-purchase/goods-details/index",
-    "pages/wishing-well/wishing/index"
+    "pages/wishing-well/wishing/index",
+    "pages/free-purchase/p-k-field/index"
   ],
   "tabBar": {
     "color": "#000000",
@@ -45,7 +46,10 @@
     "van-field": "@vant/weapp/field/index",
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
-    "van-toast": "@vant/weapp/toast/index"
+    "van-toast": "@vant/weapp/toast/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index"
   },
   "window": {
     "backgroundTextStyle": "light",

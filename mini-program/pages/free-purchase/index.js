@@ -77,5 +77,10 @@ Page({
     wx.navigateTo({
       url: `./goods-details/index?id=${id}`,
     })
+  },
+  onToPKField() {
+    wx.redirectTo({
+      url: './p-k-field/index',
+    })
   }
 });

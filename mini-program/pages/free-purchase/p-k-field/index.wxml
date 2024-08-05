@@ -1,0 +1,42 @@
+<!--pages/free-purchase/p-k-field/index.wxml-->
+<view class="page">
+  <view class="notice">
+    <view class="left">
+      <van-icon name="volume-o" size="40rpx" color="#ed6a0c" />
+      <text class="text">欢迎进入PK场，挣积分，圆梦想</text>
+    </view>
+    <view class="right">
+      <van-button type="info" icon="question-o" plain hairline round size="small" bind:click="onShowRule">游戏规则</van-button>
+    </view>
+  </view>
+  <van-tabs active="{{ active }}">
+    <van-tab title="石头剪刀布">
+      <rock-paper-scissors />
+    </van-tab>
+    <van-tab title="双十拳">
+      <double-ten-boxing />
+    </van-tab>
+  </van-tabs>
+</view>
+
+<van-dialog use-slot title="" show="{{ show }}" show-cancel-button="{{true}}" cancel-button-text="知道了" show-confirm-button="{{false}}" bind:close="onClose">
+  <view class="game-list">
+    <view class="game-item">
+      <view class="name">剪刀石头布</view>
+      <view class="rule-list">
+        <view class="rule-item">1. 游戏由两人进行，两人同时准备好自己的手势，不可提前展示给对方看。</view>
+        <view class="rule-item">2. 两人同时喊出“石头剪刀布”的口号，并在“布”字说完的瞬间同时亮出自己的手势。</view>
+        <view class="rule-item">3. 石头能击败剪刀，剪刀能剪断布，布能包裹石头。如果双方出了相同的手势，则视为平局，可以重新进行下一轮。</view>
+      </view>
+    </view>
+    <view class="game-item">
+      <view class="name">双十拳</view>
+      <view class="rule-list">
+        <view class="rule-item">1. 游戏由两人进行，两人同时准备好自己的手势，不可提前展示给对方看。</view>
+        <view class="rule-item">2. 每位玩家可以出的手势包括：“零”（双手握拳）、“五”（伸出一手手掌，另手握拳）、“十”（双手打开）。这三个手势分别代表数字0、5、10。</view>
+        <view class="rule-item">3. 其中一位玩家（或轮流）喊出一个数字口号，这个数字是“零”、“五”、“十”、“十五”、“二十”。喊出口号后，两位玩家同时展示自己的手势。</view>
+        <view class="rule-item">4. 如果玩家喊出的数字恰好等于两人所出手势代表的数字之和，则该玩家获胜，否则另一玩家获胜。</view>
+      </view>
+    </view>
+  </view>
+</van-dialog>

@@ -1,0 +1,53 @@
+/* pages/free-purchase/p-k-field/index.wxss */
+.page {
+  height: 100vh;
+}
+
+.notice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fffbe8;
+  padding: 16rpx 24rpx;
+  line-height: 48rpx;
+  font-size: 28rpx;
+}
+
+.notice .left {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notice .text {
+  margin-left: 16rpx;
+  color: #ed6a0c;
+}
+
+.game-list {
+  padding: 48rpx 32rpx;
+  max-height: calc(80vh - 100rpx);
+  overflow-y: auto;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.game-item:not(:last-of-type) {
+  margin-bottom: 40rpx;
+}
+
+.name {
+  margin-bottom: 24rpx;
+  font-size: 32rpx;
+  color: #000;
+  font-weight: 600;
+}
+
+.rule-item {
+  line-height: 1.8em;
+  word-break: break-all;
+}
+
+.rule-item:not(:last-of-type) {
+  margin-bottom: 16rpx;
+}

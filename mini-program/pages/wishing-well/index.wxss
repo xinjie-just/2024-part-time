@@ -31,5 +31,4 @@
 .notice .text {
   margin-left: 16rpx;
   color: #ed6a0c;
-
 }

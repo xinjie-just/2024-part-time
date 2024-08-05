@@ -1,0 +1,9 @@
+<!--pages/free-purchase/p-k-field/components/rock-paper-scissors/index.wxml-->
+<view class="component">
+  <text>石头剪刀布游戏内容</text>
+
+  <view class="footer">
+    <van-button plain hairline round type="info" custom-class="exit-btn" bind:click="onExit">退出</van-button>
+    <van-button round type="info" custom-class="continue-btn" bind:click="onContinue">继续游戏</van-button>
+  </view>
+</view>

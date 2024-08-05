@@ -40,7 +40,3 @@
 .cancel-btn {
   margin-right: 32rpx;
 }
-
-/* .footer .van-button:not(:first-of-type) {
-  margin-left: 32rpx;
-} */

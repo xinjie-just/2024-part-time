@@ -8,6 +8,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "PK场",
+          "pathName": "pages/free-purchase/p-k-field/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "许愿",
           "pathName": "pages/wishing-well/wishing/index",
           "query": "",
