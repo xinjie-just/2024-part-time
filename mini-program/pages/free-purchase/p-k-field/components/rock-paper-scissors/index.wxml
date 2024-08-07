@@ -1,9 +1,77 @@
 <!--pages/free-purchase/p-k-field/components/rock-paper-scissors/index.wxml-->
 <view class="component">
-  <text>石头剪刀布游戏内容</text>
+  <view class="card info">
+    <view class="title">PK 双方信息</view>
+    <view class="side own-side">
+      <view class="own">己方：</view>
+      <view class="side-item pk-name">李四</view>
+      <view class="side-item phone">18112345678</view>
+      <view class="side-item win-count">胜 14 次</view>
+    </view>
+    <view class="side other-side">
+      <view class="other">对方：</view>
+      <view class="side-item pk-name">张三</view>
+      <view class="side-item phone">13112345678</view>
+      <view class="side-item win-count">胜 4 次</view>
+    </view>
+  </view>
+
+  <view class="card match">
+    <view class="title">
+      <text>PK 双方出拳</text>
+      <van-icon name="info-o" custom-class="explain-icon" bind:tap="onViewExplain" />
+    </view>
+    <view class="side match-side own-side">
+      <view class="content">
+        <view class="own">己方：</view>
+        <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal">
+          <van-radio name="1" checked-color="#0958d9" icon-size="32rpx">石头</van-radio>
+          <van-radio name="2" checked-color="#0958d9" icon-size="32rpx">剪刀</van-radio>
+          <van-radio name="3" checked-color="#0958d9" icon-size="32rpx">布</van-radio>
+        </van-radio-group>
+      </view>
+      <van-button round size="small" color="#0958d9" bind:click="onSelectFinish">我选好了</van-button>
+    </view>
+    <view class="result">
+      <view class="key">比赛结果：</view>
+      <view class="view">
+        <text wx:if="{{ result === 3 }}" class="loading">请等待双方出拳...</text>
+        <text wx:if="{{ result === 4 }}" class="loading">对方思考中...</text>
+        <text wx:if="{{ result === 1 }}" class="own-win">我赢啦！</text>
+        <text wx:if="{{ result === 2 }}" class="other-win">对方胜！</text>
+      </view>
+    </view>
+    <view class="side match-side other-side">
+      <view class="content">
+        <view class="other">对方：</view>
+        <van-radio-group value="{{ otherRadio }}" bind:change="onChangeOther" direction="horizontal">
+          <van-radio name="1" checked-color="#cf1322" icon-size="32rpx">石头</van-radio>
+          <van-radio name="2" checked-color="#cf1322" icon-size="32rpx">剪刀</van-radio>
+          <van-radio name="3" checked-color="#cf1322" icon-size="32rpx">布</van-radio>
+        </van-radio-group>
+      </view>
+      <van-tag wx:if="{{ result === 3}}" mark size="medium" color="#cf1322" text-color="#fff">待出拳</van-tag>
+      <van-tag wx:if="{{ result === 1 || result === 2 }}" mark size="medium" color="#cf1322" text-color="#fff">已出拳</van-tag>
+      <van-tag wx:if="{{ result === 4 }}" mark size="medium" color="#cf1322" text-color="#fff">思考中...</van-tag>
+    </view>
+  </view>
 
   <view class="footer">
     <van-button plain hairline round type="info" custom-class="exit-btn" bind:click="onExit">退出</van-button>
     <van-button round type="info" custom-class="continue-btn" bind:click="onContinue">继续游戏</van-button>
   </view>
+
 </view>
+
+<van-dialog use-slot title="" show="{{ showExplain }}" show-cancel-button="{{true}}" cancel-button-text="知道了" show-confirm-button="{{false}}" bind:close="onCloseExplain">
+  <view class="explain-dialog">
+    <view class="name">出拳说明</view>
+    <view class="rule-list">
+      <view class="rule-item">1. 己方（自己）从石头、剪刀、布中选定一种，然后点击“我选好了”。</view>
+      <view class="rule-item">2. 对方立即出拳，等待双方出拳完成后亮出结果。</view>
+      <view class="rule-item">3. 将由系统判断胜负，双方均无法提前预知对方出拳。</view>
+    </view>
+  </view>
+</van-dialog>
+
+<van-toast id="van-toast" />

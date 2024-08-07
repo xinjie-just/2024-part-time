@@ -1,8 +1,124 @@
 /* pages/free-purchase/p-k-field/components/rock-paper-scissors/index.wxss */
 .component {
-  padding: 40rpx;
+  padding: 40rpx 24rpx;
 }
 
+.card {
+  box-sizing: border-box;
+  padding: 32rpx 24rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 0 24rpx 4rpx rgba(20, 20, 20, 0.1);
+  border-radius: 16rpx;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+.side {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  font-size: 28rpx;
+  line-height: 1.5em;
+  padding: 16rpx;
+  border-radius: 4rpx;
+}
+
+.other-side {
+  font-size: 28rpx;
+  color: #cf1322;
+  background-color: #fff1f0;
+}
+
+.own-side {
+  color: #0958d9;
+  background-color: #e6f4ff;
+  margin-bottom: 16rpx;
+}
+
+.side-item {
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+}
+
+.pk-name {
+  width: 5em;
+}
+
+.phone {
+  width: 7em;
+}
+
+.win-count {
+  flex: 1;
+}
+
+.van-radio {
+  margin-left: 16rpx;
+  margin-right: 16rpx;
+}
+
+.match-side {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.match-side .content {
+  display: flex;
+  align-items: center;
+}
+
+.explain-icon {
+  margin-left: 16rpx;
+}
+
+.explain-dialog {
+  padding: 48rpx 32rpx;
+  max-height: calc(80vh - 100rpx);
+  overflow-y: auto;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.name {
+  margin-bottom: 24rpx;
+  font-size: 32rpx;
+  color: #000;
+  font-weight: 600;
+}
+
+.rule-item {
+  line-height: 1.8em;
+  word-break: break-all;
+}
+
+.rule-item:not(:last-of-type) {
+  margin-bottom: 16rpx;
+}
+
+.result {
+  padding: 40rpx 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result .loading {
+  color: #000;
+}
+
+.result .own-win {
+  color: #0958d9;
+}
+
+.result .other-win {
+  color: #cf1322;
+}
 
 .footer {
   margin-top: 64rpx;
