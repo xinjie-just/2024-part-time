@@ -51,3 +51,8 @@
 .rule-item:not(:last-of-type) {
   margin-bottom: 16rpx;
 }
+
+.steps-wrap,
+.cell-group-wrap {
+  padding: 32rpx;
+}

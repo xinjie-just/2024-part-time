@@ -8,6 +8,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "双十拳",
+          "pathName": "pages/free-purchase/p-k-field/double-ten-boxing/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "石头剪刀布",
+          "pathName": "pages/free-purchase/p-k-field/rock-paper-scissors/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "PK场",
           "pathName": "pages/free-purchase/p-k-field/index",
           "query": "",

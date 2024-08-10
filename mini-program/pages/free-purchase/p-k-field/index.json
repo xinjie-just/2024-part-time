@@ -1,7 +1,3 @@
 {
-  "navigationBarTitleText": "PK 场",
-  "usingComponents": {
-    "rock-paper-scissors": "./components/rock-paper-scissors/index",
-    "double-ten-boxing": "./components/double-ten-boxing/index"
-  }
+  "navigationBarTitleText": "PK 场"
 }

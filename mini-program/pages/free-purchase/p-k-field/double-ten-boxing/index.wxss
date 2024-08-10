@@ -1,0 +1,229 @@
+.component {
+  padding: 24rpx;
+}
+
+.card {
+  box-sizing: border-box;
+  padding: 32rpx 24rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 0 24rpx 4rpx rgba(20, 20, 20, 0.1);
+  border-radius: 16rpx;
+}
+
+/* PK 双方信息 */
+.title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+.info .side {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  font-size: 28rpx;
+  line-height: 1.5em;
+  padding: 16rpx;
+  border-radius: 4rpx;
+}
+
+.other-side {
+  font-size: 28rpx;
+  color: #cf1322;
+  background-color: #fff1f0;
+}
+
+.own-side {
+  color: #0958d9;
+  background-color: #e6f4ff;
+  margin-bottom: 16rpx;
+}
+
+.side-item {
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+}
+
+.pk-name {
+  width: 5em;
+}
+
+.phone {
+  width: 7em;
+}
+
+.win-count {
+  flex: 1;
+}
+
+/* PK 双方出拳 */
+.count-time {
+  display: inline-block;
+  margin-left: 48rpx;
+}
+
+.time-item {
+  display: inline-block;
+  width: 48rpx;
+  margin-right: 16rpx;
+  color: #fff;
+  font-size: 24rpx;
+  text-align: center;
+  background-color: #1989fa;
+  border-radius: 4rpx;
+}
+
+.match-side {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.match-side .side {
+  width: calc(50% - 56rpx);
+}
+
+.match-side .vs {
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
+}
+
+.match-side .radio-group {
+  display: flex;
+  flex-direction: column;
+  padding: 32rpx 24rpx;
+  margin-top: 32rpx;
+  margin-bottom: 32rpx;
+}
+
+.own-match-side .radio-group {
+  background-color: #e6f4ff;
+}
+
+.other-match-side .radio-group {
+  background-color: #fff1f0;
+}
+
+.match-side .radio {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.match-side .radio:not(:last-of-type) {
+  margin-bottom: 32rpx;
+}
+
+.match-side .radio.own .van-radio__label {
+  color: #0958d9;
+}
+
+.match-side .radio.other .van-radio__label {
+  color: #cf1322;
+}
+
+.match-side .van-radio {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.match-side .img {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 8rpx;
+  display: inline-block;
+  vertical-align: -8rpx;
+}
+
+.explain-icon {
+  margin-left: 16rpx;
+}
+
+.explain-dialog {
+  padding: 48rpx 32rpx;
+  max-height: calc(80vh - 100rpx);
+  overflow-y: auto;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.name {
+  margin-bottom: 24rpx;
+  font-size: 32rpx;
+  color: #000;
+  font-weight: 600;
+}
+
+.rule-item {
+  line-height: 1.8em;
+  word-break: break-all;
+}
+
+.rule-item:not(:last-of-type) {
+  margin-bottom: 16rpx;
+}
+
+.calling-party-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24rpx;
+  font-size: 28rpx;
+}
+
+.calling-party-wrap .stepper {
+  margin-left: 24rpx;
+}
+
+/* 比赛结果 */
+.result {
+  height: 160rpx;
+  line-height: 160rpx;
+  padding-right: 24rpx;
+  padding-left: 24rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.result .value {
+  display: flex;
+  align-items: center;
+}
+
+.result .loading {
+  color: #000;
+}
+
+.result .own-win {
+  display: flex;
+  align-items: center;
+  color: #0958d9;
+}
+
+.result .other-win {
+  display: flex;
+  align-items: center;
+  color: #cf1322;
+}
+
+.other-win-icon,
+.own-win-icon {
+  margin-right: 24rpx;
+}
+
+.footer {
+  margin-top: 64rpx;
+  text-align: center;
+}
+
+.footer .van-button {
+  width: 240rpx;
+}
+
+.continue-btn {
+  margin-left: 32rpx;
+}
