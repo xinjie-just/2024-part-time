@@ -21,6 +21,7 @@
             <text wx:if="{{item.source === 1}}" class="tag offline">下线</text>
             <text wx:if="{{item.source === 2}}" class="tag consumption">消费</text>
             <text wx:if="{{item.source === 3}}" class="tag pk">PK</text>
+            <text wx:if="{{item.source === 4}}" class="tag share">分享</text>
           </view>
         </view>
         <view wx:if="{{hasMoreData}}" class="more-btn">

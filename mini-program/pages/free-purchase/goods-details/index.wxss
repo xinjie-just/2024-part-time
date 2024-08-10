@@ -19,21 +19,18 @@
   line-height: 1.8em;
   flex: 1;
   overflow-y: auto;
+  letter-spacing: 0.15em;
 }
 
 .content image {
   display: block;
   max-width: 100%;
   height: auto;
-  margin: 16rpx auto 0;
-}
-
-.content image+image {
-  margin-top: 24rpx;
+  margin: 32rpx auto;
 }
 
 .content view {
-  word-wrap: break-word;
-  margin-top: 24rpx;
-  margin-bottom: 24rpx;
+  word-break: break-word;
+  margin-top: 32rpx;
+  margin-bottom: 32rpx;
 }

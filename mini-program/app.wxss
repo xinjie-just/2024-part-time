@@ -17,7 +17,7 @@
 }
 
 .more-btn .van-button {
-  min-width: 272rpx;
+  min-width: 320rpx;
 }
 
 .no-more-data {

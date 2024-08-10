@@ -18,6 +18,7 @@
   padding-left: 16rpx;
   flex: 1;
   overflow-y: auto;
+  border-radius: 8rpx;
 }
 
 .item {
@@ -28,13 +29,15 @@
   justify-content: space-between;
 }
 
-/* .item:not(:last-of-type) {
-  border-bottom: 1px solid #f1f1f1;
-} */
-
 .title {
   font-size: 32rpx;
   font-weight: 500;
   line-height: 1.6em;
-  margin-right: 16rpx;
+  margin-right: 1em;
+  word-break: break-all;
+}
+
+.img {
+  width: 144rpx;
+  height: 144rpx;
 }

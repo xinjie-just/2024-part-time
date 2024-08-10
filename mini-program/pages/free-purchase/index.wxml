@@ -7,7 +7,7 @@
   <view wx:else class="list">
     <view class="item van-hairline--bottom" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bind:tap="onViewDetails">
       <view class="title van-multi-ellipsis--l2">{{item.title}}</view>
-      <van-image width="136rpx" height="136rpx" fit="cover" src="{{item.imgSrc}}" />
+      <image mode="aspectFill" src="{{item.imgSrc}}" class="img"></image>
     </view>
     <view wx:if="{{hasMoreData}}" class="more-btn">
       <van-button loading="{{moreLoading}}" loading-text="加载更多..." type="info" plain hairline round bind:click="getMoreList">加载更多</van-button>

@@ -1,6 +1,19 @@
 /* pages/free-purchase/p-k-field/components/rock-paper-scissors/index.wxss */
+.match-wrap {
+  padding: 56rpx 32rpx;
+}
+
+.match-footer {
+  text-align: center;
+  margin-top: 48rpx;
+}
+
+.match-footer .van-button {
+  width: 240rpx;
+}
+
 .component {
-  padding: 40rpx 24rpx;
+  padding: 24rpx;
 }
 
 .card {
@@ -18,7 +31,7 @@
   margin-bottom: 24rpx;
 }
 
-.side {
+.info .side {
   display: flex;
   align-items: center;
   justify-content: left;
@@ -37,6 +50,9 @@
 .own-side {
   color: #0958d9;
   background-color: #e6f4ff;
+}
+
+.info .own-side {
   margin-bottom: 16rpx;
 }
 
@@ -62,15 +78,64 @@
   margin-right: 16rpx;
 }
 
+/* PK 双方出拳 */
 .match-side {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
 }
 
-.match-side .content {
+.match-side .side {
+  width: calc(50% - 48rpx);
+}
+
+.match-side .own,
+.match-side .other {
+  margin-bottom: 32rpx;
+}
+
+.match-side .radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.match-side .radio {
   display: flex;
   align-items: center;
+  width: 100%;
+  margin-bottom: 32rpx;
+  padding: 8rpx 16rpx;
+}
+
+.match-side .radio.own {
+  background-color: #e6f4ff;
+}
+
+.match-side .radio.own .van-radio__label {
+  color: #0958d9;
+}
+
+.match-side .radio.other {
+  background-color: #fff1f0;
+}
+
+.match-side .radio.other .van-radio__label {
+  color: #cf1322;
+}
+
+.match-side .van-radio {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.match-side .img {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 8rpx;
+  display: inline-block;
+  vertical-align: -8rpx;
 }
 
 .explain-icon {
@@ -101,11 +166,20 @@
   margin-bottom: 16rpx;
 }
 
+/* 比赛结果 */
 .result {
-  padding: 40rpx 16rpx;
+  height: 160rpx;
+  line-height: 160rpx;
+  padding-right: 24rpx;
+  padding-left: 24rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.result .value {
+  display: flex;
+  align-items: center;
 }
 
 .result .loading {
@@ -113,11 +187,20 @@
 }
 
 .result .own-win {
+  display: flex;
+  align-items: center;
   color: #0958d9;
 }
 
 .result .other-win {
+  display: flex;
+  align-items: center;
   color: #cf1322;
+}
+
+.other-win-icon,
+.own-win-icon {
+  margin-right: 24rpx;
 }
 
 .footer {

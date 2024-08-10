@@ -9,7 +9,7 @@
       <van-button type="info" icon="question-o" plain hairline round size="small" bind:click="onShowRule">游戏规则</van-button>
     </view>
   </view>
-  <van-tabs active="{{ active }}">
+  <van-tabs active="{{ active }}" color="#1989fa" title-active-color="#1989fa">
     <van-tab title="石头剪刀布">
       <rock-paper-scissors />
     </van-tab>
@@ -18,6 +18,9 @@
     </van-tab>
   </van-tabs>
 </view>
+
+<van-toast id="van-toast" />
+<van-dialog id="van-dialog" />
 
 <van-dialog use-slot title="" show="{{ show }}" show-cancel-button="{{true}}" cancel-button-text="知道了" show-confirm-button="{{false}}" bind:close="onClose">
   <view class="game-list">
