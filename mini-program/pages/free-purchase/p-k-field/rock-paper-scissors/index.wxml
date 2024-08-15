@@ -4,10 +4,7 @@
   <view class="card info">
     <view class="title">PK 双方信息</view>
     <view class="side own-side">
-      <view class="own">
-        <text>己方：</text>
-        <text>请选择</text>
-      </view>
+      <view class="own">己方：</view>
       <view class="side-item pk-name">李四</view>
       <view class="side-item phone">18112345678</view>
       <view class="side-item win-count">胜 14 次</view>

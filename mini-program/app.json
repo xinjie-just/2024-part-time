@@ -8,7 +8,13 @@
     "pages/free-purchase/goods-details/index",
     "pages/free-purchase/p-k-field/index",
     "pages/free-purchase/p-k-field/double-ten-boxing/index",
-    "pages/free-purchase/p-k-field/rock-paper-scissors/index"
+    "pages/free-purchase/p-k-field/rock-paper-scissors/index",
+    "pages/mine/about/index",
+    "pages/mine/wallet/index",
+    "pages/mine/order/index",
+    "pages/mine/apply-for-area-management/index",
+    "pages/mine/how-to-earn-points/index",
+    "pages/mine/help-center/index"
   ],
   "tabBar": {
     "color": "#000000",
@@ -57,7 +63,8 @@
     "van-tag": "@vant/weapp/tag/index",
     "van-steps": "@vant/weapp/steps/index",
     "van-count-down": "@vant/weapp/count-down/index",
-    "van-stepper": "@vant/weapp/stepper/index"
+    "van-stepper": "@vant/weapp/stepper/index",
+    "van-popup": "@vant/weapp/popup/index"
   },
   "window": {
     "backgroundTextStyle": "light",

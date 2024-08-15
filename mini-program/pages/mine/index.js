@@ -4,77 +4,52 @@ import Toast from 'tdesign-miniprogram/toast/index';
 const menuData = [
   [
     {
-      title: '收货地址',
-      tit: '',
-      url: '',
-      type: 'address',
+      title: '订单',
+      url: './order/index',
+      type: 'order',
     },
-    {
-      title: '优惠券',
-      tit: '',
-      url: '',
-      type: 'coupon',
-    },
+  ],
+  [
     {
       title: '积分',
-      tit: '',
-      url: '',
+      url: './points/index',
       type: 'point',
+    },
+    {
+      title: '钱包',
+      url: './wallet/index',
+      type: 'wallet',
+    },
+  ],
+  [
+    {
+      title: '申请区域管理',
+      url: './apply-for-area-management/index',
+      type: 'apply-for-area-management',
+    },
+    {
+      title: '如何获得积分',
+      url: './how-to-earn-points/index',
+      type: 'how-to-earn-points',
+    },
+    {
+      title: '关于我们',
+      url: './about/index',
+      type: 'about',
     },
   ],
   [
     {
       title: '帮助中心',
-      tit: '',
-      url: '',
+      url: './help-center/index',
       type: 'help-center',
     },
     {
       title: '客服热线',
-      tit: '',
-      url: '',
       type: 'service',
-      icon: 'service',
+      icon: 'service-o',
     },
   ],
-];
-
-const orderTagInfos = [
-  {
-    title: '待付款',
-    iconName: 'wallet',
-    orderNum: 0,
-    tabType: 5,
-    status: 1,
-  },
-  {
-    title: '待发货',
-    iconName: 'deliver',
-    orderNum: 0,
-    tabType: 10,
-    status: 1,
-  },
-  {
-    title: '待收货',
-    iconName: 'package',
-    orderNum: 0,
-    tabType: 40,
-    status: 1,
-  },
-  {
-    title: '待评价',
-    iconName: 'comment',
-    orderNum: 0,
-    tabType: 60,
-    status: 1,
-  },
-  {
-    title: '退款/售后',
-    iconName: 'exchang',
-    orderNum: 0,
-    tabType: 0,
-    status: 1,
-  },
 ];
 
 const getDefaultData = () => ({
@@ -85,7 +60,6 @@ const getDefaultData = () => ({
     phoneNumber: '',
   },
   menuData,
-  orderTagInfos,
   customerServiceInfo: {},
   currAuthStep: 1,
   showKefu: true,
@@ -116,7 +90,6 @@ Page({
       ({
         userInfo,
         countsData,
-        orderTagInfos: orderInfo,
         customerServiceInfo,
       }) => {
         // eslint-disable-next-line no-unused-expressions
@@ -128,14 +101,9 @@ Page({
             }
           });
         });
-        const info = orderTagInfos.map((v, index) => ({
-          ...v,
-          ...orderInfo[index],
-        }));
         this.setData({
           userInfo,
           menuData,
-          orderTagInfos: info,
           customerServiceInfo,
           currAuthStep: 2,
         });
@@ -145,47 +113,11 @@ Page({
   },
 
   onClickCell({ currentTarget }) {
-    const { type } = currentTarget.dataset;
-
-    switch (type) {
-      case 'address': {
-        wx.navigateTo({ url: '/pages/usercenter/address/list/index' });
-        break;
-      }
-      case 'service': {
-        this.openMakePhone();
-        break;
-      }
-      case 'help-center': {
-        Toast({
-          context: this,
-          selector: '#t-toast',
-          message: '你点击了帮助中心',
-          icon: '',
-          duration: 1000,
-        });
-        break;
-      }
-      case 'point': {
-        wx.navigateTo({
-          url: './points/index',
-        })
-        break;
-      }
-      case 'coupon': {
-        wx.navigateTo({ url: '/pages/coupon/coupon-list/index' });
-        break;
-      }
-      default: {
-        Toast({
-          context: this,
-          selector: '#t-toast',
-          message: '未知跳转',
-          icon: '',
-          duration: 1000,
-        });
-        break;
-      }
+    const { type, url } = currentTarget.dataset.item;
+    if (type !== "service") {
+      wx.navigateTo({ url });
+    } else {
+      this.openMakePhone();
     }
   },
 

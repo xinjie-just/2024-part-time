@@ -1,0 +1,14 @@
+.page {
+  padding: 24rpx;
+  font-size: 28rpx;
+  line-height: 1.8em;
+  flex: 1;
+  overflow-y: auto;
+  letter-spacing: 0.15em;
+}
+
+view {
+  word-break: break-word;
+  margin-top: 32rpx;
+  margin-bottom: 32rpx;
+}
