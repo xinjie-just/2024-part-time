@@ -64,7 +64,8 @@
     "van-steps": "@vant/weapp/steps/index",
     "van-count-down": "@vant/weapp/count-down/index",
     "van-stepper": "@vant/weapp/stepper/index",
-    "van-popup": "@vant/weapp/popup/index"
+    "van-popup": "@vant/weapp/popup/index",
+    "van-notify": "@vant/weapp/notify/index"
   },
   "window": {
     "backgroundTextStyle": "light",

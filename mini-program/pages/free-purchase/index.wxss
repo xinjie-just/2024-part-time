@@ -41,3 +41,22 @@
   width: 144rpx;
   height: 144rpx;
 }
+
+.notify {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 16rpx;
+  line-height: 32rpx;
+  font-size: 28rpx;
+  background-color: #1989fa;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.into-btn {
+  margin-right: 16rpx;
+}

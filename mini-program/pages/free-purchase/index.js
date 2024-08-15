@@ -1,4 +1,4 @@
-import list from "./data.js";
+import list from './data.js';
 
 Page({
   data: {
@@ -12,14 +12,15 @@ Page({
     loading: false,
     moreLoading: false,
     hasMoreData: false,
+    showNotify: true,
   },
   onLoad() {
     this.timerId = null;
     this.moreTimerId = null;
-    this.getList(false)
+    this.getList(false);
   },
   getList(more) {
-    console.log("getList");
+    console.log('getList');
     if (this.timerId != null) {
       clearTimeout(this.timerId);
     }
@@ -27,60 +28,86 @@ Page({
       clearTimeout(this.moreTimerId);
     }
     const page = this.data.page;
-    const currentPageData = list.filter((_, index) => index < page.pageIndex * page.pageSize && index >= (page.pageIndex - 1) * page.pageSize);
+    const currentPageData = list.filter(
+      (_, index) => index < page.pageIndex * page.pageSize && index >= (page.pageIndex - 1) * page.pageSize,
+    );
     if (more) {
       this.setData({
-        moreLoading: true
+        moreLoading: true,
       });
       this.moreTimerId = setTimeout(() => {
         const data = this.data.list.concat(currentPageData);
-        this.setData({
-          list: data,
-          moreLoading: false
-        }, () => {
-          this.setData({
-            hasMoreData: list.length > this.data.list.length
-          });
-        })
-      }, 2000)
+        this.setData(
+          {
+            list: data,
+            moreLoading: false,
+          },
+          () => {
+            this.setData({
+              hasMoreData: list.length > this.data.list.length,
+            });
+          },
+        );
+      }, 2000);
     } else {
       this.setData({
-        loading: true
+        loading: true,
       });
       this.timerId = setTimeout(() => {
-        this.setData({
-          list: currentPageData,
-          loading: false
-        }, () => {
-          this.setData({
-            hasMoreData: list.length > this.data.list.length
-          });
-        });
+        this.setData(
+          {
+            list: currentPageData,
+            loading: false,
+          },
+          () => {
+            this.setData({
+              hasMoreData: list.length > this.data.list.length,
+            });
+          },
+        );
         wx.stopPullDownRefresh();
-      }, 2000)
+      }, 2000);
     }
   },
   getMoreList() {
-    this.setData({
-      page: {
-        ...this.data.page,
-        pageIndex: this.data.page.pageIndex + 1,
+    this.setData(
+      {
+        page: {
+          ...this.data.page,
+          pageIndex: this.data.page.pageIndex + 1,
+        },
+        moreLoading: true,
       },
-      moreLoading: true
-    }, () => {
-      this.getList(true);
-    })
+      () => {
+        this.getList(true);
+      },
+    );
   },
   onViewDetails(e) {
     const data = e.currentTarget.dataset;
     const id = data.id;
     wx.navigateTo({
       url: `./goods-details/index?id=${id}`,
-    })
+    });
   },
   onToPKField() {
     wx.redirectTo({
       url: './p-k-field/index',
-    })
-  }
+    });
+  },
+  onShowNotify() {
+    this.setData({
+      showNotify: true,
+    });
+  },
+  onCloseNotify() {
+    this.setData({
+      showNotify: false,
+    });
+  },
+  onIntoPKField() {
+    wx.redirectTo({
+      url: './p-k-field/rock-paper-scissors/index',
+    });
+  },
 });

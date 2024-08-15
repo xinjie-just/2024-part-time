@@ -15,3 +15,11 @@
     <view wx:else class="no-more-data">没有更多数据了 ~</view>
   </view>
 </view>
+<view wx:if="{{showNotify}}" class="notify">
+  <van-icon name="volume-o" />
+  <text>您收到一个新的 PK 任务</text>
+  <view>
+    <van-button plain hairline round size="mini" type="info" custom-class="into-btn" bind:tap="onIntoPKField">进入</van-button>
+    <van-button plain hairline round size="mini" type="info" bind:tap="onCloseNotify">关闭</van-button>
+  </view>
+</view>
