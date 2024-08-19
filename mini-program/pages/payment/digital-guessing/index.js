@@ -1,26 +1,23 @@
-// pages/free-purchase/goods-details/index.js
+// pages/payment/digital-guessing/index.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    id: null
+    activeNames: [],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.setData({
-      id: +options.id
-    })
-  },
 
-  onToSelectPaymentMethod() {
-    wx.navigateTo({
-      url: '/pages/payment-method/index',
-    })
+  },
+  onChange(event) {
+    this.setData({
+      activeNames: event.detail,
+    });
   },
 
   /**
@@ -55,7 +52,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh() {
-    console.log("onPullDownRefresh")
+
   },
 
   /**

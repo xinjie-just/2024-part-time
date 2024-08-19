@@ -17,7 +17,7 @@
       <van-cell is-link title="石头剪刀布" value="开始游戏" link-type="navigateTo" url="./rock-paper-scissors/index" />
       <van-cell is-link title="双十拳" value="开始游戏" link-type="navigateTo" url="./double-ten-boxing/index" />
     </van-cell-group>
-    </view>
+  </view>
 </view>
 
 <van-dialog use-slot title="" show="{{ show }}" show-cancel-button="{{true}}" cancel-button-text="知道了" show-confirm-button="{{false}}" bind:close="onClose">
@@ -35,8 +35,8 @@
       <view class="rule-list">
         <view class="rule-item">1. 游戏由两人进行，两人同时准备好自己的手势，不可提前展示给对方看。</view>
         <view class="rule-item">2. 每位玩家可以出的手势包括：“零”（双手握拳）、“五”（伸出一手手掌，另手握拳）、“十”（双手打开）。这三个手势分别代表数字0、5、10。</view>
-        <view class="rule-item">3. 其中一位玩家（或轮流）喊出一个数字口号，这个数字是“零”、“五”、“十”、“十五”、“二十”。喊出口号后，两位玩家同时展示自己的手势。</view>
-        <view class="rule-item">4. 如果玩家喊出的数字恰好等于两人所出手势代表的数字之和，则该玩家获胜，否则另一玩家获胜。</view>
+        <view class="rule-item">3. 两位玩家同时喊出一个数字口号，这个数字是“零”、“五”、“十”、“十五”、“二十”。喊出口号后，两位玩家同时展示自己的手势。</view>
+        <view class="rule-item">4. 如果两位玩家喊出相同的数字，或者两位玩家喊出的数字都不等于两人出拳总数，则平局；如果只有一位玩家喊出的数字和两人出拳数字一样，则该玩家胜，对方败。</view>
       </view>
     </view>
   </view>

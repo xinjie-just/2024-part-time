@@ -8,6 +8,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "数字竞猜",
+          "pathName": "pages/payment/digital-guessing/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "选择支付方式",
+          "pathName": "pages/payment/payment-method/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "双十拳",
           "pathName": "pages/free-purchase/p-k-field/double-ten-boxing/index",
           "query": "",

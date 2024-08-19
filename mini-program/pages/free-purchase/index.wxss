@@ -50,7 +50,7 @@
   padding: 16rpx;
   line-height: 32rpx;
   font-size: 28rpx;
-  background-color: #1989fa;
+  background-color: #ff976a;
   color: #fff;
   display: flex;
   align-items: center;

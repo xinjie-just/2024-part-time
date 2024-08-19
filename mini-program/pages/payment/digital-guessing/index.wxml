@@ -1,0 +1,36 @@
+<!--pages/payment/digital-guessing/index.wxml-->
+<view class="page">
+  <van-notice-bar mode="closeable" text="参与数字竞猜，挑战 0 元购" />
+
+  <van-collapse value="{{ activeNames }}" class="desc" bind:change="onChange">
+    <van-collapse-item name="1" title="数字竞猜规则">
+      数字位数由该商品属性编辑时所确定，数字谜底由系统自行完成设置，每数皆为 0~9 中的随机数，猜中全部数字则成功，否则失败。
+    </van-collapse-item>
+  </van-collapse>
+
+  <view class="card">
+    <view class="title">商家数谜底</view>
+    <view class="body">
+      <view class="item">1</view>
+      <view class="item">3</view>
+      <view class="item">5</view>
+      <view class="item">2</view>
+      <view class="item">5</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="title">我猜的数</view>
+    <van-cell-group>
+      <van-field type="digit" value="{{ username }}" required clearable label="第一位数" placeholder="请输入第一位数" bind:click-icon="onClickIcon" />
+      <van-field type="digit" value="{{ password }}" type="password" label="第二位数" placeholder="请输入第二位数" required border="{{ false }}" />
+      <van-field type="digit" value="{{ username }}" required clearable label="第三位数" placeholder="请输入第三位数" bind:click-icon="onClickIcon" />
+      <van-field type="digit" value="{{ password }}" type="password" label="第四位数" placeholder="请输入第四位数" required border="{{ false }}" />
+      <van-field type="digit" value="{{ username }}" required clearable label="第五位数" placeholder="请输入第五位数" bind:click-icon="onClickIcon" />
+    </van-cell-group>
+  </view>
+
+  <view class="footer">
+    <van-button type="info" round block>我已选好显示谜底</van-button>
+  </view>
+</view>

@@ -14,4 +14,5 @@
     <image src="/assets/images/free-purchase/details5.webp" mode="widthFix" />
     <image src="/assets/images/free-purchase/details6.webp" mode="widthFix" />
   </view>
+  <view class="buy-btn" bind:tap="onToSelectPaymentMethod">0 元购</view>
 </view>

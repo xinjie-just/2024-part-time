@@ -14,7 +14,9 @@
     "pages/mine/order/index",
     "pages/mine/apply-for-area-management/index",
     "pages/mine/how-to-earn-points/index",
-    "pages/mine/help-center/index"
+    "pages/mine/help-center/index",
+    "pages/payment/payment-method/index",
+    "pages/payment/digital-guessing/index"
   ],
   "tabBar": {
     "color": "#000000",
@@ -65,7 +67,10 @@
     "van-count-down": "@vant/weapp/count-down/index",
     "van-stepper": "@vant/weapp/stepper/index",
     "van-popup": "@vant/weapp/popup/index",
-    "van-notify": "@vant/weapp/notify/index"
+    "van-notify": "@vant/weapp/notify/index",
+    "van-notice-bar": "@vant/weapp/notice-bar/index",
+    "van-collapse": "@vant/weapp/collapse/index",
+    "van-collapse-item": "@vant/weapp/collapse-item/index"
   },
   "window": {
     "backgroundTextStyle": "light",
