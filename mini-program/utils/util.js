@@ -8,7 +8,7 @@ const formatTime = (date, template) => dayjs(date).format(template);
  * @param price 价格数额，以分为单位!
  * @param fill 是否填充小数部分 0-不填充 1-填充第一位小数 2-填充两位小数
  */
-function priceFormat(price, fill = 0) {
+const priceFormat = (price, fill = 0) => {
   if (isNaN(price) || price === null || price === Infinity) {
     return price;
   }
@@ -122,7 +122,29 @@ const phoneRegCheck = (phone) => {
   return phoneRegExp.test(phone);
 };
 
-module.exports = {
+/**
+ * 比较两个数组是否相等
+ * @param arr1 数组1
+ * @param arr2 数组2
+ * @returns true - 相等 false - 不相等
+ */
+const areArraysEqual = (arr1, arr2) => {
+  // 首先检查两个数组的长度是否相等  
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+  // 遍历数组，比较每个元素  
+  for (let i = 0; i < arr1.length; i++) {
+    // 如果当前元素不相等，则数组不相等  
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+  // 如果所有元素都相等，则数组相等  
+  return true;
+}
+
+export {
   formatTime,
   priceFormat,
   cosThumb,
@@ -130,4 +152,5 @@ module.exports = {
   rpx2px,
   phoneEncryption,
   phoneRegCheck,
+  areArraysEqual
 };

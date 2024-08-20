@@ -1,18 +1,33 @@
 // pages/payment/digital-guessing/index.js
-Page({
+import Dialog from '/@vant/weapp/dialog/dialog';
+import Toast from '/@vant/weapp/toast/toast';
+import { areArraysEqual } from '../../../utils/util';
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
+    results: {
+      1: '未显示谜底',
+      2: '猜中',
+      3: '未猜中',
+    },
+    result: '1',
+    businessNumbers: [],
     activeNames: [],
+    digit: 5,
+    numbers: [],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-
+    this.setData({
+      numbers: new Array(this.data.digit).fill(5),
+      businessNumbers: new Array(this.data.digit).fill('-'),
+    });
   },
   onChange(event) {
     this.setData({
@@ -20,52 +35,73 @@ Page({
     });
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  getRandomNumbers() {
+    let numbers = [];
+    for (let i = 0; i < this.data.digit; i++) {
+      const number = Math.floor(Math.random() * 10);
+      numbers.push(number);
+    }
+    return numbers;
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
+  onProduceRandom() {
+    this.setData({
+      numbers: this.getRandomNumbers(),
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  onChangeStepper(event) {
+    const { index } = event.currentTarget.dataset;
+    const numbers = this.data.numbers;
+    numbers[index] = event.detail;
+    this.setData({
+      numbers,
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
+  onShowResult() {
+    Dialog.confirm({
+      title: '',
+      showCancelButton: true,
+      cancelButtonText: '再想想',
+      message: `确认我猜的数从第 1 - ${this.data.digit} 位分别是：${this.data.numbers.join('、 ')}`,
+    })
+      .then(() => {
+        this.setData({
+          businessNumbers: this.getRandomNumbers(),
+        });
+        Toast({
+          type: 'loading',
+          message: '正在比较结果',
+          onClose: () => {
+            // this.setData({ // TODO:
+            //   result: areArraysEqual(this.data.numbers, this.data.businessNumbers) ? '2' : '3'
+            // });
+            this.setData({
+              result: '3',
+            });
+          },
+        });
+      })
+      .catch(() => {});
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
+  onToPK() {
+    wx.redirectTo({
+      url: '/pages/free-purchase/p-k-field/index',
+    });
   },
 
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
+  onContinue() {
+    this.setData({
+      result: '1',
+      businessNumbers: new Array(this.data.digit).fill('-'),
+    });
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+  onBuy() {
+    wx.navigateTo({
+      url: '/pages/payment/payment-method/index',
+    });
+  },
+});

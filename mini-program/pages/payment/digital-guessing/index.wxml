@@ -11,26 +11,33 @@
   <view class="card">
     <view class="title">商家数谜底</view>
     <view class="body">
-      <view class="item">1</view>
-      <view class="item">3</view>
-      <view class="item">5</view>
-      <view class="item">2</view>
-      <view class="item">5</view>
+      <view wx:for="{{businessNumbers}}" wx:key="index" class="item">{{item}}</view>
     </view>
   </view>
 
   <view class="card">
-    <view class="title">我猜的数</view>
+    <van-button round size="small" type="info" bind:click="onShowResult">显示谜底</van-button>
+    <text class="result">数字竞猜结果：{{ results[result] }}</text>
+  </view>
+
+  <view class="card">
+    <view class="title">
+      <text>我猜的数</text>
+      <van-button plain hairline round size="small" type="info" bind:click="onProduceRandom">生成一组随机数</van-button>
+    </view>
     <van-cell-group>
-      <van-field type="digit" value="{{ username }}" required clearable label="第一位数" placeholder="请输入第一位数" bind:click-icon="onClickIcon" />
-      <van-field type="digit" value="{{ password }}" type="password" label="第二位数" placeholder="请输入第二位数" required border="{{ false }}" />
-      <van-field type="digit" value="{{ username }}" required clearable label="第三位数" placeholder="请输入第三位数" bind:click-icon="onClickIcon" />
-      <van-field type="digit" value="{{ password }}" type="password" label="第四位数" placeholder="请输入第四位数" required border="{{ false }}" />
-      <van-field type="digit" value="{{ username }}" required clearable label="第五位数" placeholder="请输入第五位数" bind:click-icon="onClickIcon" />
+      <van-cell wx:for="{{ numbers }}" wx:key="index" required clearable label="第 {{index + 1}} 位数">
+        <van-stepper value="{{ item }}" input-width="96rpx" min="0" max="9" step="1" integer data-index="{{index}}" bind:change="onChangeStepper" />
+      </van-cell>
     </van-cell-group>
   </view>
 
   <view class="footer">
-    <van-button type="info" round block>我已选好显示谜底</van-button>
+    <van-button wx:if="{{result === '2'}}" round type="info" bind:click="onToPK">进入 PK 环节</van-button>
+    <van-button wx:if="{{result === '3'}}" round type="info" bind:click="onContinue">继续挑战</van-button>
+    <van-button wx:if="{{result === '3'}}" plain hairline round type="info" bind:click="onBuy">直接购买</van-button>
   </view>
+
+  <van-dialog id="van-dialog" />
+  <van-toast id="van-toast" />
 </view>
