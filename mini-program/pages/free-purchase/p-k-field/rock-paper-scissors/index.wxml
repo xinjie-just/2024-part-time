@@ -18,9 +18,11 @@
   </view>
 
   <view class="card match">
-    <view class="title">
-      <text>PK 双方出拳</text>
-      <van-icon name="info-o" custom-class="explain-icon" bind:tap="onViewExplain" />
+    <view class="header">
+      <view class="title">
+        <text>PK 双方出拳</text>
+        <van-icon name="info-o" custom-class="explain-icon" bind:tap="onViewExplain" />
+      </view>
       <van-count-down use-slot time="{{ time }}" class="count-time" bind:change="onChangeTime" bind:finish="finished">
         <text class="tips">出拳倒计时：</text>
         <text class="time-item">{{ timeData.seconds }}</text>
@@ -31,7 +33,7 @@
       <view class="side own-match-side">
         <view class="own">
           <text>己方：</text>
-          <text>请选择</text>
+          <van-button round size="small" color="#0958d9" disabled="{{ownRadio === null}}" bind:click="onSelectFinish">我选好了</van-button>
         </view>
         <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ timeData.seconds === 0 }}" class="radio-group">
           <van-radio name="1" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === '1' ? 'radio own' : 'radio'}}">
@@ -44,9 +46,10 @@
             <image src="{{ ownRadio === '3' ? icon.paper.own : icon.paper.default }}" class="img"></image>布
           </van-radio>
         </van-radio-group>
-        <van-button round size="small" color="#0958d9" disabled="{{ownRadio === null}}" bind:click="onSelectFinish">我选好了</van-button>
       </view>
-      <view class="vs">VS</view>
+      <view class="vs">
+        <image src="/assets/images/pk.png" mode="widthFix" class="vs-img" />
+      </view>
       <view class="side other-match-side">
         <view class="other">
           <text>对方：</text>
