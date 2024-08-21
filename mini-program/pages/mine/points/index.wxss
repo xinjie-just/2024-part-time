@@ -15,7 +15,7 @@
 
 .table {
   border: 1px solid #ededed;
-  width: 710rpx;
+  width: 718rpx;
   margin-right: auto;
   margin-left: auto;
   border-radius: 12rpx;
@@ -23,11 +23,12 @@
 }
 
 .thead {
-  font-size: 30rpx;
-  line-height: 100rpx;
-  height: 100rpx;
+  font-size: 28rpx;
+  line-height: 96rpx;
+  height: 96rpx;
   padding: 0 16rpx;
   border-bottom: 1px solid #f0f0f0;
+  box-shadow: 0 4rpx 16rpx 4rpx rgba(205, 205, 205, 0.2);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -59,30 +60,34 @@
 .tag {
   display: block;
   width: 88rpx;
-  height: 48rpx;
-  line-height: 48rpx;
-  border-radius: 4rpx;
+  line-height: 44rpx;
+  border-radius: 8rpx;
   text-align: center;
+  border: 1rpx solid #000;
 }
 
 .offline {
-  color: #d4380d;
-  background-color: #fff2e8;
+  color: #cf1322;
+  background: #fff1f0;
+  border-color: #ffa39e;
 }
 
 .consumption {
   color: #389e0d;
-  background-color: #f6ffed;
+  background: #f6ffed;
+  border-color: #b7eb8f;
 }
 
 .pk {
   color: #0958d9;
-  background-color: #e6f4ff;
+  background: #e6f4ff;
+  border-color: #91caff;
 }
 
 .share {
   color: #531dab;
-  background-color: #f9f0ff;
+  background: #f9f0ff;
+  border-color: #d3adf7;
 }
 
 .tbody {
@@ -92,14 +97,14 @@
 }
 
 .tr {
-  font-size: 28rpx;
-  line-height: 1.8em;
+  font-size: 26rpx;
+  line-height: 46rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
-  padding-top: 24rpx;
-  padding-bottom: 24rpx;
+  padding-top: 22rpx;
+  padding-bottom: 22rpx;
 }
 
 .tr:not(:last-of-type) {

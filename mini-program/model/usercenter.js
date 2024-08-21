@@ -39,7 +39,7 @@ const orderTagInfos = [
 
 const customerServiceInfo = {
   servicePhone: '4006336868',
-  serviceTimeDuration: '每周三至周五 9:00-12:00  13:00-15:00',
+  serviceTimeDuration: '每周一至周五 09:00-12:00  13:00-18:00',
 };
 
 export const genSimpleUserInfo = () => ({ ...userInfo });

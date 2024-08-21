@@ -14,8 +14,8 @@
 
 .list {
   background-color: #fff;
-  padding-right: 16rpx;
-  padding-left: 16rpx;
+  padding-right: 24rpx;
+  padding-left: 24rpx;
   flex: 1;
   overflow-y: auto;
   border-radius: 8rpx;
@@ -38,8 +38,9 @@
 }
 
 .img {
-  width: 144rpx;
-  height: 144rpx;
+  min-width: 136rpx;
+  max-width: 136rpx;
+  height: 136rpx;
 }
 
 .notify {

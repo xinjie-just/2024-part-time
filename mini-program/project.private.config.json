@@ -8,6 +8,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "我的积分",
+          "pathName": "pages/mine/points/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "我的钱包",
+          "pathName": "pages/mine/wallet/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "数字竞猜",
           "pathName": "pages/payment/digital-guessing/index",
           "query": "",
@@ -60,13 +74,6 @@
           "name": "PK品详情",
           "pathName": "pages/free-purchase/goods-details/index",
           "query": "id=2",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "积分",
-          "pathName": "pages/mine/points/index",
-          "query": "",
           "launchMode": "default",
           "scene": null
         },

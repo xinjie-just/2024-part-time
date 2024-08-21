@@ -10,7 +10,7 @@
       <image mode="aspectFill" src="{{item.imgSrc}}" class="img"></image>
     </view>
     <view wx:if="{{hasMoreData}}" class="more-btn">
-      <van-button loading="{{moreLoading}}" loading-text="加载更多..." type="info" plain hairline round bind:click="getMoreList">加载更多</van-button>
+      <van-button loading="{{moreLoading}}" loading-text="加载更多..." type="info" size="small" plain hairline round bind:click="getMoreList">加载更多</van-button>
     </view>
     <view wx:else class="no-more-data">没有更多数据了 ~</view>
   </view>

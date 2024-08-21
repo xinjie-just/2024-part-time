@@ -1,6 +1,6 @@
 const list = [
   { id: 1, title: "PK 品标题 PK 品标题 PK 品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
-  { id: 2, title: "PK 品标题 PK 品标题 PK 品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
+  { id: 2, title: "PK 品标题 PK 品标题 PK 品标题PK 品标题 PK 品标题 PK 品标题PK 品标题 PK 品标题 PK 品标题PK 品标题 PK 品标题 PK 品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
   { id: 3, title: "PK 品标题 PK 品标题 PK 品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
   { id: 4, title: "PK 品标题 PK 品标题 PK 品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
   { id: 5, title: "PK 品标题 PK 品标题 PK 品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
