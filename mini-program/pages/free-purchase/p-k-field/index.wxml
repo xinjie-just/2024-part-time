@@ -3,7 +3,7 @@
   <view class="notice">
     <view class="left">
       <van-icon name="volume-o" size="40rpx" color="#ed6a0c" />
-      <text class="text">欢迎进入PK场，挣积分，圆梦想</text>
+      <text class="text">欢迎进入 PK 场，挣积分，圆梦想</text>
     </view>
     <view class="right">
       <van-button type="info" icon="question-o" plain hairline round size="small" bind:click="onShowRule">游戏规则</van-button>

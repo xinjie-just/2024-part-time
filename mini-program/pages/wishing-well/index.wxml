@@ -10,4 +10,26 @@
       <van-button type="info" plain hairline round size="small" bind:click="onToWishing">许愿</van-button>
     </view>
   </view>
+  <view class="card">
+    <view wx:if="{{loading}}" class="loading">
+      <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
+    </view>
+    <block wx:else>
+      <view class="item" wx:for="{{list}}" wx:key="id">
+        <view class="td index">{{ index + 1 }}</view>
+        <view class="td center">
+          <view class="title">{{ item.name }}</view>
+          <view class="time">2024-08-24 20:23:45</view>
+        </view>
+        <view class="td reference-value">
+          <view class="symbol">价值(元)</view>
+          <view class="value">{{ item.referenceValue }}</view>
+        </view>
+      </view>
+      <view wx:if="{{hasMoreData}}" class="more-btn">
+        <van-button wx:if="{{hasMoreData}}" loading="{{moreLoading}}" loading-text="加载更多..." type="info" size="small" plain hairline round bind:click="getMoreList">加载更多</van-button>
+      </view>
+      <view wx:else class="no-more-data">没有更多数据了 ~</view>
+    </block>
+  </view>
 </view>

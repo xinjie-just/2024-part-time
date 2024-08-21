@@ -70,7 +70,7 @@ Page({
   onExit() {
     Dialog.confirm({
       title: '',
-      message: '您确定要退出吗？',
+      message: '您确认要退出吗？',
     })
       .then(() => {
         wx.redirectTo({
@@ -111,7 +111,7 @@ Page({
   onContinue() {
     Dialog.confirm({
       title: '',
-      message: '您确定要继续游戏吗？',
+      message: '您确认要继续游戏吗？',
     })
       .then(() => {
         this.setData({

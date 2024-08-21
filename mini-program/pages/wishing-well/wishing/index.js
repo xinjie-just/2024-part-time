@@ -1,4 +1,5 @@
 import Toast from "/@vant/weapp/toast/toast";
+import Dialog from '/@vant/weapp/dialog/dialog';
 import wishes from "./data";
 
 // pages/wishing-well/wishing/index.js
@@ -65,23 +66,22 @@ Page({
   onSave() {
     console.log("title", this.data.title);
     console.log("message", this.data.message);
-    Toast({
-      type: 'success',
-      message: '保存成功',
-      onClose: () => {
-        wx.navigateBack();
-      },
-    });
+    wx.navigateTo({
+      url: '/pages/payment/payment-method/index',
+    })
   },
 
   onCancel() {
-    Toast({
-      type: 'text',
-      message: '您已放弃许愿',
-      onClose: () => {
+    Dialog.confirm({
+      title: '',
+      message: '您确认要放弃吗？',
+    })
+      .then(() => {
         wx.navigateBack();
-      },
-    });
+      })
+      .catch(() => {
+        // on cancel
+      });
   },
 
   /**

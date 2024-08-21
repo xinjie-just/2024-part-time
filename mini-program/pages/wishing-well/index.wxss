@@ -32,3 +32,64 @@
   margin-left: 16rpx;
   color: #ed6a0c;
 }
+
+.card {
+  border: 1px solid #ededed;
+  width: 718rpx;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 12rpx;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
+  height: calc(100vh - 336rpx);
+  overflow-y: auto;
+}
+
+
+.item {
+  font-size: 26rpx;
+  line-height: 46rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 24rpx 16rpx;
+}
+
+.item:not(:last-of-type) {
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.index {
+  width: 90rpx;
+}
+
+.center {
+  flex: 1;
+}
+
+.reference-value {
+  width: 130rpx;
+  height: 96rpx;
+  line-height: 38rpx;
+  font-size: 28rpx;
+  color: #d48806;
+  background: #fffbe6;
+  border: 1rpx solid #ffe58f;
+  border-radius: 80rpx;
+  text-align: center;
+}
+
+.reference-value .symbol {
+  line-height: 28rpx;
+  font-size: 24rpx;
+}
+
+.reference-value .value {
+  line-height: 60rpx;
+  font-weight: 600;
+}
+
+.td {
+  padding-right: 12rpx;
+  padding-left: 12rpx;
+}
