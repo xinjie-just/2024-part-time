@@ -34,62 +34,88 @@
 }
 
 .card {
+  padding-right: 16rpx;
+  padding-left: 16rpx;
   border: 1px solid #ededed;
   width: 718rpx;
   margin-right: auto;
   margin-left: auto;
   border-radius: 12rpx;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
-  height: calc(100vh - 336rpx);
+  height: calc(100vh - 392rpx);
   overflow-y: auto;
 }
 
+.my-wishing {
+  height: 56rpx;
+  line-height: 56rpx;
+  padding-right: 48rpx;
+  padding-left: 48rpx;
+  font-size: 28rpx;
+  color: #333;
+  background-color: #ededed;
+}
 
 .item {
-  font-size: 26rpx;
-  line-height: 46rpx;
+  font-size: 24rpx;
+  line-height: 40rpx;
   display: flex;
-  align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
-  padding: 24rpx 16rpx;
+  padding-top: 24rpx;
+  padding-bottom: 24rpx;
 }
 
 .item:not(:last-of-type) {
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 1rpx solid #f1f1f1;
 }
 
 .index {
-  width: 90rpx;
+  width: 80rpx;
+  text-align: right;
+}
+
+.index .value {
+  display: inline-block;
+  width: fit-content;
+  padding-right: 12rpx;
+  padding-left: 12rpx;
+  height: 40rpx;
+  line-height: 40rpx;
+  text-align: center;
+  background-color: #ededed;
+  font-size: 24rpx;
+  color: #666;
+  border-radius: 40rpx;
 }
 
 .center {
   flex: 1;
+  padding-left: 24rpx;
 }
 
-.reference-value {
-  width: 130rpx;
-  height: 96rpx;
-  line-height: 38rpx;
+.item .title {
+  margin-bottom: 16rpx;
   font-size: 28rpx;
-  color: #d48806;
-  background: #fffbe6;
-  border: 1rpx solid #ffe58f;
-  border-radius: 80rpx;
-  text-align: center;
 }
 
-.reference-value .symbol {
-  line-height: 28rpx;
+.item .other {
+  display: flex;
+  align-items: center;
   font-size: 24rpx;
 }
 
-.reference-value .value {
-  line-height: 60rpx;
-  font-weight: 600;
+.item .time {
+  margin-right: 24rpx;
+  border-right: 1rpx solid #ededed;
 }
 
-.td {
-  padding-right: 12rpx;
-  padding-left: 12rpx;
+.time .value {
+  display: inline-block;
+  width: 256rpx;
+}
+
+.reference-value .value {
+  color: #d48806;
+  margin-right: 8rpx;
 }
