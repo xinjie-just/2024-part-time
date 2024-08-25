@@ -1,5 +1,5 @@
 const wishes = [
-  { id: 1, time: "2024-08-24 16:30:50", name: "愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1愿望1" },
+  { id: 1, time: "2024-08-24 16:30:50", name: "愿望1" },
   { id: 2, referenceValue: 124.98, time: "2024-08-25 16:30:50", name: "愿望2" },
   { id: 3, referenceValue: null, time: "2024-08-27 16:30:50", name: "愿望3" },
   { id: 4, referenceValue: 55, time: "", name: "愿望4" },

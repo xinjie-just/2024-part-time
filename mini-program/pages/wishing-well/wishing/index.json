@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "许愿",
-  "usingComponents": {}
+  "usingComponents": {
+    "payment-method": "/pages/payment/payment-method/index"
+  }
 }

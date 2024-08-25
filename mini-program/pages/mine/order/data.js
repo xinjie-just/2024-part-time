@@ -1,5 +1,5 @@
 const list = [
-  { id: 1, title: "扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题扫一扫商品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
+  { id: 1, title: "扫一扫商品标题扫一扫商品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
   { id: 2, title: "扫一扫商品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
   { id: 3, title: "扫一扫商品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },
   { id: 4, title: "扫一扫商品标题", imgSrc: "https://img.yzcdn.cn/vant/cat.jpeg" },

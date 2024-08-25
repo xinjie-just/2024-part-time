@@ -1,11 +1,12 @@
-// pages/free-purchase/goods-details/index.js
-Page({
+import Toast from '/@vant/weapp/toast/toast';
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
-    id: null
+    id: null,
+    paymentMethodShow: false,
   },
 
   /**
@@ -13,62 +14,38 @@ Page({
    */
   onLoad(options) {
     this.setData({
-      id: +options.id
-    })
+      id: +options.id,
+    });
   },
 
   onToSelectPaymentMethod() {
-    wx.navigateTo({
-      url: '/pages/payment-method/index',
-    })
+    // wx.navigateTo({
+    //   url: '/pages/payment-method/index',
+    // })
+
+    this.setData({
+      paymentMethodShow: true,
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  onConfirm() {
+    this.setData({
+      paymentMethodShow: false,
+    });
+    Toast({
+      type: 'success',
+      message: '支付成功',
+      onClose: () => {
+        wx.redirectTo({
+          url: 'guessing',
+        });
+      },
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
+  onClose() {
+    this.setData({
+      paymentMethodShow: false,
+    });
   },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-    console.log("onPullDownRefresh")
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
-})
+});

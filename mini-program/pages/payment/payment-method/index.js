@@ -1,8 +1,6 @@
-// pages/payment-method/index.js
 import Toast from '/@vant/weapp/toast/toast';
 
-Page({
-
+Component({
   /**
    * 页面的初始数据
    */
@@ -13,9 +11,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
-
-  },
+  onLoad(options) {},
 
   onChange(event) {
     this.setData({
@@ -30,19 +26,12 @@ Page({
     });
   },
 
-  onGoBack() {
-    wx.navigateBack();
+  methods: {
+    onConfirm() {
+      this.triggerEvent('confirm');
+    },
+    onGoBack() {
+      this.triggerEvent('close');
+    },
   },
-
-  onConfirm() {
-    Toast({
-      type: 'success',
-      message: '支付成功',
-      onClose: () => {
-        wx.redirectTo({
-          url: 'guessing',
-        });
-      },
-    });
-  }
-})
+});

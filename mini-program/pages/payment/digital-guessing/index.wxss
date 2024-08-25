@@ -1,4 +1,3 @@
-/* pages/payment/digital-guessing/index.wxss */
 .page {
   padding-bottom: 32rpx;
 }

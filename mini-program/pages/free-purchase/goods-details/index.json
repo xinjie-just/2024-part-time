@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "PK 品详情",
-  "usingComponents": {}
+  "usingComponents": {
+    "payment-method": "/pages/payment/payment-method/index"
+  }
 }

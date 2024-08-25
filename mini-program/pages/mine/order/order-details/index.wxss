@@ -33,18 +33,3 @@
   margin-top: 32rpx;
   margin-bottom: 32rpx;
 }
-
-.buy-btn {
-  position: fixed;
-  bottom: 16rpx;
-  right: 264rpx;
-  left: 264rpx;
-  height: 72rpx;
-  line-height: 72rpx;
-  border-radius: 100rpx;
-  border: 1px solid #1989fa;
-  background-color: rgba(255, 255, 255, 0.85);
-  color: #1989fa;
-  font-size: 32rpx;
-  text-align: center;
-}

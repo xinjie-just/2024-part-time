@@ -19,7 +19,6 @@ Page({
     this.getList(false);
   },
   getList(more) {
-    console.log('getList');
     if (this.timerId != null) {
       clearTimeout(this.timerId);
     }
@@ -81,5 +80,12 @@ Page({
         this.getList(true);
       },
     );
+  },
+  onViewDetails(e) {
+    const data = e.currentTarget.dataset;
+    const id = data.id;
+    wx.navigateTo({
+      url: `./order-details/index?id=${id}`,
+    });
   },
 });

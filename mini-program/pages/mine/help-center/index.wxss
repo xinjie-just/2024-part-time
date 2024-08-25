@@ -1,4 +1,3 @@
-/* pages/mine/help-center/index.wxss */
 .page {
   padding: 24rpx;
   font-size: 28rpx;

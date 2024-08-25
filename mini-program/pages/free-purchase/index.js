@@ -20,7 +20,6 @@ Page({
     this.getList(false);
   },
   getList(more) {
-    console.log('getList');
     if (this.timerId != null) {
       clearTimeout(this.timerId);
     }

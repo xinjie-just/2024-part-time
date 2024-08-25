@@ -1,7 +1,5 @@
-// pages/payment/digital-guessing/index.js
 import Dialog from '/@vant/weapp/dialog/dialog';
 import Toast from '/@vant/weapp/toast/toast';
-import { areArraysEqual } from '../../../utils/util';
 
 Page({
   /**
@@ -18,6 +16,7 @@ Page({
     activeNames: [],
     digit: 5,
     numbers: [],
+    paymentMethodShow: false,
   },
 
   /**
@@ -100,8 +99,33 @@ Page({
   },
 
   onBuy() {
-    wx.navigateTo({
-      url: '/pages/payment/payment-method/index',
+    // wx.navigateTo({
+    //   url: '/pages/payment/payment-method/index',
+    // });
+
+    this.setData({
+      paymentMethodShow: true,
+    });
+  },
+
+  onConfirm() {
+    this.setData({
+      paymentMethodShow: false,
+    });
+    Toast({
+      type: 'success',
+      message: '支付成功',
+      onClose: () => {
+        wx.redirectTo({
+          url: 'guessing',
+        });
+      },
+    });
+  },
+
+  onClose() {
+    this.setData({
+      paymentMethodShow: false,
     });
   },
 });

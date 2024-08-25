@@ -2,19 +2,38 @@
   padding: 32rpx;
 }
 
-.tips {
-  margin-bottom: 40rpx;
-}
-
-.footer {
+.header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  margin-top: 72rpx;
-  padding-right: 40rpx;
-  padding-left: 40rpx;
+  justify-content: space-between;
+  padding: 8rpx 32rpx;
+  margin-bottom: 24rpx;
 }
 
-.footer .van-button {
-  width: 240rpx;
+.header .btn {
+  padding: 12rpx 32rpx;
+  font-size: 28rpx;
+}
+
+.header .confirm-btn {
+  color: #1989fa;
+}
+
+.header .title {
+  font-size: 32rpx;
+}
+
+.amount {
+  padding: 24rpx 32rpx;
+  margin-bottom: 8rpx;
+}
+
+.amount .sub {
+  font-size: 28rpx;
+}
+
+.amount .value {
+  color: #d48806;
+  margin-right: 8rpx;
+  margin-left: 8rpx;
 }

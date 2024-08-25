@@ -1,29 +1,26 @@
-<!--pages/payment/digital-guessing/index.wxml-->
 <view class="page">
   <van-notice-bar mode="closeable" text="参与数字竞猜，挑战 0 元购" />
-
   <van-collapse value="{{ activeNames }}" class="desc" bind:change="onChange">
     <van-collapse-item name="1" title="数字竞猜规则">
       数字位数由该商品属性编辑时所确定，数字谜底由系统自行完成设置，每数皆为 0~9 中的随机数，猜中全部数字则成功，否则失败。
     </van-collapse-item>
   </van-collapse>
-
   <view class="card">
     <view class="title">商家数谜底</view>
     <view class="body">
       <view wx:for="{{businessNumbers}}" wx:key="index" class="item">{{item}}</view>
     </view>
   </view>
-
   <view class="card">
     <van-button round size="small" type="info" bind:click="onShowResult">显示谜底</van-button>
     <text class="result">数字竞猜结果：{{ results[result] }}</text>
   </view>
-
   <view class="card">
     <view class="title">
       <text>我猜的数</text>
-      <van-button plain hairline round size="small" type="info" bind:click="onProduceRandom">生成一组随机数</van-button>
+      <van-button plain hairline round size="small" type="info" bind:click="onProduceRandom">
+        生成一组随机数
+      </van-button>
     </view>
     <van-cell-group>
       <van-cell wx:for="{{ numbers }}" wx:key="index" required clearable label="第 {{index + 1}} 位数">
@@ -31,13 +28,18 @@
       </van-cell>
     </van-cell-group>
   </view>
-
   <view class="footer">
-    <van-button wx:if="{{result === '2'}}" round type="info" bind:click="onToPK">进入 PK 环节</van-button>
-    <van-button wx:if="{{result === '3'}}" round type="info" bind:click="onContinue">继续挑战</van-button>
-    <van-button wx:if="{{result === '3'}}" plain hairline round type="info" bind:click="onBuy">直接购买</van-button>
+    <van-button wx:if="{{result === '2'}}" round type="info" bind:click="onToPK">
+      进入 PK 环节
+    </van-button>
+    <van-button wx:if="{{result === '3'}}" round type="info" bind:click="onContinue">
+      继续挑战
+    </van-button>
+    <van-button wx:if="{{result === '3'}}" plain hairline round type="info" bind:click="onBuy">
+      直接购买
+    </van-button>
   </view>
-
+  <payment-method wx:if="{{ paymentMethodShow }}" bind:close="onClose" bind:confirm="onConfirm" />
   <van-dialog id="van-dialog" />
   <van-toast id="van-toast" />
 </view>

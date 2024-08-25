@@ -13,7 +13,8 @@ Page({
     message: "",
     wishes,
     wishesOptions: [],
-    showOptions: false
+    showOptions: false,
+    paymentMethodShow: false
   },
 
   /**
@@ -66,9 +67,12 @@ Page({
   onSave() {
     console.log("title", this.data.title);
     console.log("message", this.data.message);
-    wx.navigateTo({
-      url: '/pages/payment/payment-method/index',
-    })
+    // wx.navigateTo({
+    //   url: '/pages/payment/payment-method/index',
+    // })
+    this.setData({
+      paymentMethodShow: true
+    });
   },
 
   onCancel() {
@@ -82,6 +86,27 @@ Page({
       .catch(() => {
         // on cancel
       });
+  },
+
+  onConfirm() {
+    this.setData({
+      paymentMethodShow: false
+    });
+    Toast({
+      type: 'success',
+      message: '支付成功',
+      onClose: () => {
+        wx.redirectTo({
+          url: 'guessing',
+        });
+      },
+    });
+  },
+
+  onClose() {
+    this.setData({
+      paymentMethodShow: false
+    });
   },
 
   /**

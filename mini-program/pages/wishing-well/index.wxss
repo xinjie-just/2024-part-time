@@ -1,4 +1,3 @@
-/* pages/wishingWell/index.wxss */
 .page {
   position: relative;
   height: 100vh;

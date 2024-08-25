@@ -1,4 +1,1 @@
-<!--pages/mine/help-center/index.wxml-->
-<view class="page">
-  帮助中心
-</view>
+<view class="page">帮助中心</view>

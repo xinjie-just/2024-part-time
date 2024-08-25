@@ -12,6 +12,7 @@
     "pages/mine/about/index",
     "pages/mine/wallet/index",
     "pages/mine/order/index",
+    "pages/mine/order/order-details/index",
     "pages/mine/apply-for-area-management/index",
     "pages/mine/how-to-earn-points/index",
     "pages/mine/help-center/index",

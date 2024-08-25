@@ -1,5 +1,4 @@
 import { fetchUserCenter } from '../../services/usercenter/fetchUsercenter';
-import Toast from 'tdesign-miniprogram/toast/index';
 
 const menuData = [
   [
@@ -86,35 +85,29 @@ Page({
   },
 
   fetUseriInfoHandle() {
-    fetchUserCenter().then(
-      ({
+    fetchUserCenter().then(({ userInfo, countsData, customerServiceInfo }) => {
+      // eslint-disable-next-line no-unused-expressions
+      menuData?.[0].forEach((v) => {
+        countsData.forEach((counts) => {
+          if (counts.type === v.type) {
+            // eslint-disable-next-line no-param-reassign
+            v.tit = counts.num;
+          }
+        });
+      });
+      this.setData({
         userInfo,
-        countsData,
+        menuData,
         customerServiceInfo,
-      }) => {
-        // eslint-disable-next-line no-unused-expressions
-        menuData?.[0].forEach((v) => {
-          countsData.forEach((counts) => {
-            if (counts.type === v.type) {
-              // eslint-disable-next-line no-param-reassign
-              v.tit = counts.num;
-            }
-          });
-        });
-        this.setData({
-          userInfo,
-          menuData,
-          customerServiceInfo,
-          currAuthStep: 2,
-        });
-        wx.stopPullDownRefresh();
-      },
-    );
+        currAuthStep: 2,
+      });
+      wx.stopPullDownRefresh();
+    });
   },
 
   onClickCell({ currentTarget }) {
     const { type, url } = currentTarget.dataset.item;
-    if (type !== "service") {
+    if (type !== 'service') {
       wx.navigateTo({ url });
     } else {
       this.openMakePhone();

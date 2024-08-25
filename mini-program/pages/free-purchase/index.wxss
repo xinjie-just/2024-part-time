@@ -1,4 +1,3 @@
-/* pages/freePurchase/index.wxss */
 .page {
   box-sizing: border-box;
   height: 100vh;

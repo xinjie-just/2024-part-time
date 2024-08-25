@@ -23,8 +23,8 @@
 
 .thead {
   font-size: 28rpx;
-  line-height: 96rpx;
-  height: 96rpx;
+  line-height: 100rpx;
+  height: 100rpx;
   padding: 0 16rpx;
   border-bottom: 1px solid #f0f0f0;
   box-shadow: 0 4rpx 16rpx 4rpx rgba(205, 205, 205, 0.2);
@@ -41,52 +41,52 @@
 }
 
 .index {
-  width: 80rpx;
+  width: 70rpx;
+}
+
+.sum {
+  width: 140rpx;
 }
 
 .time {
   flex: 1;
 }
 
-.points {
-  width: 110rpx;
-}
-
 .source {
-  width: 90rpx;
+  width: 88rpx;
 }
 
 .tag {
   display: block;
+  box-sizing: border-box;
   width: 88rpx;
-  line-height: 44rpx;
+  line-height: 42rpx;
   border-radius: 8rpx;
   text-align: center;
-  border: 1rpx solid #000;
+  border: 2rpx solid #000;
 }
 
-.offline {
-  color: #cf1322;
-  background: #fff1f0;
-  border-color: #ffa39e;
+.order {
+  color: #d46b08;
+  background-color: #fff7e6;
+  border-color: #ffd591;
 }
 
-.consumption {
-  color: #389e0d;
-  background: #f6ffed;
-  border-color: #b7eb8f;
-}
-
-.pk {
+.charge {
   color: #0958d9;
-  background: #e6f4ff;
+  background-color: #e6f4ff;
   border-color: #91caff;
+}
+
+.rebate {
+  color: #531dab;
+  background: #f9f0ff;
+  border-color: #d3adf7;
 }
 
 .share {
   color: #531dab;
-  background: #f9f0ff;
-  border-color: #d3adf7;
+  background-color: #f9f0ff;
 }
 
 .tbody {
@@ -97,7 +97,7 @@
 
 .tr {
   font-size: 26rpx;
-  line-height: 46rpx;
+  line-height: 48rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;

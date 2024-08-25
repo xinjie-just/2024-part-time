@@ -1,6 +1,4 @@
-// pages/free-purchase/p-k-field/components/rock-paper-scissors/index.js
-
-import Toast from "/@vant/weapp/toast/toast";
+import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
 
 Page({
@@ -10,20 +8,20 @@ Page({
   data: {
     icon: {
       rock: {
-        default: "/assets/images/free-purchase/rock.png",
-        own: "/assets/images/free-purchase/rock-own.png",
-        other: "/assets/images/free-purchase/rock-other.png"
+        default: '/assets/images/free-purchase/rock.png',
+        own: '/assets/images/free-purchase/rock-own.png',
+        other: '/assets/images/free-purchase/rock-other.png',
       },
       scissor: {
-        default: "/assets/images/free-purchase/scissor.png",
-        own: "/assets/images/free-purchase/scissor-own.png",
-        other: "/assets/images/free-purchase/scissor-other.png"
+        default: '/assets/images/free-purchase/scissor.png',
+        own: '/assets/images/free-purchase/scissor-own.png',
+        other: '/assets/images/free-purchase/scissor-other.png',
       },
       paper: {
-        default: "/assets/images/free-purchase/paper.png",
-        own: "/assets/images/free-purchase/paper-own.png",
-        other: "/assets/images/free-purchase/paper-other.png"
-      }
+        default: '/assets/images/free-purchase/paper.png',
+        own: '/assets/images/free-purchase/paper-own.png',
+        other: '/assets/images/free-purchase/paper-other.png',
+      },
     },
     time: 60 * 1000,
     timeData: {},
@@ -40,8 +38,8 @@ Page({
       message: '正在匹配对手',
       onClose: () => {
         this.setData({
-          matched: true
-        })
+          matched: true,
+        });
       },
     });
   },
@@ -54,8 +52,8 @@ Page({
       message: '正在为您匹配对手...',
       onClose: () => {
         this.setData({
-          matched: true
-        })
+          matched: true,
+        });
       },
     });
   },
@@ -75,7 +73,7 @@ Page({
       .then(() => {
         wx.redirectTo({
           url: '/pages/free-purchase/p-k-field/index',
-        })
+        });
       })
       .catch(() => {
         // on cancel
@@ -102,9 +100,9 @@ Page({
         countDown.pause();
         this.setData({
           result: 2,
-          ownRadio: "1",
-          otherRadio: "3",
-        })
+          ownRadio: '1',
+          otherRadio: '3',
+        });
       },
     });
   },
@@ -141,4 +139,4 @@ Page({
       otherRadio: e.detail,
     });
   },
-})
+});
