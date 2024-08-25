@@ -5,13 +5,9 @@
     <view>
       pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容
     </view>
-    <image src="/assets/images/free-purchase/details3.jpg" mode="widthFix" />
     <view>
       pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容pk 品详情内容
     </view>
-    <image src="/assets/images/free-purchase/details4.webp" mode="widthFix" />
-    <image src="/assets/images/free-purchase/details5.webp" mode="widthFix" />
-    <image src="/assets/images/free-purchase/details6.webp" mode="widthFix" />
   </view>
   <view class="buy-btn" bind:tap="onToSelectPaymentMethod">0 元购</view>
   <payment-method wx:if="{{ paymentMethodShow }}" bind:close="onClose" bind:confirm="onConfirm" />
