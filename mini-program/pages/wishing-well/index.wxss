@@ -32,6 +32,10 @@
   color: #ed6a0c;
 }
 
+.right .van-button {
+  width: 200rpx;
+}
+
 .card {
   padding-right: 16rpx;
   padding-left: 16rpx;
@@ -96,25 +100,4 @@
 .item .title {
   margin-bottom: 16rpx;
   font-size: 28rpx;
-}
-
-.item .other {
-  display: flex;
-  align-items: center;
-  font-size: 24rpx;
-}
-
-.item .time {
-  margin-right: 24rpx;
-  border-right: 1rpx solid #ededed;
-}
-
-.time .value {
-  display: inline-block;
-  width: 256rpx;
-}
-
-.reference-value .value {
-  color: #d48806;
-  margin-right: 8rpx;
 }

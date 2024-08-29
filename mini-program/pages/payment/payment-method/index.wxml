@@ -10,12 +10,12 @@
       本次应支付金额
       <text class="value">9.9</text>
       元
-      <text class="sub">（1 元 = 100 积分）</text>
+      <text wx:if="{{!hidePoints}}" class="sub">（1 元 = 100 积分）</text>
       。
     </view>
     <van-radio-group value="{{ radio }}" bind:change="onChange">
       <van-cell-group>
-        <van-cell title="积分（剩余 3000）" clickable data-name="point" bind:click="onClick">
+        <van-cell wx:if="{{!hidePoints}}" title="积分（剩余 3000）" clickable data-name="point" bind:click="onClick">
           <van-radio slot="right-icon" name="point" />
         </van-cell>
         <van-cell title="余额（剩余 400 元）" clickable data-name="balance" bind:click="onClick">

@@ -1,9 +1,11 @@
-import Toast from '/@vant/weapp/toast/toast';
-
 Component({
   /**
    * 页面的初始数据
    */
+  properties: {
+    hidePoints: false
+  },
+
   data: {
     radio: 'point',
   },
@@ -11,7 +13,7 @@ Component({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {},
+  onLoad(options) { },
 
   onChange(event) {
     this.setData({

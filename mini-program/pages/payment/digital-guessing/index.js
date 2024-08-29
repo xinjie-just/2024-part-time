@@ -17,6 +17,7 @@ Page({
     digit: 5,
     numbers: [],
     paymentMethodShow: false,
+    source: 'wishing', // 'wishing'：许愿，'freePurchase'：0 元购
   },
 
   /**
@@ -24,6 +25,7 @@ Page({
    */
   onLoad(options) {
     this.setData({
+      source: options.source,
       numbers: new Array(this.data.digit).fill(5),
       businessNumbers: new Array(this.data.digit).fill('-'),
     });
@@ -126,6 +128,12 @@ Page({
   onClose() {
     this.setData({
       paymentMethodShow: false,
+    });
+  },
+
+  onExit() {
+    wx.switchTab({
+      url: '/pages/wishing-well/index',
     });
   },
 });

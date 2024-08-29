@@ -23,17 +23,7 @@
         </view>
         <view class="td center">
           <view class="title">{{ item.name }}</view>
-          <view class="other">
-            <text class="time">
-              <text class="key">许愿时间：</text>
-              <text class="value">{{ item.time || "--" }}</text>
-            </text>
-            <text class="reference-value">
-              <text class="key">价值：</text>
-              <text class="value">{{ item.referenceValue || "--" }}</text>
-              <text wx:if="{{item.referenceValue}}">元</text>
-            </text>
-          </view>
+          <view class="time">许愿时间：{{ item.time || "--" }}</view>
         </view>
       </view>
       <view wx:if="{{hasMoreData}}" class="more-btn">

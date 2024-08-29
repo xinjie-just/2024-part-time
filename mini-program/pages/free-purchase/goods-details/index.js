@@ -37,7 +37,7 @@ Page({
       message: '支付成功',
       onClose: () => {
         wx.redirectTo({
-          url: 'guessing',
+          url: '../../payment/digital-guessing/index?source=freePurchase',
         });
       },
     });
