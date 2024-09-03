@@ -2,15 +2,8 @@
   <a-layout class="layout">
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" :width="256" collapsible>
       <div class="logo">logo</div>
-      <a-menu
-        v-model:openKeys="state.openKeys"
-        v-model:selectedKeys="state.selectedKeys"
-        mode="inline"
-        theme="dark"
-        :items="menus"
-        @click="onSelectMenu"
-        class="menu"
-      ></a-menu>
+      <a-menu v-model:openKeys="state.openKeys" v-model:selectedKeys="state.selectedKeys" mode="inline" theme="dark"
+        :items="menus" @click="onSelectMenu" class="menu"></a-menu>
       <div :class="collapsed ? 'phone' : 'fold-phone phone'">
         <a-tooltip v-if="collapsed" placement="right">
           <template #title>
@@ -26,16 +19,11 @@
     </a-layout-sider>
     <a-layout>
       <a-layout-header class="header">
-        <menu-unfold-outlined
-          v-if="collapsed"
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
+        <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />
         <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
         <a-dropdown>
           <!-- TODO:用户名 -->
-          <a class="ant-dropdown-link" @click.prevent
-            >用户名
+          <a class="ant-dropdown-link" @click.prevent>用户名
             <DownOutlined />
           </a>
           <template #overlay>
@@ -69,6 +57,7 @@ import { routes } from '@/routers';
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue';
+import { logout } from '@/services';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const visible = ref(false);
@@ -169,13 +158,15 @@ const onLogout = () => {
     icon: createVNode(QuestionCircleOutlined),
     okType: 'danger',
     onOk() {
-      const username = localStorage.getItem('username');
-      localStorage.clear(); // 清除本地存储中的 token
-      sessionStorage.clear(); // 清除本地存储中的 token
-      if (username) {
-        localStorage.setItem('username', username);
-      }
-      router.push('/login');
+      logout().then(() => {
+        const username = localStorage.getItem('username');
+        localStorage.clear(); // 清除本地存储中的 token
+        sessionStorage.clear(); // 清除本地存储中的 token
+        if (username) {
+          localStorage.setItem('username', username);
+        }
+        router.push('/login');
+      });
     }
   });
 };

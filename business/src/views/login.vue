@@ -3,34 +3,17 @@
   <div class="page">
     <div class="container">
       <h1 class="title">登 录</h1>
-      <a-form
-        layout="vertical"
-        :label-col="{ span: 4 }"
-        :rules="rules"
-        ref="formRef"
-        autocomplete="off"
-        :model="form"
-      >
+      <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form">
         <a-form-item label="用户名" name="username">
-          <a-input
-            v-model:value.trim="form.username"
-            placeholder="请输入用户名"
-            allow-clear
-            @pressEnter="onSubmit"
-          >
+          <a-input v-model:value.trim="form.username" placeholder="请输入用户名" allow-clear @pressEnter="onSubmit">
             <template #prefix>
               <UserOutlined />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item label="密码" name="password">
-          <a-input-password
-            v-model:value.trim="form.password"
-            :maxlength="16"
-            placeholder="请输入密码（6-16 位，必须包含数字和字母）"
-            allow-clear
-            @pressEnter="onSubmit"
-          >
+          <a-input-password v-model:value.trim="form.password" :maxlength="16" placeholder="请输入密码（6-16 位，必须包含数字和字母）"
+            allow-clear @pressEnter="onSubmit">
             <template #prefix>
               <LockOutlined />
             </template>
@@ -43,14 +26,8 @@
           </a-flex>
         </a-form-item>
         <a-form-item>
-          <a-button
-            block
-            type="primary"
-            :disabled="disabled || loading"
-            :loading="loading"
-            @click="onSubmit"
-            >登录</a-button
-          >
+          <a-button block type="primary" :disabled="disabled || loading" :loading="loading"
+            @click="onSubmit">登录</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -64,6 +41,8 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref, UnwrapRef } f
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import { Rule } from 'ant-design-vue/es/form';
+import { login } from '@/services';
+import { message } from 'ant-design-vue';
 
 interface ILogin {
   username: string;
@@ -118,19 +97,22 @@ onMounted(() => {
 const onSubmit = async (): Promise<void> => {
   try {
     await formRef.value?.validate();
-    console.log('表单验证成功', form);
     // 这里可以添加提交表单的逻辑
     loading.value = true;
-    setTimeout(() => {
+    const params = {
+      loginName: form.username,
+      passWord: form.password
+    };
+    login(params).then((res) => {
       loading.value = false;
+      const token = res.token || "";
+
       if (form.remember) {
         localStorage.setItem('username', form.username);
       } else {
         localStorage.removeItem('username');
       }
       // 登录后存一份 token，后续通过本地存储中有没有 token 来判断用户有没有登录
-      // 从 26 个小写英文字母中随机生成 11 位，作为一串随机字符串
-      const token = Math.random().toString(36).substring(2);
       localStorage.setItem('token', token);
 
       // 未登录情况下打开的页面路径
@@ -140,9 +122,9 @@ const onSubmit = async (): Promise<void> => {
       } else {
         router.push('/');
       }
-    }, 1000);
+    });
   } catch (error) {
-    console.log('表单验证失败', error);
+    message.warning('表单验证失败')
     loading.value = false;
   }
 };

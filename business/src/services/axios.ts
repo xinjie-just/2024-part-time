@@ -1,16 +1,22 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // 定义你的响应数据类型
-interface IResponseData<T = any> {
+interface IBaseResponse<T> {
+  token: string;
+  code: number;
   data: T;
   status: number;
   message: string;
-  // 其他可能的响应字段...
+  ok: boolean;
+}
+
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+  hideLoading?: boolean;
 }
 
 // 创建一个 axios 实例
 const instance: AxiosInstance = axios.create({
-  baseURL: process.env.VUE_APP_API_BASE_URL || 'https://api.example.com', // API基础URL
+  baseURL: '/api/', // API基础URL
   timeout: 10000, // 请求超时时间（毫秒）
   headers: { 'Content-Type': 'application/json;charset=utf-8' }, // 默认请求头
   withCredentials: true // 允许跨域请求时携带凭证
@@ -18,12 +24,12 @@ const instance: AxiosInstance = axios.create({
 
 // 请求拦截器
 instance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config) => {
     // 在发送请求之前做些什么，比如添加认证信息
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.token = token;
+    }
     return config;
   },
   (error: any) => {
@@ -34,14 +40,14 @@ instance.interceptors.request.use(
 
 // 响应拦截器
 instance.interceptors.response.use(
-  (response: AxiosResponse<IResponseData>) => {
+  (response: AxiosResponse) => {
     // 对响应数据做点什么
     // 例如，检查状态码并处理错误
-    const { data, message } = response.data;
-    if (response.status === 200) {
-      return data; // 假设响应体遵循 IResponseData 格式
+    const { status, data } = response;
+    if (status === 200) {
+      return data || []; // 假设响应体遵循 IResponseData 格式
     } else {
-      return Promise.reject(new Error('Error: ' + message));
+      return Promise.reject(new Error('Error: ' + data.message));
     }
   },
   (error: any) => {
@@ -64,15 +70,14 @@ instance.interceptors.response.use(
   }
 );
 
-// 导出 axios 实例
-export default instance;
+const request = <T>(config: CustomAxiosRequestConfig): Promise<IBaseResponse<T>> => {
+  return new Promise((resolve, reject) => {
+    instance
+      .request<IBaseResponse<T>>(config)
+      .then((res) => resolve(res.data))
+      .catch((err) => reject(err));
+  });
+};
 
-// 使用示例
-// 假设你有一个获取用户列表的 API
-// instance.get<IResponseData<User[]>>('/users')
-//   .then(users => {
-//     // 处理用户列表
-//   })
-//   .catch(error => {
-//     // 处理错误
-//   });
+// 导出 axios 实例
+export default request;
