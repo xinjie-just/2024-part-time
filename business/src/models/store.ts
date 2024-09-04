@@ -3,7 +3,7 @@ export interface IStore {
   storeName: string;
   phone: string;
   registrationTime: string;
-  property: string;
+  property: number;
   status: number;
   action?: () => void;
 }

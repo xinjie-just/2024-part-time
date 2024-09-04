@@ -22,8 +22,8 @@
         <menu-unfold-outlined v-if="collapsed" class="trigger" @click="() => (collapsed = !collapsed)" />
         <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
         <a-dropdown>
-          <!-- TODO:用户名 -->
-          <a class="ant-dropdown-link" @click.prevent>用户名
+          <a class="ant-dropdown-link" @click.prevent>
+            {{ userName }}
             <DownOutlined />
           </a>
           <template #overlay>
@@ -57,10 +57,12 @@ import { routes } from '@/routers';
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue';
-import { logout } from '@/services';
+import { getUserInfo, logout } from '@/services';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const visible = ref(false);
+
+const userName = ref('');
 
 const route = useRoute();
 const router = useRouter();
@@ -100,6 +102,7 @@ onMounted(() => {
   const menuRoutes = newRoutes.filter((item) => item.redirect !== '/');
   menus.value = convertToAntdMenu(menuRoutes);
   handleMenu();
+  getUserInfoFn();
 });
 /**
  * 将菜单数据转换为 Ant Design 的菜单格式
@@ -169,6 +172,13 @@ const onLogout = () => {
       });
     }
   });
+};
+
+const getUserInfoFn = () => {
+  getUserInfo().then((res) => {
+    const result = res.data;
+    userName.value = result.name;
+  })
 };
 
 const onUpdatePassword = (): void => {

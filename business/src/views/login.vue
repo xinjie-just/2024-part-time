@@ -105,7 +105,9 @@ const onSubmit = async (): Promise<void> => {
     };
     login(params).then((res) => {
       loading.value = false;
-      const token = res.token || "";
+
+      const result = res.data;
+      const token = result.token || "";
 
       if (form.remember) {
         localStorage.setItem('username', form.username);

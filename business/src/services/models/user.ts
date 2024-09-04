@@ -25,14 +25,10 @@ export interface ILoginRes {
  */
 export interface IGetUserInfoRes {
   id: number;
-  shopId: number;
-  userName: string;
+  name: string;
   loginName: string;
   phone: string;
   email: string;
-  type: number;
   registerTime: string;
   headIcon: string;
-  remake: string;
-  state: number;
 }

@@ -2,11 +2,10 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 // 定义你的响应数据类型
 interface IBaseResponse<T> {
-  token: string;
-  code: number;
+  code?: number;
   data: T;
-  status: number;
-  message: string;
+  status?: number;
+  message?: string;
   ok: boolean;
 }
 
@@ -45,7 +44,7 @@ instance.interceptors.response.use(
     // 例如，检查状态码并处理错误
     const { status, data } = response;
     if (status === 200) {
-      return data || []; // 假设响应体遵循 IResponseData 格式
+      return response || []; // 假设响应体遵循 IResponseData 格式
     } else {
       return Promise.reject(new Error('Error: ' + data.message));
     }
@@ -54,17 +53,14 @@ instance.interceptors.response.use(
     // 对响应错误做点什么
     if (error.response) {
       // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-      console.error('Error response:', error.response.data);
       return Promise.reject(error.response.data);
     } else if (error.request) {
       // 请求已发出，但没有收到响应
       // 例如，网络错误或请求被取消
-      console.error('No response received:', error.request);
       return Promise.reject(error.request);
     } else {
       // 发送请求时发生了某些事情，导致请求没有被发送
       // 例如，配置错误或网络错误（DNS 解析失败等）
-      console.error('Error creating request:', error.message);
       return Promise.reject(error.message);
     }
   }
