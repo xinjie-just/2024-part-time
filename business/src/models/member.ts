@@ -1,6 +1,6 @@
 export interface IMember {
   index?: number;
-  id: number;
+  id: string;
   nickName: string;
   avatar: string;
   phone: string;

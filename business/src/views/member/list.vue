@@ -3,43 +3,19 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="name">姓名：</label>
-      <a-input
-        v-model:value.trim="name"
-        id="name"
-        allow-clear
-        placeholder="请输入姓名"
-        class="input"
-        @pressEnter="onSearch"
-      />
+      <a-input v-model:value.trim="name" id="name" allow-clear placeholder="请输入姓名" class="input"
+        @pressEnter="onSearch" />
     </div>
     <div class="search-item">
       <label class="label" for="phone">手机号码：</label>
-      <a-input
-        v-model:value.trim="phone"
-        id="phone"
-        allow-clear
-        placeholder="请输入手机号码"
-        class="input"
-        @pressEnter="onSearch"
-      />
+      <a-input v-model:value.trim="phone" id="phone" allow-clear placeholder="请输入手机号码" class="input"
+        @pressEnter="onSearch" />
     </div>
     <div class="search-item">
-      <a-button
-        type="primary"
-        html-type="submit"
-        :loading="searchLoading"
-        :disabled="resetLoading || tableLoading"
-        @click="onSearch"
-        >搜索</a-button
-      >
-      <a-button
-        html-type="reset"
-        :loading="resetLoading"
-        :disabled="searchLoading || tableLoading"
-        @click="onReset"
-        class="reset-btn"
-        >重置</a-button
-      >
+      <a-button type="primary" html-type="submit" :loading="searchLoading" :disabled="resetLoading || tableLoading"
+        @click="onSearch">搜索</a-button>
+      <a-button html-type="reset" :loading="resetLoading" :disabled="searchLoading || tableLoading" @click="onReset"
+        class="reset-btn">重置</a-button>
     </div>
   </div>
   <a-button type="primary" class="send-btn" :disabled="!selectedIds.length" @click="onSend">
@@ -48,16 +24,9 @@
     </template>
     发送信息
   </a-button>
-  <a-table
-    :columns="columns"
-    :data-source="data"
-    :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }"
-    :pagination="false"
-    size="small"
-    :scroll="{ x: 1000, y: 400 }"
-    :loading="tableLoading"
-    row-key="id"
-  >
+  <a-table :columns="columns" :data-source="data"
+    :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false" size="small"
+    :scroll="{ x: 1000, y: 400 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
@@ -75,20 +44,10 @@
       </template>
     </template>
   </a-table>
-  <a-pagination
-    v-if="page.total"
-    v-model:current="page.current"
-    v-model:pageSize="page.pageSize"
-    :page-size-options="['10', '20', '30', '40', '50']"
-    show-size-changer
-    show-quick-jumper
-    :total="page.total"
-    :show-total="(total) => `共 ${total} 条`"
-    size="small"
-    :disabled="tableLoading"
-    class="pagination"
-    @change="onChange"
-  />
+  <a-pagination v-if="page.total" v-model:current="page.current" v-model:pageSize="page.pageSize"
+    :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
+    :show-total="(total) => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination"
+    @change="onChange" />
 </template>
 
 <script setup lang="ts">
@@ -96,162 +55,7 @@ import { h, onMounted, Ref, ref } from 'vue';
 import { SendOutlined } from '@ant-design/icons-vue';
 import { IMember, IPage } from '@/models';
 import { message, Modal } from 'ant-design-vue';
-const result = [
-  {
-    id: 1,
-    nickName: '昵称1',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138000',
-    registrationTime: '2023-01-01 12:00:00'
-  },
-  {
-    id: 2,
-    nickName: '昵称2',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138001',
-    registrationTime: '2023-01-02 12:00:00'
-  },
-  {
-    id: 3,
-    nickName: '昵称3',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138002',
-    registrationTime: '2023-01-03 12:00:00'
-  },
-  {
-    id: 4,
-    nickName: '昵称4',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138003',
-    registrationTime: '2023-01-04 12:00:00'
-  },
-  {
-    id: 5,
-    nickName: '昵称5',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138004',
-    registrationTime: '2023-01-05 12:00:00'
-  },
-  {
-    id: 6,
-    nickName: '昵称6',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138005',
-    registrationTime: '2023-01-06 12:00:00'
-  },
-  {
-    id: 7,
-    nickName: '昵称7',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138006',
-    registrationTime: '2023-01-07 12:00:00'
-  },
-  {
-    id: 8,
-    nickName: '昵称8',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138007',
-    registrationTime: '2023-01-08 12:00:00'
-  },
-  {
-    id: 9,
-    nickName: '昵称9',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138008',
-    registrationTime: '2023-01-09 12:00:00'
-  },
-  {
-    id: 10,
-    nickName: '昵称10',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138009',
-    registrationTime: '2023-01-10 12:00:00'
-  },
-  {
-    id: 11,
-    nickName: '昵称11',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138010',
-    registrationTime: '2023-01-11 12:00:00'
-  },
-  {
-    id: 12,
-    nickName: '昵称12',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138011',
-    registrationTime: '2023-01-12 12:00:00'
-  },
-  {
-    id: 13,
-    nickName: '昵称13',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138012',
-    registrationTime: '2023-01-13 12:00:00'
-  },
-  {
-    id: 14,
-    nickName: '昵称14',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138013',
-    registrationTime: '2023-01-14 12:00:00'
-  },
-  {
-    id: 15,
-    nickName: '昵称15',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138014',
-    registrationTime: '2023-01-15 12:00:00'
-  },
-  {
-    id: 16,
-    nickName: '昵称16',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138015',
-    registrationTime: '2023-01-16 12:00:00'
-  },
-  {
-    id: 17,
-    nickName: '昵称17',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138016',
-    registrationTime: '2023-01-17 12:00:00'
-  },
-  {
-    id: 18,
-    nickName: '昵称18',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138017',
-    registrationTime: '2023-01-18 12:00:00'
-  },
-  {
-    id: 19,
-    nickName: '昵称19',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138018',
-    registrationTime: '2023-01-19 12:00:00'
-  },
-  {
-    id: 20,
-    nickName: '昵称20',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138019',
-    registrationTime: '2023-01-20 12:00:00'
-  },
-  {
-    id: 21,
-    nickName: '昵称21',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138020',
-    registrationTime: '2023-01-21 12:00:00'
-  },
-  {
-    id: 22,
-    nickName: '昵称22',
-    avatar: 'https://via.placeholder.com/192X192',
-    phone: '13800138021',
-    registrationTime: '2023-01-22 12:00:00'
-  }
-];
+import { getMemberList, sendMessage } from '@/services';
 
 const name = ref<string>('');
 const phone = ref<string>('');
@@ -306,8 +110,6 @@ onMounted(() => {
 });
 
 const onSearch = (): void => {
-  // 模拟搜索操作，实际应从API获取数据
-  console.log('Searching with:', name.value.trim());
   page.value.current = 1;
   page.value.pageSize = 10;
   searchLoading.value = true;
@@ -316,10 +118,6 @@ const onSearch = (): void => {
 };
 
 const onReset = (): void => {
-  // 假设重新从API获取数据
-  console.log('Resetting...');
-
-  // 重置表单和表格数据
   name.value = '';
   phone.value = '';
   page.value.current = 1;
@@ -336,6 +134,7 @@ const onChange = (current: number, pageSize: number): void => {
 };
 
 const onSend = (): void => {
+  // 弹窗确认 TODO: 需要添加输入框，输入消息内容
   Modal.confirm({
     title: '发送信息',
     content: h('div', { style: { lineHeight: '24px', padding: '16px 0' } }, [
@@ -350,11 +149,15 @@ const onSend = (): void => {
     cancelText: '取消',
     onOk: () => {
       return new Promise<void>((resolve) => {
-        setTimeout(() => {
+        const params = {
+          memberId: selectedIds.value.join(','),
+          message: '这是一条测试消息'
+        };
+        sendMessage(params).then(() => {
           message.success('信息发送成功');
           getList();
           resolve();
-        }, 1000);
+        })
       }).catch(() => console.log('Oops errors!'));
     },
     onCancel() {
@@ -363,19 +166,33 @@ const onSend = (): void => {
   });
 };
 const getList = (): void => {
-  // 模拟获取列表操作，实际应从API获取数据
   tableLoading.value = true;
   selectedIds.value = [];
-  setTimeout(() => {
-    page.value.total = result.length;
-
-    const startIndex = (page.value.current - 1) * page.value.pageSize;
-    const endIndex = startIndex + page.value.pageSize;
-    data.value = result.filter((_, index) => index >= startIndex && index < endIndex);
-    searchLoading.value = false;
-    resetLoading.value = false;
-    tableLoading.value = false;
-  }, 1000);
+  const params = {
+    name: name.value.trim(),
+    phone: phone.value.trim(),
+    page: page.value.current,
+    pageSize: page.value.pageSize
+  };
+  getMemberList(params)
+    .then((res) => {
+      const result = res.data;
+      page.value.total = result.totalNum;
+      data.value = result.list.map(item => {
+        return {
+          id: item.id,
+          nickName: item.name,
+          avatar: item.headIcon,
+          phone: item.phone,
+          registrationTime: item.registerTime
+        }
+      })
+    })
+    .finally(() => {
+      searchLoading.value = false;
+      resetLoading.value = false;
+      tableLoading.value = false;
+    })
 };
 
 const onSelectChange = (selectedRowKeys: number[]) => {

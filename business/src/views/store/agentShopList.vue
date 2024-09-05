@@ -145,9 +145,6 @@ onMounted(() => {
 });
 
 const onSearch = (): void => {
-  // 模拟搜索操作，实际应从API获取数据
-  const values = formRef.value?.getFieldsValue();
-  console.log('values', values);
   page.value.current = 1;
   page.value.pageSize = 10;
   searchLoading.value = true;
@@ -157,8 +154,6 @@ const onSearch = (): void => {
 
 const onReset = (): void => {
   formRef.value.resetFields();
-  const values = formRef.value?.getFieldsValue();
-  console.log('values', values);
   page.value.current = 1;
   page.value.pageSize = 10;
   resetLoading.value = true;
@@ -185,9 +180,11 @@ const onConfirm = (): void => {
 };
 
 const getList = (): void => {
-  // 模拟获取列表操作，实际应从API获取数据
+  const values = formRef.value?.getFieldsValue();
   const params = {
-    name: formState.storeName.trim()
+    name: values.storeName.trim(),
+    page: page.value.current,
+    pageSize: page.value.pageSize
   };
   tableLoading.value = true;
   getAgentShopList(params)
@@ -227,22 +224,30 @@ const onCancelDelete = (): void => {
 };
 
 const onConfirmLock = (id: number): void => {
-  // 模拟锁定操作，实际应从API锁定数据
-  console.log('Lock--id', id);
-  message.success('锁定成功');
-  page.value.current = 1;
-  getList();
+  const params = {
+    id,
+    state: true
+  }
+  lockUnLockShop(params).then(() => {
+    message.success('锁定成功');
+    page.value.current = 1;
+    getList();
+  })
 };
 const onCancelLock = (): void => {
   message.success('您取消了锁定');
 };
 
 const onConfirmUnLock = (id: number): void => {
-  // 模拟解锁操作，实际应从API解锁数据
-  console.log('UnLock--id', id);
-  message.success('解锁成功');
-  page.value.current = 1;
-  getList();
+  const params = {
+    id,
+    state: false
+  }
+  lockUnLockShop(params).then(() => {
+    message.success('解锁成功');
+    page.value.current = 1;
+    getList();
+  })
 };
 </script>
 

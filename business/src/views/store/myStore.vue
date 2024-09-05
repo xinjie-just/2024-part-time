@@ -1,70 +1,60 @@
 <!-- 我的店铺 -->
 <template>
-  <a-descriptions
-    :column="1"
-    title="基本信息"
-    bordered
-    size="small"
-    :label-style="{ width: '120px' }"
-    :content-style="{ wordBreak: 'break-all' }"
-  >
+  <a-descriptions :column="1" title="基本信息" bordered size="small" :label-style="{ width: '120px' }"
+    :content-style="{ wordBreak: 'break-all' }">
     <template #extra>
       <a-button type="primary" @click="onEditMyShop" class="btn">编辑</a-button>
       <a-button type="primary" ghost @click="onUpdatePassword" class="btn">修改密码</a-button>
       <a-button type="default" @click="onUpgrade" class="btn">升级店铺</a-button>
     </template>
-    <a-descriptions-item label="店铺名称"
-      >店铺名称1店铺名称1店铺名称1店铺名称1店铺名称1店铺名称1</a-descriptions-item
-    >
-    <a-descriptions-item label="店铺地址">四川省成都市武侯区燃灯市东街14号</a-descriptions-item>
+    <a-descriptions-item label="店铺名称">{{ store.shopName || '' }}</a-descriptions-item>
+    <a-descriptions-item label="店铺地址">{{ store.address || '' }}</a-descriptions-item>
     <a-descriptions-item label="地图位置">
-      <baidu-map :address="'四川省成都市武侯区燃灯市东街14号'" :width="'100%'" :height="'300px'" />
+      <baidu-map :address="store.address" :width="'100%'" :height="'300px'" />
     </a-descriptions-item>
-    <a-descriptions-item label="店铺联系人">张三</a-descriptions-item>
-    <a-descriptions-item label="联系人电话">18227752001</a-descriptions-item>
-    <a-descriptions-item label="店铺介绍"
-      >店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍店铺介绍</a-descriptions-item
-    >
+    <a-descriptions-item label="店铺联系人">{{ store.linkman || '' }}</a-descriptions-item>
+    <a-descriptions-item label="联系人电话">{{ store.phone || '' }}</a-descriptions-item>
+    <a-descriptions-item label="店铺介绍">{{ store.introduce || '' }}</a-descriptions-item>
   </a-descriptions>
 
   <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" />
-  <edit-my-shop
-    v-if="editMyShopVisible"
-    @cancel="onCancelEditMyShop"
-    @confirm="onConfirmEditMyShop"
-  />
+  <edit-my-shop v-if="editMyShopVisible" @cancel="onCancelEditMyShop" @confirm="onConfirmEditMyShop" />
 </template>
 
 <script lang="ts" setup>
 import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
-import { createVNode, defineAsyncComponent, h, onMounted, ref } from 'vue';
+import { createVNode, defineAsyncComponent, h, onMounted, Ref, ref } from 'vue';
+import { getMyShopDetails, upgradeMyShop } from '@/services';
+import { IGetShopDetailsRes } from '@/services/models';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const editMyShop = defineAsyncComponent(() => import('./components/editMyShop.vue'));
 const baiduMap = defineAsyncComponent(() => import('@/components/baiduMap.vue'));
 const updatePasswordVisible = ref(false);
 const editMyShopVisible = ref(false);
+const store: Ref<IGetShopDetailsRes> = ref({
+  id: 0,
+  type: 0,
+  shopName: '',
+  address: '',
+  lonLat: '',
+  phone: '',
+  linkman: '',
+  introduce: '',
+  registerTime: '',
+  state: 0
+})
 
 onMounted(() => {
   getDetails();
 });
 
 const getDetails = async (): Promise<void> => {
-  // 模拟获取店铺详情
-  // const store: IStore = {
-  //   storeName: '店铺名称',
-  //   phone: '18227752005',
-  //   registrationTime: '2023-01-01 12:00:00',
-  //   status: '代营',
-  //   storeAddress: '四川省成都市武侯区燃灯市东街14号',
-  // }
-  // // 更新店铺信息
-  // storeName.value = store.storeName;
-  // phone.value = store.phone;
-  // registrationTime.value = store.registrationTime;
-  // status.value = store.status;
-  // storeAddress.value = store.storeAddress;
+  getMyShopDetails().then((res) => {
+    const data = res.data;
+    store.value = data;
+  })
 };
 
 const onUpdatePassword = (): void => {
@@ -106,12 +96,12 @@ const onUpgrade = (): void => {
     cancelText: '取消',
     onOk: () => {
       return new Promise<void>((resolve) => {
-        setTimeout(() => {
+        upgradeMyShop().then(() => {
           message.success('店铺升级成功');
           getDetails();
           return resolve();
-        }, 1000);
-      }).catch(() => console.log('Oops errors!'));
+        })
+      }).catch(() => console.log('操作失败!'));
     },
     onCancel() {
       console.log('Cancel');

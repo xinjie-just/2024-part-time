@@ -6,6 +6,5 @@
   "printWidth": 100,
   "trailingComma": "none",
   "useTabs": false,  
-  "bracketSpacing": true,  
-  "arrowParens": "always"  
+  "bracketSpacing": true
 }
