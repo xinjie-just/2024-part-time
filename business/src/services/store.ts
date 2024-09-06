@@ -58,11 +58,12 @@ export const lockUnLockShop = (data: ILockUnLockReq) => {
   });
 };
 
-export const getMyShopDetails = () => {
+export const getMyShopDetails = (data: { id: number }) => {
   return request<IGetShopDetailsRes>({
     url: API.getMyShopDetails,
     method: 'get',
-    hideLoading: true
+    hideLoading: true,
+    data
   });
 };
 

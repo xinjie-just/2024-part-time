@@ -7,17 +7,6 @@ export interface ILoginReq {
 }
 export interface ILoginRes {
   token: string;
-  id: number;
-  shopId: number;
-  userName: string;
-  loginName: string;
-  phone: string;
-  email: string;
-  type: number;
-  registerTime: string;
-  headIcon: string;
-  remake: string;
-  state: number;
 }
 
 /**
@@ -25,6 +14,7 @@ export interface ILoginRes {
  */
 export interface IGetUserInfoRes {
   id: number;
+  shopId: number; // 店铺 ID
   name: string;
   loginName: string;
   phone: string;

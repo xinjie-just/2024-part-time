@@ -61,6 +61,7 @@ export interface IGetShopDetailsRes {
  * @description 修改我的店铺信息 /shop/save
  */
 export interface IUpdateMyShopReq {
+  id: number; // 店铺 ID
   shopName: string;
   address: string;
   lonLat: string;

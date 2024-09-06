@@ -10,6 +10,7 @@ let geocoder = null;
 const mapContainer = ref();
 
 const props = defineProps<{ address: string; width: string; height: string }>();
+const emits = defineEmits(['setPoint']);
 
 onMounted(async () => {
   await nextTick();
@@ -41,6 +42,9 @@ const geocodeAddress = (address: string) => {
         marker.addEventListener('click', () => {
           map.openInfoWindow(infoWindow, point);
         });
+
+        // 向父组件传值，经纬度 {lat: number; lng: number}
+        emits('setPoint', point);
       } else {
         console.error('地址未找到');
       }

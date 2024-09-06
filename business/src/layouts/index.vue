@@ -178,6 +178,7 @@ const getUserInfoFn = () => {
   getUserInfo().then((res) => {
     const result = res.data;
     userName.value = result.name;
+    localStorage.setItem('userInfo', JSON.stringify(result));
   })
 };
 

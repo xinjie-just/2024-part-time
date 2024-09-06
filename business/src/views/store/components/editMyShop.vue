@@ -1,53 +1,22 @@
 <!-- 编辑我的店铺 -->
 <template>
-  <a-modal
-    v-model:open="visible"
-    :mask-closable="false"
-    :keyboard="false"
-    :width="960"
-    title="编辑我的店铺"
-    :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
-    @cancel="onCancel"
-  >
+  <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" :width="960" title="编辑我的店铺"
+    :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 3 }">
       <a-form-item label="店铺名称" name="name">
-        <a-input
-          v-model:value.trim="form.name"
-          :maxlength="30"
-          allow-clear
-          placeholder="请输入店铺名称（2-30 位字符）"
-        />
+        <a-input v-model:value.trim="form.name" :maxlength="30" allow-clear placeholder="请输入店铺名称（2-30 位字符）" />
       </a-form-item>
       <a-form-item label="店铺地址" name="address">
-        <a-input
-          v-model:value.trim="form.address"
-          :maxlength="50"
-          allow-clear
-          placeholder="请输入店铺地址（2-50 位字符）"
-        />
+        <a-input v-model:value.trim="form.address" :maxlength="50" allow-clear placeholder="请输入店铺地址（2-50 位字符）" />
       </a-form-item>
       <a-form-item label="地图位置" name="location">
-        <baidu-map
-          :address="'四川省成都市武侯区燃灯市东街14号'"
-          :width="'100%'"
-          :height="'300px'"
-        />
+        <baidu-map :address="'四川省成都市武侯区燃灯市东街14号'" @setPoint="onSetPoint" :width="'100%'" :height="'300px'" />
       </a-form-item>
       <a-form-item label="店铺联系人" name="contact">
-        <a-input
-          v-model:value.trim="form.contact"
-          :maxlength="6"
-          allow-clear
-          placeholder="请输入店铺联系人（不超过 6 个字符 ）"
-        />
+        <a-input v-model:value.trim="form.contact" :maxlength="6" allow-clear placeholder="请输入店铺联系人（不超过 6 个字符 ）" />
       </a-form-item>
       <a-form-item label="联系人电话" name="contactPhone">
-        <a-input
-          v-model:value.trim="form.contactPhone"
-          :maxlength="11"
-          allow-clear
-          placeholder="请输入正确的手机号码"
-        />
+        <a-input v-model:value.trim="form.contactPhone" :maxlength="11" allow-clear placeholder="请输入正确的手机号码" />
       </a-form-item>
       <a-form-item label="店铺介绍" name="introduce">
         <!-- <a-textarea v-model:value.trim="form.introduce" :maxlength="200" show-count allow-clear
@@ -57,23 +26,19 @@
     </a-form>
     <template #footer>
       <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
-      <a-button
-        key="submit"
-        type="primary"
-        :loading="loading"
-        :disabled="disabled"
-        @click="onSubmit"
-        >提交</a-button
-      >
+      <a-button key="submit" type="primary" :loading="loading" :disabled="disabled" @click="onSubmit">提交</a-button>
     </template>
   </a-modal>
 </template>
 
 <script setup lang="ts">
 import { IEditMyShop } from '@/models';
+import { updateMyShop } from '@/services';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
-import { ref, reactive, UnwrapRef, computed, onMounted, defineAsyncComponent } from 'vue';
+import { ref, reactive, UnwrapRef, computed, onMounted, defineAsyncComponent, Ref } from 'vue';
+
+interface IPoint { lat: number, lng: number };
 
 const richText = defineAsyncComponent(() => import('@/components/richText.vue'));
 
@@ -90,6 +55,10 @@ const form: UnwrapRef<IEditMyShop> = reactive({
 });
 const formRef = ref();
 const loading = ref(false);
+const point: Ref<IPoint> = ref({
+  lat: 0,
+  lng: 0
+});
 
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
@@ -133,19 +102,36 @@ const rules: Record<string, Rule[]> = {
   ]
 };
 
-onMounted(async () => {});
+onMounted(async () => { });
+
+const onSetPoint = (data: IPoint) => {
+  point.value = data;
+};
 
 const onSubmit = async (): Promise<void> => {
   loading.value = true;
   try {
     await formRef.value?.validate();
     console.log('表单验证成功', form);
-    // 这里可以添加提交表单的逻辑
-    setTimeout(() => {
-      loading.value = false;
-      message.success('我的店铺编辑成功');
-      emits('confirm');
-    }, 1000);
+    const userInfoStr = localStorage.getItem('userInfo');
+    const userInfo = userInfoStr ? JSON.parse(userInfoStr) : null;
+    const params = {
+      id: userInfo?.shopId,
+      shopName: form.name.trim(),
+      address: form.address.trim(),
+      lonLat: `${point.value.lng},${point.value.lat}`,
+      phone: form.contactPhone.trim(),
+      linkman: form.contact.trim(),
+      introduce: form.introduce.trim()
+    };
+    updateMyShop(params)
+      .then(() => {
+        message.success('我的店铺编辑成功');
+        emits('confirm');
+      })
+      .finally(() => {
+        loading.value = false;
+      })
   } catch (error) {
     console.log('表单验证失败', error);
     loading.value = false;

@@ -150,7 +150,7 @@ const onSend = (): void => {
     onOk: () => {
       return new Promise<void>((resolve) => {
         const params = {
-          memberId: selectedIds.value.join(','),
+          memberIds: selectedIds.value,
           message: '这是一条测试消息'
         };
         sendMessage(params).then(() => {

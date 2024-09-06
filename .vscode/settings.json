@@ -5,6 +5,7 @@
     "browserslistrc",
     "camelcase",
     "commitlint",
+    "geocoder",
     "miniprogram",
     "pinia",
     "popconfirm",

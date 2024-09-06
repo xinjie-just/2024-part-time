@@ -1,4 +1,9 @@
+import { message } from 'ant-design-vue';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
 
 // 定义你的响应数据类型
 interface IBaseResponse<T> {
@@ -29,6 +34,12 @@ instance.interceptors.request.use(
     if (token) {
       config.headers.token = token;
     }
+    console.log('config', config);
+    // 如果是 get 请求，将对象转换为字符串拼接形式
+    if (config.method === 'get' && config.data) {
+      config.url += '?' + new URLSearchParams(config.data).toString();
+      delete config.data;
+    }
     return config;
   },
   (error: any) => {
@@ -44,7 +55,23 @@ instance.interceptors.response.use(
     // 例如，检查状态码并处理错误
     const { status, data } = response;
     if (status === 200) {
-      return response || []; // 假设响应体遵循 IResponseData 格式
+      if (data.code === 400) {
+        // 未登录或登录已过期
+        localStorage.removeItem('token');
+
+        const path = route.path;
+        if (path.includes('/login')) {
+          localStorage.setItem('path', path);
+        }
+        message.error('请先登录');
+        router.push('/login');
+        return Promise.reject(new Error('未登录或登录已过期'));
+      } else if (data.code === 403) {
+        // 没有权限
+        return Promise.reject(new Error('没有权限'));
+      } else {
+        return response || []; // 假设响应体遵循 IResponseData 格式
+      }
     } else {
       return Promise.reject(new Error('Error: ' + data.message));
     }
