@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 /**
  * 格式化时间格式
  * @param {*} value 传入时间（单位秒）
@@ -46,7 +48,7 @@ export const formatSecond = (value: number): string => {
   return result;
 };
 
-export const formatSecond2 = function (value: number): string {
+export const formatSecond2 = (value: number): string => {
   value = value ?? 0;
   let seconds = Math.floor(value); // 秒
   let minutes = Math.floor(seconds / 60); // 分
@@ -60,3 +62,6 @@ export const formatSecond2 = function (value: number): string {
     minutes > 0 ? `${minutes} 分 ` : ''
   }${seconds} 秒`;
 };
+
+export const formatTime = (date: string, template: string = 'YYYY-MM-DD HH:mm:ss'): string =>
+  dayjs(date).format(template);

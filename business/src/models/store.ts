@@ -1,6 +1,7 @@
 export interface IStore {
   index?: number;
   storeName: string;
+  userName: string;
   phone: string;
   registrationTime: string;
   property: number;

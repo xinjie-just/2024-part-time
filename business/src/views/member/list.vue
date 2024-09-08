@@ -56,6 +56,7 @@ import { SendOutlined } from '@ant-design/icons-vue';
 import { IMember, IPage } from '@/models';
 import { message, Modal } from 'ant-design-vue';
 import { getMemberList, sendMessage } from '@/services';
+import { formatTime } from '@/utils';
 
 const name = ref<string>('');
 const phone = ref<string>('');
@@ -184,7 +185,7 @@ const getList = (): void => {
           nickName: item.name,
           avatar: item.headIcon,
           phone: item.phone,
-          registrationTime: item.registerTime
+          registrationTime: formatTime(item.registerTime)
         }
       })
     })

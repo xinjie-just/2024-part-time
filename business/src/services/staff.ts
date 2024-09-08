@@ -13,7 +13,8 @@ import request from '@/services/axios';
 const enum API {
   getStaffList = '/admin/list', // 获取员工列表
   getStaffInfo = '/admin/info', // 查询员工详细信息（包括权限）
-  saveStaffInfo = '/admin/save' // 保存员工信息
+  saveStaffInfo = '/admin/save', // 保存员工信息
+  deleteStaff = '/admin/remove' // 删除员工
 }
 
 export const getStaffList = (data: IGetStaffListReq) => {
@@ -36,6 +37,14 @@ export const saveStaffInfo = (data: ISaveStaffInfoReq) => {
   return request<null>({
     url: API.saveStaffInfo,
     method: 'post',
+    data
+  });
+};
+
+export const deleteStaff = (data: { id: number }) => {
+  return request<null>({
+    url: API.deleteStaff,
+    method: 'delete',
     data
   });
 };

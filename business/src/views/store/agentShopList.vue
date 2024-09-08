@@ -69,6 +69,7 @@ import { PlusOutlined, UnlockOutlined, LockOutlined } from '@ant-design/icons-vu
 import { IPage, IStore } from '@/models';
 import { message } from 'ant-design-vue';
 import { deleteShop, getAgentShopList } from '@/services';
+import { formatTime } from '@/utils';
 
 const addShop = defineAsyncComponent(() => import('./components/addShop.vue'));
 
@@ -196,7 +197,7 @@ const getList = (): void => {
           id: item.id,
           storeName: item.name,
           phone: item.phone,
-          registrationTime: item.registerTime,
+          registrationTime: formatTime(item.registerTime),
           property: item.type,
           status: item.state
         }

@@ -1,14 +1,7 @@
-<!-- 修改密码 -->
+<!-- 修改登录密码 -->
 <template>
-  <a-modal
-    v-model:open="visible"
-    :width="640"
-    :mask-closable="false"
-    :keyboard="false"
-    title="修改密码"
-    :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
-    @cancel="onCancel"
-  >
+  <a-modal v-model:open="visible" :width="640" :mask-closable="false" :keyboard="false" title="修改登录密码"
+    :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
     <!-- 验证码发给店铺手机 -->
     <a-alert type="info" show-icon close-text="知道了" class="alert">
       <template #message>
@@ -18,70 +11,32 @@
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
       <a-form-item label="新密码" name="password">
-        <a-input-password
-          v-model:value.trim="form.password"
-          type="password"
-          allow-clear
-          :maxlength="16"
-          placeholder="请输入密码（6-16 位，必须包含数字和字母）"
-        />
+        <a-input-password v-model:value.trim="form.password" type="password" allow-clear :maxlength="16"
+          placeholder="请输入密码（6-16 位，必须包含数字和字母）" />
       </a-form-item>
       <a-form-item label="重复新密码" name="checkPassword">
-        <a-input-password
-          v-model:value.trim="form.checkPassword"
-          type="password"
-          allow-clear
-          :maxlength="16"
-          placeholder="请重复新密码（6-16 位，必须包含数字和字母）"
-        />
+        <a-input-password v-model:value.trim="form.checkPassword" type="password" allow-clear :maxlength="16"
+          placeholder="请重复新密码（6-16 位，必须包含数字和字母）" />
       </a-form-item>
       <a-form-item label="图片验证码" name="imageCode">
-        <a-input
-          v-model:value.trim="form.imageCode"
-          allow-clear
-          placeholder="请输入图片验证码（不区分大小写）"
-        >
+        <a-input v-model:value.trim="form.imageCode" allow-clear placeholder="请输入图片验证码（不区分大小写）">
           <template #suffix>
-            <canvas
-              ref="canvasRef"
-              width="96"
-              height="22"
-              class="canvas"
-              @click="onChangeChars"
-            ></canvas>
+            <canvas ref="canvasRef" width="96" height="22" class="canvas" @click="onChangeChars"></canvas>
           </template>
         </a-input>
       </a-form-item>
       <a-form-item label="短信验证码" name="phoneCode">
-        <a-input
-          v-model:value.trim="form.phoneCode"
-          :maxlength="6"
-          allow-clear
-          placeholder="请输入短信验证码（6 位数字）"
-        >
+        <a-input v-model:value.trim="form.phoneCode" :maxlength="6" allow-clear placeholder="请输入短信验证码（6 位数字）">
           <template #suffix>
             <span v-if="hasSendCode" class="countdown">{{ countdown }}s 后重发</span>
             <template v-else>
-              <button
-                v-if="hasValidatedPhone"
-                class="code-btn"
-                :disabled="form.imageCode.trim().toLowerCase() !== randomText"
-                @click="onSendPhoneCode"
-              >
+              <button v-if="hasValidatedPhone" class="code-btn"
+                :disabled="form.imageCode.trim().toLowerCase() !== randomText" @click="onSendPhoneCode">
                 获取验证码
               </button>
-              <a-popconfirm
-                placement="topRight"
-                v-else
-                :title="`短信验证码将发送到手机：${phone}，确认吗？`"
-                ok-text="确认"
-                cancel-text="放弃"
-                @confirm="onSendPhoneCode"
-              >
-                <button
-                  class="code-btn"
-                  :disabled="form.imageCode.trim().toLowerCase() !== randomText"
-                >
+              <a-popconfirm placement="topRight" v-else :title="`短信验证码将发送到手机：${phone}，确认吗？`" ok-text="确认"
+                cancel-text="放弃" @confirm="onSendPhoneCode">
+                <button class="code-btn" :disabled="form.imageCode.trim().toLowerCase() !== randomText">
                   获取验证码
                 </button>
               </a-popconfirm>
@@ -92,14 +47,7 @@
     </a-form>
     <template #footer>
       <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
-      <a-button
-        key="submit"
-        type="primary"
-        :loading="loading"
-        :disabled="disabled"
-        @click="onSubmit"
-        >提交</a-button
-      >
+      <a-button key="submit" type="primary" :loading="loading" :disabled="disabled" @click="onSubmit">提交</a-button>
     </template>
   </a-modal>
 </template>

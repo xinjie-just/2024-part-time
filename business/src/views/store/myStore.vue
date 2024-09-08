@@ -4,7 +4,7 @@
     :content-style="{ wordBreak: 'break-all' }">
     <template #extra>
       <a-button type="primary" @click="onEditMyShop" class="btn">编辑</a-button>
-      <a-button type="primary" ghost @click="onUpdatePassword" class="btn">修改密码</a-button>
+      <a-button type="primary" ghost @click="onUpdatePassword" class="btn">修改登录密码</a-button>
       <a-button type="default" @click="onUpgrade" class="btn">升级店铺</a-button>
     </template>
     <a-descriptions-item label="店铺名称">{{ store.shopName || '' }}</a-descriptions-item>

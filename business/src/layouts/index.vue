@@ -28,7 +28,7 @@
           </a>
           <template #overlay>
             <a-menu>
-              <a-menu-item @click="onUpdatePassword">修改密码</a-menu-item>
+              <a-menu-item @click="onUpdatePassword">修改登录密码</a-menu-item>
               <a-menu-divider />
               <a-menu-item @click="onLogout">退出</a-menu-item>
             </a-menu>

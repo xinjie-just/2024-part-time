@@ -11,15 +11,18 @@ export interface IGetAccountInfoRes {
  * @description 查询账户交易信息列表 /account/transaction-list
  */
 export interface IGetAccountExchangeListReq {
-  source: string; // 来源(1:订单; 2:扣款; 3:返点;)
+  source?: number; // 来源(1:订单; 2:扣款; 3:返点;)
   completeStartTime: string; // 交易开始时间
   completeEndTime: string; // 交易截止时间
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetAccountExchangeListRes {
   totalNum: number;
   list: IAccountExchangeList[];
 }
 export interface IAccountExchangeList {
+  id: number; // 自增ID
   balance: number; // 金额(单位:分)
   completeTime: string; // 完成时间
   source: number; // 来源(1:订单; 2:扣款; 3:返点;)

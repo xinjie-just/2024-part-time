@@ -27,7 +27,7 @@ export interface IGetUserInfoRes {
 }
 
 /**
- * @description 修改密码 /update-password
+ * @description 修改登录密码 /update-password
  */
 export interface IUpdatePasswordReq {
   oldPassWord: string;

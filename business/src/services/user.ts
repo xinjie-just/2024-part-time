@@ -8,7 +8,7 @@ const enum API {
   login = '/login', // 登录
   logout = '/logout', // 退出登录
   info = '/info', // 获取当前登录用户信息
-  updatePassword = '/update-password' // 修改密码
+  updatePassword = '/update-password' // 修改登录密码
 }
 
 export const login = (data: ILoginReq) => {
