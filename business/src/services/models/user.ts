@@ -3,7 +3,7 @@
  */
 export interface ILoginReq {
   loginName: string;
-  passWord: string;
+  password: string;
 }
 export interface ILoginRes {
   token: string;
@@ -24,4 +24,12 @@ export interface IGetUserInfoRes {
   headIcon: string;
   remark?: string;
   state: number;
+}
+
+/**
+ * @description 修改密码 /update-password
+ */
+export interface IUpdatePasswordReq {
+  oldPassWord: string;
+  newPassWord: string;
 }

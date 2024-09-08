@@ -101,7 +101,7 @@ const onSubmit = async (): Promise<void> => {
     loading.value = true;
     const params = {
       loginName: form.username,
-      passWord: form.password
+      password: form.password
     };
     login(params).then((res) => {
       const result = res.data;

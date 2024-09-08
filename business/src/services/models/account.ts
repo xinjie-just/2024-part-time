@@ -26,7 +26,7 @@ export interface IAccountExchangeList {
 }
 
 /**
- * @description 查询账户交易信息列表 /account/transaction-list
+ * @description 查询账户下银行卡列表 /account/back-card/list
  */
 export interface IBankCardListRes {
   id: number; // 银行卡ID

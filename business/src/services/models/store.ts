@@ -1,13 +1,4 @@
 /**
- * @description 修改店铺密码 /shop/save-pass-word
- */
-export interface IUpdatePasswordReq {
-  id: string;
-  oldPassWord: string;
-  newPassWord: string;
-}
-
-/**
  * @description 查询代营店铺列表 /shop/shop-proxy-list
  */
 export interface IGetAgentShopListReq {
