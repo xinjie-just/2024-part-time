@@ -14,7 +14,6 @@ export const login = (data: ILoginReq) => {
   return request<ILoginRes>({
     url: API.login,
     method: 'post',
-    hideLoading: true,
     data
   });
 };
@@ -22,15 +21,13 @@ export const login = (data: ILoginReq) => {
 export const logout = () => {
   return request<{}>({
     url: API.logout,
-    method: 'put',
-    hideLoading: true
+    method: 'put'
   });
 };
 
 export const getUserInfo = () => {
   return request<IGetUserInfoRes>({
     url: API.info,
-    method: 'get',
-    hideLoading: true
+    method: 'get'
   });
 };

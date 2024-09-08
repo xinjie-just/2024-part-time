@@ -52,14 +52,16 @@ onMounted(() => {
 
 const getDetails = async (): Promise<void> => {
   const userInfoStr = localStorage.getItem('userInfo');
-  const userInfo = userInfoStr ? JSON.parse(userInfoStr) : null;
-  const params = {
-    id: userInfo?.shopId
-  };
-  getMyShopDetails(params).then((res) => {
-    const data = res.data;
-    store.value = data;
-  })
+  if (userInfoStr) {
+    const userInfo = JSON.parse(userInfoStr);
+    const params = {
+      id: userInfo?.shopId
+    };
+    getMyShopDetails(params).then((res) => {
+      const data = res.data;
+      store.value = data;
+    })
+  }
 };
 
 const onUpdatePassword = (): void => {

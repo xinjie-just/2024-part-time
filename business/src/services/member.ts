@@ -13,7 +13,6 @@ export const getMemberList = (data: IGetMemberListReq) => {
   return request<IGetMemberListRes>({
     url: API.getMemberList,
     method: 'get',
-    hideLoading: true,
     data
   });
 };
@@ -22,7 +21,6 @@ export const sendMessage = (data: ISendMessageReq) => {
   return request<null>({
     url: API.sendMessage,
     method: 'post',
-    hideLoading: true,
     data
   });
 };

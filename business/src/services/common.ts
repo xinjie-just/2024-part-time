@@ -13,7 +13,6 @@ export const sendPhoneCode = (data: ISendPhoneCodeReq) => {
   return request<ISendPhoneCodeRes>({
     url: API.sendPhoneCode,
     method: 'put',
-    hideLoading: true,
     data
   });
 };
@@ -22,7 +21,6 @@ export const uploadFile = (data: IUploadFileReq) => {
   return request<{}>({
     url: API.uploadFile,
     method: 'post',
-    hideLoading: true,
     data
   });
 };

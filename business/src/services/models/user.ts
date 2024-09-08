@@ -19,6 +19,9 @@ export interface IGetUserInfoRes {
   loginName: string;
   phone: string;
   email: string;
+  type: number;
   registerTime: string;
   headIcon: string;
+  remark?: string;
+  state: number;
 }

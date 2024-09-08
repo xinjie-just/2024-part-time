@@ -60,7 +60,7 @@ instance.interceptors.response.use(
         localStorage.removeItem('token');
 
         const path = route.path;
-        if (path.includes('/login')) {
+        if (!path.includes('/login')) {
           localStorage.setItem('path', path);
         }
         message.error('请先登录');

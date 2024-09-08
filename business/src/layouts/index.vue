@@ -57,7 +57,7 @@ import { routes } from '@/routers';
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue';
-import { getUserInfo, logout } from '@/services';
+import { logout } from '@/services';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const visible = ref(false);
@@ -98,11 +98,15 @@ onMounted(() => {
     message.error('请先登录');
     router.push('/login');
   }
+  const userInfoStr = localStorage.getItem('userInfo');
+  if (userInfoStr) {
+    const userInfo = JSON.parse(userInfoStr);
+    userName.value = userInfo.name;
+  }
   const newRoutes = routes.find((item) => item.path === '/')?.children;
   const menuRoutes = newRoutes.filter((item) => item.redirect !== '/');
   menus.value = convertToAntdMenu(menuRoutes);
   handleMenu();
-  getUserInfoFn();
 });
 /**
  * 将菜单数据转换为 Ant Design 的菜单格式
@@ -172,14 +176,6 @@ const onLogout = () => {
       });
     }
   });
-};
-
-const getUserInfoFn = () => {
-  getUserInfo().then((res) => {
-    const result = res.data;
-    userName.value = result.name;
-    localStorage.setItem('userInfo', JSON.stringify(result));
-  })
 };
 
 const onUpdatePassword = (): void => {

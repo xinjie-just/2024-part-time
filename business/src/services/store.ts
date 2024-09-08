@@ -26,7 +26,6 @@ export const updatePassword = (data: IUpdatePasswordReq) => {
   return request<null>({
     url: API.updatePassword,
     method: 'put',
-    hideLoading: true,
     data
   });
 };
@@ -35,7 +34,6 @@ export const getAgentShopList = (data: IGetAgentShopListReq) => {
   return request<IGetAgentShopListRes>({
     url: API.getAgentShopList,
     method: 'get',
-    hideLoading: true,
     data
   });
 };
@@ -44,7 +42,6 @@ export const deleteShop = (data: IDeleteShopReq) => {
   return request<null>({
     url: API.deleteShop,
     method: 'delete',
-    hideLoading: true,
     data
   });
 };
@@ -53,7 +50,6 @@ export const lockUnLockShop = (data: ILockUnLockReq) => {
   return request<null>({
     url: API.lockUnLockShop,
     method: 'put',
-    hideLoading: true,
     data
   });
 };
@@ -62,7 +58,6 @@ export const getMyShopDetails = (data: { id: number }) => {
   return request<IGetShopDetailsRes>({
     url: API.getMyShopDetails,
     method: 'get',
-    hideLoading: true,
     data
   });
 };
@@ -71,7 +66,6 @@ export const updateMyShop = (data: IUpdateMyShopReq) => {
   return request<null>({
     url: API.updateMyShop,
     method: 'post',
-    hideLoading: true,
     data
   });
 };
@@ -79,7 +73,6 @@ export const updateMyShop = (data: IUpdateMyShopReq) => {
 export const upgradeMyShop = () => {
   return request<null>({
     url: API.upgradeMyShop,
-    method: 'post',
-    hideLoading: true
+    method: 'post'
   });
 };

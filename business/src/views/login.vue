@@ -41,7 +41,7 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref, UnwrapRef } f
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import { Rule } from 'ant-design-vue/es/form';
-import { login } from '@/services';
+import { login, getUserInfo } from '@/services';
 import { message } from 'ant-design-vue';
 
 interface ILogin {
@@ -104,8 +104,6 @@ const onSubmit = async (): Promise<void> => {
       passWord: form.password
     };
     login(params).then((res) => {
-      loading.value = false;
-
       const result = res.data;
       const token = result.token || "";
 
@@ -117,18 +115,25 @@ const onSubmit = async (): Promise<void> => {
       // 登录后存一份 token，后续通过本地存储中有没有 token 来判断用户有没有登录
       localStorage.setItem('token', token);
 
-      // 未登录情况下打开的页面路径
-      const path = localStorage.getItem('path');
-      if (path) {
-        router.push(path);
-      } else {
-        router.push('/');
-      }
+      getUserInfoFn();
     });
   } catch (error) {
     message.warning('表单验证失败')
     loading.value = false;
   }
+};
+
+const getUserInfoFn = () => {
+  getUserInfo()
+    .then((res) => {
+      const result = res.data;
+      localStorage.setItem('userInfo', JSON.stringify(result));
+
+      router.push('/');
+    })
+    .finally(() => {
+      loading.value = false;
+    })
 };
 
 const onUpdatePassword = (): void => {
