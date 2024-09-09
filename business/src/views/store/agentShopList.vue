@@ -12,7 +12,7 @@
         class="reset-btn">重置</a-button>
     </a-form-item>
   </a-form>
-  <a-button type="primary" class="add-btn" @click="onAdd">
+  <a-button type="primary" class="add-btn" :disabled="tableLoading" @click="onAdd">
     <template #icon>
       <PlusOutlined />
     </template>
@@ -68,7 +68,7 @@ import { defineAsyncComponent, onMounted, reactive, Ref, ref } from 'vue';
 import { PlusOutlined, UnlockOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { IPage, IStore } from '@/models';
 import { message } from 'ant-design-vue';
-import { deleteShop, getAgentShopList } from '@/services';
+import { deleteShop, getAgentShopList, lockUnLockShop } from '@/services';
 import { formatTime } from '@/utils';
 
 const addShop = defineAsyncComponent(() => import('./components/addShop.vue'));

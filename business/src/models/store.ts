@@ -1,7 +1,7 @@
 export interface IStore {
   index?: number;
   storeName: string;
-  userName: string;
+  userName?: string;
   phone: string;
   registrationTime: string;
   property: number;
@@ -11,6 +11,7 @@ export interface IStore {
 
 export interface IAddShop {
   storeName: string;
+  userName: string;
   phone: string;
   password: string;
 }

@@ -103,20 +103,24 @@ const onSubmit = async (): Promise<void> => {
       loginName: form.username,
       password: form.password
     };
-    login(params).then((res) => {
-      const result = res.data;
-      const token = result.token || "";
+    login(params)
+      .then((res) => {
+        const result = res.data;
+        const token = result.token || "";
 
-      if (form.remember) {
-        localStorage.setItem('username', form.username);
-      } else {
-        localStorage.removeItem('username');
-      }
-      // 登录后存一份 token，后续通过本地存储中有没有 token 来判断用户有没有登录
-      localStorage.setItem('token', token);
+        if (form.remember) {
+          localStorage.setItem('username', form.username);
+        } else {
+          localStorage.removeItem('username');
+        }
+        // 登录后存一份 token，后续通过本地存储中有没有 token 来判断用户有没有登录
+        localStorage.setItem('token', token);
 
-      getUserInfoFn();
-    });
+        getUserInfoFn();
+      })
+      .catch(() => {
+        loading.value = false;
+      })
   } catch (error) {
     message.warning('表单验证失败')
     loading.value = false;

@@ -95,19 +95,22 @@ const onUpgrade = (): void => {
       h(
         'li',
         { style: { lineHeight: '24px' } },
-        '升级后，店铺需要缴年费。缴费的逻辑为：账户的总收入达到*元时，账户自动扣费。'
+        '升级后，店铺需要缴年费。缴费的逻辑为：账户的总收入达到 1000 元时，账户自动扣费。'
       )
     ]),
     okText: '确认',
     okType: 'danger',
     cancelText: '取消',
     onOk: () => {
-      return new Promise<void>((resolve) => {
-        upgradeMyShop().then(() => {
-          message.success('店铺升级成功');
-          getDetails();
-          return resolve();
-        })
+      return new Promise<void>((resolve, reject) => {
+        upgradeMyShop()
+          .then(() => {
+            message.success('店铺升级成功');
+            getDetails();
+            return resolve();
+          }).catch(() => {
+            return reject();
+          })
       }).catch(() => console.log('操作失败!'));
     },
     onCancel() {

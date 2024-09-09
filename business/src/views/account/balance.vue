@@ -1,8 +1,16 @@
 <!-- 账户余额 -->
 <template>
   <div class="header">
-    <a-statistic title="可用余额（人民币）" :precision="2" prefix="¥" suffix="元" :value="balance" />
-    <a-button type="primary" class="to-withdraw-btn" @click="onToWithdraw">
+    <div class="balance">
+      <a-statistic title="可用余额（人民币）" :precision="2" prefix="¥" suffix="元" :value="balance" />
+      <a-button :disabled="balanceLoading" :loading="balanceLoading" title="刷新余额" class="refresh-btn"
+        @click="onRefreshBalance">
+        <template #icon>
+          <ReloadOutlined />
+        </template>
+      </a-button>
+    </div>
+    <a-button type="primary" class="to-withdraw-btn" :disabled="!balance" @click="onToWithdraw">
       <template #icon>
         <MoneyCollectOutlined />
       </template>
@@ -47,7 +55,7 @@
 
 <script setup lang="ts">
 import { onMounted, Ref, ref } from 'vue';
-import { MoneyCollectOutlined } from '@ant-design/icons-vue';
+import { MoneyCollectOutlined, ReloadOutlined } from '@ant-design/icons-vue';
 import { IBalance, IPage } from '@/models';
 import { SelectProps } from 'ant-design-vue';
 import zhCN from 'ant-design-vue/es/date-picker/locale/zh_CN';
@@ -91,6 +99,7 @@ const data: Ref<IBalance[]> = ref([]);
 const searchLoading = ref(false);
 const resetLoading = ref(false);
 const tableLoading = ref(false);
+const balanceLoading = ref(false);
 
 const columns = [
   {
@@ -137,11 +146,20 @@ const handleChange = (value: string) => {
   console.log(`selected ${value}`);
 };
 
+const onRefreshBalance = () => {
+  getAccountInfoFn();
+};
+
 const getAccountInfoFn = () => {
-  getAccountInfo().then(res => {
-    const result = res.data;
-    balance.value = result.balance;
-  })
+  balanceLoading.value = true;
+  getAccountInfo()
+    .then(res => {
+      const result = res.data;
+      balance.value = result.balance;
+    })
+    .finally(() => {
+      balanceLoading.value = false;
+    })
 };
 
 const onSearch = (): void => {
@@ -208,9 +226,21 @@ const onToWithdraw = (): void => {
 
 <style lang="scss" scoped>
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid #e8e8e8;
+}
+
+.balance {
+  display: flex;
+  align-items: center;
+
+  .refresh-btn {
+    margin-left: 16px;
+  }
 }
 
 .to-withdraw-btn {

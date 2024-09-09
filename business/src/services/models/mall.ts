@@ -16,6 +16,7 @@ export interface IPKList {
   settlePrice: number; // 商品结算价格
   currentPrice: number; // 商品现在价格
   guessSmallPrice: number; // 竞猜小价
+  QRCode?: string; // 二维码
 }
 
 /**
@@ -60,6 +61,7 @@ export interface IScanList {
   settlePrice: number; // 商品结算价格
   currentPrice: number; // 商品现在价格
   guessSmallPrice: number; // 竞猜小价
+  QRCode?: string; // 二维码
 }
 
 /**
@@ -100,6 +102,7 @@ export interface IWishingList {
   id: number; // 商品ID
   name: string; // 商品名称
   price: number; // 商品价格
+  QRCode?: string; // 二维码
 }
 
 /**

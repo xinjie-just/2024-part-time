@@ -3,43 +3,18 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="goodsName">商品名称：</label>
-      <a-input
-        v-model:value.trim="goodsName"
-        id="goodsName"
-        allow-clear
-        placeholder="请输入商品名称"
-        class="input"
-        @pressEnter="onSearch"
-      />
+      <a-input v-model:value.trim="goodsName" id="goodsName" allow-clear placeholder="请输入商品名称" class="input"
+        @pressEnter="onSearch" />
     </div>
     <div class="search-item">
-      <a-button
-        type="primary"
-        html-type="submit"
-        :loading="searchLoading"
-        :disabled="resetLoading || tableLoading"
-        @click="onSearch"
-        >搜索</a-button
-      >
-      <a-button
-        html-type="reset"
-        :loading="resetLoading"
-        :disabled="searchLoading || tableLoading"
-        @click="onReset"
-        class="reset-btn"
-        >重置</a-button
-      >
+      <a-button type="primary" html-type="submit" :loading="searchLoading" :disabled="resetLoading || tableLoading"
+        @click="onSearch">搜索</a-button>
+      <a-button html-type="reset" :loading="resetLoading" :disabled="searchLoading || tableLoading" @click="onReset"
+        class="reset-btn">重置</a-button>
     </div>
   </div>
-  <a-table
-    :columns="columns"
-    :data-source="data"
-    :pagination="false"
-    size="small"
-    :scroll="{ x: 1000, y: 380 }"
-    :loading="tableLoading"
-    row-key="id"
-  >
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 380 }"
+    :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
@@ -47,75 +22,29 @@
       <template v-else-if="column.key === 'action'">
         <a-button type="link" @click="onEdit(record)">编辑</a-button>
         <a-divider type="vertical" />
-        <a-popconfirm
-          placement="topRight"
-          :title="`确认上架商品 ${record.goodsName} 吗？`"
-          ok-text="确定"
-          :ok-button-props="{ type: 'default', danger: true }"
-          cancel-text="取消"
-          @confirm="onConfirmPutaway(record.id)"
-          @cancel="onCancelPutaway"
-        >
+        <a-popconfirm placement="topRight" :title="`确认上架商品 ${record.goodsName} 吗？`" ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmPutaway(record.id)"
+          @cancel="onCancelPutaway">
           <a-button type="link">上架</a-button>
         </a-popconfirm>
       </template>
     </template>
   </a-table>
-  <a-pagination
-    v-if="page.total"
-    v-model:current="page.current"
-    v-model:pageSize="page.pageSize"
-    :page-size-options="['10', '20', '30', '40', '50']"
-    show-size-changer
-    show-quick-jumper
-    :total="page.total"
-    :show-total="(total) => `共 ${total} 条`"
-    size="small"
-    :disabled="tableLoading"
-    class="pagination"
-    @change="onChange"
-  />
+  <a-pagination v-if="page.total" v-model:current="page.current" v-model:pageSize="page.pageSize"
+    :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
+    :show-total="(total) => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination"
+    @change="onChange" />
 
-  <manage-p-k
-    v-if="visible"
-    :is-edit="isEdit"
-    :goods-id="currentGoods.id"
-    @cancel="onCancel"
-    @confirm="onConfirm"
-  />
+  <manage-p-k v-if="visible" :is-edit="isEdit" :goods-id="currentGoods.id" @cancel="onCancel" @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
 import { IPKOutOfSale, IPage } from '@/models';
 import { message } from 'ant-design-vue';
+import { getPKList, setPKState } from '@/services';
 
 const managePK = defineAsyncComponent(() => import('../managePK.vue'));
-
-const result = [
-  { id: 1, goodsName: '商品名称1', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 2, goodsName: '商品名称2', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 3, goodsName: '商品名称3', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 4, goodsName: '商品名称4', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 5, goodsName: '商品名称5', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 6, goodsName: '商品名称6', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 7, goodsName: '商品名称7', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 8, goodsName: '商品名称8', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 9, goodsName: '商品名称9', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 10, goodsName: '商品名称10', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 11, goodsName: '商品名称11', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 12, goodsName: '商品名称12', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 13, goodsName: '商品名称13', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 14, goodsName: '商品名称14', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 15, goodsName: '商品名称15', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 16, goodsName: '商品名称16', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 17, goodsName: '商品名称17', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 18, goodsName: '商品名称18', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 19, goodsName: '商品名称19', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 20, goodsName: '商品名称20', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 21, goodsName: '商品名称21', originalPrice: 40, settlementPrice: 30, currentPrice: 35 },
-  { id: 22, goodsName: '商品名称22', originalPrice: 40, settlementPrice: 30, currentPrice: 35 }
-];
 
 const goodsName = ref<string>('');
 const page: Ref<IPage> = ref({
@@ -186,8 +115,6 @@ onMounted(() => {
 });
 
 const onSearch = (): void => {
-  // 模拟搜索操作，实际应从API获取数据
-  console.log('Searching with:', goodsName.value.trim());
   page.value.current = 1;
   page.value.pageSize = 10;
   searchLoading.value = true;
@@ -196,10 +123,6 @@ const onSearch = (): void => {
 };
 
 const onReset = (): void => {
-  // 假设重新从API获取数据
-  console.log('Resetting...');
-
-  // 重置表单和表格数据
   goodsName.value = '';
   page.value.current = 1;
   page.value.pageSize = 10;
@@ -215,25 +138,47 @@ const onChange = (current: number, pageSize: number): void => {
 };
 
 const getList = (): void => {
-  // 模拟获取列表操作，实际应从API获取数据
   tableLoading.value = true;
-  setTimeout(() => {
-    page.value.total = result.length;
-
-    const startIndex = (page.value.current - 1) * page.value.pageSize;
-    const endIndex = startIndex + page.value.pageSize;
-    data.value = result.filter((_, index) => index >= startIndex && index < endIndex);
-    searchLoading.value = false;
-    resetLoading.value = false;
-    tableLoading.value = false;
-  }, 1000);
+  const params = {
+    state: 2, // 商品状态(1:销售中; 2:停止销售)
+    name: goodsName.value.trim(),
+    page: page.value.current,
+    pageSize: page.value.pageSize
+  };
+  getPKList(params)
+    .then(res => {
+      const result = res.data;
+      page.value.total = result.totalNum;
+      data.value = result.list.map(item => {
+        return {
+          id: item.id,
+          goodsName: item.name || "",
+          originalPrice: item.price,
+          settlementPrice: item.settlePrice,
+          currentPrice: item.currentPrice,
+          miniPrice: item.guessSmallPrice,
+          QRCode: item?.QRCode || ""
+        }
+      })
+    })
+    .finally(() => {
+      searchLoading.value = false;
+      resetLoading.value = false;
+      tableLoading.value = false;
+    })
 };
 const onConfirmPutaway = (id: number): void => {
-  // 模拟删除操作，实际应从API删除数据
-  console.log('Putawaying--id', id);
-  message.success('上架操作成功');
-  page.value.current = 1;
   getList();
+  const params = {
+    id,
+    state: 1, //1:销售中; 2:停止销售
+  };
+  setPKState(params)
+    .then(() => {
+      message.success('上架操作成功');
+      page.value.current = 1;
+      getList();
+    })
 };
 const onCancelPutaway = (): void => {
   message.info('您取消了上架操作');

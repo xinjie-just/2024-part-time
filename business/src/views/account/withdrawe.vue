@@ -1,51 +1,30 @@
 <!-- 账户提现 -->
 <template>
-  <a-statistic
-    title="可用余额（人民币）"
-    :precision="2"
-    prefix="¥"
-    suffix="元"
-    :value="totalMoney"
-    class="statistic"
-  />
-  <a-alert
-    message="请输入提现金额，并选择银行账户后点击提现按钮"
-    type="info"
-    show-icon
-    class="alert"
-  />
+  <div class="balance">
+    <a-statistic title="可用余额（人民币）" :precision="2" prefix="¥" suffix="元" :value="balance" class="statistic" />
+    <a-button :disabled="balanceLoading" :loading="balanceLoading" title="刷新余额" class="refresh-btn"
+      @click="onRefreshBalance">
+      <template #icon>
+        <ReloadOutlined />
+      </template>
+    </a-button>
+  </div>
+  <a-alert message="请输入提现金额，并选择银行账户后点击提现按钮" type="info" show-icon class="alert" />
   <div class="handle">
     <div class="sum-wrap">
       <label for="sum" class="label">提现金额：</label>
-      <a-input-number
-        v-model:value="sum"
-        :min="0.01"
-        :max="totalMoney"
-        :precision="2"
-        placeholder="请输入（元）"
-        class="sum-input"
-      >
+      <a-input-number v-model:value="sum" :min="0.01" :max="balance" :precision="2" placeholder="请输入（元）"
+        class="sum-input">
         <template #addonBefore>
           <span>￥</span>
         </template>
         <template #addonAfter>
-          <a-button
-            type="link"
-            :disabled="!totalMoney"
-            size="small"
-            class="total-money-btn"
-            @click="sum = totalMoney"
-            >全部金额</a-button
-          >
+          <a-button type="link" :disabled="!balance" size="small" class="total-money-btn"
+            @click="sum = balance">全部金额</a-button>
         </template>
       </a-input-number>
-      <a-button
-        type="primary"
-        ghost
-        class="withdrawe-btn"
-        :disabled="!(selectedIds.length && sum)"
-        @click="onWithdrawe"
-      >
+      <a-button type="primary" ghost class="withdrawe-btn" :disabled="!(selectedIds.length && sum)"
+        @click="onWithdrawe">
         <template #icon>
           <MoneyCollectOutlined />
         </template>
@@ -60,49 +39,22 @@
     </a-button>
   </div>
 
-  <a-table
-    :columns="columns"
-    :data-source="data"
-    :row-selection="{ type: 'radio', selectedRowKeys: selectedIds, onChange: onSelectChange }"
-    :pagination="false"
-    size="small"
-    :scroll="{ x: 1000, y: 360 }"
-    :loading="tableLoading"
-    row-key="id"
-  >
+  <a-table :columns="columns" :data-source="data"
+    :row-selection="{ type: 'radio', selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false"
+    size="small" :scroll="{ x: 1000, y: 360 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
-        {{ page.pageSize * (page.current - 1) + index + 1 }}
+        {{ index + 1 }}
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm
-          placement="topRight"
-          :title="`确认删除账户 ${record.name} 吗？`"
-          ok-text="确定"
-          :ok-button-props="{ type: 'default', danger: true }"
-          cancel-text="取消"
-          @confirm="onConfirmDelete(record.id)"
-          @cancel="onCancelDelete"
-        >
+        <a-popconfirm placement="topRight" :title="`确认删除账户 ${record.name} 吗？`" ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
+          @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>
         </a-popconfirm>
       </template>
     </template>
   </a-table>
-  <a-pagination
-    v-if="page.total"
-    v-model:current="page.current"
-    v-model:pageSize="page.pageSize"
-    :page-size-options="['10', '20', '30', '40', '50']"
-    show-size-changer
-    show-quick-jumper
-    :total="page.total"
-    :show-total="(total) => `共 ${total} 条`"
-    size="small"
-    :disabled="tableLoading"
-    class="pagination"
-    @change="onChange"
-  />
 
   <confirm-account v-if="visible" @cancel="onCancel" @confirm="onConfirm" />
   <add-account v-if="addVisible" @cancel="onCancelAdd" @confirm="onConfirmAdd" />
@@ -110,15 +62,16 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
-import { MoneyCollectOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { MoneyCollectOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons-vue';
 import { IWithdrawe, IPage } from '@/models';
 import { message } from 'ant-design-vue';
+import { getAccountInfo, getBankCardList } from '@/services';
 
 const confirmAccount = defineAsyncComponent(() => import('./components/confirmAccount.vue'));
 const addAccount = defineAsyncComponent(() => import('./components/addAccount.vue'));
 
-const totalMoney = ref(112893);
-const sum = ref(1);
+const balance = ref(0);
+const sum = ref(0);
 const visible = ref(false);
 const addVisible = ref(false);
 const selectedIds: Ref<number[]> = ref([]);
@@ -132,20 +85,17 @@ const result = [
   { id: 6, bank: '中国邮政储蓄银行', name: '张三', account: '1234567890123456789' }
 ];
 
-const page: Ref<IPage> = ref({
-  total: 0,
-  current: 1,
-  pageSize: 10
-});
 const data: Ref<IWithdrawe[]> = ref([]);
 const tableLoading = ref(false);
+const balanceLoading = ref(false);
 
 const columns = [
   {
     title: '序号',
     dataIndex: 'index',
     key: 'index',
-    width: 80
+    width: 70,
+    fixed: 'left'
   },
   {
     title: '开户银行',
@@ -175,26 +125,45 @@ const columns = [
 ];
 
 onMounted(() => {
+  getAccountInfoFn();
   getList();
 });
 
-const onChange = (current: number, pageSize: number): void => {
-  page.value.current = current;
-  page.value.pageSize = pageSize;
-  getList();
+const onRefreshBalance = () => {
+  getAccountInfoFn();
+};
+
+const getAccountInfoFn = () => {
+  balanceLoading.value = true;
+  getAccountInfo()
+    .then(res => {
+      const result = res.data;
+      balance.value = result.balance;
+    })
+    .finally(() => {
+      balanceLoading.value = false;
+    })
 };
 
 const getList = (): void => {
   // 模拟获取列表操作，实际应从API获取数据
   tableLoading.value = true;
-  setTimeout(() => {
-    page.value.total = result.length;
-
-    const startIndex = (page.value.current - 1) * page.value.pageSize;
-    const endIndex = startIndex + page.value.pageSize;
-    data.value = result.filter((_, index) => index >= startIndex && index < endIndex);
-    tableLoading.value = false;
-  }, 1000);
+  getBankCardList()
+    .then(
+      (res) => {
+        const result = res.data;
+        data.value = result.map(item => {
+          return {
+            id: item.id,
+            bank: item.backName,
+            name: item.cardUserName,
+            account: item.cardNumber
+          }
+        });
+      })
+    .finally(() => {
+      tableLoading.value = false;
+    })
 };
 
 const onSelectChange = (selectedRowKeys: number[]) => {
@@ -206,7 +175,6 @@ const onConfirmDelete = (id: number): void => {
   // 模拟删除操作，实际应从API删除数据
   console.log('Deleting--id', id);
   message.success('删除成功');
-  page.value.current = 1;
   getList();
 };
 const onCancelDelete = (): void => {
@@ -238,8 +206,14 @@ const onConfirmAdd = () => {
 </script>
 
 <style lang="scss" scoped>
-.statistic {
+.balance {
+  display: flex;
+  align-items: center;
   margin-bottom: 16px;
+
+  .refresh-btn {
+    margin-left: 16px;
+  }
 }
 
 .alert {

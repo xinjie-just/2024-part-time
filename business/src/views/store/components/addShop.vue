@@ -1,5 +1,5 @@
 <template>
-  <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" title="添加店铺"
+  <a-modal v-model:open="visible" :width="640" :mask-closable="false" :keyboard="false" title="添加店铺"
     :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
       <a-form-item label="店铺名称" name="storeName">
