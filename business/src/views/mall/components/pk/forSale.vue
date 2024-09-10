@@ -148,8 +148,6 @@ onMounted(() => {
 });
 
 const onSearch = (): void => {
-  // 模拟搜索操作，实际应从API获取数据
-  console.log('Searching with:', goodsName.value.trim());
   page.value.current = 1;
   page.value.pageSize = 10;
   searchLoading.value = true;
@@ -198,10 +196,10 @@ const getList = (): void => {
         return {
           id: item.id,
           goodsName: item.name || "",
-          originalPrice: item.price,
-          settlementPrice: item.settlePrice,
-          currentPrice: item.currentPrice,
-          miniPrice: item.guessSmallPrice,
+          originalPrice: item.price || 0,
+          settlementPrice: item.settlePrice || 0,
+          currentPrice: item.currentPrice || 0,
+          miniPrice: item.guessSmallPrice || 0,
           QRCode: item?.QRCode || ""
         }
       })

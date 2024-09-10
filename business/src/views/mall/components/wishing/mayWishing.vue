@@ -3,32 +3,14 @@
   <div class="search">
     <div class="search-item">
       <label class="label" for="wishingName">心愿名称：</label>
-      <a-input
-        v-model:value.trim="wishingName"
-        id="wishingName"
-        allow-clear
-        placeholder="请输入心愿名称"
-        class="input"
-        @pressEnter="onSearch"
-      />
+      <a-input v-model:value.trim="wishingName" id="wishingName" allow-clear placeholder="请输入心愿名称" class="input"
+        @pressEnter="onSearch" />
     </div>
     <div class="search-item">
-      <a-button
-        type="primary"
-        html-type="submit"
-        :loading="searchLoading"
-        :disabled="resetLoading || tableLoading"
-        @click="onSearch"
-        >搜索</a-button
-      >
-      <a-button
-        html-type="reset"
-        :loading="resetLoading"
-        :disabled="searchLoading || tableLoading"
-        @click="onReset"
-        class="reset-btn"
-        >重置</a-button
-      >
+      <a-button type="primary" html-type="submit" :loading="searchLoading" :disabled="resetLoading || tableLoading"
+        @click="onSearch">搜索</a-button>
+      <a-button html-type="reset" :loading="resetLoading" :disabled="searchLoading || tableLoading" @click="onReset"
+        class="reset-btn">重置</a-button>
     </div>
   </div>
   <a-button type="primary" class="add-btn" @click="onAdd">
@@ -37,15 +19,8 @@
     </template>
     添加
   </a-button>
-  <a-table
-    :columns="columns"
-    :data-source="data"
-    :pagination="false"
-    size="small"
-    :scroll="{ x: 1000, y: 340 }"
-    :loading="tableLoading"
-    row-key="id"
-  >
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 340 }"
+    :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
@@ -57,9 +32,7 @@
           </template>
           <template #content>
             <a-qrcode ref="qrcodeCanvasRef" :size="200" value="http://www.antdv.com" />
-            <a-button type="primary" class="popover-download-btn" @click="onDownloadChange"
-              >下载</a-button
-            >
+            <a-button type="primary" class="popover-download-btn" @click="onDownloadChange">下载</a-button>
           </template>
           <img :src="record.QRCode" alt="二维码" title="点击查看" class="q-r-code" />
         </a-popover>
@@ -67,42 +40,21 @@
       <template v-else-if="column.key === 'action'">
         <a-button type="link" @click="onEdit(record)">编辑</a-button>
         <a-divider type="vertical" />
-        <a-popconfirm
-          placement="topRight"
-          :title="`确认停许心愿 ${record.wishingName} 吗？`"
-          ok-text="确定"
-          :ok-button-props="{ type: 'default', danger: true }"
-          cancel-text="取消"
-          @confirm="onConfirmStop(record.id)"
-          @cancel="onCancelStop"
-        >
+        <a-popconfirm placement="topRight" :title="`确认停许心愿 ${record.wishingName} 吗？`" ok-text="确定"
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmStop(record.id)"
+          @cancel="onCancelStop">
           <a-button type="link">停许</a-button>
         </a-popconfirm>
       </template>
     </template>
   </a-table>
-  <a-pagination
-    v-if="page.total"
-    v-model:current="page.current"
-    v-model:pageSize="page.pageSize"
-    :page-size-options="['10', '20', '30', '40', '50']"
-    show-size-changer
-    show-quick-jumper
-    :total="page.total"
-    :show-total="(total) => `共 ${total} 条`"
-    size="small"
-    :disabled="tableLoading"
-    class="pagination"
-    @change="onChange"
-  />
+  <a-pagination v-if="page.total" v-model:current="page.current" v-model:pageSize="page.pageSize"
+    :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
+    :show-total="(total) => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination"
+    @change="onChange" />
 
-  <manage-wishing
-    v-if="visible"
-    :is-edit="isEdit"
-    :goods-id="currentGoods.id"
-    @cancel="onCancel"
-    @confirm="onConfirm"
-  />
+  <manage-wishing v-if="visible" :is-edit="isEdit" :goods-id="currentGoods.id" @cancel="onCancel"
+    @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
@@ -110,143 +62,9 @@ import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { IMayWishing, IPage } from '@/models';
 import { message } from 'ant-design-vue';
+import { getWishingList, setWishingState } from '@/services';
 
 const manageWishing = defineAsyncComponent(() => import('../manageWishing.vue'));
-
-const result = [
-  {
-    id: 1,
-    wishingName: '心愿名称1',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 2,
-    wishingName: '心愿名称2',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 3,
-    wishingName: '心愿名称3',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 4,
-    wishingName: '心愿名称4',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 5,
-    wishingName: '心愿名称5',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 6,
-    wishingName: '心愿名称6',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 7,
-    wishingName: '心愿名称7',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 8,
-    wishingName: '心愿名称8',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 9,
-    wishingName: '心愿名称9',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 10,
-    wishingName: '心愿名称10',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 11,
-    wishingName: '心愿名称11',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 12,
-    wishingName: '心愿名称12',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 13,
-    wishingName: '心愿名称13',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 14,
-    wishingName: '心愿名称14',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 15,
-    wishingName: '心愿名称15',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 16,
-    wishingName: '心愿名称16',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 17,
-    wishingName: '心愿名称17',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 18,
-    wishingName: '心愿名称18',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 19,
-    wishingName: '心愿名称19',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 20,
-    wishingName: '心愿名称20',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 21,
-    wishingName: '心愿名称21',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  },
-  {
-    id: 22,
-    wishingName: '心愿名称22',
-    referenceValue: 40,
-    QRCode: 'https://via.placeholder.com/32X32'
-  }
-];
 
 const wishingName = ref<string>('');
 const page: Ref<IPage> = ref({
@@ -311,8 +129,6 @@ onMounted(() => {
 });
 
 const onSearch = (): void => {
-  // 模拟搜索操作，实际应从API获取数据
-  console.log('Searching with:', wishingName.value.trim());
   page.value.current = 1;
   page.value.pageSize = 10;
   searchLoading.value = true;
@@ -331,10 +147,6 @@ const onDownloadChange = async () => {
 };
 
 const onReset = (): void => {
-  // 假设重新从API获取数据
-  console.log('Resetting...');
-
-  // 重置表单和表格数据
   wishingName.value = '';
   page.value.current = 1;
   page.value.pageSize = 10;
@@ -350,25 +162,43 @@ const onChange = (current: number, pageSize: number): void => {
 };
 
 const getList = (): void => {
-  // 模拟获取列表操作，实际应从API获取数据
   tableLoading.value = true;
-  setTimeout(() => {
-    page.value.total = result.length;
-
-    const startIndex = (page.value.current - 1) * page.value.pageSize;
-    const endIndex = startIndex + page.value.pageSize;
-    data.value = result.filter((_, index) => index >= startIndex && index < endIndex);
-    searchLoading.value = false;
-    resetLoading.value = false;
-    tableLoading.value = false;
-  }, 1000);
+  const params = {
+    state: 1, // 许愿状态(1:可许心愿; 2:停止许愿)
+    name: wishingName.value.trim(),
+    page: page.value.current,
+    pageSize: page.value.pageSize
+  };
+  getWishingList(params)
+    .then(res => {
+      const result = res.data;
+      page.value.total = result.totalNum;
+      data.value = result.list.map(item => {
+        return {
+          id: item.id,
+          wishingName: item.name || "",
+          referenceValue: item.price || 0,
+          QRCode: item?.QRCode || ""
+        }
+      })
+    })
+    .finally(() => {
+      searchLoading.value = false;
+      resetLoading.value = false;
+      tableLoading.value = false;
+    })
 };
 const onConfirmStop = (id: number): void => {
-  // 模拟删除操作，实际应从API删除数据
-  console.log('Stoping--id', id);
-  message.success('停许操作成功');
-  page.value.current = 1;
-  getList();
+  const params = {
+    id,
+    state: 2, // 心愿状态(0:待许愿; 1:可许心愿; 2:停止许愿)
+  };
+  setWishingState(params)
+    .then(() => {
+      message.success('停许操作成功');
+      page.value.current = 1;
+      getList();
+    })
 };
 const onCancelStop = (): void => {
   message.info('您取消了停许操作');

@@ -91,7 +91,7 @@ export interface ISetScanStateReq {
  * @description 查询创意许愿商品列表 /product-wish/list
  */
 export interface IGetWishingListReq {
-  state: number; // 商品状态(1:可许心愿; 2:停止许愿)
+  state: number; // 许愿状态(1:可许心愿; 2:停止许愿)
   name: string; // 商品名称
 }
 export interface IGetWishingListRes {
