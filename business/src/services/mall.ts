@@ -21,7 +21,11 @@ import {
   IGetWishingListReq,
   IGetWishingListRes,
   ISaveWishingReq,
-  ISetWishingStateReq
+  ISetWishingStateReq,
+  IGetPKPlayerListReq,
+  IGetPKPlayerListRes,
+  IGetToDoSelectPlayerListReq,
+  IGetToDoSelectPlayerListRes
 } from './models';
 import request from '@/services/axios';
 
@@ -39,7 +43,11 @@ const enum API {
   PKOrderShipping = '/product-pk-order/deliver-goods', // 订单管理-PK 品-订单发货
   PKOrderReturns = '/product-pk-order/sales-return', // 订单管理-PK 品-订单退货
   getScanOrderList = '/product-scan-order/list', // 订单管理-扫一扫-订单列表
-  getWishingOrderList = '/product-wish-order/list' // 订单管理-创意许愿-订单列表
+  getWishingOrderList = '/product-wish-order/list', // 订单管理-创意许愿-订单列表
+  getPKPlayerList = '/player-pk/list', // PK 手管理-查询 PK 手列表
+  getToDoSelectPlayerList = '/player-pk/list-by-shop', // PK 手管理-查询店铺的 PK 选手信息列表
+  savePKPlayer = '/player-pk/save', // PK 手管理-新增/编辑PK手信息
+  deletePKPlayer = '/player-pk/remove' // PK 手管理-删除PK手
 }
 
 export const getPKList = (data: IGetPKListReq) => {
@@ -150,6 +158,38 @@ export const getWishingOrderList = (data: IGetWishingOrderListReq) => {
   return request<IGetWishingOrderListRes>({
     url: API.getWishingOrderList,
     method: 'get',
+    data
+  });
+};
+
+export const getPKPlayerList = (data: IGetPKPlayerListReq) => {
+  return request<IGetPKPlayerListRes>({
+    url: API.getPKPlayerList,
+    method: 'get',
+    data
+  });
+};
+
+export const getToDoSelectPlayerList = (data: IGetToDoSelectPlayerListReq) => {
+  return request<IGetToDoSelectPlayerListRes>({
+    url: API.getToDoSelectPlayerList,
+    method: 'get',
+    data
+  });
+};
+
+export const savePKPlayer = (data: { ids: number[] }) => {
+  return request<null>({
+    url: API.savePKPlayer,
+    method: 'post',
+    data
+  });
+};
+
+export const deletePKPlayer = (data: { id: number }) => {
+  return request<null>({
+    url: API.deletePKPlayer,
+    method: 'delete',
     data
   });
 };

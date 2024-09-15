@@ -146,7 +146,6 @@ const getAccountInfoFn = () => {
 };
 
 const getList = (): void => {
-  // 模拟获取列表操作，实际应从API获取数据
   tableLoading.value = true;
   getBankCardList()
     .then(

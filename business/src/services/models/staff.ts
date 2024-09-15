@@ -28,8 +28,8 @@ export interface IGetStaffInfoRes {
   name: string; // 员工名称
   loginName: string; // 员工登录名称
   phone: string; // 员工手机号码
-  password: number; // 员工登录密码
-  menuInfoList: IStaffMenuList[];
+  password: string; // 员工登录密码
+  menuInfoList: string[];
 }
 export interface IStaffMenuList {
   id: number; // 菜单ID
@@ -42,12 +42,12 @@ export interface IStaffMenuList {
  * @description 保存员工信息 /admin/save
  */
 export interface ISaveStaffInfoReq {
-  id: number; // 员工ID
+  id?: number; // 员工ID
   name: string; // 员工名称
   loginName: string; // 员工登录名称
   password: string; // 员工登录密码
   phone: string; // 员工手机号码
-  email: string; // 员工电子邮件地址
-  headIcon: string; // 员工头像
-  menuIdList: number[]; // 员工菜单（权限）ID 列表
+  email?: string; // 员工电子邮件地址
+  headIcon?: string; // 员工头像
+  menuIdList: number[] | string[]; // 员工菜单（权限）ID 列表
 }

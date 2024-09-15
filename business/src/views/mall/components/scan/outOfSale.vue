@@ -32,7 +32,7 @@
   </a-table>
   <a-pagination v-if="page.total" v-model:current="page.current" v-model:pageSize="page.pageSize"
     :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
-    :show-total="(total) => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination"
+    :show-total="(total: number) => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination"
     @change="onChange" />
 
   <manage-scan v-if="visible" :is-edit="isEdit" :goods-id="currentGoods.id" @cancel="onCancel" @confirm="onConfirm" />

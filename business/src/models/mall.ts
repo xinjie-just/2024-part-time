@@ -103,8 +103,8 @@ export interface IPKOrder {
   phone: string;
   PKSum: number;
   goodsSum: number;
-  sendFree: number; // 1 表示送，0 表示不送
-  status: number; // 1 已发货，0 表示未发货
+  sendFree: number | null; // 1 表示送，0 表示不送
+  status: number | null; // 1 已发货，0 表示未发货
 }
 
 export interface IScanOrder {
@@ -113,7 +113,7 @@ export interface IScanOrder {
   scanName: string;
   phone: string;
   goodsSum: number;
-  sendFree: number; // 1 表示送，0 表示不送
+  sendFree: number | string; // 1 表示送，0 表示不送
 }
 
 export interface IWishingOrder {
@@ -123,6 +123,6 @@ export interface IWishingOrder {
   phone: string;
   miniSum: number;
   bigSum: number;
-  status: number; // 1 成，0 否
-  wishingResult: number; // 1 已实现，0 未实现
+  status: number | string; // 1 成，0 否
+  wishingResult: number | string; // 1 已实现，0 未实现
 }

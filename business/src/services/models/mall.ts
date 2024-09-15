@@ -134,8 +134,10 @@ export interface IGetPKOrderListReq {
   productName: string; //	PK品名称
   userPhone: string; //	用户手机号码
   playerPhone: string; //	pK手手机号码
-  freeGift: boolean; // 免费赠送
-  deliverGoods: boolean; // 发货状态
+  freeGift: boolean | null; // 免费赠送
+  deliverGoods: boolean | null; // 发货状态
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetPKOrderListRes {
   totalNum: number;
@@ -157,14 +159,14 @@ export interface IPKOrderList {
  * @description 订单管理-PK 品-订单发货 /product-pk-order/deliver-goods
  */
 export interface IPKOrderShippingReq {
-  orderId: 1; // 订单 ID
+  orderId: number; // 订单 ID
 }
 
 /**
  * @description 订单管理-PK 品-订单退货 /product-pk-order/sales-return
  */
 export interface IPKOrderReturnsReq {
-  orderId: 1; // 订单 ID
+  orderId: number; // 订单 ID
 }
 
 /**
@@ -174,7 +176,7 @@ export interface IGetScanOrderListReq {
   orderNumber: string; //	订单编号
   productName: string; //	扫一扫商品名称
   userPhone: string; //	用户手机号码
-  freeGift: boolean; // 免费赠送
+  freeGift: boolean | null; // 免费赠送
 }
 export interface IGetScanOrderListRes {
   totalNum: number;
@@ -186,7 +188,7 @@ export interface IScanOrderList {
   productName: string; // 商品名称
   userPhone: string; // 用户手机号
   price: number; // 商品价格
-  freeGift: boolean; // 免费赠送
+  freeGift: boolean | string; // 免费赠送
 }
 
 /**
@@ -196,7 +198,7 @@ export interface IGetWishingOrderListReq {
   orderNumber: string; //	订单编号
   productName: string; //	创意许愿商品名称
   userPhone: string; //	用户手机号码
-  wishResult: boolean; // 许愿结果
+  wishResult: boolean | null; // 许愿结果
 }
 export interface IGetWishingOrderListRes {
   totalNum: number;
@@ -209,5 +211,44 @@ export interface IWishingOrderList {
   userPhone: string; // 用户手机号
   minPrice: number; // 小金额
   maxPrice: number; // 大金额
-  wishResult: boolean; // 许愿结果
+  status: boolean | string; // 状态
+  wishResult: boolean | string; // 许愿结果
+}
+
+/**
+ * @description PK 手管理-查询 PK 手列表 /player-pk/list
+ */
+export interface IGetPKPlayerListReq {
+  name: string; // PK手名称
+  phone: string; //	手机号码
+}
+export interface IGetPKPlayerListRes {
+  totalNum: number;
+  list: IPKPlayerList[];
+}
+export interface IPKPlayerList {
+  id: number; // pk手ID
+  name: string; // pk手名称
+  phone: string; // 手机号码
+  winRate: number; // 胜率(百分号前面数字)
+  integral: number; // 积分
+}
+
+/**
+ * @description PK 手管理-查询店铺的 PK 选手信息列表 /player-pk/list-by-shop
+ */
+export interface IGetToDoSelectPlayerListReq {
+  name: string; // PK手名称
+  phone: string; //	手机号码
+}
+export interface IGetToDoSelectPlayerListRes {
+  totalNum: number;
+  list: IToDoSelectPlayerList[];
+}
+export interface IToDoSelectPlayerList {
+  id: number; // pk手ID
+  name: string; // pk手名称
+  phone: string; // 手机号码
+  winRate: number; // 胜率(百分号前面数字)
+  integral: number; // 积分
 }

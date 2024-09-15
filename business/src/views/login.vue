@@ -5,7 +5,8 @@
       <h1 class="title">登 录</h1>
       <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form">
         <a-form-item label="用户名" name="username">
-          <a-input v-model:value.trim="form.username" placeholder="请输入用户名" allow-clear @pressEnter="onSubmit">
+          <a-input v-model:value.trim="form.username" :maxlength="16" allow-clear placeholder="请输入用户名（2-16 位字符）"
+            @pressEnter="onSubmit">
             <template #prefix>
               <UserOutlined />
             </template>
@@ -63,10 +64,21 @@ const form: UnwrapRef<ILogin> = reactive({
 });
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
-  const usernameDisabled = !values?.username?.trim();
+  const usernameDisabled = values?.username?.trim()?.length < 2;
   const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password.trim());
   return usernameDisabled || passwordDisabled;
 });
+
+const validateUsername = async (_rule: Rule, value: string) => {
+  const username = value.trim();
+  if (username === '') {
+    return Promise.reject('请输入用户名');
+  } else if (username?.length < 2) {
+    return Promise.reject('用户名应该 2-16 位');
+  } else {
+    return Promise.resolve();
+  }
+};
 
 const validatePassword = async (_rule: Rule, value: string) => {
   const password = value.trim();
@@ -82,7 +94,7 @@ const validatePassword = async (_rule: Rule, value: string) => {
   }
 };
 const rules: Record<string, Rule[]> = {
-  username: [{ required: true, message: '请输入用户名码', trigger: 'change' }],
+  username: [{ required: true, validator: validateUsername, trigger: 'change' }],
   password: [{ required: true, validator: validatePassword, trigger: 'blur' }]
 };
 

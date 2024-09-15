@@ -9,10 +9,9 @@ export interface IStaff {
 
 export interface IManageStaff {
   name: string;
-  nickName: string;
+  loginName: string;
   phone: string;
   password: string;
-  permission: string[];
 }
 
 export interface IStaffPermission {

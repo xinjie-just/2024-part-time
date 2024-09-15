@@ -35,10 +35,21 @@ instance.interceptors.request.use(
       config.headers.token = token;
     }
     console.log('config', config);
-    // 如果是 get 请求，将对象转换为字符串拼接形式
     if (config.method === 'get' && config.data) {
-      config.url += '?' + new URLSearchParams(config.data).toString();
-      delete config.data;
+      // 如果是 get 请求，config.data 是一个对象，我想让对象中属性值不是 null、undefined、空字符串的属性都拼接到 URL 上
+      const newData = {};
+      for (const key in config.data) {
+        if (
+          config.data[key] !== null &&
+          config.data[key] !== undefined &&
+          config.data[key] !== ''
+        ) {
+          newData[key] = config.data[key];
+        }
+      }
+      if (Object.keys(newData).length) {
+        config.url += '?' + new URLSearchParams(newData).toString();
+      }
     }
     return config;
   },
