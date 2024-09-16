@@ -134,7 +134,6 @@ onMounted(() => {
 });
 
 const disabledDate = (current: Dayjs) => {
-  // Can not select days before today and today
   return current && current > dayjs().endOf('day');
 };
 
@@ -219,7 +218,6 @@ const getList = (): void => {
 };
 
 const onToWithdraw = (): void => {
-  // 模拟跳转操作，实际应跳转到提现页面
   router.push('/account/withdrawe');
 };
 </script>

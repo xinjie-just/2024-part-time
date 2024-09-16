@@ -6,7 +6,7 @@
     <a-alert type="info" show-icon close-text="知道了" class="alert">
       <template #message>
         <p>图片验证码不区分大小，但必须输入正确后才能获取短信验证码；</p>
-        <p>短信验证码将发给店铺手机，请注意查收。</p>
+        <p>短信验证码将发给店铺手机：{{ phone }}，请注意查收。</p>
       </template>
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
@@ -54,6 +54,7 @@
 
 <script setup lang="ts">
 import { IUpdatePassword } from '@/models';
+import { sendPhoneCode, updatePassword } from '@/services';
 import { drawTextOnCanvas } from '@/utils';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
@@ -86,7 +87,7 @@ const loading = ref(false);
 const hasSendCode = ref(false);
 const countdown = ref(0);
 const timer = ref(0);
-const phone = ref('13888888888'); // 店铺手机号码，用于接收短信验证码 // TODO: 从后端获取
+const phone = ref(''); // 店铺手机号码，用于接收短信验证码
 const hasValidatedPhone = ref(false); // 验证过手机号，重新发送时不再验证（退出登录除外）
 
 const disabled = computed((): boolean => {
@@ -159,6 +160,12 @@ onMounted(async () => {
     hasValidatedPhone.value = true;
   }
 
+  const userInfoStr = localStorage.getItem('userInfo');
+  if (userInfoStr) {
+    const userInfo = JSON.parse(userInfoStr);
+    phone.value = userInfo.phone;
+  }
+
   await nextTick();
   getRandomText(canvasRef.value);
 });
@@ -172,18 +179,24 @@ const onSubmit = async (): Promise<void> => {
   try {
     await formRef.value?.validate();
     console.log('表单验证成功', form);
-    // 这里可以添加提交表单的逻辑
-    setTimeout(() => {
-      loading.value = false;
-      message.success('密码修改成功');
-      const username = localStorage.getItem('username');
-      localStorage.clear(); // 清除本地存储中的 token
-      sessionStorage.clear(); // 清除本地存储中的 token
-      if (username) {
-        localStorage.setItem('username', username);
-      }
-      router.push('/login');
-    }, 1000);
+    const params = {
+      newPassWord: form.password,
+      verifyCode: form.phoneCode
+    };
+    updatePassword(params)
+      .then(() => {
+        message.success('密码修改成功');
+        const username = localStorage.getItem('username');
+        localStorage.clear();
+        sessionStorage.clear();
+        if (username) {
+          localStorage.setItem('username', username);
+        }
+        router.push('/login');
+      })
+      .finally(() => {
+        loading.value = false;
+      })
   } catch (error) {
     console.log('表单验证失败', error);
     loading.value = false;
@@ -202,7 +215,10 @@ const onSendPhoneCode = (): void => {
   //     message.error('图片验证码输入不正确');
   //     return;
   // }
-  console.log('发送短信验证码');
+  const params = {
+    phone: phone.value,
+  };
+  sendPhoneCode(params); // 不需要处理返回值
   hasValidatedPhone.value = true;
   localStorage.setItem('hasValidatedPhone', JSON.stringify(true));
 

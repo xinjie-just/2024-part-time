@@ -7,13 +7,13 @@
       <div :class="collapsed ? 'phone' : 'fold-phone phone'">
         <a-tooltip v-if="collapsed" placement="right">
           <template #title>
-            <span>客服电话：13012345678</span>
+            <span>客服电话：{{ phone }}</span>
           </template>
           <PhoneOutlined class="phone-icon" />
         </a-tooltip>
         <template v-else>
           <PhoneOutlined class="phone-icon" />
-          <span class="phone-num">客服电话：13012345678</span>
+          <span class="phone-num">客服电话：{{ phone }}</span>
         </template>
       </div>
     </a-layout-sider>
@@ -63,6 +63,7 @@ const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword
 const visible = ref(false);
 
 const userName = ref('');
+const phone = ref('');
 
 const route = useRoute();
 const router = useRouter();
@@ -102,6 +103,7 @@ onMounted(() => {
   if (userInfoStr) {
     const userInfo = JSON.parse(userInfoStr);
     userName.value = userInfo.name;
+    phone.value = userInfo.phone;
   }
   const newRoutes = routes.find((item) => item.path === '/')?.children;
   const menuRoutes = newRoutes.filter((item) => item.redirect !== '/');
@@ -167,8 +169,8 @@ const onLogout = () => {
     onOk() {
       logout().then(() => {
         const username = localStorage.getItem('username');
-        localStorage.clear(); // 清除本地存储中的 token
-        sessionStorage.clear(); // 清除本地存储中的 token
+        localStorage.clear(); // 清除本地存储
+        sessionStorage.clear();
         if (username) {
           localStorage.setItem('username', username);
         }

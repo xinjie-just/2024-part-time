@@ -1,4 +1,4 @@
-<!-- 会员管理 -->
+<!-- 会员管理，商品信息带有商家信息，用户扫描商品，第一次登录时成为对应商品商家的会员 -->
 <template>
   <div class="search">
     <div class="search-item">
@@ -48,16 +48,20 @@
     :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
     :show-total="(total: number) => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination"
     @change="onChange" />
+
+  <send-message v-if="visible" :selected-ids="selectedIds" @cancel="onCancel" @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
-import { h, onMounted, Ref, ref } from 'vue';
+import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
 import { SendOutlined } from '@ant-design/icons-vue';
 import { IMember, IPage } from '@/models';
-import { message, Modal } from 'ant-design-vue';
-import { getMemberList, sendMessage } from '@/services';
+import { getMemberList } from '@/services';
 import { formatTime } from '@/utils';
 
+const sendMessage = defineAsyncComponent(() => import('./components/sendMessage.vue'));
+
+const visible = ref(false);
 const name = ref<string>('');
 const phone = ref<string>('');
 const page: Ref<IPage> = ref({
@@ -135,37 +139,18 @@ const onChange = (current: number, pageSize: number): void => {
 };
 
 const onSend = (): void => {
-  // 弹窗确认 TODO: 需要添加输入框，输入消息内容
-  Modal.confirm({
-    title: '发送信息',
-    content: h('div', { style: { lineHeight: '24px', padding: '16px 0' } }, [
-      h(
-        'p',
-        { style: { marginBottom: '8px' } },
-        `您选中了 ${selectedIds.value.length} 个用户，确定要给它们发送信息吗？`
-      ),
-      h('p', { style: { fontWeight: 700 } }, '发送信息时，账户需要扣除 0.1 元/条的费用。')
-    ]),
-    okText: '发送',
-    cancelText: '取消',
-    onOk: () => {
-      return new Promise<void>((resolve) => {
-        const params = {
-          memberIds: selectedIds.value,
-          message: '这是一条测试消息'
-        };
-        sendMessage(params).then(() => {
-          message.success('信息发送成功');
-          getList();
-          resolve();
-        })
-      }).catch(() => console.log('Oops errors!'));
-    },
-    onCancel() {
-      console.log('Cancel');
-    }
-  });
+  visible.value = true;
+}
+
+const onCancel = (): void => {
+  visible.value = false;
 };
+
+const onConfirm = (): void => {
+  visible.value = false;
+  getList();
+};
+
 const getList = (): void => {
   tableLoading.value = true;
   selectedIds.value = [];
@@ -197,7 +182,6 @@ const getList = (): void => {
 };
 
 const onSelectChange = (selectedRowKeys: number[]) => {
-  console.log('selectedRowKeys changed: ', selectedRowKeys);
   selectedIds.value = selectedRowKeys;
 };
 </script>

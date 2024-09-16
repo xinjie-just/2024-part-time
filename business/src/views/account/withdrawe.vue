@@ -56,16 +56,16 @@
     </template>
   </a-table>
 
-  <confirm-account v-if="visible" @cancel="onCancel" @confirm="onConfirm" />
+  <confirm-account v-if="visible" :account="selectedAccount" :sum="sum" @cancel="onCancel" @confirm="onConfirm" />
   <add-account v-if="addVisible" @cancel="onCancelAdd" @confirm="onConfirmAdd" />
 </template>
 
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
 import { MoneyCollectOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons-vue';
-import { IWithdrawe, IPage } from '@/models';
 import { message } from 'ant-design-vue';
-import { getAccountInfo, getBankCardList } from '@/services';
+import { getAccountInfo, getBankCardList, removeBankCard } from '@/services';
+import { IBankCardListRes } from '@/services/models';
 
 const confirmAccount = defineAsyncComponent(() => import('./components/confirmAccount.vue'));
 const addAccount = defineAsyncComponent(() => import('./components/addAccount.vue'));
@@ -75,17 +75,14 @@ const sum = ref(0);
 const visible = ref(false);
 const addVisible = ref(false);
 const selectedIds: Ref<number[]> = ref([]);
+const selectedAccount: Ref<IBankCardListRes> = ref({
+  id: 0, // 银行卡ID
+  backName: '', // 银行卡开户银行
+  cardUserName: '', // 银行卡户主名
+  cardNumber: '', // 银行卡号
+});
 
-const result = [
-  { id: 1, bank: '中国工商银行', name: '张三', account: '1234567890123456789' },
-  { id: 2, bank: '中国农业银行', name: '张三', account: '1234567890123456789' },
-  { id: 3, bank: '中国银行', name: '张三', account: '1234567890123456789' },
-  { id: 4, bank: '中国建设银行', name: '张三', account: '1234567890123456789' },
-  { id: 5, bank: '中国交通银行', name: '张三', account: '1234567890123456789' },
-  { id: 6, bank: '中国邮政储蓄银行', name: '张三', account: '1234567890123456789' }
-];
-
-const data: Ref<IWithdrawe[]> = ref([]);
+const data: Ref<IBankCardListRes[]> = ref([]);
 const tableLoading = ref(false);
 const balanceLoading = ref(false);
 
@@ -99,20 +96,20 @@ const columns = [
   },
   {
     title: '开户银行',
-    dataIndex: 'bank',
-    key: 'bank',
+    dataIndex: 'backName',
+    key: 'backName',
     width: 120
   },
   {
     title: '账户姓名',
-    dataIndex: 'name',
-    key: 'name',
+    dataIndex: 'cardUserName',
+    key: 'cardUserName',
     width: 100
   },
   {
     title: '银行卡号',
-    dataIndex: 'account',
-    key: 'account',
+    dataIndex: 'cardNumber',
+    key: 'cardNumber',
     width: 160
   },
   {
@@ -151,14 +148,7 @@ const getList = (): void => {
     .then(
       (res) => {
         const result = res.data;
-        data.value = result.map(item => {
-          return {
-            id: item.id,
-            bank: item.backName,
-            name: item.cardUserName,
-            account: item.cardNumber
-          }
-        });
+        data.value = result;
       })
     .finally(() => {
       tableLoading.value = false;
@@ -171,16 +161,18 @@ const onSelectChange = (selectedRowKeys: number[]) => {
 };
 
 const onConfirmDelete = (id: number): void => {
-  // 模拟删除操作，实际应从API删除数据
-  console.log('Deleting--id', id);
-  message.success('删除成功');
-  getList();
+  removeBankCard({ id })
+    .then(() => {
+      message.success('删除成功');
+      getList();
+    })
 };
 const onCancelDelete = (): void => {
   message.info('您取消了删除');
 };
 
 const onWithdrawe = () => {
+  selectedAccount.value = data.value.find(item => item.id === selectedIds[0]) as IBankCardListRes;
   visible.value = true;
 };
 const onCancel = () => {

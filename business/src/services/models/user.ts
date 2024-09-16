@@ -30,6 +30,6 @@ export interface IGetUserInfoRes {
  * @description 修改登录密码 /update-password
  */
 export interface IUpdatePasswordReq {
-  oldPassWord: string;
   newPassWord: string;
+  verifyCode: string;
 }

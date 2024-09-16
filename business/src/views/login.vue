@@ -3,7 +3,8 @@
   <div class="page">
     <div class="container">
       <h1 class="title">登 录</h1>
-      <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form">
+      <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form"
+        :disabled="loading">
         <a-form-item label="用户名" name="username">
           <a-input v-model:value.trim="form.username" :maxlength="16" allow-clear placeholder="请输入用户名（2-16 位字符）"
             @pressEnter="onSubmit">
@@ -22,8 +23,8 @@
         </a-form-item>
         <a-form-item name="remember">
           <a-flex justify="space-between" :align="'center'">
-            <a-checkbox v-model:checked="form.remember">记住我</a-checkbox>
-            <a-button type="link" @click="onUpdatePassword" size="small">忘记密码</a-button>
+            <a-checkbox v-model:checked="form.remember" :disabled="loading">记住我</a-checkbox>
+            <a-button type="link" @click="onUpdatePassword" size="small" :disabled="loading">忘记密码</a-button>
           </a-flex>
         </a-form-item>
         <a-form-item>

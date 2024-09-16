@@ -105,7 +105,7 @@ const onUpgrade = (): void => {
       return new Promise<void>((resolve, reject) => {
         upgradeMyShop()
           .then(() => {
-            message.success('店铺升级成功');
+            message.success('我的店铺升级成功');
             getDetails();
             return resolve();
           }).catch(() => {
