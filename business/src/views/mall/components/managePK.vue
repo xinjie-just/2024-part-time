@@ -53,7 +53,7 @@
           style="width: 100%" />
       </a-form-item>
       <a-form-item label="商品介绍" name="introduce">
-        <rich-text id="introduce" @blur="onBlur" />
+        <rich-text id="introduce" :html="form.introduce" @blur="onBlur" />
       </a-form-item>
     </a-form>
     <template #footer>
@@ -105,7 +105,7 @@ const rules: Record<string, Rule[]> = {
   digit: [{ required: true, message: '请输入竞猜位数', trigger: 'change' }],
   time: [{ required: true, message: '请输入 PK 次数', trigger: 'change' }],
   introduce: [
-    { required: true, message: '请输入创意心愿介绍', trigger: 'change' },
+    { required: true, message: '请输入商品介绍', trigger: 'change' },
   ],
 };
 

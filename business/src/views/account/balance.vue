@@ -86,7 +86,7 @@ const options = ref<SelectProps['options']>([
     label: '返点'
   }
 ]);
-
+const dateFormat = 'YYYY-MM-DD';
 type RangeValue = [Dayjs, Dayjs];
 const date = ref<RangeValue>();
 const balance = ref(0);
@@ -170,7 +170,7 @@ const onSearch = (): void => {
 };
 
 const onReset = (): void => {
-  date.value = [dayjs(''), dayjs('')];
+  date.value = undefined;
   source.value = null;
   page.value.current = 1;
   page.value.pageSize = 10;
@@ -187,12 +187,18 @@ const onChange = (current: number, pageSize: number): void => {
 
 const getList = (): void => {
   tableLoading.value = true;
+  // console.log("date[0]", dayjs(date).format(dateFormat));
   const params: IGetAccountExchangeListReq = {
-    completeStartTime: formatTime(date[0]),
-    completeEndTime: formatTime(date[1]),
     page: page.value.current,
     pageSize: page.value.pageSize
   };
+  if (date.value !== null && date.value !== undefined) {
+    params.completeStartTime = dayjs(date.value?.[0]).format(dateFormat);
+    params.completeEndTime = dayjs(date.value?.[1]).format(dateFormat);
+  }
+  if (source.value !== null && source.value !== undefined) {
+    params.source = source.value;
+  }
   if (source.value !== null && source.value !== undefined) {
     params.source = source.value;
   }

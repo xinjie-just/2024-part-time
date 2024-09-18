@@ -2,7 +2,7 @@ export interface IStaff {
   index?: number;
   id: number;
   name: string;
-  nickName: string;
+  loginName: string;
   phone: string;
   registrationTime: string;
 }

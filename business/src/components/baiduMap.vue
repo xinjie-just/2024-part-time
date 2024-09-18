@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 let map = null;
 let geocoder = null;
@@ -16,6 +16,11 @@ onMounted(async () => {
   await nextTick();
   initMap();
 });
+
+watch(props, (props) => {
+  geocodeAddress(props.address);
+})
+
 const initMap = async () => {
   // 动态加载百度地图 API
   // await loadScript();

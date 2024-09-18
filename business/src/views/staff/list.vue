@@ -90,9 +90,9 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '昵称',
-    dataIndex: 'nickName',
-    key: 'nickName',
+    title: '登录名',
+    dataIndex: 'loginName',
+    key: 'loginName',
     width: 140
   },
   {
@@ -163,7 +163,7 @@ const getList = (): void => {
         return {
           id: item.id,
           name: item.name || '--',
-          nickName: item.nick || '--',
+          loginName: item.loginName || '--',
           phone: item.phone || '--',
           registrationTime: formatTime(item.registerTime)
         }

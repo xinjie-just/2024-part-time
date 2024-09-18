@@ -34,7 +34,7 @@
           style="width: 100%" />
       </a-form-item>
       <a-form-item label="创意心愿介绍" name="introduce">
-        <rich-text id="introduce" @blur="onBlur" />
+        <rich-text id="introduce" :html="form.introduce" @blur="onBlur" />
       </a-form-item>
     </a-form>
     <template #footer>

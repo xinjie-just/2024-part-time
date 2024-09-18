@@ -12,8 +12,8 @@ export interface IGetAccountInfoRes {
  */
 export interface IGetAccountExchangeListReq {
   source?: number; // 来源(1:订单; 2:扣款; 3:返点;)
-  completeStartTime: string; // 交易开始时间
-  completeEndTime: string; // 交易截止时间
+  completeStartTime?: string; // 交易开始时间
+  completeEndTime?: string; // 交易截止时间
   page: number; // 页码
   pageSize: number; // 每页数量
 }

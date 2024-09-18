@@ -26,7 +26,6 @@ export interface IUpdatePassword {
 export interface IEditMyShop {
   name: string;
   address: string;
-  location: string;
   contact: string;
   contactPhone: string;
   introduce: string;

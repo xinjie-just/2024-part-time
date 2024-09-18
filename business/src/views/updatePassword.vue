@@ -6,7 +6,7 @@
     <a-alert type="info" show-icon close-text="知道了" class="alert">
       <template #message>
         <p>图片验证码不区分大小，但必须输入正确后才能获取短信验证码；</p>
-        <p>短信验证码将发给店铺手机：{{ phone }}，请注意查收。</p>
+        <p>短信验证码将发给手机：{{ phone }}，请注意查收。</p>
       </template>
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
@@ -180,7 +180,7 @@ const onSubmit = async (): Promise<void> => {
     await formRef.value?.validate();
     console.log('表单验证成功', form);
     const params = {
-      newPassWord: form.password,
+      newPassword: form.password,
       verifyCode: form.phoneCode
     };
     updatePassword(params)

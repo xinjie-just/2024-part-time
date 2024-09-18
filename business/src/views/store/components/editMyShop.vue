@@ -46,7 +46,6 @@ const visible = ref(true);
 const form: UnwrapRef<IEditMyShop> = reactive({
   name: '',
   address: '',
-  location: '',
   contact: '',
   contactPhone: '',
   introduce: ''
@@ -62,15 +61,15 @@ const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
   const nameDisabled = values?.name?.trim().length < 2;
   const addressDisabled = values?.address?.trim().length < 2;
-  const locationDisabled = values?.location?.trim().length < 2;
   const contactDisabled = values?.contact?.trim().length < 1;
+  const introduceDisabled = values?.introduce?.trim().length < 1;
   const contactPhoneDisabled = !/^1[3-9]\d{9}$/.test(values?.contactPhone?.trim());
   return (
     nameDisabled ||
     addressDisabled ||
-    locationDisabled ||
     contactDisabled ||
-    contactPhoneDisabled
+    contactPhoneDisabled ||
+    introduceDisabled
   );
 });
 
@@ -83,17 +82,13 @@ const rules: Record<string, Rule[]> = {
     { required: true, message: '请输入店铺地址', trigger: 'change' },
     { pattern: /^.{2,30}$/, message: '店铺地址应该是 2-50 位字符！', trigger: 'blur' }
   ],
-  location: [
-    { required: true, message: '请输入地图位置', trigger: 'change' },
-    { pattern: /^.{2,30}$/, message: '地图位置应该是 2-50 位字符！', trigger: 'blur' }
-  ],
   contact: [{ required: true, message: '请输入店铺联系人', trigger: 'change' }],
   contactPhone: [
     { required: true, message: '请输入联系人电话', trigger: 'change' },
     { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的联系人手机号码！', trigger: 'blur' }
   ],
   introduce: [
-    { required: true, message: '请输入创意心愿介绍', trigger: 'change' },
+    { required: true, message: '请输入店铺介绍', trigger: 'change' },
   ],
 };
 
@@ -127,6 +122,7 @@ const onBlur = (html: string) => {
   console.log("html", html);
   form.introduce = html;
 };
+
 
 const onSubmit = async (): Promise<void> => {
   loading.value = true;

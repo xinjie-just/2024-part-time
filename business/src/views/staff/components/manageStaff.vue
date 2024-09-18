@@ -51,6 +51,7 @@ const treeData: Ref<TreeProps['treeData']> = ref([]);
 const checkedKeys: Ref<string[]> = ref([]);
 
 const formRef = ref();
+const getLoading = ref(false);
 const loading = ref(false);
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
@@ -113,7 +114,9 @@ onMounted(() => {
 
   // 转换数据
   treeData.value = transformMenu(permissionRoutes);
-  getStaffInfoFn();
+  if (props.isEdit) {
+    getStaffInfoFn();
+  }
 });
 
 const getStaffInfoFn = () => {
@@ -128,7 +131,7 @@ const getStaffInfoFn = () => {
     form.phone = result.phone;
     form.password = result.password;
 
-    checkedKeys.value = result.menuInfoList;
+    checkedKeys.value = result.menuPathList;
   })
 }
 
@@ -143,7 +146,7 @@ const onSubmit = async (): Promise<void> => {
       loginName: form.loginName,
       password: form.password,
       phone: form.phone,
-      menuIdList: checkedKeys.value
+      menuPathList: checkedKeys.value
     };
     if (props.isEdit) {
       params.id = props.staffId;

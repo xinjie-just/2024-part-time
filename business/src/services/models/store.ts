@@ -2,7 +2,9 @@
  * @description 查询代营店铺列表 /shop/shop-proxy-list
  */
 export interface IGetAgentShopListReq {
-  name: string;
+  name?: string;
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetAgentShopListRes {
   totalNum: number;

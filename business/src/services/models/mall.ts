@@ -2,8 +2,10 @@
  * @description 查询 PK 商品列表 /product-pk/list
  */
 export interface IGetPKListReq {
-  state: number; // 商品状态(1:销售中; 2:停止销售)
-  name: string; // 商品名称
+  state?: number; // 商品状态(1:销售中; 2:停止销售)
+  name?: string; // 商品名称
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetPKListRes {
   totalNum: number;
@@ -47,8 +49,10 @@ export interface ISetPKStateReq {
  * @description 查询扫一扫商品列表 /product-scan/list
  */
 export interface IGetScanListReq {
-  state: number; // 商品状态(1:销售中; 2:停止销售)
-  name: string; // 商品名称
+  state?: number; // 商品状态(1:销售中; 2:停止销售)
+  name?: string; // 商品名称
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetScanListRes {
   totalNum: number;
@@ -91,8 +95,10 @@ export interface ISetScanStateReq {
  * @description 查询创意许愿商品列表 /product-wish/list
  */
 export interface IGetWishingListReq {
-  state: number; // 许愿状态(1:可许心愿; 2:停止许愿)
-  name: string; // 商品名称
+  state?: number; // 许愿状态(1:可许心愿; 2:停止许愿)
+  name?: string; // 商品名称
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetWishingListRes {
   totalNum: number;
@@ -130,12 +136,12 @@ export interface ISetWishingStateReq {
  * @description 订单管理-PK 品-订单列表 /product-pk-order/list
  */
 export interface IGetPKOrderListReq {
-  orderNumber: string; //	订单编号
-  productName: string; //	PK品名称
-  userPhone: string; //	用户手机号码
-  playerPhone: string; //	pK手手机号码
-  freeGift: boolean | null; // 免费赠送
-  deliverGoods: boolean | null; // 发货状态
+  orderNumber?: string; //	订单编号
+  productName?: string; //	PK品名称
+  userPhone?: string; //	用户手机号码
+  playerPhone?: string; //	pK手手机号码
+  freeGift?: boolean | null; // 免费赠送
+  deliverGoods?: boolean | null; // 发货状态
   page: number; // 页码
   pageSize: number; // 每页数量
 }
@@ -173,10 +179,12 @@ export interface IPKOrderReturnsReq {
  * @description 订单管理-扫一扫-订单列表 /product-scan-order/list
  */
 export interface IGetScanOrderListReq {
-  orderNumber: string; //	订单编号
-  productName: string; //	扫一扫商品名称
-  userPhone: string; //	用户手机号码
-  freeGift: boolean | null; // 免费赠送
+  orderNumber?: string; //	订单编号
+  productName?: string; //	扫一扫商品名称
+  userPhone?: string; //	用户手机号码
+  freeGift?: boolean | null; // 免费赠送
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetScanOrderListRes {
   totalNum: number;
@@ -195,10 +203,12 @@ export interface IScanOrderList {
  * @description 订单管理-创意许愿-订单列表 /product-wish-order/list
  */
 export interface IGetWishingOrderListReq {
-  orderNumber: string; //	订单编号
-  productName: string; //	创意许愿商品名称
-  userPhone: string; //	用户手机号码
-  wishResult: boolean | null; // 许愿结果
+  orderNumber?: string; //	订单编号
+  productName?: string; //	创意许愿商品名称
+  userPhone?: string; //	用户手机号码
+  wishResult?: boolean | null; // 许愿结果
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetWishingOrderListRes {
   totalNum: number;
@@ -219,8 +229,10 @@ export interface IWishingOrderList {
  * @description PK 手管理-查询 PK 手列表 /player-pk/list
  */
 export interface IGetPKPlayerListReq {
-  name: string; // PK手名称
-  phone: string; //	手机号码
+  name?: string; // PK手名称
+  phone?: string; //	手机号码
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetPKPlayerListRes {
   totalNum: number;
@@ -238,8 +250,10 @@ export interface IPKPlayerList {
  * @description PK 手管理-查询店铺的 PK 选手信息列表 /player-pk/list-by-shop
  */
 export interface IGetToDoSelectPlayerListReq {
-  name: string; // PK手名称
-  phone: string; //	手机号码
+  name?: string; // PK手名称
+  phone?: string; //	手机号码
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetToDoSelectPlayerListRes {
   totalNum: number;

@@ -2,8 +2,10 @@
  * @description 获取会员列表 /shop-member/list
  */
 export interface IGetMemberListReq {
-  name: string;
-  phone: string;
+  name?: string;
+  phone?: string;
+  page: number; // 页码
+  pageSize: number; // 每页数量
 }
 export interface IGetMemberListRes {
   totalNum: number;
