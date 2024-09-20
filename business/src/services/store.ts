@@ -55,7 +55,7 @@ export const getMyShopDetails = (data: { id: number }) => {
 export const updateMyShop = (data: IUpdateMyShopReq) => {
   return request<null>({
     url: API.updateMyShop,
-    method: 'post',
+    method: 'put',
     data
   });
 };

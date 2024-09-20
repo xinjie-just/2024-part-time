@@ -1,21 +1,29 @@
 <!-- 我的店铺 -->
 <template>
-  <a-descriptions :column="1" title="基本信息" bordered size="small" :label-style="{ width: '120px' }"
-    :content-style="{ wordBreak: 'break-all' }">
-    <template #extra>
-      <a-button type="primary" @click="onEditMyShop" class="btn">编辑</a-button>
-      <a-button type="primary" ghost @click="onUpdatePassword" class="btn">修改登录密码</a-button>
-      <a-button type="default" @click="onUpgrade" class="btn">升级店铺</a-button>
-    </template>
-    <a-descriptions-item label="店铺名称">{{ store.shopName || '' }}</a-descriptions-item>
-    <a-descriptions-item label="店铺地址">{{ store.address || '' }}</a-descriptions-item>
-    <a-descriptions-item label="地图位置">
-      <baidu-map :address="store.address" :width="'100%'" :height="'300px'" />
-    </a-descriptions-item>
-    <a-descriptions-item label="店铺联系人">{{ store.linkman || '' }}</a-descriptions-item>
-    <a-descriptions-item label="联系人电话">{{ store.phone || '' }}</a-descriptions-item>
-    <a-descriptions-item label="店铺介绍">{{ store.introduce || '' }}</a-descriptions-item>
-  </a-descriptions>
+  <a-spin v-if="loading" size="large" tip="我的店铺信息获取中..." class="loading"></a-spin>
+  <div v-else>
+    <a-result v-if="isEmpty" status="error" title="暂无店铺信息" sub-title="你可以试试刷新，或稍后再试">
+      <template #extra>
+        <a-button key="refresh" @click="onRefresh">刷新</a-button>
+      </template>
+    </a-result>
+    <a-descriptions v-else :column="1" title="基本信息" bordered size="small" :label-style="{ width: '120px' }"
+      :content-style="{ wordBreak: 'break-all' }">
+      <template #extra>
+        <a-button type="primary" @click="onEditMyShop" class="btn">编辑</a-button>
+        <a-button type="primary" ghost @click="onUpdatePassword" class="btn">修改登录密码</a-button>
+        <a-button type="default" @click="onUpgrade" class="btn">升级店铺</a-button>
+      </template>
+      <a-descriptions-item label="店铺名称">{{ store.shopName || '' }}</a-descriptions-item>
+      <a-descriptions-item label="店铺地址">{{ store.address || '' }}</a-descriptions-item>
+      <a-descriptions-item label="地图位置">
+        <baidu-map :address="store.address" :width="'100%'" :height="'300px'" />
+      </a-descriptions-item>
+      <a-descriptions-item label="店铺联系人">{{ store.linkman || '' }}</a-descriptions-item>
+      <a-descriptions-item label="联系人电话">{{ store.phone || '' }}</a-descriptions-item>
+      <a-descriptions-item label="店铺介绍">{{ store.introduce || '' }}</a-descriptions-item>
+    </a-descriptions>
+  </div>
 
   <update-password v-if="updatePasswordVisible" @cancel="onCancelUpdatePassword" />
   <edit-my-shop v-if="editMyShopVisible" @cancel="onCancelEditMyShop" @confirm="onConfirmEditMyShop" />
@@ -33,6 +41,8 @@ const editMyShop = defineAsyncComponent(() => import('./components/editMyShop.vu
 const baiduMap = defineAsyncComponent(() => import('@/components/baiduMap.vue'));
 const updatePasswordVisible = ref(false);
 const editMyShopVisible = ref(false);
+const loading = ref(false);
+const isEmpty = ref(false);
 const store: Ref<IGetShopDetailsRes> = ref({
   id: 0,
   type: 0,
@@ -51,17 +61,29 @@ onMounted(() => {
 });
 
 const getDetails = async (): Promise<void> => {
+  loading.value = true;
   const userInfoStr = localStorage.getItem('userInfo');
   if (userInfoStr) {
     const userInfo = JSON.parse(userInfoStr);
     const params = {
       id: userInfo?.shopId
     };
-    getMyShopDetails(params).then((res) => {
-      const data = res.data;
-      store.value = data;
-    })
+    getMyShopDetails(params)
+      .then((res) => {
+        const data = res.data;
+        store.value = data;
+      })
+      .catch(() => {
+        isEmpty.value = true;
+      })
+      .finally(() => {
+        loading.value = false;
+      })
   }
+};
+
+const onRefresh = () => {
+  getDetails();
 };
 
 const onUpdatePassword = (): void => {
@@ -135,5 +157,11 @@ const onUpgrade = (): void => {
   &:not(:last-of-type) {
     margin-right: 16px;
   }
+}
+
+.loading {
+  display: block;
+  padding: 32px;
+  margin: auto;
 }
 </style>

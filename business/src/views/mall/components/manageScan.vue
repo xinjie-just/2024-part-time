@@ -61,6 +61,8 @@
 
 <script setup lang="ts">
 import { IManageScan } from '@/models';
+import { saveScan } from '@/services';
+import { ISaveScanReq } from '@/services/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue';
@@ -138,12 +140,29 @@ const onSubmit = async (): Promise<void> => {
   try {
     await formRef.value?.validate();
     console.log('表单验证成功', form);
-    // 这里可以添加提交表单的逻辑
-    setTimeout(() => {
-      loading.value = false;
-      message.success(props.isEdit ? '商品编辑成功' : '商品添加成功');
-      emits('confirm');
-    }, 1000);
+
+    const params: ISaveScanReq = {
+      name: form.name, // 商品名称
+      title: form.title, // 商品标题
+      price: form.originalPrice, // 商品价格
+      settlePrice: form.settlementPrice, // 结算价格
+      currentPrice: form.currentPrice, // 当前价格
+      guessDigit: form.digit, // 竞猜位数
+      guessSmallPrice: form.miniPrice, // 竞猜小价
+      introduction: form.introduce // 商品说明
+    };
+    if (props.isEdit) {
+      params.id = props.goodsId;
+    }
+    saveScan(params)
+      .then(() => {
+        loading.value = false;
+        message.success(props.isEdit ? '商品编辑成功' : '商品添加成功');
+        emits('confirm');
+      })
+      .finally(() => {
+        loading.value = false;
+      })
   } catch (error) {
     console.log('表单验证失败', error);
     loading.value = false;

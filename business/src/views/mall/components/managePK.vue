@@ -48,8 +48,8 @@
         <a-input-number v-model:value="form.digit" :min="1" :max="999" :precision="0" placeholder="请输入竞猜位数"
           style="width: 100%" />
       </a-form-item>
-      <a-form-item label="PK 次数" name="time">
-        <a-input-number v-model:value="form.time" :min="1" :max="99" :precision="0" placeholder="请输入 PK 次数"
+      <a-form-item label="PK 次数" name="times">
+        <a-input-number v-model:value="form.times" :min="1" :max="99" :precision="0" placeholder="请输入 PK 次数"
           style="width: 100%" />
       </a-form-item>
       <a-form-item label="商品介绍" name="introduce">
@@ -65,6 +65,8 @@
 
 <script setup lang="ts">
 import { IManagePK } from '@/models';
+import { savePK } from '@/services';
+import { ISavePKReq } from '@/services/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue';
@@ -87,7 +89,7 @@ const form: UnwrapRef<IManagePK> = reactive({
   currentPrice: 0.01,
   miniPrice: 0.01,
   digit: 1,
-  time: 1 // 分母不能为 0，所以从 0 开始
+  times: 1 // 分母不能为 0，所以从 0 开始
 });
 const rules: Record<string, Rule[]> = {
   name: [
@@ -103,7 +105,7 @@ const rules: Record<string, Rule[]> = {
   currentPrice: [{ required: true, message: '请输入现价', trigger: 'change' }],
   miniPrice: [{ required: true, message: '请输入竞猜小价', trigger: 'change' }],
   digit: [{ required: true, message: '请输入竞猜位数', trigger: 'change' }],
-  time: [{ required: true, message: '请输入 PK 次数', trigger: 'change' }],
+  times: [{ required: true, message: '请输入 PK 次数', trigger: 'change' }],
   introduce: [
     { required: true, message: '请输入商品介绍', trigger: 'change' },
   ],
@@ -118,9 +120,9 @@ const disabled = computed((): boolean => {
   const currentPriceDisabled = !values?.currentPrice;
   const miniPriceDisabled = !values?.miniPrice;
   const digitDisabled = !values?.digit;
-  const timeDisabled = !values?.time;
+  const timeDisabled = !values?.times;
 
-  const price = (values?.miniPrice * 10 * values?.digit) / values?.time;
+  const price = (values?.miniPrice * 10 * values?.digit) / values?.times;
   const priceDisabled = values?.settlementPrice > price;
   return (
     nameDisabled ||
@@ -147,12 +149,30 @@ const onSubmit = async (): Promise<void> => {
   loading.value = true;
   try {
     await formRef.value?.validate();
-    // 这里可以添加提交表单的逻辑
-    setTimeout(() => {
-      loading.value = false;
-      message.success(props.isEdit ? '商品编辑成功' : '商品添加成功');
-      emits('confirm');
-    }, 1000);
+
+    const params: ISavePKReq = {
+      name: form.name, // 商品名称
+      title: form.title, // 商品标题
+      price: form.originalPrice, // 商品价格
+      settlePrice: form.settlementPrice, // 结算价格
+      currentPrice: form.currentPrice, // 当前价格
+      guessDigit: form.digit, // 竞猜位数
+      guessSmallPrice: form.miniPrice, // 竞猜小价
+      pkNum: form.times, // PK次数
+      introduction: form.introduce // 商品说明
+    };
+    if (props.isEdit) {
+      params.id = props.goodsId;
+    }
+    savePK(params)
+      .then(() => {
+        loading.value = false;
+        message.success(props.isEdit ? '商品编辑成功' : '商品添加成功');
+        emits('confirm');
+      })
+      .finally(() => {
+        loading.value = false;
+      })
   } catch (error) {
     console.log('表单验证失败', error);
     loading.value = false;

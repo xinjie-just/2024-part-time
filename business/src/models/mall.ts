@@ -34,7 +34,7 @@ export interface IManagePK {
   currentPrice: number;
   miniPrice: number;
   digit: number;
-  time: number;
+  times: number;
 }
 
 export interface IScanForSale {

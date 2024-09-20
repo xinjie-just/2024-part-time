@@ -46,6 +46,8 @@
 
 <script setup lang="ts">
 import { IManageWishing } from '@/models';
+import { saveWishing } from '@/services';
+import { ISaveWishingReq } from '@/services/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue';
@@ -114,13 +116,26 @@ const onSubmit = async (): Promise<void> => {
   loading.value = true;
   try {
     await formRef.value?.validate();
-    console.log('表单验证成功', form);
-    // 这里可以添加提交表单的逻辑
-    setTimeout(() => {
-      loading.value = false;
-      message.success(props.isEdit ? '创意心愿编辑成功' : '创意心愿添加成功');
-      emits('confirm');
-    }, 1000);
+    const params: ISaveWishingReq = {
+      name: form.name, // 商品名称
+      title: form.title, // 商品标题
+      price: form.referenceValue, // 商品价格
+      guessDigit: form.digit, // 竞猜位数
+      introduction: form.introduce, // 商品说明
+      coinDrop: form.miniPrice, // 投币小额
+    };
+    if (props.isEdit) {
+      params.id = props.goodsId;
+    }
+    saveWishing(params)
+      .then(() => {
+        loading.value = false;
+        message.success(props.isEdit ? '创意心愿编辑成功' : '创意心愿添加成功');
+        emits('confirm');
+      })
+      .finally(() => {
+        loading.value = false;
+      })
   } catch (error) {
     console.log('表单验证失败', error);
     loading.value = false;

@@ -25,7 +25,7 @@ export interface IPKList {
  * @description 新增/编辑 PK 商品 /product-pk/save
  */
 export interface ISavePKReq {
-  id: number; // 商品ID
+  id?: number; // 商品ID
   name: string; // 商品名称
   title: string; // 商品标题
   price: number; // 商品价格
@@ -72,7 +72,7 @@ export interface IScanList {
  * @description 新增/编辑扫一扫商品 /product-scan/save
  */
 export interface ISaveScanReq {
-  id: number; // 商品ID
+  id?: number; // 商品ID
   name: string; // 商品名称
   title: string; // 商品标题
   price: number; // 商品价格
@@ -115,7 +115,7 @@ export interface IWishingList {
  * @description 新增/编辑创意许愿商品 /product-wish/save
  */
 export interface ISaveWishingReq {
-  id: number; // 商品ID
+  id?: number; // 商品ID
   name: string; // 商品名称
   title: string; // 商品标题
   price: number; // 参考价格
