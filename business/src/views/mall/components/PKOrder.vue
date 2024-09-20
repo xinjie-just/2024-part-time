@@ -75,7 +75,7 @@
 import { onMounted, Ref, ref } from 'vue';
 import { IPKOrder, IPage } from '@/models';
 import { message } from 'ant-design-vue';
-import { getPKOrderList, PKOrderReturns } from '@/services';
+import { getPKOrderList, PKOrderShipping } from '@/services';
 
 const orderId = ref('');
 const phone = ref('');
@@ -251,7 +251,7 @@ const onChangeStatus = (id: number, checked: boolean) => {
   const params = {
     orderId: id,
   };
-  PKOrderReturns(params).then(() => {
+  PKOrderShipping(params).then(() => {
     message.success('发货状态修改成功');
     page.value.current = 1;
     getList();

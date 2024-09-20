@@ -24,7 +24,7 @@
         <a-form-item name="remember">
           <a-flex justify="space-between" :align="'center'">
             <a-checkbox v-model:checked="form.remember" :disabled="loading">记住我</a-checkbox>
-            <a-button type="link" @click="onUpdatePassword" size="small" :disabled="loading">忘记密码</a-button>
+            <a-button type="link" @click="onResetPassword" size="small" :disabled="loading">忘记密码</a-button>
           </a-flex>
         </a-form-item>
         <a-form-item>
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <update-password v-if="visible" @cancel="onCancel" />
+  <reset-password v-if="visible" @cancel="onCancel" @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
@@ -51,7 +51,7 @@ interface ILogin {
   password: string;
   remember: boolean;
 }
-const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
+const resetPassword = defineAsyncComponent(() => import('@/views/resetPassword.vue'));
 const visible = ref(false);
 
 const router = useRouter();
@@ -153,10 +153,14 @@ const getUserInfoFn = () => {
     })
 };
 
-const onUpdatePassword = (): void => {
+const onResetPassword = (): void => {
   visible.value = true;
 };
 const onCancel = (): void => {
+  visible.value = false;
+};
+const onConfirm = (): void => {
+  form.password = '';
   visible.value = false;
 };
 </script>

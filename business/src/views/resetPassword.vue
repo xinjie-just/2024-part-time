@@ -1,12 +1,12 @@
-<!-- 修改登录密码 -->
+<!-- 重置登录密码 -->
 <template>
-  <a-modal v-model:open="visible" :width="640" :mask-closable="false" :keyboard="false" title="修改登录密码"
+  <a-modal v-model:open="visible" :width="640" :mask-closable="false" :keyboard="false" title="重置登录密码"
     :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
     <!-- 验证码发给店铺手机 -->
     <a-alert type="info" show-icon close-text="知道了" class="alert">
       <template #message>
-        <p>图片验证码不区分大小写，但必须输入正确后才能获取短信验证码；</p>
-        <p>短信验证码将发给手机：{{ phone }}，请注意查收。</p>
+        <p>图片验证码不区分大小写；</p>
+        <p>图片验证码和手机号码都需要输入正确后才能获取短信验证码。</p>
       </template>
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }" :disabled="loading">
@@ -25,21 +25,17 @@
           </template>
         </a-input>
       </a-form-item>
+      <a-form-item label="手机号码" name="phone">
+        <a-input v-model:value.trim="form.phone" :maxlength="11" allow-clear placeholder="请输入正确手机号码" />
+      </a-form-item>
       <a-form-item label="短信验证码" name="phoneCode">
         <a-input v-model:value.trim="form.phoneCode" :maxlength="6" allow-clear placeholder="请输入短信验证码（6 位数字）">
           <template #suffix>
             <span v-if="hasSendCode" class="countdown">{{ countdown }}s 后重发</span>
             <template v-else>
-              <button v-if="hasValidatedPhone" class="code-btn"
-                :disabled="form.imageCode.trim().toLowerCase() !== randomText" @click="onSendPhoneCode">
+              <button class="code-btn" :disabled="getPhoneCodeDisabled" @click="onSendPhoneCode">
                 获取验证码
               </button>
-              <a-popconfirm placement="topRight" v-else :title="`短信验证码将发送到手机：${phone}，确认吗？`" ok-text="确认"
-                cancel-text="放弃" @confirm="onSendPhoneCode">
-                <button class="code-btn" :disabled="form.imageCode.trim().toLowerCase() !== randomText">
-                  获取验证码
-                </button>
-              </a-popconfirm>
             </template>
           </template>
         </a-input>
@@ -53,8 +49,8 @@
 </template>
 
 <script setup lang="ts">
-import { IUpdatePassword } from '@/models';
-import { sendPhoneCode, updatePassword } from '@/services';
+import { IResetPassword } from '@/models';
+import { resetPassword, sendPhoneCode } from '@/services';
 import { drawTextOnCanvas } from '@/utils';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
@@ -63,7 +59,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const emits = defineEmits(['cancel']);
+const emits = defineEmits(['cancel', 'confirm']);
 const options = {
   source: 'ABDEGHQRSTUVWXYZabde23456789', // 取一些不容易混淆的字母和数字
   charCount: 4,
@@ -76,19 +72,18 @@ const visible = ref(true);
 const canvasRef = ref(null);
 const randomText = ref('');
 
-const form: UnwrapRef<IUpdatePassword> = reactive({
+const form: UnwrapRef<IResetPassword> = reactive({
   password: '',
   checkPassword: '',
   imageCode: '',
-  phoneCode: ''
+  phoneCode: '',
+  phone: '',
 });
 const formRef = ref();
 const loading = ref(false);
 const hasSendCode = ref(false);
 const countdown = ref(0);
 const timer = ref(0);
-const phone = ref(''); // 店铺手机号码，用于接收短信验证码
-const hasValidatedPhone = ref(false); // 验证过手机号，重新发送时不再验证（退出登录除外）
 
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
@@ -98,7 +93,15 @@ const disabled = computed((): boolean => {
   );
   const imageCodeDisabled = values?.imageCode?.trim().length < options.charCount;
   const phoneCodeDisabled = !/^\d{6}$/.test(values?.phoneCode?.trim());
-  return passwordDisabled || checkPasswordDisabled || imageCodeDisabled || phoneCodeDisabled;
+  const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
+  return passwordDisabled || checkPasswordDisabled || imageCodeDisabled || phoneCodeDisabled || phoneDisabled;
+});
+
+const getPhoneCodeDisabled = computed((): boolean => {
+  const values = formRef.value?.getFieldsValue();
+  const imageCodeIncorrect = form.imageCode.trim().toLowerCase() !== randomText.value;
+  const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
+  return imageCodeIncorrect || phoneDisabled;
 });
 
 const validatePassword = async (_rule: Rule, value: string) => {
@@ -146,26 +149,26 @@ const validatePhoneCode = async (_rule: Rule, value: string) => {
     return Promise.resolve();
   }
 };
+const validatePhone = async (_rule: Rule, value: string) => {
+  const phone = value.trim();
+  if (phone === '') {
+    return Promise.reject('请输入手机号码');
+  } else if (!/^1[3-9]\d{9}$/.test(phone)) {
+    return Promise.reject('手机号码格式不正确!');
+  } else {
+    return Promise.resolve();
+  }
+};
 
 const rules: Record<string, Rule[]> = {
   password: [{ required: true, validator: validatePassword, trigger: 'blur' }],
   checkPassword: [{ required: true, validator: validateCheckPassword, trigger: 'blur' }],
   imageCode: [{ required: true, validator: validateImageCode, trigger: 'blur' }],
-  phoneCode: [{ required: true, validator: validatePhoneCode, trigger: 'blur' }]
+  phoneCode: [{ required: true, validator: validatePhoneCode, trigger: 'blur' }],
+  phone: [{ required: true, validator: validatePhone, trigger: 'blur' }]
 };
 
 onMounted(async () => {
-  const validated = localStorage.getItem('hasValidatedPhone');
-  if (validated === 'true') {
-    hasValidatedPhone.value = true;
-  }
-
-  const userInfoStr = localStorage.getItem('userInfo');
-  if (userInfoStr) {
-    const userInfo = JSON.parse(userInfoStr);
-    phone.value = userInfo.phone;
-  }
-
   await nextTick();
   getRandomText(canvasRef.value);
 });
@@ -181,11 +184,12 @@ const onSubmit = async (): Promise<void> => {
     console.log('表单验证成功', form);
     const params = {
       newPassword: form.password,
-      verifyCode: form.phoneCode
+      verifyCode: form.phoneCode,
+      phone: form.phone
     };
-    updatePassword(params)
+    resetPassword(params)
       .then(() => {
-        message.success('密码修改成功');
+        message.success('密码重置成功');
         const username = localStorage.getItem('username');
         localStorage.clear();
         sessionStorage.clear();
@@ -193,6 +197,7 @@ const onSubmit = async (): Promise<void> => {
           localStorage.setItem('username', username);
         }
         router.push('/login');
+        emits('confirm');
       })
       .finally(() => {
         loading.value = false;
@@ -209,11 +214,9 @@ const onChangeChars = (): void => {
 
 const onSendPhoneCode = (): void => {
   const params = {
-    phone: phone.value,
+    phone: form.phone,
   };
   sendPhoneCode(params); // 不需要处理返回值
-  hasValidatedPhone.value = true;
-  localStorage.setItem('hasValidatedPhone', JSON.stringify(true));
 
   hasSendCode.value = true;
   countdown.value = 60;

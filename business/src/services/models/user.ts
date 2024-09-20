@@ -33,3 +33,12 @@ export interface IUpdatePasswordReq {
   newPassword: string;
   verifyCode: string;
 }
+
+/**
+ * @description 重置用户密码 /reset-password
+ */
+export interface IResetPasswordReq {
+  newPassword: string;
+  verifyCode: string;
+  phone: string;
+}

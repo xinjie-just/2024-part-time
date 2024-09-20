@@ -23,6 +23,14 @@ export interface IUpdatePassword {
   phoneCode: string;
 }
 
+export interface IResetPassword {
+  password: string;
+  checkPassword: string;
+  imageCode: string;
+  phoneCode: string;
+  phone: string;
+}
+
 export interface IEditMyShop {
   name: string;
   address: string;
