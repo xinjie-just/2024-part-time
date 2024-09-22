@@ -7,7 +7,7 @@
       <a-form-item label="姓名" name="name">
         <a-input v-model:value.trim="form.name" :maxlength="6" allow-clear placeholder="2-6 位字符" />
       </a-form-item>
-      <a-form-item label="登录名" name="loginName">
+      <a-form-item label="登录用户名" name="loginName">
         <a-input v-model:value.trim="form.loginName" :maxlength="16" allow-clear placeholder="2-16 位字符" />
       </a-form-item>
       <a-form-item label="手机号码" name="phone">
@@ -17,7 +17,7 @@
         <a-input-password v-model:value.trim="form.password" :maxlength="16" allow-clear
           placeholder="6-16 位，必须包含数字和字母" />
       </a-form-item>
-      <a-form-item label="菜单权限" name="permission">
+      <a-form-item label="菜单权限" name="permission" class="required">
         <a-tree checkable :tree-data="treeData" v-model:checkedKeys="checkedKeys"></a-tree>
       </a-form-item>
     </a-form>
@@ -51,7 +51,6 @@ const treeData: Ref<TreeProps['treeData']> = ref([]);
 const checkedKeys: Ref<string[]> = ref([]);
 
 const formRef = ref();
-const getLoading = ref(false);
 const loading = ref(false);
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
@@ -59,7 +58,8 @@ const disabled = computed((): boolean => {
   const loginNameDisabled = values?.loginName?.trim()?.length < 2;
   const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
   const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password?.trim());
-  return nameDisabled || loginNameDisabled || phoneDisabled || passwordDisabled;
+  const permissionDisabled = !checkedKeys.value.length;
+  return nameDisabled || loginNameDisabled || phoneDisabled || passwordDisabled || permissionDisabled;
 });
 
 const rules: Record<string, Rule[]> = {
@@ -68,7 +68,7 @@ const rules: Record<string, Rule[]> = {
     { min: 2, message: '2-30 位字符！', trigger: 'blur' }
   ],
   loginName: [
-    { required: true, message: '请输入登录名', trigger: 'change' },
+    { required: true, message: '请输入登录用户名', trigger: 'change' },
     { min: 2, message: '2-16 位字符！', trigger: 'blur' }
   ],
   phone: [

@@ -57,4 +57,18 @@ const getPopupContainer = (_, dialogContext) => {
   margin-top: 16px;
   text-align: right;
 }
+
+// 给必填项添加红色星号
+.required {
+  label {
+    &::before {
+      margin-right: 4px;
+      display: inline-block;
+      color: #ff4d4f;
+      font-size: 14px;
+      line-height: 1;
+      content: "*";
+    }
+  }
+}
 </style>

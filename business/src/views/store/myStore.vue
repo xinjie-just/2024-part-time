@@ -11,7 +11,7 @@
       :content-style="{ wordBreak: 'break-all' }">
       <template #extra>
         <a-button type="primary" @click="onEditMyShop" class="btn">编辑</a-button>
-        <a-button type="primary" ghost @click="onUpdatePassword" class="btn">修改登录密码</a-button>
+        <!-- <a-button type="primary" ghost @click="onUpdatePassword" class="btn">修改登录密码</a-button> -->
         <a-button type="default" @click="onUpgrade" class="btn">升级店铺</a-button>
       </template>
       <a-descriptions-item label="店铺名称">{{ store.shopName || '' }}</a-descriptions-item>
@@ -21,7 +21,9 @@
       </a-descriptions-item>
       <a-descriptions-item label="店铺联系人">{{ store.linkman || '' }}</a-descriptions-item>
       <a-descriptions-item label="联系人电话">{{ store.phone || '' }}</a-descriptions-item>
-      <a-descriptions-item label="店铺介绍">{{ store.introduce || '' }}</a-descriptions-item>
+      <a-descriptions-item label="店铺介绍">
+        <div v-html="store.introduce || ''"></div>
+      </a-descriptions-item>
     </a-descriptions>
   </div>
 

@@ -90,7 +90,7 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '登录名',
+    title: '登录用户名',
     dataIndex: 'loginName',
     key: 'loginName',
     width: 140

@@ -48,7 +48,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         // 为开发服务器配置自定义代理规则。
         '/api': {
           // target: 'https://www.00goo.com/manage', // 测试环境
-          target: 'https://7b85b77c.r27.cpolar.top/manage', // 徐仙本地环境
+          target: 'http://1.95.11.21:12345/manage', // 徐仙本地环境
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         }

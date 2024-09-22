@@ -3,7 +3,7 @@
   <div style="border: 1px solid #ccc">
     <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" mode="default" />
     <Editor style="height: 300px; overflow-y: hidden" v-model="valueHtml" :defaultConfig="editorConfig" mode="simple"
-      @onCreated="onCreated" @onBlur="onBlur" />
+      @onCreated="onCreated" @onBlur="onBlur" @onChange="onChange" />
   </div>
 </template>
 
@@ -19,6 +19,7 @@ const props = defineProps<{ html: string }>();
 const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(''); // 内容 HTML
 const fileName = ref('');
+const token = localStorage.getItem('token');
 
 onMounted(() => {
   setTimeout(() => {
@@ -38,6 +39,9 @@ const editorConfig = {
       allowedFileTypes: ['image/*'], // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
       withCredentials: false, // 跨域是否传递 cookie ，默认为 false
       timeout: 15 * 1000, // 超时时间，默认为 10 秒
+      headers: {
+        token
+      },
       onBeforeUpload(file: File) {
         fileName.value = file.name;
         return file;
@@ -77,6 +81,10 @@ const onCreated = (editor) => {
 };
 
 const onBlur = () => {
+  emits('blur', editorRef.value.getHtml());
+}
+
+const onChange = () => {
   emits('blur', editorRef.value.getHtml());
 }
 </script>

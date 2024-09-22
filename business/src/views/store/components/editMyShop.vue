@@ -119,7 +119,6 @@ const onSetPoint = (data: IPoint) => {
 };
 
 const onBlur = (html: string) => {
-  console.log("html", html);
   form.introduce = html;
 };
 
@@ -128,7 +127,6 @@ const onSubmit = async (): Promise<void> => {
   loading.value = true;
   try {
     await formRef.value?.validate();
-    console.log('表单验证成功', form);
     const userInfoStr = localStorage.getItem('userInfo');
     const userInfo = userInfoStr ? JSON.parse(userInfoStr) : null;
     const params = {

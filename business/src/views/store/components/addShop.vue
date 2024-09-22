@@ -1,11 +1,11 @@
 <template>
   <a-modal v-model:open="visible" :width="640" :mask-closable="false" :keyboard="false" title="添加店铺"
     :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
-    <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 5 }">
+    <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
       <a-form-item label="店铺名称" name="storeName">
         <a-input v-model:value.trim="form.storeName" :maxlength="30" allow-clear placeholder="2-30 位字符" />
       </a-form-item>
-      <a-form-item label="登录用户名称" name="userName">
+      <a-form-item label="登录用户名" name="userName">
         <a-input v-model:value.trim="form.userName" :maxlength="30" allow-clear placeholder="2-30 位字符" />
       </a-form-item>
       <a-form-item label="手机号码" name="phone">
@@ -55,7 +55,7 @@ const rules: Record<string, Rule[]> = {
     { min: 2, message: '2-30 位字符！', trigger: 'blur' }
   ],
   userName: [
-    { required: true, message: '请输入登录用户名称', trigger: 'change' },
+    { required: true, message: '请输入登录用户名', trigger: 'change' },
     { min: 2, message: '2-30 位字符！', trigger: 'blur' }
   ],
   phone: [

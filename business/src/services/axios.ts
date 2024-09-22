@@ -71,8 +71,8 @@ instance.interceptors.response.use(
         // 未登录或登录已过期
         localStorage.removeItem('token');
 
-        const path = route.path;
-        if (!path.includes('/login')) {
+        const path = route?.path;
+        if (!path?.includes('/login')) {
           localStorage.setItem('path', path);
         }
         message.error('请先登录');
