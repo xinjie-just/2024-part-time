@@ -22,6 +22,13 @@ export interface IPKList {
 }
 
 /**
+ * @description 查询 PK 品详情 /product-pk/info
+ */
+export interface IGetPKDetailsRes {
+  [key: string]: any;
+}
+
+/**
  * @description 新增/编辑 PK 商品 /product-pk/save
  */
 export interface ISavePKReq {
@@ -69,6 +76,13 @@ export interface IScanList {
 }
 
 /**
+ * @description 查询扫一扫商品详情 /product-scan/info
+ */
+export interface IGetScanDetailsRes {
+  [key: string]: any;
+}
+
+/**
  * @description 新增/编辑扫一扫商品 /product-scan/save
  */
 export interface ISaveScanReq {
@@ -109,6 +123,13 @@ export interface IWishingList {
   name: string; // 商品名称
   price: number; // 商品价格
   QRCode?: string; // 二维码
+}
+
+/**
+ * @description 查询创意许愿商品详情 /product-wish/info
+ */
+export interface IGetWishingDetailsRes {
+  [key: string]: any;
 }
 
 /**
@@ -176,6 +197,13 @@ export interface IPKOrderReturnsReq {
 }
 
 /**
+ * @description 订单管理-PK 品-订单退款 /product-pk-order/refund
+ */
+export interface IPKOrderRefundReq {
+  orderId: number; // 订单 ID
+}
+
+/**
  * @description 订单管理-扫一扫-订单列表 /product-scan-order/list
  */
 export interface IGetScanOrderListReq {
@@ -221,8 +249,15 @@ export interface IWishingOrderList {
   userPhone: string; // 用户手机号
   minPrice: number; // 小金额
   maxPrice: number; // 大金额
-  status: boolean | string; // 状态
+  status: boolean | number; // 状态
   wishResult: boolean | string; // 许愿结果
+}
+
+/**
+ * @description 订单管理-创意许愿-实现心愿 /product-wish-order/achieve
+ */
+export interface IAchieveWishingOrderRes {
+  [key: string]: any;
 }
 
 /**

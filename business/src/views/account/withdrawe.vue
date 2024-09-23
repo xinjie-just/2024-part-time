@@ -47,7 +47,7 @@
         {{ index + 1 }}
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm placement="topRight" :title="`确认删除账户 ${record.name} 吗？`" ok-text="确定"
+        <a-popconfirm placement="topRight" :title="`确认删除账户 ${record.cardNumber} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
           @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>

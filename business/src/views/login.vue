@@ -6,16 +6,16 @@
       <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form"
         :disabled="loading">
         <a-form-item label="用户名" name="username">
-          <a-input v-model:value.trim="form.username" :maxlength="16" allow-clear placeholder="请输入用户名（2-16 位字符）"
-            @pressEnter="onSubmit">
+          <a-input v-model:value.trim="form.username" showCount :maxlength="16" allow-clear
+            placeholder="请输入用户名（2-16 位字符）" @pressEnter="onSubmit">
             <template #prefix>
               <UserOutlined />
             </template>
           </a-input>
         </a-form-item>
         <a-form-item label="密码" name="password">
-          <a-input-password v-model:value.trim="form.password" :maxlength="16" placeholder="请输入密码（6-16 位，必须包含数字和字母）"
-            allow-clear @pressEnter="onSubmit">
+          <a-input-password v-model:value.trim="form.password" showCount :maxlength="16"
+            placeholder="请输入密码（6-16 位，必须包含数字和字母）" allow-clear @pressEnter="onSubmit">
             <template #prefix>
               <LockOutlined />
             </template>

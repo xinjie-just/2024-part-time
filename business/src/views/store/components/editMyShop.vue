@@ -4,19 +4,22 @@
     :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 3 }">
       <a-form-item label="店铺名称" name="name">
-        <a-input v-model:value.trim="form.name" :maxlength="30" allow-clear placeholder="请输入店铺名称（2-30 位字符）" />
+        <a-input v-model:value.trim="form.name" showCount :maxlength="30" allow-clear placeholder="请输入店铺名称（2-30 位字符）" />
       </a-form-item>
       <a-form-item label="店铺地址" name="address">
-        <a-input v-model:value.trim="form.address" :maxlength="50" allow-clear placeholder="请输入店铺地址（2-50 位字符）" />
+        <a-input v-model:value.trim="form.address" showCount :maxlength="50" allow-clear
+          placeholder="请输入店铺地址（2-50 位字符）" />
       </a-form-item>
       <a-form-item label="地图位置" name="location">
         <baidu-map :address="form.address" @setPoint="onSetPoint" :width="'100%'" :height="'300px'" />
       </a-form-item>
       <a-form-item label="店铺联系人" name="contact">
-        <a-input v-model:value.trim="form.contact" :maxlength="6" allow-clear placeholder="请输入店铺联系人（不超过 6 个字符 ）" />
+        <a-input v-model:value.trim="form.contact" showCount :maxlength="6" allow-clear
+          placeholder="请输入店铺联系人（不超过 6 个字符 ）" />
       </a-form-item>
       <a-form-item label="联系人电话" name="contactPhone">
-        <a-input v-model:value.trim="form.contactPhone" :maxlength="11" allow-clear placeholder="请输入正确的手机号码" />
+        <a-input v-model:value.trim="form.contactPhone" showCount :maxlength="11" allow-clear
+          placeholder="请输入正确的手机号码" />
       </a-form-item>
       <a-form-item label="店铺介绍" name="introduce">
         <rich-text id="introduce" :html="form.introduce" @blur="onBlur" />
@@ -62,7 +65,7 @@ const disabled = computed((): boolean => {
   const nameDisabled = values?.name?.trim().length < 2;
   const addressDisabled = values?.address?.trim().length < 2;
   const contactDisabled = values?.contact?.trim().length < 1;
-  const introduceDisabled = values?.introduce?.trim().length < 1;
+  const introduceDisabled = form?.introduce?.trim().length < 1;
   const contactPhoneDisabled = !/^1[3-9]\d{9}$/.test(values?.contactPhone?.trim());
   return (
     nameDisabled ||

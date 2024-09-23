@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
-import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue';
+import { onBeforeUnmount, ref, shallowRef } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { uploadFilePath } from '@/services';
 
@@ -20,12 +20,6 @@ const editorRef = shallowRef(); // 编辑器实例，必须用 shallowRef
 const valueHtml = ref(''); // 内容 HTML
 const fileName = ref('');
 const token = localStorage.getItem('token');
-
-onMounted(() => {
-  setTimeout(() => {
-    valueHtml.value = props.html;
-  }, 500);
-});
 
 const toolbarConfig = {};
 const editorConfig = {
@@ -43,16 +37,15 @@ const editorConfig = {
         token
       },
       onBeforeUpload(file: File) {
-        fileName.value = file.name;
+        fileName.value = file.name || Object.values(file)[0].name;
         return file;
       },
-      customInsert(res: any, insertFn: InsertFnType) {
+      customInsert(res: any, insertFn: any) {
         // res 即服务端的返回结果，从 res 中找到 url alt href ，然后插入图片
         const result = res.data;
-        const url = result;
-        const alt = fileName.value;
-        const href = `${location.origin}${result}`;
-        insertFn(url, alt, href)
+        const alt = fileName.value || 'result';
+        const url = `${location.origin}${result}`;
+        insertFn(url, alt, url)
       },
     },
   }
@@ -78,6 +71,7 @@ const onCreated = (editor) => {
     "insertTable",
     "insertLink",
   ];
+  valueHtml.value = props.html;
 };
 
 const onBlur = () => {

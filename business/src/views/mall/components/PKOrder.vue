@@ -75,7 +75,7 @@
 import { onMounted, Ref, ref } from 'vue';
 import { IPKOrder, IPage } from '@/models';
 import { message } from 'ant-design-vue';
-import { getPKOrderList, PKOrderShipping } from '@/services';
+import { getPKOrderList, PKOrderRefund, PKOrderShipping } from '@/services';
 
 const orderId = ref('');
 const phone = ref('');
@@ -229,16 +229,14 @@ const getList = (): void => {
 };
 
 const onConfirmRefund = (id: number): void => {
-  message.info('您取消了退款操作');
-  console.log("id", id);
-  // const params = {
-  //   orderId: id
-  // };
-  // PKOrderReturns(params).then(() => {
-  //   message.success('退款操作成功');
-  //   page.value.current = 1;
-  //   getList();
-  // })
+  const params = {
+    orderId: id
+  };
+  PKOrderRefund(params).then(() => {
+    message.success('退款操作成功');
+    page.value.current = 1;
+    getList();
+  })
 };
 const onCancelRefund = (): void => {
   message.info('您取消了退款操作');

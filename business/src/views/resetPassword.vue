@@ -11,11 +11,11 @@
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }" :disabled="loading">
       <a-form-item label="新密码" name="password">
-        <a-input-password v-model:value.trim="form.password" type="password" allow-clear :maxlength="16"
+        <a-input-password v-model:value.trim="form.password" type="password" allow-clear showCount :maxlength="16"
           placeholder="请输入密码（6-16 位，必须包含数字和字母）" />
       </a-form-item>
       <a-form-item label="重复新密码" name="checkPassword">
-        <a-input-password v-model:value.trim="form.checkPassword" type="password" allow-clear :maxlength="16"
+        <a-input-password v-model:value.trim="form.checkPassword" type="password" allow-clear showCount :maxlength="16"
           placeholder="请重复新密码（6-16 位，必须包含数字和字母）" />
       </a-form-item>
       <a-form-item label="图片验证码" name="imageCode">
@@ -26,10 +26,10 @@
         </a-input>
       </a-form-item>
       <a-form-item label="手机号码" name="phone">
-        <a-input v-model:value.trim="form.phone" :maxlength="11" allow-clear placeholder="请输入正确手机号码" />
+        <a-input v-model:value.trim="form.phone" showCount :maxlength="11" allow-clear placeholder="请输入正确手机号码" />
       </a-form-item>
       <a-form-item label="短信验证码" name="phoneCode">
-        <a-input v-model:value.trim="form.phoneCode" :maxlength="6" allow-clear placeholder="请输入短信验证码（6 位数字）">
+        <a-input v-model:value.trim="form.phoneCode" showCount :maxlength="6" allow-clear placeholder="请输入短信验证码（6 位数字）">
           <template #suffix>
             <span v-if="hasSendCode" class="countdown">{{ countdown }}s 后重发</span>
             <template v-else>

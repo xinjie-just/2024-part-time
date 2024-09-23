@@ -7,7 +7,7 @@
         <a-button key="refresh" @click="onRefresh">刷新</a-button>
       </template>
     </a-result>
-    <a-descriptions v-else :column="1" title="基本信息" bordered size="small" :label-style="{ width: '120px' }"
+    <a-descriptions v-else :column="1" title="基本信息" bordered size="small" :label-style="{ width: '104px' }"
       :content-style="{ wordBreak: 'break-all' }">
       <template #extra>
         <a-button type="primary" @click="onEditMyShop" class="btn">编辑</a-button>
@@ -22,7 +22,7 @@
       <a-descriptions-item label="店铺联系人">{{ store.linkman || '' }}</a-descriptions-item>
       <a-descriptions-item label="联系人电话">{{ store.phone || '' }}</a-descriptions-item>
       <a-descriptions-item label="店铺介绍">
-        <div v-html="store.introduce || ''"></div>
+        <div v-html="store.introduce || ''" class="html-content"></div>
       </a-descriptions-item>
     </a-descriptions>
   </div>
@@ -143,6 +143,16 @@ const onUpgrade = (): void => {
   });
 };
 </script>
+
+<style lang="scss">
+.html-content {
+  img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}
+</style>
 
 <style lang="scss" scoped>
 .img {

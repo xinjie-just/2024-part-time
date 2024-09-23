@@ -6,12 +6,12 @@
         <a-select v-model:value="form.bank" allow-clear :options="options" placeholder="请选择开户银行" />
       </a-form-item>
       <a-form-item label="账户姓名" name="name">
-        <a-input v-model:value.trim="form.name" :maxlength="6" allow-clear placeholder="请输入账户姓名（2-6 个字符）" />
+        <a-input v-model:value.trim="form.name" showCount :maxlength="6" allow-clear placeholder="请输入账户姓名（2-6 个字符）" />
       </a-form-item>
       <a-form-item label="银行卡号" name="account">
         <a-tooltip :trigger="['focus']" placement="bottomLeft" color="blue" overlay-class-name="tips">
           <template v-if="form.account" #title>{{ form.account }}</template>
-          <a-input v-model:value.trim="form.account" :maxlength="19" allow-clear placeholder="请输入正确的银行卡号" />
+          <a-input v-model:value.trim="form.account" showCount :maxlength="19" allow-clear placeholder="请输入正确的银行卡号" />
         </a-tooltip>
       </a-form-item>
     </a-form>

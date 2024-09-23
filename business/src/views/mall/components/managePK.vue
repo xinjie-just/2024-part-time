@@ -11,10 +11,10 @@
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 3 }">
       <a-form-item label="PK 品名称" name="name">
-        <a-input v-model:value.trim="form.name" :maxlength="16" allow-clear placeholder="2-16 位字符" />
+        <a-input v-model:value.trim="form.name" showCount :maxlength="16" allow-clear placeholder="2-16 位字符" />
       </a-form-item>
       <a-form-item label="商品标题" name="title">
-        <a-input v-model:value.trim="form.title" :maxlength="16" allow-clear placeholder="2-16 位字符" />
+        <a-input v-model:value.trim="form.title" showCount :maxlength="16" allow-clear placeholder="2-16 位字符" />
       </a-form-item>
       <a-form-item label="原价" name="originalPrice">
         <a-input-number v-model:value="form.originalPrice" :min="0.01" :max="9999" :precision="2" placeholder="请输入原价"
@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 import { IManagePK } from '@/models';
-import { savePK } from '@/services';
+import { getPKDetails, savePK } from '@/services';
 import { ISavePKReq } from '@/services/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
@@ -139,7 +139,21 @@ const disabled = computed((): boolean => {
 
 onMounted(() => {
   console.log('goodsId', props.goodsId);
+  if (props.isEdit) {
+    getPKDetailsFn();
+  }
 });
+
+const getPKDetailsFn = () => {
+  const params = {
+    id: props.goodsId
+  };
+  getPKDetails(params)
+    .then(res => {
+      const result = res?.data;
+      console.log("result", result);
+    })
+}
 
 const onBlur = (html: string) => {
   form.introduce = html;

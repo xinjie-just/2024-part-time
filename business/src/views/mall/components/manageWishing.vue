@@ -10,10 +10,10 @@
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
       <a-form-item label="创意心愿名称" name="name">
-        <a-input v-model:value.trim="form.name" :maxlength="16" allow-clear placeholder="2-16 位字符" />
+        <a-input v-model:value.trim="form.name" showCount :maxlength="16" allow-clear placeholder="2-16 位字符" />
       </a-form-item>
       <a-form-item label="创意心愿标题" name="title">
-        <a-input v-model:value.trim="form.title" :maxlength="16" allow-clear placeholder="2-16 位字符" />
+        <a-input v-model:value.trim="form.title" showCount :maxlength="16" allow-clear placeholder="2-16 位字符" />
       </a-form-item>
       <a-form-item label="参考价值" name="referenceValue">
         <a-input-number v-model:value="form.referenceValue" :min="0.01" :max="9999" :precision="2" placeholder="请输入参考价值"
@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { IManageWishing } from '@/models';
-import { saveWishing } from '@/services';
+import { getWishingDetails, saveWishing } from '@/services';
 import { ISaveWishingReq } from '@/services/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
@@ -106,7 +106,21 @@ const disabled = computed((): boolean => {
   );
 });
 
-onMounted(() => { });
+onMounted(() => {
+  if (props.isEdit) {
+    getScanDetailsFn();
+  }
+});
+const getScanDetailsFn = () => {
+  const params = {
+    id: props.goodsId
+  };
+  getWishingDetails(params)
+    .then(res => {
+      const result = res?.data;
+      console.log("result", result);
+    })
+}
 
 const onBlur = (html: string) => {
   form.introduce = html;
