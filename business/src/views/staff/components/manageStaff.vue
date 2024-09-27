@@ -47,8 +47,10 @@ const form: UnwrapRef<IManageStaff> = reactive({
   phone: '',
   password: ''
 });
+const defaultValue = 'store/myStore';
+
 const treeData: Ref<TreeProps['treeData']> = ref([]);
-const checkedKeys: Ref<string[]> = ref([]);
+const checkedKeys: Ref<string[]> = ref([defaultValue]);
 
 const formRef = ref();
 const loading = ref(false);
@@ -91,7 +93,8 @@ const transformMenu = (menuItems) => {
     const transformedItem = {
       key: item.path.substring(1),
       title: item.name,
-      children: []
+      children: [],
+      disabled: item.path.substring(1) === defaultValue
     };
     // 如果存在 children，则递归转换它们
     if (item.children?.length > 0) {
@@ -99,6 +102,7 @@ const transformMenu = (menuItems) => {
         return {
           key: child.path.substring(1),
           title: child.name,
+          disabled: child.path.substring(1) === defaultValue,
           children: [] // 如果 child 也有 children，可以在这里递归
         };
       });

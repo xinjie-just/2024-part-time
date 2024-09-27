@@ -177,7 +177,7 @@ const onChange = (current: number, pageSize: number): void => {
 const getList = (): void => {
   tableLoading.value = true;
   const params = {
-    state: 1, // 商品状态(1:销售中; 2:停止销售)
+    state: 0, // 商品状态(0:待售，1:销售中; 2:停止销售)
     name: goodsName.value.trim(),
     page: page.value.current,
     pageSize: page.value.pageSize

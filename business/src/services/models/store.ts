@@ -62,3 +62,13 @@ export interface IUpdateMyShopReq {
   linkman: string;
   introduce: string;
 }
+
+/**
+ * @description 添加代理店铺 /shop/proxy-create
+ */
+export interface IAddAgentShopReq {
+  shopName: string;
+  loginName: string;
+  phone: string;
+  password: string;
+}

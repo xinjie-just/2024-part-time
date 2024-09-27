@@ -7,12 +7,14 @@ import {
   IDeleteShopReq,
   ILockUnLockReq,
   IGetShopDetailsRes,
-  IUpdateMyShopReq
+  IUpdateMyShopReq,
+  IAddAgentShopReq
 } from './models';
 import request from '@/services/axios';
 
 const enum API {
-  getAgentShopList = '/shop/shop-proxy-list', // 查询代营店铺列表
+  getAgentShopList = '/shop/proxy-list', // 查询代营店铺列表
+  addAgentShop = '/shop/proxy-create', // 添加代理店铺
   deleteShop = '/shop/remove', // 删除店铺
   lockUnLockShop = '/shop/update-state', // 锁定/解锁
   getMyShopDetails = '/shop/info', // 查询店铺明细信息
@@ -24,6 +26,14 @@ export const getAgentShopList = (data: IGetAgentShopListReq) => {
   return request<IGetAgentShopListRes>({
     url: API.getAgentShopList,
     method: 'get',
+    data
+  });
+};
+
+export const addAgentShop = (data: IAddAgentShopReq) => {
+  return request<null>({
+    url: API.addAgentShop,
+    method: 'post',
     data
   });
 };

@@ -164,7 +164,7 @@ const onChange = (current: number, pageSize: number): void => {
 const getList = (): void => {
   tableLoading.value = true;
   const params = {
-    state: 1, // 许愿状态(1:可许心愿; 2:停止许愿)
+    // state: 0, // 许愿状态(0:待许愿;1:可许心愿; 2:停止许愿)
     name: wishingName.value.trim(),
     page: page.value.current,
     pageSize: page.value.pageSize

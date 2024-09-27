@@ -10,7 +10,9 @@ export interface IRouterType {
   path?: string;
   name?: string;
   label?: string;
+  key?: string;
   icon?: any;
+  title?: string;
   component?: any;
   redirect?: string;
   children?: IRouterType[];

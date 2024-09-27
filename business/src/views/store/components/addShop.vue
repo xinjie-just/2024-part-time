@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
 import { IAddShop } from '@/models';
+import { addAgentShop } from '@/services';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed } from 'vue';
@@ -76,13 +77,20 @@ const onSubmit = async (): Promise<void> => {
   loading.value = true;
   try {
     await formRef.value?.validate();
-    console.log('表单验证成功', form);
-    // 这里可以添加提交表单的逻辑
-    setTimeout(() => {
-      loading.value = false;
-      message.success('店铺添加成功');
-      emits('confirm');
-    }, 1000);
+    const params = {
+      shopName: form.storeName,
+      loginName: form.userName,
+      phone: form.phone,
+      password: form.password
+    };
+    addAgentShop(params)
+      .then(() => {
+        message.success('店铺添加成功');
+        emits('confirm');
+      })
+      .finally(() => {
+        loading.value = false;
+      })
   } catch (error) {
     console.log('表单验证失败', error);
     loading.value = false;

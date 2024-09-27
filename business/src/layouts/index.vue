@@ -1,7 +1,9 @@
 <template>
   <a-layout class="layout">
     <a-layout-sider v-model:collapsed="collapsed" :trigger="null" :width="256" collapsible>
-      <div class="logo">logo</div>
+      <div class="logo">
+        <img src="../assets/logo.jpg" alt="logo" class="img">
+      </div>
       <a-menu v-model:openKeys="state.openKeys" v-model:selectedKeys="state.selectedKeys" mode="inline" theme="dark"
         :items="menus" @click="onSelectMenu" class="menu"></a-menu>
       <div :class="collapsed ? 'phone' : 'fold-phone phone'">
@@ -74,6 +76,7 @@ const state = reactive({
 });
 const collapsed = ref(false);
 const menus: Ref<IRouterType[]> = ref([]);
+const menuPathList: Ref<string[]> = ref([]);
 
 const onSelectMenu = ({ item }) => {
   router.push(item.path);
@@ -91,7 +94,6 @@ watch(
 );
 
 onMounted(() => {
-  console.log('layout');
   const token = localStorage.getItem('token');
   if (!token) {
     const path = route.path;
@@ -104,10 +106,12 @@ onMounted(() => {
     const userInfo = JSON.parse(userInfoStr);
     userName.value = userInfo.name;
     phone.value = userInfo.phone;
+    menuPathList.value = userInfo.menuPathList;
   }
   const newRoutes = routes.find((item) => item.path === '/')?.children;
   const menuRoutes = newRoutes.filter((item) => item.redirect !== '/');
   menus.value = convertToAntdMenu(menuRoutes);
+  console.log("menuPathList.value", menuPathList.value);
   handleMenu();
 });
 /**
@@ -116,7 +120,7 @@ onMounted(() => {
  * @returns {IRouterType[]} 转换后的菜单数据数组
  */
 const convertToAntdMenu = (menuData: IRouterType[]): IRouterType[] => {
-  return menuData.map((menuItem) => {
+  const data = menuData.map((menuItem) => {
     if (menuItem.children && menuItem.children.length > 0) {
       // 如果有子菜单，则创建一个 SubMenu 类型的对象
       return {
@@ -144,6 +148,24 @@ const convertToAntdMenu = (menuData: IRouterType[]): IRouterType[] => {
       };
     }
   });
+  const menus: IRouterType[] = data;
+  console.log("data", data);
+  // TODO:
+  // // 查询 menuPathList.value 中是否包含 data 的 key 值，如果没有，则查询 data 的 children 中的 key 如果还是没有则将 data 的当前对象从 data 中移除，否则保留
+  // data.forEach((item, index) => {
+  //   if (!menuPathList.value.includes(item.key as string)) {
+  //     menus.splice(index, 1);
+  //   } else {
+  //     if (item.children) {
+  //       item.children.forEach((child, subIndex) => {
+  //         if (!menuPathList.value.includes(child?.key as string)) {
+  //           item.children.splice(subIndex, 1);
+  //         }
+  //       });
+  //     }
+  //   }
+  // });
+  return menus;
 };
 
 // 刷新页面，将菜单置为选中，并且将一级菜单打开
@@ -203,6 +225,13 @@ const onCancel = (): void => {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    .img {
+      display: block;
+      width: 48px;
+      height: 48px;
+      margin: auto;
+    }
   }
 
   .menu {
