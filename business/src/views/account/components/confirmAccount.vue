@@ -14,7 +14,7 @@
       </div>
       <div class="account-item">
         <span class="key">账户姓名：</span>
-        <span class="value">{{ account.backName }}</span>
+        <span class="value">{{ account.cardUserName }}</span>
       </div>
       <div class="account-item">
         <span class="key">银行卡号：</span>

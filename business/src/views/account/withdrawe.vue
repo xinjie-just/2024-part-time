@@ -172,7 +172,7 @@ const onCancelDelete = (): void => {
 };
 
 const onWithdrawe = () => {
-  selectedAccount.value = data.value.find(item => item.id === selectedIds[0]) as IBankCardListRes;
+  selectedAccount.value = data.value.find(item => item.id === selectedIds.value[0]) as IBankCardListRes;
   visible.value = true;
 };
 const onCancel = () => {
@@ -182,6 +182,8 @@ const onConfirm = () => {
   visible.value = false;
   selectedIds.value = [];
   sum.value = 0;
+  getAccountInfoFn();
+  getList();
 };
 
 const onAdd = () => {
