@@ -1,3 +1,5 @@
+import { message } from 'ant-design-vue';
+
 // 文件大小转换，接受一个 B 单位的值
 export const fileSizeTransform = (size: number) => {
   if (!size) {
@@ -20,7 +22,7 @@ export const getFileSuffix = (name: string) => {
   if (lastIndex !== -1) {
     suffix = name.substring(lastIndex).toLowerCase();
   } else {
-    showFailToast('您上传的文件名有误，请修改后再上传');
+    message.error('您上传的文件名有误，请修改后再上传');
   }
   return suffix; // 后缀名，包含有 .，如：.png
 };

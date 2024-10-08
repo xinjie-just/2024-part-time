@@ -88,9 +88,9 @@ const onRefresh = () => {
   getDetails();
 };
 
-const onUpdatePassword = (): void => {
-  updatePasswordVisible.value = true;
-};
+// const onUpdatePassword = (): void => {
+//   updatePasswordVisible.value = true;
+// };
 const onCancelUpdatePassword = (): void => {
   updatePasswordVisible.value = false;
 };

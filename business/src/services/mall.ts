@@ -29,7 +29,8 @@ import {
   IGetToDoSelectPlayerListRes,
   IGetPKDetailsRes,
   IGetScanDetailsRes,
-  IGetWishingDetailsRes
+  IGetWishingDetailsRes,
+  IAchieveWishingOrderRes
 } from './models';
 import request from '@/services/axios';
 

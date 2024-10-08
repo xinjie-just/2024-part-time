@@ -7,14 +7,6 @@ interface ImageTextOptions {
   bgColor: string;
 }
 
-function generateRandomString(source: string, charCount: number): string {
-  const chars = Array.from({ length: charCount }, () => {
-    const index = Math.floor(Math.random() * source.length);
-    return source[index];
-  });
-  return chars.join('');
-}
-
 export const drawTextOnCanvas = (canvas: HTMLCanvasElement, options: ImageTextOptions) => {
   const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 

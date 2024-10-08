@@ -43,7 +43,7 @@
       <template v-if="column.key === 'wishingResult'">
         <a-tag v-if="record.wishingResult === 1" color="green">已实现</a-tag>
         <a-switch v-if="record.wishingResult === 0" :checked="false" checked-children="已实现" un-checked-children="未实现"
-          :loading="statusLoading" @change="onChangeWishingResult(index)" />
+          :loading="statusLoading" @change="onChangeWishingResult(record.orderId)" />
       </template>
     </template>
   </a-table>
@@ -57,7 +57,7 @@
 import { onMounted, Ref, ref } from 'vue';
 import { IWishingOrder, IPage } from '@/models';
 import { message } from 'ant-design-vue';
-import { getWishingOrderList } from '@/services';
+import { achieveWishingOrder, getWishingOrderList } from '@/services';
 
 const orderId = ref('');
 const phone = ref('');
@@ -192,13 +192,17 @@ const getList = (): void => {
     })
 };
 
-const onChangeWishingResult = (index: number) => {
-  // statusLoading.value = true;
-  // setTimeout(() => {
-  //   statusLoading.value = false;
-  //   result[index].wishingResult = 1;
-  //   message.success('许愿结果修改成功');
-  //   getList();
-  // }, 1000);
+const onChangeWishingResult = (orderId: number) => {
+  statusLoading.value = true;
+  const params = {
+    orderId
+  };
+  achieveWishingOrder(params)
+    .then(() => {
+      message.success('许愿结果修改成功');
+      getList();
+    }).finally(() => {
+      statusLoading.value = false;
+    })
 };
 </script>
