@@ -71,4 +71,8 @@ const getPopupContainer = (_, dialogContext) => {
     }
   }
 }
+
+.ant-modal div[aria-hidden="true"] {
+  display: none !important
+}
 </style>
