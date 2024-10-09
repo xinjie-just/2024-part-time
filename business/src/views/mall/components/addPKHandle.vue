@@ -22,7 +22,7 @@
     </div>
     <a-table :columns="columns" :data-source="data"
       :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false" size="small"
-      :scroll="{ x: 600, y: 400 }" :loading="tableLoading" row-key="id">
+      :scroll="{ x: 600, y: 360 }" :loading="tableLoading" row-key="id">
       <template #bodyCell="{ column, _, index }">
         <template v-if="column.key === 'index'">
           {{ page.pageSize * (page.current - 1) + index + 1 }}

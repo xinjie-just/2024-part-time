@@ -18,7 +18,7 @@
     </template>
     添加
   </a-button>
-  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 400 }"
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">

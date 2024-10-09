@@ -41,7 +41,7 @@
 
   <a-table :columns="columns" :data-source="data"
     :row-selection="{ type: 'radio', selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false"
-    size="small" :scroll="{ x: 1000, y: 360 }" :loading="tableLoading" row-key="id">
+    size="small" :scroll="{ x: 1000, y: 320 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ index + 1 }}

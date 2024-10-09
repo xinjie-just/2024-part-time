@@ -46,11 +46,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       },
       proxy: {
         // 为开发服务器配置自定义代理规则。
-        '/api': {
-          // target: 'https://www.00goo.com/manage', // 测试环境
-          target: 'http://www.00goo.com/manage',
+        '/web': {
+          // target: 'https://www.00goo.com', // 测试环境
+          target: 'http://www.00goo.com',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          rewrite: (path) => path.replace(/^\/web/, '')
         }
       }
     }

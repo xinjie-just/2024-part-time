@@ -26,7 +26,7 @@
   </a-button>
   <a-table :columns="columns" :data-source="data"
     :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false" size="small"
-    :scroll="{ x: 1000, y: 400 }" :loading="tableLoading" row-key="id">
+    :scroll="{ x: 1000, y: 360 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
       <template v-if="column.key === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}

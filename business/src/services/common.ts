@@ -25,4 +25,4 @@ export const uploadFile = (data: IUploadFileReq) => {
   });
 };
 
-export const uploadFilePath = `/api${API.uploadFile}`;
+export const uploadFilePath = `/web/manage${API.uploadFile}`;

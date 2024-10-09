@@ -33,6 +33,9 @@
         </a-form-item>
       </a-form>
     </div>
+    <div class="footer">
+      Copyright@2024 驼背信息科技成都有限责任公司版权所有 蜀ICP备2024096901号
+    </div>
   </div>
 
   <reset-password v-if="visible" @cancel="onCancel" @confirm="onConfirm" />
@@ -171,6 +174,7 @@ const onConfirm = (): void => {
   justify-content: center;
   align-items: center;
   background-color: #b8ebe9;
+  position: relative;
 
   .container {
     width: 560px;
@@ -178,6 +182,19 @@ const onConfirm = (): void => {
     background-color: #e8faf4;
     border-radius: 4px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 48px;
+    line-height: 48px;
+    text-align: center;
+    background-color: #e8faf4;
+    color: #333;
+    font-size: 12px;
   }
 
   .title {

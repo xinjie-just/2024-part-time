@@ -42,6 +42,9 @@
           <component :is="Component" />
         </router-view>
       </a-layout-content>
+      <a-layout-footer class="footer">
+        Copyright@2024 驼背信息科技成都有限责任公司版权所有 蜀ICP备2024096901号
+      </a-layout-footer>
     </a-layout>
   </a-layout>
   <update-password v-if="visible" @cancel="onCancel" />
@@ -106,7 +109,16 @@ onMounted(() => {
     const userInfo = JSON.parse(userInfoStr);
     userName.value = userInfo.name;
     phone.value = userInfo.phone;
-    menuPathList.value = userInfo.menuPathList;
+
+    const menuPaths: string[] = [];
+    userInfo.menuPathList.forEach((item: string) => {
+      menuPaths.push(item);
+      if (item.includes('/')) {
+        const parentPath = item.substring(0, item.indexOf('/'));
+        menuPaths.push(parentPath);
+      }
+    })
+    menuPathList.value = [...new Set(menuPaths)];
   }
   const newRoutes = routes.find((item) => item.path === '/')?.children;
   const menuRoutes = newRoutes.filter((item) => item.redirect !== '/');
@@ -291,6 +303,15 @@ const onCancel = (): void => {
     background: #fff;
     min-height: 280px;
     overflow-y: auto;
+  }
+
+  .footer {
+    padding: 0;
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #fff;
+    text-align: center;
   }
 }
 </style>
