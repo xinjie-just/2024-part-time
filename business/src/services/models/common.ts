@@ -16,3 +16,14 @@ export interface ISendPhoneCodeRes {
 export interface IUploadFileReq {
   file: File;
 }
+
+/**
+ * @description 获取字典信息 /get-dict
+ */
+export interface IGetDictReq {
+  type: string;
+}
+export interface IGetDictRes {
+  name: string;
+  value: string;
+}

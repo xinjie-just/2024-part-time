@@ -34,7 +34,7 @@
       </a-form>
     </div>
     <div class="footer">
-      Copyright@2024 驼背信息科技成都有限责任公司版权所有 蜀ICP备2024096901号
+      Copyright@2024 驼背信息科技成都有限责任公司版权所有 <a href="http://beian.miit.gov.cn/" target="_blank">蜀ICP备2024096901号-1</a>
     </div>
   </div>
 

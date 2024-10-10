@@ -32,12 +32,12 @@
       </template>
       <template v-else-if="column.key === 'action'">
         <a-popconfirm placement="topRight" :title="`确认删除员工 ${record.name} 吗？`" ok-text="确定"
-          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
-          @cancel="onCancelDelete">
-          <a-button type="link">删除</a-button>
+          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" :disabled="loginUserId === record.id"
+          @confirm="onConfirmDelete(record.id)" @cancel="onCancelDelete">
+          <a-button type="link" :disabled="loginUserId === record.id">删除</a-button>
         </a-popconfirm>
         <a-divider type="vertical" />
-        <a-button type="link" @click="onEdit(record)">编辑</a-button>
+        <a-button type="link" @click="onEdit(record)" :disabled="loginUserId === record.id">编辑</a-button>
       </template>
     </template>
   </a-table>
@@ -73,6 +73,7 @@ const isEdit = ref(false);
 const searchLoading = ref(false);
 const resetLoading = ref(false);
 const tableLoading = ref(false);
+const loginUserId = ref(0);
 
 const columns = [
   {
@@ -118,6 +119,11 @@ const columns = [
 
 onMounted(() => {
   onSearch();
+  const userInfoStr = localStorage.getItem('userInfo');
+  if (userInfoStr) {
+    const userInfo = JSON.parse(userInfoStr);
+    loginUserId.value = userInfo.id;
+  }
 });
 
 const onSearch = (): void => {

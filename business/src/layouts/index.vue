@@ -9,13 +9,13 @@
       <div :class="collapsed ? 'phone' : 'fold-phone phone'">
         <a-tooltip v-if="collapsed" placement="right">
           <template #title>
-            <span>客服电话：{{ phone }}</span>
+            <span>客服电话：{{ servicePhone }}</span>
           </template>
           <PhoneOutlined class="phone-icon" />
         </a-tooltip>
         <template v-else>
           <PhoneOutlined class="phone-icon" />
-          <span class="phone-num">客服电话：{{ phone }}</span>
+          <span class="phone-num">客服电话：{{ servicePhone }}</span>
         </template>
       </div>
     </a-layout-sider>
@@ -43,7 +43,7 @@
         </router-view>
       </a-layout-content>
       <a-layout-footer class="footer">
-        Copyright@2024 驼背信息科技成都有限责任公司版权所有 蜀ICP备2024096901号
+        Copyright@2024 驼背信息科技成都有限责任公司版权所有 <a href="http://beian.miit.gov.cn/" target="_blank">蜀ICP备2024096901号-1</a>
       </a-layout-footer>
     </a-layout>
   </a-layout>
@@ -62,13 +62,14 @@ import { routes } from '@/routers';
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue';
-import { logout } from '@/services';
+import { getDict, logout } from '@/services';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const visible = ref(false);
 
 const userName = ref('');
 const phone = ref('');
+const servicePhone = ref('');
 
 const route = useRoute();
 const router = useRouter();
@@ -123,8 +124,8 @@ onMounted(() => {
   const newRoutes = routes.find((item) => item.path === '/')?.children;
   const menuRoutes = newRoutes.filter((item) => item.redirect !== '/');
   menus.value = convertToAntdMenu(menuRoutes);
-  console.log("menuPathList.value", menuPathList.value);
   handleMenu();
+  getServicePhoneFn();
 });
 /**
  * 将菜单数据转换为 Ant Design 的菜单格式
@@ -212,6 +213,17 @@ const onLogout = () => {
       });
     }
   });
+};
+
+const getServicePhoneFn = () => {
+  const params = {
+    type: 'SERVICE_HOTLINE'
+  };
+  getDict(params)
+    .then((res) => {
+      const result = res.data;
+      servicePhone.value = result[0].value;
+    });
 };
 
 const onUpdatePassword = (): void => {

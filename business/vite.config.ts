@@ -49,8 +49,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '/web': {
           // target: 'https://www.00goo.com', // 测试环境
           target: 'http://www.00goo.com',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/web/, '')
+          changeOrigin: true
+          // rewrite: (path) => path.replace(/^\/web/, '')
         }
       }
     }

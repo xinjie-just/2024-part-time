@@ -1,12 +1,19 @@
 /*
  * “公共”模块
  */
-import { ISendPhoneCodeReq, ISendPhoneCodeRes, IUploadFileReq } from './models';
+import {
+  ISendPhoneCodeReq,
+  ISendPhoneCodeRes,
+  IUploadFileReq,
+  IGetDictReq,
+  IGetDictRes
+} from './models';
 import request from '@/services/axios';
 
 const enum API {
   sendPhoneCode = '/common-server/send-phone-code', // 发送短信验证码
-  uploadFile = '/common-server/upload-file' // 上传文件
+  uploadFile = '/common-server/upload-file', // 上传文件
+  getDict = '/common-server/get-dict' // 获取一些公共信息
 }
 
 export const sendPhoneCode = (data: ISendPhoneCodeReq) => {
@@ -21,6 +28,14 @@ export const uploadFile = (data: IUploadFileReq) => {
   return request<{}>({
     url: API.uploadFile,
     method: 'post',
+    data
+  });
+};
+
+export const getDict = (data: IGetDictReq) => {
+  return request<IGetDictRes[]>({
+    url: API.getDict,
+    method: 'get',
     data
   });
 };
