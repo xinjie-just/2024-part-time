@@ -71,7 +71,9 @@ const onCreated = (editor) => {
     "insertTable",
     "insertLink",
   ];
-  valueHtml.value = props.html;
+  setTimeout(() => {
+    valueHtml.value = props.html;
+  }, 500);
 };
 
 const onBlur = () => {

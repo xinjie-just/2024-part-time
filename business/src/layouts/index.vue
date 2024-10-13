@@ -162,8 +162,6 @@ const convertToAntdMenu = (menuData: IRouterType[]): IRouterType[] => {
     }
   });
   let menus: IRouterType[] = data;
-  console.log("data", data);
-  // TODO:
   // 查询 menuPathList.value 中是否包含 data 的 key 值，如果没有，则查询 data 的 children 中的 key 如果还是没有则将 data 的当前对象从 data 中移除，否则保留
   data.forEach((item) => {
     if (!menuPathList.value.includes(item?.key?.substring(1) as string)) {
