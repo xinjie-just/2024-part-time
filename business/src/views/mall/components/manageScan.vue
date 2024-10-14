@@ -6,7 +6,7 @@
     <a-alert type="info" class="alert">
       <template #message>
         <p>现价是指线上销售价</p>
-        <p>现价必须 ≤ 竞猜小价 * 10 * 竞猜位数 / 2，否则不能提交</p>
+        <p>结算价必须 ≤ 竞猜小价 * 10 ^ 竞猜位数 / 2，否则不能提交</p>
       </template>
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 3 }">
@@ -115,7 +115,7 @@ const disabled = computed((): boolean => {
   const miniPriceDisabled = !values?.miniPrice;
   const digitDisabled = !values?.digit;
 
-  const price = (values?.miniPrice * 10 * values?.digit) / 2;
+  const price = (values?.miniPrice * 10 ** values?.digit) / 2;
   const priceDisabled = values?.currentPrice > price;
   return (
     nameDisabled ||

@@ -2,7 +2,7 @@
  * @description 查询 PK 商品列表 /product-pk/list
  */
 export interface IGetPKListReq {
-  state?: number; // 商品状态(1:销售中; 2:停止销售)
+  state?: number; // 商品状态(0:待售; 1:销售中; 2:停止销售)
   name?: string; // 商品名称
   page: number; // 页码
   pageSize: number; // 每页数量
@@ -19,6 +19,7 @@ export interface IPKList {
   currentPrice: number; // 商品现在价格
   guessSmallPrice: number; // 竞猜小价
   QRCode?: string; // 二维码
+  state: number; // 状态
 }
 
 /**
@@ -49,14 +50,14 @@ export interface ISavePKReq {
  */
 export interface ISetPKStateReq {
   id: number; // 商品ID
-  state: number; // 商品状态(1:销售中; 2:停止销售)
+  state: number; // 商品状态(0:待售; 1:销售中; 2:停止销售)
 }
 
 /**
  * @description 查询扫一扫商品列表 /product-scan/list
  */
 export interface IGetScanListReq {
-  state?: number; // 商品状态(1:销售中; 2:停止销售)
+  state?: number; // 商品状态(0:待售; 1:销售中; 2:停止销售)
   name?: string; // 商品名称
   page: number; // 页码
   pageSize: number; // 每页数量
@@ -73,6 +74,7 @@ export interface IScanList {
   currentPrice: number; // 商品现在价格
   guessSmallPrice: number; // 竞猜小价
   QRCode?: string; // 二维码
+  state: number; // 状态
 }
 
 /**
@@ -102,7 +104,7 @@ export interface ISaveScanReq {
  */
 export interface ISetScanStateReq {
   id: number; // 商品ID
-  state: number; // 商品状态(1:销售中; 2:停止销售)
+  state: number; // 商品状态(0:待售; 1:销售中; 2:停止销售)
 }
 
 /**
@@ -123,6 +125,7 @@ export interface IWishingList {
   name: string; // 商品名称
   price: number; // 商品价格
   QRCode?: string; // 二维码
+  state: number; // 状态
 }
 
 /**

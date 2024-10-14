@@ -5,7 +5,7 @@
     @cancel="onCancel">
     <a-alert type="info" class="alert">
       <template #message>
-        <p>参考价值必须 ≤ 投币小额 * 10 * 竞猜位数 / 2，否则不能保存</p>
+        <p>参考价值必须 ≤ 投币小额 * 10 ^ 竞猜位数 / 2，否则不能保存</p>
       </template>
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
@@ -94,7 +94,7 @@ const disabled = computed((): boolean => {
   const miniPriceDisabled = !values?.miniPrice;
   const digitDisabled = !values?.digit;
 
-  const price = (values?.miniPrice * 10 * values?.digit) / 2;
+  const price = (values?.miniPrice * 10 ** values?.digit) / 2;
   const priceDisabled = values?.referenceValue > price;
   return (
     nameDisabled ||
