@@ -36,7 +36,7 @@ instance.interceptors.request.use(
     }
     if (config.method === 'get' && config.data) {
       // 如果是 get 请求，config.data 是一个对象，我想让对象中属性值不是 null、undefined、空字符串的属性都拼接到 URL 上
-      const newData = {};
+      const newData: { [key: string]: any } = { t: Date.now() };
       for (const key in config.data) {
         if (
           config.data[key] !== null &&
