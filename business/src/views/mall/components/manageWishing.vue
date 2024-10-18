@@ -118,7 +118,12 @@ const getScanDetailsFn = () => {
   getWishingDetails(params)
     .then(res => {
       const result = res?.data;
-      console.log("result", result);
+      form.name = result.name;
+      form.title = result.title;
+      form.introduce = result.introduction;
+      form.miniPrice = result.coinDrop;
+      form.digit = result.guessDigit;
+      form.referenceValue = result.price;
     })
 }
 

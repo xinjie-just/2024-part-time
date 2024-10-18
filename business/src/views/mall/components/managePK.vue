@@ -151,7 +151,15 @@ const getPKDetailsFn = () => {
   getPKDetails(params)
     .then(res => {
       const result = res?.data;
-      console.log("result", result);
+      form.name = result.name;
+      form.title = result.title;
+      form.introduce = result.introduction;
+      form.originalPrice = result.price;
+      form.settlementPrice = result.settlePrice;
+      form.currentPrice = result.currentPrice;
+      form.miniPrice = result.guessSmallPrice;
+      form.digit = result.guessDigit;
+      form.times = result.pkNum;
     })
 }
 

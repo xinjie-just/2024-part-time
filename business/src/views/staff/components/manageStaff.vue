@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { IManageStaff } from '@/models';
+import { IManageStaff, IRouterType } from '@/models';
 import { routes } from '@/routers';
 import { getStaffInfo, saveStaffInfo } from '@/services';
 import { ISaveStaffInfoReq } from '@/services/models';
@@ -51,6 +51,7 @@ const defaultValue = 'store/myStore';
 
 const treeData: Ref<TreeProps['treeData']> = ref([]);
 const checkedKeys: Ref<string[]> = ref([defaultValue]);
+const loginUserMenuPathList: Ref<string[]> = ref([]);
 
 const formRef = ref();
 const loading = ref(false);
@@ -112,15 +113,49 @@ const transformMenu = (menuItems) => {
 };
 
 onMounted(() => {
-  const newRoutes = routes.find((item) => item.path === '/')?.children;
-  const permissionRoutes = newRoutes.filter((item) => item.redirect !== '/');
-  console.log('permissionRoutes', permissionRoutes);
-
-  // 转换数据
-  treeData.value = transformMenu(permissionRoutes);
   if (props.isEdit) {
     getStaffInfoFn();
   }
+
+  const userInfoStr = localStorage.getItem('userInfo');
+  if (userInfoStr) {
+    const userInfo = JSON.parse(userInfoStr);
+
+    const menuPaths: string[] = [];
+    userInfo.menuPathList.forEach((item: string) => {
+      menuPaths.push(item);
+      if (item.includes('/')) {
+        const parentPath = item.substring(0, item.indexOf('/'));
+        menuPaths.push(parentPath);
+      }
+    })
+    loginUserMenuPathList.value = [...new Set(menuPaths)];
+  }
+
+  const newRoutes = routes.find((item) => item.path === '/')?.children;
+  let permissionRoutes = newRoutes.filter((item) => item.redirect !== '/');
+  console.log('permissionRoutes', permissionRoutes);
+  console.log('loginUserMenuPathList', loginUserMenuPathList.value);
+  // 可选择的权限，不能多余当前用户的权限
+
+
+  let menus: IRouterType[] = permissionRoutes;
+  // 查询 menuPathList.value 中是否包含 data 的 path 值，如果没有，则查询 data 的 children 中的 path 如果还是没有则将 data 的当前对象从 data 中移除，否则保留
+  permissionRoutes.forEach((item) => {
+    if (!loginUserMenuPathList.value.includes(item?.path?.substring(1) as string)) {
+      menus = menus.filter((filterItem) => filterItem !== item);
+    } else {
+      if (item.children) {
+        item.children.forEach((child) => {
+          if (!loginUserMenuPathList.value.includes(child.path?.substring(1) as string)) {
+            item.children = item.children.filter((filterSubItem) => filterSubItem !== child);
+          }
+        });
+      }
+    }
+  });
+  // 转换数据
+  treeData.value = transformMenu(menus);
 });
 
 const getStaffInfoFn = () => {

@@ -24,6 +24,7 @@ const token = localStorage.getItem('token');
 const toolbarConfig = {};
 const editorConfig = {
   placeholder: '请输入内容...',
+  autoFocus: false,
   MENU_CONF: {
     uploadImage: {
       server: uploadFilePath,
