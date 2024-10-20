@@ -48,6 +48,7 @@ import { useRouter } from 'vue-router';
 import { Rule } from 'ant-design-vue/es/form';
 import { login, getUserInfo } from '@/services';
 import { message } from 'ant-design-vue';
+import { encryption } from '@/utils';
 
 interface ILogin {
   username: string;
@@ -117,7 +118,7 @@ const onSubmit = async (): Promise<void> => {
     loading.value = true;
     const params = {
       loginName: form.username,
-      password: form.password
+      password: encryption(form.password)
     };
     login(params)
       .then((res) => {

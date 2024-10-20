@@ -26,6 +26,7 @@
 <script setup lang="ts">
 import { IAddShop } from '@/models';
 import { addAgentShop } from '@/services';
+import { encryption } from '@/utils';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed } from 'vue';
@@ -81,7 +82,7 @@ const onSubmit = async (): Promise<void> => {
       shopName: form.storeName,
       loginName: form.userName,
       phone: form.phone,
-      password: form.password
+      password: encryption(form.password)
     };
     addAgentShop(params)
       .then(() => {

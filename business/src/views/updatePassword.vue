@@ -55,7 +55,7 @@
 <script setup lang="ts">
 import { IUpdatePassword } from '@/models';
 import { sendPhoneCode, updatePassword } from '@/services';
-import { drawTextOnCanvas } from '@/utils';
+import { drawTextOnCanvas, encryption } from '@/utils';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed, onMounted, nextTick, onBeforeUnmount } from 'vue';
@@ -180,7 +180,7 @@ const onSubmit = async (): Promise<void> => {
     await formRef.value?.validate();
     console.log('表单验证成功', form);
     const params = {
-      newPassword: form.password,
+      newPassword: encryption(form.password),
       verifyCode: form.phoneCode
     };
     updatePassword(params)

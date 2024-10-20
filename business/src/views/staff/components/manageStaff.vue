@@ -33,6 +33,7 @@ import { IManageStaff, IRouterType } from '@/models';
 import { routes } from '@/routers';
 import { getStaffInfo, saveStaffInfo } from '@/services';
 import { ISaveStaffInfoReq } from '@/services/models';
+import { decryption, encryption } from '@/utils';
 import { message, TreeProps } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed, onMounted, Ref } from 'vue';
@@ -168,7 +169,7 @@ const getStaffInfoFn = () => {
     form.name = result.name;
     form.loginName = result.loginName;
     form.phone = result.phone;
-    form.password = result.password;
+    form.password = decryption(result.password);
 
     checkedKeys.value = result.menuPathList;
   })
@@ -183,7 +184,7 @@ const onSubmit = async (): Promise<void> => {
     const params: ISaveStaffInfoReq = {
       name: form.name,
       loginName: form.loginName,
-      password: form.password,
+      password: encryption(form.password),
       phone: form.phone,
       menuPathList: checkedKeys.value
     };

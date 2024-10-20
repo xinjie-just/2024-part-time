@@ -19,6 +19,7 @@
     "@wangeditor/editor-for-vue": "^5.1.12",
     "ant-design-vue": "~4.2.3",
     "axios": "^1.7.2",
+    "crypto-js": "^4.2.0",
     "dayjs": "^1.11.11",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
