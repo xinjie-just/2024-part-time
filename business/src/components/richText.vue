@@ -12,6 +12,7 @@ import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { onBeforeUnmount, ref, shallowRef } from 'vue';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { uploadFilePath } from '@/services';
+import { message } from 'ant-design-vue';
 
 const emits = defineEmits(['blur']);
 const props = defineProps<{ html: string }>();
@@ -45,9 +46,21 @@ const editorConfig = {
         // res 即服务端的返回结果，从 res 中找到 url alt href ，然后插入图片
         const result = res.data;
         const alt = fileName.value || 'result';
-        const url = `${location.origin}${result}`;
+        const url = `${location.origin}/web${result}`;
         insertFn(url, alt, url)
       },
+      // 单个文件上传成功之后
+      onSuccess(file: File) {
+        message.error(`${file.name} 上传成功`, 4);
+      },
+      // 单个文件上传失败
+      onFailed(file: File) {
+        message.error(`${file.name} 上传失败`, 4);
+      },
+      // 上传错误，或者触发 timeout 超时
+      onError(file: File, err: any) {
+        message.error(`${file.name} 上传出错，${err}`, 4);
+      }
     },
   }
 };

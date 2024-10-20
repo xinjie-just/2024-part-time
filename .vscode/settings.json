@@ -5,6 +5,7 @@
     "browserslistrc",
     "camelcase",
     "commitlint",
+    "encryptor",
     "geocoder",
     "miniprogram",
     "pinia",

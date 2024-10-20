@@ -26,10 +26,14 @@
       </a-form-item>
     </a-form>
     <template #footer>
+      <a-button key="view" type="primary" ghost :disabled="!form.introduce.length" @click="onViewViewIntroduce"
+        class="view-btn">预览店铺介绍</a-button>
       <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
       <a-button key="submit" type="primary" :loading="loading" :disabled="disabled" @click="onSubmit">提交</a-button>
     </template>
   </a-modal>
+
+  <view-introduce v-if="viewVisible" :html="form.introduce" :title="'预览店铺介绍'" @cancel="onCancelViewIntroduce" />
 </template>
 
 <script setup lang="ts">
@@ -42,9 +46,11 @@ import { ref, reactive, UnwrapRef, computed, onMounted, defineAsyncComponent, Re
 interface IPoint { lat: number, lng: number };
 
 const richText = defineAsyncComponent(() => import('@/components/richText.vue'));
+const viewIntroduce = defineAsyncComponent(() => import('@/components/viewIntroduce.vue'));
 
 const emits = defineEmits(['cancel', 'confirm']);
 const visible = ref(true);
+const viewVisible = ref(false);
 
 const form: UnwrapRef<IEditMyShop> = reactive({
   name: '',
@@ -155,6 +161,13 @@ const onSubmit = async (): Promise<void> => {
   }
 };
 
+const onViewViewIntroduce = (): void => {
+  viewVisible.value = true;
+};
+const onCancelViewIntroduce = (): void => {
+  viewVisible.value = false;
+};
+
 const onCancel = (): void => {
   emits('cancel');
 };
@@ -163,5 +176,9 @@ const onCancel = (): void => {
 <style lang="scss" scoped>
 .canvas {
   cursor: pointer;
+}
+
+.view-btn {
+  margin-right: 32px;
 }
 </style>

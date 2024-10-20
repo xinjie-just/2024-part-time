@@ -53,10 +53,14 @@
       </a-form-item>
     </a-form>
     <template #footer>
+      <a-button key="view" type="primary" ghost :disabled="!form.introduce.length" @click="onViewViewIntroduce"
+        class="view-btn">预览商品介绍</a-button>
       <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
       <a-button key="submit" type="primary" :loading="loading" :disabled="disabled" @click="onSubmit">提交</a-button>
     </template>
   </a-modal>
+
+  <view-introduce v-if="viewVisible" :html="form.introduce" :title="'预览商品介绍'" @cancel="onCancelViewIntroduce" />
 </template>
 
 <script setup lang="ts">
@@ -68,11 +72,13 @@ import { Rule } from 'ant-design-vue/es/form';
 import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue';
 
 const richText = defineAsyncComponent(() => import('@/components/richText.vue'));
+const viewIntroduce = defineAsyncComponent(() => import('@/components/viewIntroduce.vue'));
 
 const emits = defineEmits(['cancel', 'confirm']);
 const props = defineProps<{ isEdit: boolean; goodsId: number }>();
 
 const visible = ref(true);
+const viewVisible = ref(false);
 
 const formRef = ref();
 const loading = ref(false);
@@ -190,6 +196,14 @@ const onSubmit = async (): Promise<void> => {
   }
 };
 
+const onViewViewIntroduce = (): void => {
+  viewVisible.value = true;
+};
+const onCancelViewIntroduce = (): void => {
+  viewVisible.value = false;
+};
+
+
 const onCancel = (): void => {
   emits('cancel');
 };
@@ -200,5 +214,9 @@ const onCancel = (): void => {
 <style lang="scss" scoped>
 .alert {
   margin-bottom: 16px;
+}
+
+.view-btn {
+  margin-right: 32px;
 }
 </style>
