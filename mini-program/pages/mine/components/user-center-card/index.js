@@ -1,7 +1,7 @@
 const AuthStepType = {
-  ONE: 1,
-  TWO: 2,
-  THREE: 3,
+  ONE: 1, // 未登录的情况
+  TWO: 2, // 已登录但未授权用户信息情况
+  THREE: 3, // 已登录且已经授权用户信息的情况
 };
 
 Component({

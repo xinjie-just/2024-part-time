@@ -60,7 +60,7 @@ const getDefaultData = () => ({
   },
   menuData,
   customerServiceInfo: {},
-  currAuthStep: 1,
+  currAuthStep: 1, // 1: 未登录的情况，2: 已登录但未授权用户信息情况，3: 已登录且已经授权用户信息的情况
   showKefu: true,
   versionNo: '',
 });
@@ -81,7 +81,12 @@ Page({
   },
 
   init() {
-    this.fetUseriInfoHandle();
+    wx.login({
+      success: (res) => {
+        console.log("code", res.code);
+      },
+    })
+    // this.fetUseriInfoHandle();
   },
 
   fetUseriInfoHandle() {
