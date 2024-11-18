@@ -9,6 +9,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "用户名密码登录",
+          "pathName": "pages/login/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "我的积分",
           "pathName": "pages/mine/points/index",
           "query": "",

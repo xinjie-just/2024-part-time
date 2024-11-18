@@ -1,0 +1,14 @@
+<!--用户名密码登录-->
+<van-cell-group>
+  <van-field value="{{ username }}" label="用户名" placeholder="请输入用户名" required bind:change="onChangeUsername" />
+  <van-field value="{{ password }}" label="密码" placeholder="请输入密码" required bind:change="onChangePassword" />
+</van-cell-group>
+<view class="footer">
+  <van-button plain hairline round type="info" custom-class="back-btn" bind:click="onBack">
+    返回
+  </van-button>
+  <van-button round type="info" disabled="{{ !username.length || !password.length || loading }}" custom-class="login-btn" loading="{{ loading }}" loading-text="登录中..." bind:click="onLogin">
+    登录
+  </van-button>
+</view>
+<van-dialog id="van-dialog" />

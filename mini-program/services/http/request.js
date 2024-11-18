@@ -15,7 +15,7 @@ const ErrorCode = {
 };
 // 发起请求
 
-const doRequest = (options) => {
+const request = (options) => {
   const promise = new Promise(function (resolve, reject) {
     // 默认所有后端接口都要带 token
     options.data = options.data || {};
@@ -36,7 +36,7 @@ const doRequest = (options) => {
     const urlPath = API.getAPIUrl(options);
     wx.request({
       url: urlPath,
-      method: options.method || 'POST',
+      method: options.method ?? 'POST',
       header: headerParams,
       data: requestParams,
       dataType: 'json',
@@ -44,7 +44,7 @@ const doRequest = (options) => {
       success: (data) => {
         const result = data.data || {};
         if (result.code === '200') {
-          resolve(result);
+          return resolve(result);
         } else if (result.code == '400') {
           // 用户未登录，跳转登录
           wx.navigateTo({
@@ -64,7 +64,7 @@ const doRequest = (options) => {
               duration: 2000,
             });
           }
-          reject(result);
+          return reject(result);
         }
       },
       fail: (err) => {
@@ -83,10 +83,10 @@ const doRequest = (options) => {
             duration: 2000,
           });
         }
-        reject(err);
+        return reject(err);
       },
     });
   });
   return promise;
 };
-export default doRequest;
+export default request;

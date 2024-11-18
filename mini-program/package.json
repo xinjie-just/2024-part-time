@@ -27,7 +27,8 @@
     "@vant/weapp": "^1.11.6",
     "dayjs": "^1.11.12",
     "tdesign-miniprogram": "^1.5.0",
-    "tslib": "^2.6.3"
+    "tslib": "^2.6.3",
+    "crypto-js": "^4.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",

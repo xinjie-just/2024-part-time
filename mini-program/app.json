@@ -17,7 +17,8 @@
     "pages/mine/how-to-earn-points/index",
     "pages/mine/help-center/index",
     "pages/payment/payment-method/index",
-    "pages/payment/digital-guessing/index"
+    "pages/payment/digital-guessing/index",
+    "pages/login/index"
   ],
   "tabBar": {
     "color": "#000000",
