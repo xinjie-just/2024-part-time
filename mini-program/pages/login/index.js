@@ -1,7 +1,8 @@
 // pages/login/index.js
 import { loginService } from '../../services/index.js';
 import Dialog from '/@vant/weapp/dialog/dialog';
-import { encryption } from "../../utils/index";
+import Toast from '/@vant/weapp/toast/toast';
+import { encryption } from "../../utils/encryptor.js";
 
 Page({
 
@@ -50,7 +51,9 @@ Page({
       loading: true
     });
     loginService.login(params)
-      .then(() => {
+      .then((result) => {
+        const token = result.token;
+        wx.setStorageSync('token', token);
         this.setData({
           loading: false
         });
@@ -62,7 +65,13 @@ Page({
           },
         });
       })
-      .catch(() => {
+      .catch((error) => {
+        Toast({
+          type: 'fail',
+          message: error.message || '登陆失败'
+        });
+      })
+      .finally(() => {
         this.setData({
           loading: false
         });

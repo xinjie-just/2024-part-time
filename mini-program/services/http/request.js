@@ -16,16 +16,16 @@ const ErrorCode = {
 // 发起请求
 
 const request = (options) => {
-  const promise = new Promise(function (resolve, reject) {
-    // 默认所有后端接口都要带 token
+  return new Promise((resolve, reject) => {
+    // 默认所有后端接口都要带 token（用户名密码登录除外）
     options.data = options.data || {};
     const params = {};
     const headerParams = {
       'Content-Type': options.contentType || 'application/json', // 默认值 "application/json"
     };
-    const userInfo = wx.getStorageSync('userInfo');
-    if (!options.ignoreToken && userInfo.token) {
-      params.token = userInfo.token;
+    const token = wx.getStorageSync('token');
+    if (!options.ignoreToken && token) {
+      params.token = token;
       headerParams['token'] = params.token;
     }
 
@@ -43,12 +43,12 @@ const request = (options) => {
       responseType: 'text',
       success: (data) => {
         const result = data.data || {};
-        if (result.code === '200') {
-          return resolve(result);
-        } else if (result.code == '400') {
+        if (result.code === 200) {
+          return resolve(result.data);
+        } else if (result.code == 400) {
           // 用户未登录，跳转登录
           wx.navigateTo({
-            url: '/pages/user/login/index',
+            url: '/pages/login/index',
           });
         } else {
           if (result.code && result.errorMsg) {
@@ -87,6 +87,5 @@ const request = (options) => {
       },
     });
   });
-  return promise;
 };
 export default request;
