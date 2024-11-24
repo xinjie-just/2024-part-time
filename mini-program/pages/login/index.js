@@ -1,5 +1,4 @@
-// pages/login/index.js
-import { loginService } from '../../services/index.js';
+import { loginService } from '../../services/login.js';
 import Dialog from '/@vant/weapp/dialog/dialog';
 import Toast from '/@vant/weapp/toast/toast';
 import { encryption } from "../../utils/encryptor.js";

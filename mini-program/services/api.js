@@ -3,7 +3,7 @@ const API = {
   address: {
     'wxLogin': '/login-wechat', // 微信登录
     'passwordLogin': '/login-pw', // 账号密码登录
-    'pointInfo': '/integral/info', // 获取用户积分信息
+    'pointTotal': '/integral/info', // 获取用户积分信息
     'pointDetailList': '/integral/detail-list', // 获取用户积分明细列表
     'walletInfo': '/wallet/info', // 获取用户钱包信息
     'walletDetailList': '/wallet/detail-list', // 获取用户钱包明细列表

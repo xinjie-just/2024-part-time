@@ -1,8 +1,9 @@
 import list from "./data.js";
+import { mineService } from '../../../services/mine.js';
 
 Page({
   data: {
-    totalPoints: 300,
+    pointTotal: 0,
     list: [],
     page: {
       total: 0,
@@ -16,7 +17,17 @@ Page({
   onLoad() {
     this.timerId = null;
     this.moreTimerId = null;
-    this.getList(false)
+    this.getPointTotal();
+    this.getList(false);
+  },
+  getPointTotal() {
+    mineService.pointTotal()
+      .then((result) => {
+        const totalIntegral = result.totalIntegral ?? 0;
+        this.setData({
+          pointTotal: totalIntegral
+        });
+      })
   },
   getList(more) {
     if (this.timerId != null) {
@@ -25,39 +36,59 @@ Page({
     if (this.moreTimerId != null) {
       clearTimeout(this.moreTimerId);
     }
-    const page = this.data.page;
-    const currentPageData = list.filter((_, index) => index < page.pageIndex * page.pageSize && index >= (page.pageIndex - 1) * page.pageSize);
-    if (more) {
-      this.setData({
-        moreLoading: true
-      });
-      this.moreTimerId = setTimeout(() => {
-        const data = this.data.list.concat(currentPageData);
+    this.setData({
+      loading: true
+    });
+    mineService.pointDetailList()
+      .then((result) => {
         this.setData({
-          list: data,
-          moreLoading: false
+          list: result.list ?? [],
+          page: {
+            total: result.totalNum ?? 0,
+            pageIndex: result.pageNum ?? 1,
+            pageSize: result.pageSize ?? 10,
+          },
         }, () => {
-          this.setData({
-            hasMoreData: list.length > this.data.list.length
-          });
-        })
-      }, 2000)
-    } else {
-      this.setData({
-        loading: true
-      });
-      this.timerId = setTimeout(() => {
-        this.setData({
-          list: currentPageData,
-          loading: false
-        }, () => {
-          this.setData({
-            hasMoreData: list.length > this.data.list.length
-          });
+          const page = this.data.page;
+          const currentPageData = this.data.list.filter((_, index) => index < page.pageIndex * page.pageSize && index >= (page.pageIndex - 1) * page.pageSize);
+          if (more) {
+            this.setData({
+              moreLoading: true
+            });
+            this.moreTimerId = setTimeout(() => {
+              const data = this.data.list.concat(currentPageData);
+              this.setData({
+                list: data,
+                moreLoading: false
+              }, () => {
+                this.setData({
+                  hasMoreData: page.total > this.data.list.length
+                });
+              })
+            }, 2000)
+          } else {
+            this.setData({
+              loading: true
+            });
+            this.timerId = setTimeout(() => {
+              this.setData({
+                list: currentPageData,
+                loading: false
+              }, () => {
+                this.setData({
+                  hasMoreData: page.total > this.data.list.length
+                });
+              });
+              wx.stopPullDownRefresh();
+            }, 2000)
+          }
         });
-        wx.stopPullDownRefresh();
-      }, 2000)
-    }
+      })
+      .finally(() => {
+        this.setData({
+          loading: false
+        });
+      })
   },
   getMoreList() {
     this.setData({

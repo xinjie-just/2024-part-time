@@ -1,26 +1,26 @@
 <view class="page">
-  <view class="notice-bar">剩余总积分：{{totalPoints}}</view>
+  <view class="notice-bar">剩余总积分：{{pointTotal}}</view>
   <view class="table">
     <view class="thead">
       <view class="th index">序号</view>
       <view class="th time">时间</view>
       <view class="th points">积分</view>
-      <view class="th source">来源</view>
+      <view class="th type">来源</view>
     </view>
     <view class="tbody">
       <view wx:if="{{loading}}" class="loading">
         <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
       </view>
       <block wx:else>
-        <view class="tr" wx:for="{{list}}" wx:key="id">
+        <view class="tr" wx:for="{{list}}" wx:key="index">
           <view class="td index">{{ index + 1 }}</view>
-          <view class="td time">{{item.time}}</view>
-          <view class="td points">{{item.points}}</view>
-          <view class="td source">
-            <text wx:if="{{item.source === 1}}" class="tag offline">下线</text>
-            <text wx:if="{{item.source === 2}}" class="tag consumption">消费</text>
-            <text wx:if="{{item.source === 3}}" class="tag pk">PK</text>
-            <text wx:if="{{item.source === 4}}" class="tag share">分享</text>
+          <view class="td time">{{item.acquireTime}}</view>
+          <view class="td points">{{item.integral}}</view>
+          <view class="td type">
+            <text wx:if="{{item.type === 1}}" class="tag offline">下线</text>
+            <text wx:if="{{item.type === 2}}" class="tag consumption">消费</text>
+            <text wx:if="{{item.type === 3}}" class="tag pk">PK</text>
+            <text wx:if="{{item.type === 4}}" class="tag share">分享</text>
           </view>
         </view>
         <view wx:if="{{hasMoreData}}" class="more-btn">

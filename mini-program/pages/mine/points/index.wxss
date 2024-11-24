@@ -52,7 +52,7 @@
   width: 110rpx;
 }
 
-.source {
+.type {
   width: 90rpx;
 }
 
