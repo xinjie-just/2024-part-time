@@ -25,8 +25,7 @@ const request = (options) => {
     };
     const token = wx.getStorageSync('token');
     if (!options.ignoreToken && token) {
-      params.token = token;
-      headerParams['token'] = params.token;
+      headerParams['token'] = token;
     }
 
     const requestParams = Object.assign(params, options.data || {});

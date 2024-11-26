@@ -1,7 +1,7 @@
 import request from "./request";
 export const mineService = {
   // 获取用户积分信息
-  pointTotal(params) {
+  pointTotal() {
     return request({
       'apiKey': 'pointTotal',
       'method': 'GET'
@@ -11,14 +11,14 @@ export const mineService = {
   pointDetailList(params) {
     return request({
       'apiKey': 'pointDetailList',
+      'data': params,
       'method': 'GET'
     });
   },
   // 获取用户钱包信息
-  walletInfo(params) {
+  walletInfo() {
     return request({
       'apiKey': 'walletInfo',
-      'data': params,
       'method': 'GET'
     });
   },

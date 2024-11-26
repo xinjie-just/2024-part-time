@@ -12,10 +12,10 @@
         <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
       </view>
       <block wx:else>
-        <view class="tr" wx:for="{{list}}" wx:key="id">
+        <view class="tr" wx:for="{{list}}" wx:key="index">
           <view class="td index">{{ index + 1 }}</view>
-          <view class="td sum">{{item.sum}}</view>
-          <view class="td time">{{item.time}}</view>
+          <view class="td sum">{{item.amount}}</view>
+          <view class="td time">{{item.completeTime}}</view>
           <view class="td source">
             <text wx:if="{{item.source === 1}}" class="tag order">订单</text>
             <text wx:if="{{item.source === 2}}" class="tag charge">扣款</text>

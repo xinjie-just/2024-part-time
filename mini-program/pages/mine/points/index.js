@@ -1,4 +1,3 @@
-import list from "./data.js";
 import { mineService } from '../../../services/mine.js';
 
 Page({
@@ -39,7 +38,11 @@ Page({
     this.setData({
       loading: true
     });
-    mineService.pointDetailList()
+    const params = {
+      page: this.data.page.pageIndex,
+      pageSize: this.data.page.pageSize
+    };
+    mineService.pointDetailList(params)
       .then((result) => {
         this.setData({
           list: result.list ?? [],
