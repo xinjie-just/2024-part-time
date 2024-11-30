@@ -23,6 +23,20 @@
   color: #ed6a0c;
 }
 
+.tips {
+  padding: 32rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #1989fa;
+  background: #ecf9ff;
+  display: flex;
+  align-items: center;
+}
+
+.tips .text {
+  margin-left: 16rpx;
+}
+
 .game-list {
   padding: 48rpx 32rpx;
   max-height: calc(80vh - 100rpx);

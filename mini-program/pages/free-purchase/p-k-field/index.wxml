@@ -13,10 +13,15 @@
   <view class="steps-wrap">
     <van-steps steps="{{ steps }}" direction="vertical" active-color="#969799" inactive-color="#969799" active-icon="circle" inactive-icon="circle" />
   </view>
+
+  <view class="tips">
+    <van-icon name="warning-o" size="40rpx" color="#1989fa" />
+    <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>
+  </view>
   <view class="cell-group-wrap">
     <van-cell-group title="选择游戏" class="cell-group">
-      <van-cell is-link title="石头剪刀布" value="开始游戏" link-type="navigateTo" url="./rock-paper-scissors/index" />
-      <van-cell is-link title="双十拳" value="开始游戏" link-type="navigateTo" url="./double-ten-boxing/index" />
+      <van-cell is-link title="石头剪刀布" value="开始游戏" link-type="navigateTo" url="../rock-paper-scissors/index" />
+      <van-cell is-link title="双十拳" value="开始游戏" link-type="navigateTo" url="../double-ten-boxing/index" />
     </van-cell-group>
   </view>
 </view>

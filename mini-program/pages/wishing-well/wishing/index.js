@@ -1,6 +1,7 @@
 import Toast from "/@vant/weapp/toast/toast";
 import Dialog from '/@vant/weapp/dialog/dialog';
 import wishes from "./data";
+import { pay } from '../../../utils/index';
 
 // pages/wishing-well/wishing/index.js
 Page({
@@ -24,6 +25,14 @@ Page({
     // this.setData({
     //   wishesOptions: wishes
     // })
+    this.getPayParams();
+  },
+
+  async getPayParams() {
+    const result = await pay();
+    if (result) {
+      console.log("result", result);
+    }
   },
 
   onChangeTitle(event) {

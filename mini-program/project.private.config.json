@@ -9,6 +9,27 @@
     "miniprogram": {
       "list": [
         {
+          "name": "微信登录",
+          "pathName": "pages/login/wxLogin/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "双十拳",
+          "pathName": "pages/free-purchase/double-ten-boxing/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "石头剪刀布",
+          "pathName": "pages/free-purchase/rock-paper-scissors/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "用户名密码登录",
           "pathName": "pages/login/index",
           "query": "",
@@ -39,20 +60,6 @@
         {
           "name": "选择支付方式",
           "pathName": "pages/payment/payment-method/index",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "双十拳",
-          "pathName": "pages/free-purchase/p-k-field/double-ten-boxing/index",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "石头剪刀布",
-          "pathName": "pages/free-purchase/p-k-field/rock-paper-scissors/index",
           "query": "",
           "launchMode": "default",
           "scene": null

@@ -7,4 +7,10 @@ export const loginService = {
       'data': params
     });
   },
+  wxLogin(params) {
+    return request({
+      'apiKey': 'wxLogin',
+      'data': params
+    });
+  },
 };

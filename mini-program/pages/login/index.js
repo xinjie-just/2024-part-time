@@ -53,9 +53,6 @@ Page({
       .then((result) => {
         const token = result.token;
         wx.setStorageSync('token', token);
-        this.setData({
-          loading: false
-        });
         Toast({
           type: 'success',
           message: '登录成功',

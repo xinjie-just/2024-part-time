@@ -7,8 +7,8 @@
     "pages/wishing-well/wishing/index",
     "pages/free-purchase/goods-details/index",
     "pages/free-purchase/p-k-field/index",
-    "pages/free-purchase/p-k-field/double-ten-boxing/index",
-    "pages/free-purchase/p-k-field/rock-paper-scissors/index",
+    "pages/free-purchase/double-ten-boxing/index",
+    "pages/free-purchase/rock-paper-scissors/index",
     "pages/mine/about/index",
     "pages/mine/wallet/index",
     "pages/mine/order/index",
@@ -18,7 +18,8 @@
     "pages/mine/help-center/index",
     "pages/payment/payment-method/index",
     "pages/payment/digital-guessing/index",
-    "pages/login/index"
+    "pages/login/index",
+    "pages/login/wxLogin/index"
   ],
   "tabBar": {
     "color": "#000000",

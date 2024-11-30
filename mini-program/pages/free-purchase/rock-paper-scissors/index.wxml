@@ -1,4 +1,4 @@
-<view wx:if="{{ matched }}" class="component">
+<view wx:if="{{ matched === 'success' }}" class="component">
   <view class="card info">
     <view class="title">PK 双方信息</view>
     <view class="side own-side">
@@ -103,6 +103,21 @@
     </van-button>
     <van-button round type="info" custom-class="continue-btn" bind:click="onContinue">
       继续游戏
+    </van-button>
+  </view>
+</view>
+<view wx:if="{{ matched === 'fail' }}">
+  <view class="matched-fail">未匹配到对手，您可以选择 “退出” 或稍后 “再试一次”</view>
+  <view class="tips">
+    <van-icon name="warning-o" size="40rpx" color="#1989fa" />
+    <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>
+  </view>
+  <view class="footer">
+    <van-button plain hairline round type="info" custom-class="exit-btn" bind:click="onExit">
+      退出
+    </van-button>
+    <van-button round type="info" custom-class="continue-btn" bind:click="onTryAgain">
+      再试一次
     </van-button>
   </view>
 </view>

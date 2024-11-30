@@ -1,5 +1,9 @@
 import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
+import { commonService } from '../../../services/common.js';
+
+const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
+const duration = 30 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
 
 Page({
   /**
@@ -24,8 +28,9 @@ Page({
       },
     },
     time: 60 * 1000,
+    matchDuration: duration, // 游戏匹配时长，单位毫秒
     timeData: {},
-    matched: false,
+    matched: "waiting", // 匹配对手状态；waiting 未开始、匹配中，success 匹配成功，fail 匹配失败
     ownRadio: null,
     otherRadio: null,
     showExplain: false,
@@ -33,15 +38,87 @@ Page({
   },
 
   onLoad() {
+    this.gameReady();
+  },
+  // 游戏准备
+  gameReady() {
     Toast({
       type: 'loading',
       message: '正在匹配对手',
-      onClose: () => {
-        this.setData({
-          matched: true,
-        });
-      },
+      duration: 0, // 不会消失（不会主动消失）
     });
+    commonService.rpsReady()
+      .then((result) => {
+        console.log("游戏准备---result", result);
+        this.gameMatch();
+      })
+      .catch(() => {
+        Toast.clear();
+      })
+      .finally(() => {
+      })
+  },
+  // 游戏匹配
+  gameMatch() {
+    commonService.rpsMatch()
+      .then((result) => {
+        console.log("游戏匹配---result", result);
+        if (result) {
+          // 匹配成功，返回游戏信息
+          this.setData({
+            matched: 'success',
+          });
+          Toast({
+            type: 'success',
+            message: '匹配完成，获取对手信息',
+            duration: 0,
+            onClose: () => {
+              this.getGameRiverDetail();
+            },
+          });
+        } else {
+          // 未匹配成功          
+          if (this.data.matchDuration <= 0) {
+            this.setData({
+              matched: 'fail',
+            });
+            Toast({
+              type: 'fail',
+              message: '未匹配到对手',
+            });
+          } else {
+            this.setData({
+              matchDuration: this.data.matchDuration - matchRotationInterval
+            }, setTimeout(() => {
+              this.gameMatch();
+            }, matchRotationInterval) // 发起轮训
+            )
+          }
+        }
+      })
+      .catch(() => {
+        Toast.clear();
+      })
+      .finally(() => {
+      })
+  },
+
+  onTryAgain() {
+    this.setData({
+      matched: "waiting",
+      matchDuration: duration
+    }, this.gameReady());
+  },
+
+  // 获取对手信息
+  getGameRiverDetail() {
+    commonService.rpsRiverDetail()
+      .then((result) => {
+        console.log("获取对手信息---result", result);
+        Toast.clear();
+      })
+      .finally(() => {
+      })
   },
   /**
    * 组件的方法列表
