@@ -1,4 +1,5 @@
 import { loginService } from '../../services/login.js';
+import { commonService } from '../../services/common.js';
 import Dialog from '/@vant/weapp/dialog/dialog';
 import Toast from '/@vant/weapp/toast/toast';
 import { encryption } from "../../utils/encryptor.js";
@@ -53,6 +54,23 @@ Page({
       .then((result) => {
         const token = result.token;
         wx.setStorageSync('token', token);
+        this.getUserInfo();
+      })
+      .catch((error) => {
+        this.setData({
+          loading: false
+        });
+        Toast({
+          type: 'fail',
+          message: error.message || '登陆失败'
+        });
+      })
+  },
+
+  getUserInfo() {
+    commonService.getUserInfo()
+      .then((result) => {
+        wx.setStorageSync('userInfo', JSON.stringify(result));
         Toast({
           type: 'success',
           message: '登录成功',
@@ -64,7 +82,7 @@ Page({
       .catch((error) => {
         Toast({
           type: 'fail',
-          message: error.message || '登陆失败'
+          message: error.message || '获取用户信息失败'
         });
       })
       .finally(() => {

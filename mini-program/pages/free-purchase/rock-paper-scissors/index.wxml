@@ -3,15 +3,15 @@
     <view class="title">PK 双方信息</view>
     <view class="side own-side">
       <view class="own">己方：</view>
-      <view class="side-item pk-name">李四</view>
-      <view class="side-item phone">18112345678</view>
-      <view class="side-item win-count">胜 14 次</view>
+      <view class="side-item pk-name">{{ gameInfo.userInfo.userName }}</view>
+      <view class="side-item phone">{{ gameInfo.userInfo.phone }}</view>
+      <view class="side-item win-count">胜 {{ gameInfo.userInfo.winNumber }} 次</view>
     </view>
     <view class="side other-side">
       <view class="other">对方：</view>
-      <view class="side-item pk-name">张三</view>
-      <view class="side-item phone">13112345678</view>
-      <view class="side-item win-count">胜 4 次</view>
+      <view class="side-item pk-name">{{ gameInfo.rivalInfo.userName }}</view>
+      <view class="side-item phone">{{ gameInfo.rivalInfo.phone }}</view>
+      <view class="side-item win-count">胜 {{ gameInfo.rivalInfo.winNumber }} 次</view>
     </view>
   </view>
   <view class="card match">
@@ -35,16 +35,16 @@
           </van-button>
         </view>
         <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ timeData.seconds === 0 }}" class="radio-group">
-          <van-radio name="1" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === '1' ? 'radio own' : 'radio'}}">
-            <image src="{{ ownRadio === '1' ? icon.rock.own : icon.rock.default }}" class="img"></image>
+          <van-radio name="1" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 1 ? 'radio own' : 'radio'}}">
+            <image src="{{ ownRadio === 1 ? icon.rock.own : icon.rock.default }}" class="img"></image>
             石头
           </van-radio>
-          <van-radio name="2" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === '2' ? 'radio own' : 'radio'}}">
-            <image src="{{ ownRadio === '2' ? icon.scissor.own : icon.scissor.default }}" class="img"></image>
+          <van-radio name="2" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 2 ? 'radio own' : 'radio'}}">
+            <image src="{{ ownRadio === 2 ? icon.scissor.own : icon.scissor.default }}" class="img"></image>
             剪刀
           </van-radio>
-          <van-radio name="3" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === '3' ? 'radio own' : 'radio'}}">
-            <image src="{{ ownRadio === '3' ? icon.paper.own : icon.paper.default }}" class="img"></image>
+          <van-radio name="3" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 3 ? 'radio own' : 'radio'}}">
+            <image src="{{ ownRadio === 3 ? icon.paper.own : icon.paper.default }}" class="img"></image>
             布
           </van-radio>
         </van-radio-group>
@@ -65,17 +65,17 @@
             思考中...
           </van-tag>
         </view>
-        <van-radio-group value="{{ otherRadio }}" disabled="{{ timeData.seconds === 0 }}" bind:change="onChangeOther" direction="horizontal" class="radio-group">
-          <van-radio name="1" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === '1' ? 'radio other' : 'radio'}}">
-            <image src="{{ otherRadio === '1' ? icon.rock.other : icon.rock.default }}" class="img"></image>
+        <van-radio-group value="{{ otherRadio }}" disabled direction="horizontal" class="radio-group">
+          <van-radio name="1" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === 1 ? 'radio other' : 'radio'}}">
+            <image src="{{ otherRadio === 1 ? icon.rock.other : icon.rock.default }}" class="img"></image>
             石头
           </van-radio>
-          <van-radio name="2" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === '2' ? 'radio other' : 'radio'}}">
-            <image src="{{ otherRadio === '2' ? icon.scissor.other : icon.scissor.default }}" class="img"></image>
+          <van-radio name="2" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === 2 ? 'radio other' : 'radio'}}">
+            <image src="{{ otherRadio === 2 ? icon.scissor.other : icon.scissor.default }}" class="img"></image>
             剪刀
           </van-radio>
-          <van-radio name="3" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === '3' ? 'radio other' : 'radio'}}">
-            <image src="{{ otherRadio === '3' ? icon.paper.other : icon.paper.default }}" class="img"></image>
+          <van-radio name="3" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === 3 ? 'radio other' : 'radio'}}">
+            <image src="{{ otherRadio === 3 ? icon.paper.other : icon.paper.default }}" class="img"></image>
             布
           </van-radio>
         </van-radio-group>
@@ -85,8 +85,8 @@
   <view class="card result">
     <view class="key">比赛结果：</view>
     <view class="value">
-      <view wx:if="{{ result === 3 }}" class="loading">请等待双方出拳...</view>
-      <view wx:if="{{ result === 4 }}" class="loading">对方思考中...</view>
+      <view wx:if="{{ result === null }}" class="loading">请等待双方出拳...</view>
+      <view wx:if="{{ result === 0 }}" class="own-win">双方平局</view>
       <view wx:if="{{ result === 1 }}" class="own-win">
         <van-icon name="flower-o" size="48rpx" color="#0958d9" custom-class="own-win-icon" />
         我赢啦！

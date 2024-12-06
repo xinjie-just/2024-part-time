@@ -29,12 +29,18 @@ Page({
     },
     time: 60 * 1000,
     matchDuration: duration, // 游戏匹配时长，单位毫秒
+    gameStartCountdown: 0,
     timeData: {},
     matched: "waiting", // 匹配对手状态；waiting 未开始、匹配中，success 匹配成功，fail 匹配失败
-    ownRadio: null,
-    otherRadio: null,
+    ownRadio: null, // 1:石头；2:剪刀；3:布
+    otherRadio: null, // 1:石头；2:剪刀；3:布
     showExplain: false,
-    result: 3, // 1 我胜，2 对方胜，3 等待出拳，4 对方思考中
+    result: null, // 0 平局，1 我胜，2 对方胜，null 等待出拳
+    gameInfo: {
+      userInfo: {},
+      rivalInfo: {},
+      gameDuration: 0
+    }
   },
 
   onLoad() {
@@ -70,10 +76,9 @@ Page({
           });
           Toast({
             type: 'success',
-            message: '匹配完成，获取对手信息',
-            duration: 0,
+            message: '匹配完成，获取对局信息',
             onClose: () => {
-              this.getGameRiverDetail();
+              this.getRpsGameInfo();
             },
           });
         } else {
@@ -110,16 +115,28 @@ Page({
     }, this.gameReady());
   },
 
-  // 获取对手信息
-  getGameRiverDetail() {
-    commonService.rpsRiverDetail()
+  // 获取对局信息
+  getRpsGameInfo() {
+    commonService.rpsGameInfo()
       .then((result) => {
         console.log("获取对手信息---result", result);
+        const userInfo = result.userInfo || {};
+        const rivalInfo = result.rivalInfo || {};
+        const gameDuration = result.gameDuration || 0;
+        this.setData({
+          gameInfo: {
+            userInfo,
+            rivalInfo,
+            gameDuration
+          },
+          time: gameDuration * 1000
+        });
         Toast.clear();
       })
       .finally(() => {
       })
   },
+
   /**
    * 组件的方法列表
    */
@@ -156,18 +173,6 @@ Page({
         // on cancel
       });
   },
-  onSelectFinish() {
-    this.setData({
-      result: 4,
-    });
-    Toast({
-      type: 'loading',
-      message: '对方思考中...',
-      onClose: () => {
-        this.getWatchReault();
-      },
-    });
-  },
   getWatchReault() {
     Toast({
       type: 'text',
@@ -177,8 +182,8 @@ Page({
         countDown.pause();
         this.setData({
           result: 2,
-          ownRadio: '1',
-          otherRadio: '3',
+          ownRadio: 1,
+          otherRadio: 3,
         });
       },
     });
@@ -211,9 +216,46 @@ Page({
       ownRadio: e.detail,
     });
   },
-  onChangeOther(e) {
-    this.setData({
-      otherRadio: e.detail,
-    });
+
+  // 点击“我选好了”，就提交游戏结果
+  onSelectFinish() {
+    const params = {
+      punch: this.data.ownRadio
+    };
+    commonService.rpsSubmit(params)
+      .then((result) => {
+        Toast({
+          type: 'text',
+          message: '提交成功',
+          onClose: () => {
+            this.getRpsResult();
+          },
+        });
+      })
+      .finally(() => {
+      })
+    // this.setData({
+    //   result: 4,
+    // });
+    // Toast({
+    //   type: 'loading',
+    //   message: '对方思考中...',
+    //   onClose: () => {
+    //     this.getWatchReault();
+    //   },
+    // });
   },
+
+  // rpsResult
+  getRpsResult() {
+    commonService.rpsResult()
+      .then((result) => {
+        // 对局结果(0:平;1:赢;2:输)
+        this.setData({
+          result
+        })
+      })
+      .finally(() => {
+      })
+  }
 });
