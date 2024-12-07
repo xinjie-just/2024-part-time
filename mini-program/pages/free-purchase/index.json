@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "0 元购",
-  "usingComponents": {}
+  "usingComponents": {
+    "layout": "/components/layout/index"
+  }
 }

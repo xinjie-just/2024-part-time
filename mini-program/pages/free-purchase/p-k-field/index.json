@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "PK 场"
+  "navigationBarTitleText": "PK 场",
+  "usingComponents": {
+    "layout": "/components/layout/index"
+  }
 }

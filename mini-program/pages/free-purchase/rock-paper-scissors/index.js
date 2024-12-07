@@ -119,7 +119,7 @@ Page({
   getRpsGameInfo() {
     commonService.rpsGameInfo()
       .then((result) => {
-        console.log("获取对手信息---result", result);
+        console.log("获取对局信息---result", result);
         const userInfo = result.userInfo || {};
         const rivalInfo = result.rivalInfo || {};
         const gameDuration = result.gameDuration || 0;
@@ -140,17 +140,6 @@ Page({
   /**
    * 组件的方法列表
    */
-  onStart() {
-    Toast({
-      type: 'loading',
-      message: '正在为您匹配对手...',
-      onClose: () => {
-        this.setData({
-          matched: true,
-        });
-      },
-    });
-  },
   onChangeTime(e) {
     this.setData({
       timeData: e.detail,
@@ -223,7 +212,7 @@ Page({
       punch: this.data.ownRadio
     };
     commonService.rpsSubmit(params)
-      .then((result) => {
+      .then(() => {
         Toast({
           type: 'text',
           message: '提交成功',
@@ -234,19 +223,8 @@ Page({
       })
       .finally(() => {
       })
-    // this.setData({
-    //   result: 4,
-    // });
-    // Toast({
-    //   type: 'loading',
-    //   message: '对方思考中...',
-    //   onClose: () => {
-    //     this.getWatchReault();
-    //   },
-    // });
   },
-
-  // rpsResult
+  // 查询石头剪刀布游戏结果
   getRpsResult() {
     commonService.rpsResult()
       .then((result) => {

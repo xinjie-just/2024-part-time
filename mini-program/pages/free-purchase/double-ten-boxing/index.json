@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "双十拳",
-  "usingComponents": {}
+  "usingComponents": {
+    "payment-method": "/pages/payment/payment-method/index",
+    "layout": "/components/layout/index"
+  }
 }

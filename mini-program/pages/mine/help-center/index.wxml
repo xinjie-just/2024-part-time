@@ -1,1 +1,3 @@
-<view class="page">帮助中心</view>
+<layout>
+    <view class="page">帮助中心</view>
+</layout>

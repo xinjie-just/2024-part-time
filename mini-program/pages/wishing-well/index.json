@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "许愿池",
-  "usingComponents": {}
+  "usingComponents": {
+    "layout": "/components/layout/index"
+  }
 }

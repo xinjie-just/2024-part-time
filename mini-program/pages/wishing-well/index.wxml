@@ -1,37 +1,39 @@
-<view class="page">
-  <image src="/assets/images/wishing-well/wishing-well-bg.png" mode="widthFix" class="wishing-well-bg" />
-  <view class="notice">
-    <view class="left">
-      <van-icon name="volume-o" size="40rpx" color="#ed6a0c" />
-      <text class="text">许下心愿，专人为您圆梦</text>
-    </view>
-    <view class="right">
-      <van-button type="info" plain hairline round size="small" bind:click="onToWishing">
-        许愿
-      </van-button>
-    </view>
-  </view>
-  <view class="my-wishing">我的许愿记录</view>
-  <view class="card">
-    <view wx:if="{{loading}}" class="loading">
-      <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
-    </view>
-    <block wx:else>
-      <view class="item" wx:for="{{list}}" wx:key="id">
-        <view class="index">
-          <view class="value">{{ index + 1 }}</view>
-        </view>
-        <view class="td center">
-          <view class="title">{{ item.name }}</view>
-          <view class="time">许愿时间：{{ item.time || "--" }}</view>
-        </view>
+<layout>
+  <view class="page">
+    <image src="/assets/images/wishing-well/wishing-well-bg.png" mode="widthFix" class="wishing-well-bg" />
+    <view class="notice">
+      <view class="left">
+        <van-icon name="volume-o" size="40rpx" color="#ed6a0c" />
+        <text class="text">许下心愿，专人为您圆梦</text>
       </view>
-      <view wx:if="{{hasMoreData}}" class="more-btn">
-        <van-button wx:if="{{hasMoreData}}" loading="{{moreLoading}}" loading-text="加载更多..." type="info" size="small" plain hairline round bind:click="getMoreList">
-          加载更多
+      <view class="right">
+        <van-button type="info" plain hairline round size="small" bind:click="onToWishing">
+          许愿
         </van-button>
       </view>
-      <view wx:else class="no-more-data">没有更多数据了 ~</view>
-    </block>
+    </view>
+    <view class="my-wishing">我的许愿记录</view>
+    <view class="card">
+      <view wx:if="{{loading}}" class="loading">
+        <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
+      </view>
+      <block wx:else>
+        <view class="item" wx:for="{{list}}" wx:key="id">
+          <view class="index">
+            <view class="value">{{ index + 1 }}</view>
+          </view>
+          <view class="td center">
+            <view class="title">{{ item.name }}</view>
+            <view class="time">许愿时间：{{ item.time || "--" }}</view>
+          </view>
+        </view>
+        <view wx:if="{{hasMoreData}}" class="more-btn">
+          <van-button wx:if="{{hasMoreData}}" loading="{{moreLoading}}" loading-text="加载更多..." type="info" size="small" plain hairline round bind:click="getMoreList">
+            加载更多
+          </van-button>
+        </view>
+        <view wx:else class="no-more-data">没有更多数据了 ~</view>
+      </block>
+    </view>
   </view>
-</view>
+</layout>

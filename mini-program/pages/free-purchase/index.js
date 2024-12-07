@@ -12,7 +12,6 @@ Page({
     loading: false,
     moreLoading: false,
     hasMoreData: false,
-    showNotify: true,
   },
   onLoad() {
     this.timerId = null;
@@ -92,16 +91,6 @@ Page({
   onToPKField() {
     wx.redirectTo({
       url: './p-k-field/index',
-    });
-  },
-  onShowNotify() {
-    this.setData({
-      showNotify: true,
-    });
-  },
-  onCloseNotify() {
-    this.setData({
-      showNotify: false,
     });
   },
   onIntoPKField() {

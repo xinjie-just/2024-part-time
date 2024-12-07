@@ -21,8 +21,8 @@ const API = {
     'pay': '/wechat/paly/test', // 获取微信支付必须参数
   },
   getAPIUrl: (options) => {
-    // const origin = "https://00goo.com/program"; // 正式
-    const origin = "https://52434c0c.r27.cpolar.top/program"; // 测试
+    const origin = "https://00goo.com/program"; // 正式
+    // const origin = "https://52434c0c.r27.cpolar.top/program"; // 测试
     let route = API.address[options.apiKey];
     let result = `${origin}${route}`;
     return result;
