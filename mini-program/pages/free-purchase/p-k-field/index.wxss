@@ -23,7 +23,7 @@
   color: #ed6a0c;
 }
 
-.tips {
+.match-tips {
   padding: 32rpx;
   font-size: 28rpx;
   line-height: 1.5;
@@ -33,7 +33,7 @@
   align-items: center;
 }
 
-.tips .text {
+.match-tips .text {
   margin-left: 16rpx;
 }
 

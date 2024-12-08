@@ -1,5 +1,6 @@
 // pages/login/wxLogin/index.js
 import { loginService } from '../../../services/login.js';
+import { jumpExitPage } from '../../../utils/jumpUrl.js';
 
 Page({
 
@@ -33,7 +34,7 @@ Page({
                 type: 'success',
                 message: '登录成功',
                 onClose: () => {
-                  wx.navigateBack();
+                  jumpExitPage();
                 },
               });
             })

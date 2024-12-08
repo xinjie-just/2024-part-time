@@ -14,7 +14,7 @@
     <view class="steps-wrap">
       <van-steps steps="{{ steps }}" direction="vertical" active-color="#969799" inactive-color="#969799" active-icon="circle" inactive-icon="circle" />
     </view>
-    <view class="tips">
+    <view class="match-tips">
       <van-icon name="warning-o" size="40rpx" color="#1989fa" />
       <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>
     </view>
@@ -30,9 +30,10 @@
       <view class="game-item">
         <view class="name">剪刀石头布</view>
         <view class="rule-list">
-          <view class="rule-item">1. 游戏由两人进行，两人同时准备好自己的手势，不可提前展示给对方看。</view>
-          <view class="rule-item">2. 两人同时喊出“石头剪刀布”的口号，并在“布”字说完的瞬间同时亮出自己的手势。</view>
-          <view class="rule-item">3. 石头能击败剪刀，剪刀能剪断布，布能包裹石头。如果双方出了相同的手势，则视为平局，可以重新进行下一轮。</view>
+          <view class="rule-item">1. 等待游戏开始倒计时为 0 后，即可开始出拳。</view>
+          <view class="rule-item">2. 己方（自己）从石头、剪刀、布中选定一种，然后点击“我选好了”。</view>
+          <view class="rule-item">3. 等待双方出拳完成后显示比赛结果。</view>
+          <view class="rule-item">4. 将由系统判断胜负，双方均无法提前预知对方出拳。</view>
         </view>
       </view>
       <view class="game-item">

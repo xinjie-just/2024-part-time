@@ -1,17 +1,15 @@
 // components/layout/index.js
 Component({
-
   /**
    * 组件的属性列表
    */
-  properties: {
-  },
+  properties: {},
 
   /**
    * 组件的初始数据
    */
   data: {
-    showNotify: true,
+    showNotify: false,
   },
 
   /**
@@ -28,5 +26,5 @@ Component({
         showNotify: false,
       });
     },
-  }
-})
+  },
+});

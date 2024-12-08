@@ -45,9 +45,19 @@ const request = (options) => {
         if (result.code === 200) {
           return resolve(result.data);
         } else if (result.code == 400) {
-          // 用户未登录，跳转登录
-          wx.navigateTo({
-            url: '/pages/login/index',
+          const pages = getCurrentPages();
+          const currentPage = pages[pages.length - 1]; // 获取当前页面实例
+          const route = currentPage.route; // 输出当前页面的路由
+          wx.setStorageSync('exitPage', route);
+          wx.showToast({
+            title: '未登录',
+            icon: 'error',
+            success: () => {
+              // 用户未登录，跳转登录
+              wx.navigateTo({
+                url: '/pages/login/index',
+              });
+            },
           });
         } else {
           if (result.code && result.errorMsg) {

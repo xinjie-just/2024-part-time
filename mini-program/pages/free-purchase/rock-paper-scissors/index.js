@@ -27,20 +27,23 @@ Page({
         other: '/assets/images/free-purchase/paper-other.png',
       },
     },
-    time: 60 * 1000,
     matchDuration: duration, // 游戏匹配时长，单位毫秒
-    gameStartCountdown: 0,
-    timeData: {},
+    startCountdown: 60 * 1000, // 游戏开始倒计时，单位毫秒
+    startCountdownData: {},
+    endCountdown: 60 * 1000, // 出拳倒计时，单位毫秒
+    endCountdownData: {},
     matched: "waiting", // 匹配对手状态；waiting 未开始、匹配中，success 匹配成功，fail 匹配失败
     ownRadio: null, // 1:石头；2:剪刀；3:布
     otherRadio: null, // 1:石头；2:剪刀；3:布
+    selected: false,
     showExplain: false,
     result: null, // 0 平局，1 我胜，2 对方胜，null 等待出拳
     gameInfo: {
       userInfo: {},
       rivalInfo: {},
       gameDuration: 0
-    }
+    },
+    gameKey: "",
   },
 
   onLoad() {
@@ -54,25 +57,32 @@ Page({
       duration: 0, // 不会消失（不会主动消失）
     });
     commonService.rpsReady()
-      .then((result) => {
-        console.log("游戏准备---result", result);
+      .then(() => {
         this.gameMatch();
       })
       .catch(() => {
-        Toast.clear();
-      })
-      .finally(() => {
+        Toast({
+          type: 'fail',
+          message: err.message || "游戏准备失败",
+        });
+        this.setData({
+          matched: 'fail',
+        });
       })
   },
-  // 游戏匹配
+  // 石头剪刀布，游戏匹配
   gameMatch() {
     commonService.rpsMatch()
-      .then((result) => {
-        console.log("游戏匹配---result", result);
-        if (result) {
-          // 匹配成功，返回游戏信息
+      .then(async (result) => {
+        if (result?.startTimeMillis && result?.gameKey) {
+          // 匹配成功，获取到游戏信息
+          const systemTime = await commonService.getSystemTime();
+          const gameStartTime = result.startTimeMillis;
+          const startCountdown = gameStartTime - systemTime;
           this.setData({
             matched: 'success',
+            gameKey: result.gameKey,
+            startCountdown: startCountdown < 0 ? 0 : startCountdown
           });
           Toast({
             type: 'success',
@@ -96,15 +106,19 @@ Page({
               matchDuration: this.data.matchDuration - matchRotationInterval
             }, setTimeout(() => {
               this.gameMatch();
-            }, matchRotationInterval) // 发起轮训
+            }, matchRotationInterval) // 发起轮训，再次游戏匹配
             )
           }
         }
       })
-      .catch(() => {
-        Toast.clear();
-      })
-      .finally(() => {
+      .catch((err) => {
+        Toast({
+          type: 'fail',
+          message: err.message || "游戏匹配失败",
+        });
+        this.setData({
+          matched: 'fail',
+        });
       })
   },
 
@@ -119,35 +133,140 @@ Page({
   getRpsGameInfo() {
     commonService.rpsGameInfo()
       .then((result) => {
-        console.log("获取对局信息---result", result);
-        const userInfo = result.userInfo || {};
-        const rivalInfo = result.rivalInfo || {};
-        const gameDuration = result.gameDuration || 0;
-        this.setData({
-          gameInfo: {
-            userInfo,
-            rivalInfo,
-            gameDuration
-          },
-          time: gameDuration * 1000
-        });
-        Toast.clear();
+        if (result?.rivalInfo) {
+          const userInfo = result.userInfo || {};
+          const rivalInfo = result.rivalInfo;
+          const gameDuration = result.gameDuration || 0;
+          this.setData({
+            gameInfo: {
+              userInfo,
+              rivalInfo,
+              gameDuration
+            },
+            endCountdown: gameDuration * 1000
+          });
+          if (this.data.startCountdown <= 0) {
+            commonService.rpsStart();
+            Toast('游戏已开始，请选择出拳');
+          }
+        } else {
+          Toast({
+            type: 'fail',
+            message: "获取对局信息失败",
+          });
+        }
       })
-      .finally(() => {
+      .catch((err) => {
+        Toast({
+          type: 'fail',
+          message: err.message || "获取对局信息失败",
+        });
+        this.setData({
+          matched: 'fail',
+        });
+      })
+  },
+  // 游戏开始倒计时时间改变
+  onChangeStartTime(e) {
+    this.setData({
+      startCountdownData: e.detail,
+    });
+  },
+
+  // 游戏出拳倒计时时间改变
+  onChangeEndTime(e) {
+    this.setData({
+      endCountdownData: e.detail,
+    });
+  },
+
+  endFinished() {
+    Toast('时间到，出拳结束');
+  },
+  startFinished() {
+    commonService.rpsStart();
+    Toast('游戏已开始，请选择出拳');
+  },
+
+  // 选择/改变我的选择
+  onChangeOwn(e) {
+    this.setData({
+      ownRadio: e.detail,
+    });
+  },
+
+  // 点击“我选好了”，就提交游戏结果
+  onSelectFinish() {
+    this.setData({
+      selected: true
+    });
+    const params = {
+      punch: this.data.ownRadio
+    };
+    commonService.rpsSubmit(params)
+      .then(() => {
+        Toast({
+          type: 'loading',
+          message: '提交成功，正在查询结果',
+          duration: 0,
+        });
+        setTimeout(() => {
+          this.getRpsResult();
+        }, 2000);
+      })
+      .catch((err) => {
+        Toast({
+          type: 'fail',
+          message: err.message || "提交失败",
+        });
+      })
+  },
+  // 石头剪刀布，查询游戏结果
+  getRpsResult() {
+    const params = {
+      gameKey: this.data.gameKey
+    };
+    commonService.rpsResult(params)
+      .then((result) => {
+        if (result?.rivalCommitDetail) {
+          // 查询到结果，对局结果(0:平;1:赢;2:输)
+          this.setData({
+            result: result.winner,
+            otherRadio: `${result.rivalCommitDetail.punch}` // 换换成 string
+          });
+          Toast({
+            type: 'success',
+            message: '已查询到结果，比赛结束',
+          });
+        } else {
+          // 未匹配成功          
+          if (this.data.matchDuration <= 0) {
+            this.setData({
+              matched: 'fail',
+            });
+            Toast({
+              type: 'fail',
+              message: '对手长时间未出拳，游戏结束',
+            });
+          } else {
+            this.setData({
+              matchDuration: this.data.matchDuration - matchRotationInterval
+            }, setTimeout(() => {
+              this.getRpsResult();
+            }, matchRotationInterval) // 发起轮训，再次查询游戏结果
+            )
+          }
+        }
+      })
+      .catch((err) => {
+        Toast({
+          type: 'fail',
+          message: err.message || "提交失败",
+        });
       })
   },
 
-  /**
-   * 组件的方法列表
-   */
-  onChangeTime(e) {
-    this.setData({
-      timeData: e.detail,
-    });
-  },
-  finished() {
-    Toast('出拳倒计时结束');
-  },
+  // 退出确认
   onExit() {
     Dialog.confirm({
       title: '',
@@ -162,78 +281,36 @@ Page({
         // on cancel
       });
   },
-  getWatchReault() {
-    Toast({
-      type: 'text',
-      message: '对方已出拳',
-      onClose: () => {
-        const countDown = this.selectComponent('.count-time');
-        countDown.pause();
-        this.setData({
-          result: 2,
-          ownRadio: 1,
-          otherRadio: 3,
-        });
-      },
-    });
-  },
+
+  // 继续游戏确认
   onContinue() {
     Dialog.confirm({
       title: '',
       message: '您确认要继续游戏吗？',
     })
       .then(() => {
+        const startCountDown = this.selectComponent('.start-countdown');
+        startCountDown.reset();
+        const endCountDown = this.selectComponent('.end-countdown');
+        endCountDown.reset();
+
         this.setData({
           ownRadio: null,
           otherRadio: null,
-        });
-        const countDown = this.selectComponent('.count-time');
-        countDown.reset();
+          matched: "waiting",
+          matchDuration: duration
+        }, this.gameReady());
       })
       .catch(() => {
         // on cancel
       });
   },
+  // 打开 "PK双方出拳解释束语"
   onViewExplain() {
     this.setData({ showExplain: true });
   },
+  // 关闭 "PK双方出拳解释束语"
   onCloseExplain() {
     this.setData({ showExplain: false });
   },
-  onChangeOwn(e) {
-    this.setData({
-      ownRadio: e.detail,
-    });
-  },
-
-  // 点击“我选好了”，就提交游戏结果
-  onSelectFinish() {
-    const params = {
-      punch: this.data.ownRadio
-    };
-    commonService.rpsSubmit(params)
-      .then(() => {
-        Toast({
-          type: 'text',
-          message: '提交成功',
-          onClose: () => {
-            this.getRpsResult();
-          },
-        });
-      })
-      .finally(() => {
-      })
-  },
-  // 查询石头剪刀布游戏结果
-  getRpsResult() {
-    commonService.rpsResult()
-      .then((result) => {
-        // 对局结果(0:平;1:赢;2:输)
-        this.setData({
-          result
-        })
-      })
-      .finally(() => {
-      })
-  }
 });

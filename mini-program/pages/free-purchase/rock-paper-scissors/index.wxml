@@ -15,15 +15,22 @@
         <view class="side-item win-count">胜 {{ gameInfo.rivalInfo.winNumber }} 次</view>
       </view>
     </view>
+    <view class="card">
+      <van-count-down use-slot time="{{ startCountdown }}" class="start-countdown" bind:change="onChangeStartTime" bind:finish="startFinished">
+        <text class="tips">游戏开始倒计时：</text>
+        <text class="time-item">{{ startCountdownData.seconds }}</text>
+        <text>秒</text>
+      </van-count-down>
+    </view>
     <view class="card match">
       <view class="header">
         <view class="title">
           <text>PK 双方出拳</text>
           <van-icon name="info-o" custom-class="explain-icon" bind:tap="onViewExplain" />
         </view>
-        <van-count-down use-slot time="{{ time }}" class="count-time" bind:change="onChangeTime" bind:finish="finished">
+        <van-count-down use-slot time="{{ endCountdown }}" class="end-countdown" bind:change="onChangeEndTime" bind:finish="endFinished">
           <text class="tips">出拳倒计时：</text>
-          <text class="time-item">{{ timeData.seconds }}</text>
+          <text class="time-item">{{ endCountdownData.seconds }}</text>
           <text>秒</text>
         </van-count-down>
       </view>
@@ -31,11 +38,11 @@
         <view class="side own-match-side">
           <view class="own">
             <text>己方：</text>
-            <van-button round size="small" color="#0958d9" disabled="{{ownRadio === null}}" bind:click="onSelectFinish">
+            <van-button round size="small" color="#0958d9" disabled="{{ownRadio === null || endCountdownData.seconds <= 0  || selected }}" bind:click="onSelectFinish">
               我选好了
             </van-button>
           </view>
-          <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ timeData.seconds === 0 }}" class="radio-group">
+          <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ endCountdownData.seconds <= 0 || startCountdownData.seconds > 0 || selected }}" class="radio-group">
             <van-radio name="1" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 1 ? 'radio own' : 'radio'}}">
               <image src="{{ ownRadio === 1 ? icon.rock.own : icon.rock.default }}" class="img"></image>
               石头
@@ -56,15 +63,10 @@
         <view class="side other-match-side">
           <view class="other">
             <text>对方：</text>
-            <van-tag wx:if="{{ result === 3}}" mark size="medium" color="#cf1322" text-color="#fff">
+            <van-tag wx:if="{{ result === null }}" mark size="medium" color="#cf1322" text-color="#fff">
               待出拳
             </van-tag>
-            <van-tag wx:if="{{ result === 1 || result === 2 }}" mark size="medium" color="#cf1322" text-color="#fff">
-              已出拳
-            </van-tag>
-            <van-tag wx:if="{{ result === 4 }}" mark size="medium" color="#cf1322" text-color="#fff">
-              思考中...
-            </van-tag>
+            <van-tag wx:else mark size="medium" color="#cf1322" text-color="#fff">已出拳</van-tag>
           </view>
           <van-radio-group value="{{ otherRadio }}" disabled direction="horizontal" class="radio-group">
             <van-radio name="1" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === 1 ? 'radio other' : 'radio'}}">
@@ -107,9 +109,9 @@
       </van-button>
     </view>
   </view>
-  <view wx:if="{{ matched === 'fail' }}">
-    <view class="matched-fail">未匹配到对手，您可以选择 “退出” 或稍后 “再试一次”</view>
-    <view class="tips">
+  <block wx:if="{{ matched === 'fail' }}">
+    <view class="matched-fail">未匹配到对手，您可以选择 “退出” 或稍后 “再试一次”。</view>
+    <view class="match-tips">
       <van-icon name="warning-o" size="40rpx" color="#1989fa" />
       <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>
     </view>
@@ -121,16 +123,17 @@
         再试一次
       </van-button>
     </view>
-  </view>
+  </block>
   <van-toast id="van-toast" />
   <van-dialog id="van-dialog" />
   <van-dialog use-slot title="" show="{{ showExplain }}" show-cancel-button="{{true}}" cancel-button-text="知道了" show-confirm-button="{{false}}" bind:close="onCloseExplain">
     <view class="explain-dialog">
       <view class="name">出拳说明</view>
       <view class="rule-list">
-        <view class="rule-item">1. 己方（自己）从石头、剪刀、布中选定一种，然后点击“我选好了”。</view>
-        <view class="rule-item">2. 对方思考后立即出拳，等待双方出拳完成后亮出结果。</view>
-        <view class="rule-item">3. 将由系统判断胜负，双方均无法提前预知对方出拳。</view>
+        <view class="rule-item">1. 等待游戏开始倒计时为 0 后，即可开始出拳。</view>
+        <view class="rule-item">2. 己方（自己）从石头、剪刀、布中选定一种，然后点击“我选好了”。</view>
+        <view class="rule-item">3. 等待双方出拳完成后显示比赛结果。</view>
+        <view class="rule-item">4. 将由系统判断胜负，双方均无法提前预知对方出拳。</view>
       </view>
     </view>
   </van-dialog>

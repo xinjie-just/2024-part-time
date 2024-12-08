@@ -56,10 +56,37 @@
   flex: 1;
 }
 
+/* 开始游戏倒计时 */
+.start-countdown {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #1989fa;
+  background: #ecf9ff;
+}
+
 /* PK 双方出拳 */
-.count-time {
-  display: inline-block;
-  margin-left: 48rpx;
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40rpx;
+}
+
+.header .title {
+  margin-bottom: 0;
+}
+
+.end-countdown {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #1989fa;
+  background: #ecf9ff;
+  padding: 24rpx 32rpx;
 }
 
 .time-item {
@@ -83,17 +110,6 @@
   width: calc(50% - 56rpx);
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 40rpx;
-}
-
-.header .title {
-  margin-bottom: 0;
-}
-
 .match-side .vs {
   display: flex;
   align-items: center;
@@ -110,7 +126,6 @@
   flex-direction: column;
   padding: 32rpx 24rpx;
   margin-top: 32rpx;
-  margin-bottom: 32rpx;
 }
 
 .own-match-side .radio-group {
@@ -119,6 +134,11 @@
 
 .other-match-side .radio-group {
   background-color: #fff1f0;
+}
+
+.other-match-side .other {
+  height: 60rpx;
+  line-height: 60rpx;
 }
 
 .match-side .radio {
@@ -233,15 +253,15 @@
 
 .matched-fail {
   margin-bottom: 48rpx;
-  font-size: 28rpx;
+  font-size: 24rpx;
+  text-align: center;
   line-height: 1.6em;
   padding: 16rpx 24rpx;
   color: #ed6a0c;
   background-color: #fffbe8;
 }
 
-.tips {
-  margin-bottom: 48rpx;
+.match-tips {
   padding: 32rpx;
   font-size: 28rpx;
   line-height: 1.5;
@@ -251,6 +271,6 @@
   align-items: center;
 }
 
-.tips .text {
+.match-tips .text {
   margin-left: 16rpx;
 }

@@ -2,7 +2,8 @@ import { loginService } from '../../services/login.js';
 import { commonService } from '../../services/common.js';
 import Dialog from '/@vant/weapp/dialog/dialog';
 import Toast from '/@vant/weapp/toast/toast';
-import { encryption } from "../../utils/encryptor.js";
+import { encryption } from '../../utils/encryptor.js';
+import { jumpExitPage } from '../../utils/jumpUrl.js';
 
 Page({
 
@@ -10,8 +11,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    username: "",
-    password: "",
+    username: '',
+    password: '',
     loading: false
   },
 
@@ -75,7 +76,7 @@ Page({
           type: 'success',
           message: '登录成功',
           onClose: () => {
-            wx.navigateBack();
+            jumpExitPage();
           },
         });
       })
