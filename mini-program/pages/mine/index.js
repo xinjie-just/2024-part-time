@@ -83,9 +83,9 @@ Page({
   init() {
     wx.login({
       success: (res) => {
-        console.log("code", res.code);
+        console.log('code', res.code);
       },
-    })
+    });
     // this.fetUseriInfoHandle();
   },
 

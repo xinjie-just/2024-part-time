@@ -1,6 +1,7 @@
 // pages/login/wxLogin/index.js
 import { loginService } from '../../../services/login.js';
 import { jumpExitPage } from '../../../utils/jumpUrl.js';
+import { commonService } from '../../../services/common.js';
 
 Page({
 
@@ -20,7 +21,7 @@ Page({
 
   wxLogin() {
     wx.login({
-      success(res) {
+      success: (res) => {
         if (res.code) {
           //发起网络请求
           const params = {
@@ -30,18 +31,12 @@ Page({
             .then((result) => {
               const token = result.token;
               wx.setStorageSync('token', token);
-              Toast({
-                type: 'success',
-                message: '登录成功',
-                onClose: () => {
-                  jumpExitPage();
-                },
-              });
+              this.getUserInfo();
             })
             .catch((error) => {
-              Toast({
-                type: 'fail',
-                message: error.message || '登陆失败'
+              wx.showToast({
+                icon: 'error',
+                title: error.message || '登陆失败',
               });
             })
             .finally(() => {
@@ -54,6 +49,31 @@ Page({
         }
       }
     });
+  },
+
+  getUserInfo() {
+    commonService.getUserInfo()
+      .then((result) => {
+        wx.setStorageSync('userInfo', JSON.stringify(result));
+        wx.showToast({
+          title: '登录成功',
+          icon: 'success',
+          success: () => {
+            jumpExitPage();
+          }
+        })
+      })
+      .catch((error) => {
+        wx.showToast({
+          icon: 'error',
+          title: error.message || '获取用户信息失败',
+        });
+      })
+      .finally(() => {
+        this.setData({
+          loading: false
+        });
+      })
   },
 
   /**

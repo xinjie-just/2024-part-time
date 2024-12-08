@@ -1,21 +1,20 @@
-import Toast from "/@vant/weapp/toast/toast";
+import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
-import wishes from "./data";
+import wishes from './data';
 import { pay } from '../../../utils/index';
 
 // pages/wishing-well/wishing/index.js
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
-    title: "",
-    message: "",
+    title: '',
+    message: '',
     wishes,
     wishesOptions: [],
     showOptions: false,
-    paymentMethodShow: false
+    paymentMethodShow: false,
   },
 
   /**
@@ -31,7 +30,7 @@ Page({
   async getPayParams() {
     const result = await pay();
     if (result) {
-      console.log("result", result);
+      console.log('result', result);
     }
   },
 
@@ -39,11 +38,11 @@ Page({
     // event.detail 为当前输入的值
     console.log(event.detail);
     const title = event.detail;
-    const options = wishes.filter(item => item.title.includes(title));
+    const options = wishes.filter((item) => item.title.includes(title));
     this.setData({
       showOptions: true,
       wishesOptions: title ? options : [],
-    })
+    });
   },
 
   onChangeMessage(event) {
@@ -55,32 +54,32 @@ Page({
     const wish = e.currentTarget.dataset.title;
     this.setData({
       title: wish,
-      showOptions: false
-    })
+      showOptions: false,
+    });
   },
 
   onBlurTitle() {
     this.setData({
-      showOptions: false
-    })
+      showOptions: false,
+    });
   },
 
   onFocusTitle() {
-    const options = this.data.wishesOptions.filter(item => item.title.includes(this.data.title));
+    const options = this.data.wishesOptions.filter((item) => item.title.includes(this.data.title));
     this.setData({
       showOptions: true,
       wishesOptions: this.data.title ? options : [],
-    })
+    });
   },
 
   onSave() {
-    console.log("title", this.data.title);
-    console.log("message", this.data.message);
+    console.log('title', this.data.title);
+    console.log('message', this.data.message);
     // wx.navigateTo({
     //   url: '/pages/payment/payment-method/index',
     // })
     this.setData({
-      paymentMethodShow: true
+      paymentMethodShow: true,
     });
   },
 
@@ -99,7 +98,7 @@ Page({
 
   onConfirm() {
     this.setData({
-      paymentMethodShow: false
+      paymentMethodShow: false,
     });
     Toast({
       type: 'success',
@@ -114,56 +113,42 @@ Page({
 
   onClose() {
     this.setData({
-      paymentMethodShow: false
+      paymentMethodShow: false,
     });
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady() {
-
-  },
+  onReady() { },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {
-
-  },
+  onShow() { },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide() {
-
-  },
+  onHide() { },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload() {
-
-  },
+  onUnload() { },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh() {
-
-  },
+  onPullDownRefresh() { },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom() {
-
-  },
+  onReachBottom() { },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage() {
-
-  }
-})
+  onShareAppMessage() { },
+});

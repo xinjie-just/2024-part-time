@@ -19,7 +19,8 @@
     "pages/payment/payment-method/index",
     "pages/payment/digital-guessing/index",
     "pages/login/index",
-    "pages/login/wxLogin/index"
+    "pages/login/wxLogin/index",
+    "pages/login/pwdLogin/index"
   ],
   "tabBar": {
     "color": "#000000",

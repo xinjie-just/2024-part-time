@@ -1,0 +1,12 @@
+.footer {
+  margin-top: 64rpx;
+  text-align: center;
+}
+
+.footer .van-button {
+  width: 240rpx;
+}
+
+.back-btn {
+  margin-right: 32rpx;
+}

@@ -9,6 +9,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "选择登录方式",
+          "pathName": "pages/login/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "用户名密码登录",
+          "pathName": "pages/login/pwdLogin/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "微信登录",
           "pathName": "pages/login/wxLogin/index",
           "query": "",
@@ -16,8 +30,8 @@
           "scene": null
         },
         {
-          "name": "双十拳",
-          "pathName": "pages/free-purchase/double-ten-boxing/index",
+          "name": "PK场",
+          "pathName": "pages/free-purchase/p-k-field/index",
           "query": "",
           "launchMode": "default",
           "scene": null
@@ -30,8 +44,8 @@
           "scene": null
         },
         {
-          "name": "用户名密码登录",
-          "pathName": "pages/login/index",
+          "name": "双十拳",
+          "pathName": "pages/free-purchase/double-ten-boxing/index",
           "query": "",
           "launchMode": "default",
           "scene": null
@@ -60,13 +74,6 @@
         {
           "name": "选择支付方式",
           "pathName": "pages/payment/payment-method/index",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "PK场",
-          "pathName": "pages/free-purchase/p-k-field/index",
           "query": "",
           "launchMode": "default",
           "scene": null

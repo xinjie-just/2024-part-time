@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "用户名登录"
+  "navigationBarTitleText": "选择登录方式",
+  "usingComponents": {
+    "layout": "/components/layout/index"
+  }
 }
