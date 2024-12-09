@@ -10,6 +10,17 @@
   border-radius: 16rpx;
 }
 
+/* 开始游戏倒计时 */
+.start-countdown {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #1989fa;
+  background: #ecf9ff;
+}
+
 /* PK 双方信息 */
 .title {
   font-size: 32rpx;
@@ -57,9 +68,14 @@
 }
 
 /* PK 双方出拳 */
-.count-time {
-  display: inline-block;
-  margin-left: 48rpx;
+.end-countdown {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #1989fa;
+  background: #ecf9ff;
+  padding: 24rpx 32rpx;
 }
 
 .time-item {
@@ -242,6 +258,16 @@
 
 .continue-btn {
   margin-left: 32rpx;
+}
+
+.matched-fail {
+  margin-bottom: 48rpx;
+  font-size: 24rpx;
+  text-align: center;
+  line-height: 1.6em;
+  padding: 16rpx 24rpx;
+  color: #ed6a0c;
+  background-color: #fffbe8;
 }
 
 .match-tips {

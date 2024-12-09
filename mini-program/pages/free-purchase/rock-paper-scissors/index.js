@@ -32,7 +32,7 @@ Page({
     startCountdownData: {},
     endCountdown: 60 * 1000, // 出拳倒计时，单位毫秒
     endCountdownData: {},
-    matched: 'waiting', // 匹配对手状态；waiting 未开始、匹配中，success 匹配成功，fail 匹配失败
+    matched: 'waiting', // 匹配对手状态；waiting 未开始、匹配中，success 匹配成功，fail 匹配失败，error 长时间未出拳
     ownRadio: null, // 1:石头；2:剪刀；3:布
     otherRadio: null, // 1:石头；2:剪刀；3:布
     selected: false,
@@ -193,7 +193,6 @@ Page({
   },
   startFinished() {
     commonService.rpsStart();
-    Toast('游戏已开始，请选择出拳');
   },
 
   // 选择/改变我的选择
@@ -252,7 +251,7 @@ Page({
           // 未匹配成功
           if (this.data.matchDuration <= 0) {
             this.setData({
-              matched: 'fail',
+              matched: 'error',
             });
             Toast({
               type: 'fail',
@@ -283,15 +282,11 @@ Page({
     Dialog.confirm({
       title: '',
       message: '您确认要退出吗？',
-    })
-      .then(() => {
-        wx.redirectTo({
-          url: '/pages/free-purchase/p-k-field/index',
-        });
-      })
-      .catch(() => {
-        // on cancel
+    }).then(() => {
+      wx.redirectTo({
+        url: '/pages/free-purchase/p-k-field/index',
       });
+    });
   },
 
   // 继续游戏确认
@@ -299,26 +294,22 @@ Page({
     Dialog.confirm({
       title: '',
       message: '您确认要继续游戏吗？',
-    })
-      .then(() => {
-        const startCountDown = this.selectComponent('.start-countdown');
-        startCountDown.reset();
-        const endCountDown = this.selectComponent('.end-countdown');
-        endCountDown.reset();
+    }).then(() => {
+      const startCountDown = this.selectComponent('.start-countdown');
+      startCountDown.reset();
+      const endCountDown = this.selectComponent('.end-countdown');
+      endCountDown.reset();
 
-        this.setData(
-          {
-            ownRadio: null,
-            otherRadio: null,
-            matched: 'waiting',
-            matchDuration: duration,
-          },
-          this.gameReady(),
-        );
-      })
-      .catch(() => {
-        // on cancel
-      });
+      this.setData(
+        {
+          ownRadio: null,
+          otherRadio: null,
+          matched: 'waiting',
+          matchDuration: duration,
+        },
+        this.gameReady(),
+      );
+    });
   },
   // 打开 'PK双方出拳解释束语'
   onViewExplain() {

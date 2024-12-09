@@ -1,19 +1,26 @@
 <layout>
-  <view wx:if="{{ matched }}" class="component">
+  <view wx:if="{{ matched === 'success' }}" class="component">
     <view class="card info">
       <view class="title">PK 双方信息</view>
       <view class="side own-side">
         <view class="own">己方：</view>
-        <view class="side-item pk-name">李四</view>
-        <view class="side-item phone">18112345678</view>
-        <view class="side-item win-count">胜 14 次</view>
+        <view class="side-item pk-name">{{ gameInfo.userInfo.userName }}</view>
+        <view class="side-item phone">{{ gameInfo.userInfo.phone }}</view>
+        <view class="side-item win-count">胜 {{ gameInfo.userInfo.winNumber }} 次</view>
       </view>
       <view class="side other-side">
         <view class="other">对方：</view>
-        <view class="side-item pk-name">张三</view>
-        <view class="side-item phone">13112345678</view>
-        <view class="side-item win-count">胜 4 次</view>
+        <view class="side-item pk-name">{{ gameInfo.rivalInfo.userName }}</view>
+        <view class="side-item phone">{{ gameInfo.rivalInfo.phone }}</view>
+        <view class="side-item win-count">胜 {{ gameInfo.rivalInfo.winNumber }} 次</view>
       </view>
+    </view>
+    <view class="card">
+      <van-count-down use-slot time="{{ startCountdown }}" class="start-countdown" bind:change="onChangeStartTime" bind:finish="startFinished">
+        <text class="tips">游戏开始倒计时：</text>
+        <text class="time-item">{{ startCountdownData.seconds || 0 }}</text>
+        <text>秒</text>
+      </van-count-down>
     </view>
     <view class="card match">
       <view class="header">
@@ -21,9 +28,9 @@
           <text>PK 双方出拳</text>
           <van-icon name="info-o" custom-class="explain-icon" bind:tap="onViewExplain" />
         </view>
-        <van-count-down use-slot time="{{ time }}" class="count-time" bind:change="onChangeTime" bind:finish="finished">
+        <van-count-down use-slot time="{{ endCountdown }}" class="end-countdown" bind:change="onChangeEndTime" bind:finish="endFinished">
           <text class="tips">出拳叫数倒计时：</text>
-          <text class="time-item">{{ timeData.seconds }}</text>
+          <text class="time-item">{{ endCountdownData.seconds }}</text>
           <text>秒</text>
         </van-count-down>
       </view>
@@ -31,22 +38,25 @@
         <view class="side own-match-side">
           <view class="own">
             <text>己方：</text>
-            <text>请选择</text>
+            <van-tag wx:if="{{ selected === true }}" mark size="medium" color="#0958d9" text-color="#fff">
+              待选择
+            </van-tag>
+            <van-tag wx:else mark size="medium" color="#0958d9" text-color="#fff">已选择</van-tag>
           </view>
-          <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ timeData.seconds === 0 || result === 5}}" class="radio-group">
-            <van-radio name="1" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === '1' ? 'radio own' : 'radio'}}">
-              <image src="{{ ownRadio === '1' ? icon.rock.own : icon.rock.default }}" class="img transform"></image>
-              <image src="{{ ownRadio === '1' ? icon.rock.own : icon.rock.default }}" class="img"></image>
+          <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ endCountdownData.seconds === 0 || startCountdownData.seconds > 0 || selected }}" class="radio-group">
+            <van-radio name="0" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 0 ? 'radio own' : 'radio'}}">
+              <image src="{{ ownRadio === 0 ? icon.rock.own : icon.rock.default }}" class="img transform"></image>
+              <image src="{{ ownRadio === 0 ? icon.rock.own : icon.rock.default }}" class="img"></image>
               零
             </van-radio>
-            <van-radio name="2" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === '2' ? 'radio own' : 'radio'}}">
-              <image src="{{ ownRadio === '2' ? icon.rock.own : icon.rock.default }}" class="img transform"></image>
-              <image src="{{ ownRadio === '3' ? icon.paper.own : icon.paper.default }}" class="img"></image>
+            <van-radio name="5" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 5 ? 'radio own' : 'radio'}}">
+              <image src="{{ ownRadio === 5 ? icon.rock.own : icon.rock.default }}" class="img transform"></image>
+              <image src="{{ ownRadio === 5 ? icon.paper.own : icon.paper.default }}" class="img"></image>
               五
             </van-radio>
-            <van-radio name="3" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === '3' ? 'radio own' : 'radio'}}">
-              <image src="{{ ownRadio === '3' ? icon.paper.own : icon.paper.default }}" class="img transform"></image>
-              <image src="{{ ownRadio === '3' ? icon.paper.own : icon.paper.default }}" class="img"></image>
+            <van-radio name="10" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 10 ? 'radio own' : 'radio'}}">
+              <image src="{{ ownRadio === 10 ? icon.paper.own : icon.paper.default }}" class="img transform"></image>
+              <image src="{{ ownRadio === 10 ? icon.paper.own : icon.paper.default }}" class="img"></image>
               十
             </van-radio>
           </van-radio-group>
@@ -57,49 +67,44 @@
         <view class="side other-match-side">
           <view class="other">
             <text>对方：</text>
-            <van-tag wx:if="{{ result === 3}}" mark size="medium" color="#cf1322" text-color="#fff">
+            <van-tag wx:if="{{ result === null }}" mark size="medium" color="#cf1322" text-color="#fff">
               待出拳
             </van-tag>
-            <van-tag wx:if="{{ result === 1 || result === 2 }}" mark size="medium" color="#cf1322" text-color="#fff">
-              已出拳
-            </van-tag>
-            <van-tag wx:if="{{ result === 4 }}" mark size="medium" color="#cf1322" text-color="#fff">
-              思考中...
-            </van-tag>
+            <van-tag wx:else mark size="medium" color="#cf1322" text-color="#fff">已出拳</van-tag>
           </view>
-          <van-radio-group value="{{ otherRadio }}" disabled="{{ timeData.seconds === 0 || result === 5 }}" bind:change="onChangeOther" direction="horizontal" class="radio-group">
-            <van-radio name="1" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === '1' ? 'radio other' : 'radio'}}">
-              <image src="{{ otherRadio === '1' ? icon.rock.other : icon.rock.default }}" class="img transform"></image>
-              <image src="{{ otherRadio === '1' ? icon.rock.other : icon.rock.default }}" class="img"></image>
+          <van-radio-group value="{{ otherRadio }}" disabled bind:change="onChangeOther" direction="horizontal" class="radio-group">
+            <van-radio name="0" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === 0 ? 'radio other' : 'radio'}}">
+              <image src="{{ otherRadio === 0 ? icon.rock.other : icon.rock.default }}" class="img transform"></image>
+              <image src="{{ otherRadio === 0 ? icon.rock.other : icon.rock.default }}" class="img"></image>
               零
             </van-radio>
-            <van-radio name="2" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === '2' ? 'radio other' : 'radio'}}">
-              <image src="{{ otherRadio === '2' ? icon.rock.other : icon.rock.default }}" class="img transform"></image>
-              <image src="{{ otherRadio === '2' ? icon.paper.other : icon.paper.default }}" class="img"></image>
+            <van-radio name="5" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === 5 ? 'radio other' : 'radio'}}">
+              <image src="{{ otherRadio === 5 ? icon.rock.other : icon.rock.default }}" class="img transform"></image>
+              <image src="{{ otherRadio === 5 ? icon.paper.other : icon.paper.default }}" class="img"></image>
               五
             </van-radio>
-            <van-radio name="3" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === '3' ? 'radio other' : 'radio'}}">
-              <image src="{{ otherRadio === '3' ? icon.paper.other : icon.paper.default }}" class="img transform"></image>
-              <image src="{{ otherRadio === '3' ? icon.paper.other : icon.paper.default }}" class="img"></image>
+            <van-radio name="10" checked-color="#cf1322" icon-size="40rpx" class="{{otherRadio === 10 ? 'radio other' : 'radio'}}">
+              <image src="{{ otherRadio === 10 ? icon.paper.other : icon.paper.default }}" class="img transform"></image>
+              <image src="{{ otherRadio === 10 ? icon.paper.other : icon.paper.default }}" class="img"></image>
               十
             </van-radio>
           </van-radio-group>
         </view>
       </view>
       <view class="calling-party-wrap">
-        <van-stepper value="{{ 0 }}" disabled="{{result === 5}}" step="5" min="0" max="20" integer long-press="{{ false }}" input-width="96rpx" button-size="64rpx" custom-class="stepper" bind:change="onChangeStepper" />
+        <van-stepper value="{{ ownCallPunch }}" disabled="{{ endCountdownData.seconds === 0 || startCountdownData.seconds > 0 || selected }}" step="5" min="0" max="20" integer long-press="{{ false }}" input-width="96rpx" button-size="64rpx" custom-class="stepper" bind:change="onChangeStepper" />
         <text>双方叫数</text>
-        <van-stepper value="{{ 0 }}" disabled="{{result === 5}}" step="5" min="0" max="20" integer long-press="{{ false }}" input-width="96rpx" button-size="64rpx" custom-class="stepper" bind:change="onChangeStepper" />
+        <van-stepper value="{{ otherCallPunch }}" disabled step="5" min="0" max="20" integer long-press="{{ false }}" input-width="96rpx" button-size="64rpx" custom-class="stepper" bind:change="onChangeStepper" />
       </view>
-      <van-button round block size="small" color="#0958d9" disabled="{{ownRadio === null || result === 5}}" bind:click="onSelectFinish">
+      <van-button round block size="small" color="#0958d9" disabled="{{ ownRadio === null || endCountdownData.seconds <= 0  || selected }}" bind:click="onSelectFinish">
         我选好了
       </van-button>
     </view>
     <view class="card result">
       <view class="key">比赛结果：</view>
       <view class="value">
-        <view wx:if="{{ result === 3 }}" class="loading">请等待双方出拳和叫数...</view>
-        <view wx:if="{{ result === 4 }}" class="loading">对方思考中...</view>
+        <view wx:if="{{ result === null }}" class="loading">请等待双方出拳和叫数...</view>
+        <view wx:if="{{ result === 0 }}" class="loading">双方平局</view>
         <view wx:if="{{ result === 1 }}" class="own-win">
           <van-icon name="flower-o" size="48rpx" color="#0958d9" custom-class="own-win-icon" />
           我赢啦！
@@ -119,15 +124,31 @@
       </van-button>
     </view>
   </view>
+  <block wx:if="{{ matched === 'fail' || matched === 'error' }}">
+    <view class="matched-fail">{{ matched === 'fail' ? '未匹配到对手。' : '对手长时间未出拳，游戏结束。' }}您可以选择 “退出” 或稍后 “再试一次”。</view>
+    <view class="match-tips">
+      <van-icon name="warning-o" size="40rpx" color="#1989fa" />
+      <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>
+    </view>
+    <view class="footer">
+      <van-button plain hairline round type="info" custom-class="exit-btn" bind:click="onExit">
+        退出
+      </van-button>
+      <van-button round type="info" custom-class="continue-btn" bind:click="onTryAgain">
+        再试一次
+      </van-button>
+    </view>
+  </block>
   <van-toast id="van-toast" />
   <van-dialog id="van-dialog" />
   <van-dialog use-slot title="" show="{{ showExplain }}" show-cancel-button="{{true}}" cancel-button-text="知道了" show-confirm-button="{{false}}" bind:close="onCloseExplain">
     <view class="explain-dialog">
       <view class="name">出拳说明</view>
       <view class="rule-list">
-        <view class="rule-item">1. 己方（自己）从零、五、十中选定一种。</view>
-        <view class="rule-item">2. 出拳和叫数完成后点击“我选好了”。对方同时出拳和叫数。</view>
-        <view class="rule-item">3. 将由系统判断胜负，双方均无法提前预知对方出拳。</view>
+        <view class="rule-item">1. 等待游戏开始倒计时为 0 后，即可开始出拳和叫数。</view>
+        <view class="rule-item">2. 己方（自己）从零、五、十中选定一种，并选择叫数。</view>
+        <view class="rule-item">3. 出拳和叫数完成后点击“我选好了”。对方同时出拳和叫数。</view>
+        <view class="rule-item">4. 将由系统判断胜负，双方均无法提前预知对方出拳和叫数。</view>
       </view>
     </view>
   </van-dialog>

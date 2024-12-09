@@ -18,7 +18,7 @@
     <view class="card">
       <van-count-down use-slot time="{{ startCountdown }}" class="start-countdown" bind:change="onChangeStartTime" bind:finish="startFinished">
         <text class="tips">游戏开始倒计时：</text>
-        <text class="time-item">{{ startCountdownData.seconds }}</text>
+        <text class="time-item">{{ startCountdownData.seconds || 0 }}</text>
         <text>秒</text>
       </van-count-down>
     </view>
@@ -38,7 +38,7 @@
         <view class="side own-match-side">
           <view class="own">
             <text>己方：</text>
-            <van-button round size="small" color="#0958d9" disabled="{{ownRadio === null || endCountdownData.seconds <= 0  || selected }}" bind:click="onSelectFinish">
+            <van-button round size="small" color="#0958d9" disabled="{{ ownRadio === null || endCountdownData.seconds <= 0  || selected }}" bind:click="onSelectFinish">
               我选好了
             </van-button>
           </view>
@@ -109,8 +109,8 @@
       </van-button>
     </view>
   </view>
-  <block wx:if="{{ matched === 'fail' }}">
-    <view class="matched-fail">未匹配到对手，您可以选择 “退出” 或稍后 “再试一次”。</view>
+  <block wx:if="{{ matched === 'fail' || matched === 'error' }}">
+    <view class="matched-fail">{{ matched === 'fail' ? '未匹配到对手。' : '对手长时间未出拳，游戏结束。' }}您可以选择 “退出” 或稍后 “再试一次”。</view>
     <view class="match-tips">
       <van-icon name="warning-o" size="40rpx" color="#1989fa" />
       <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>
