@@ -14,3 +14,7 @@
   align-items: center;
   justify-content: space-between;
 }
+
+.into-btn {
+  margin-right: 24rpx;
+}

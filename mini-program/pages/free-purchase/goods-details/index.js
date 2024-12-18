@@ -1,4 +1,5 @@
 import Toast from '/@vant/weapp/toast/toast';
+import { freePruchaseService } from '../../../services/free-pruchase.js';
 
 Page({
   /**
@@ -7,6 +8,7 @@ Page({
   data: {
     id: null,
     paymentMethodShow: false,
+    detail: {}
   },
 
   /**
@@ -15,7 +17,23 @@ Page({
   onLoad(options) {
     this.setData({
       id: +options.id,
-    });
+    },
+      () => {
+        this.getPKDetail()
+      }
+    );
+  },
+
+  getPKDetail() {
+    const params = {
+      id: this.data.id
+    };
+    freePruchaseService.PKDetail(params)
+      .then(res => {
+        this.setData({
+          detail: res
+        })
+      })
   },
 
   onToSelectPaymentMethod() {

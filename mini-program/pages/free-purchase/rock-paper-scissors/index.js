@@ -44,6 +44,8 @@ Page({
       gameDuration: 0,
     },
     gameKey: '',
+    getResultTimerId: null,
+    gameMatchTimerId: null,
   },
 
   onLoad() {
@@ -104,14 +106,13 @@ Page({
               message: '未匹配到对手',
             });
           } else {
-            this.setData(
-              {
-                matchDuration: this.data.matchDuration - matchRotationInterval,
-              },
-              setTimeout(() => {
-                this.gameMatch();
-              }, matchRotationInterval), // 发起轮训，再次游戏匹配
-            );
+            const gameMatchTimerId = setTimeout(() => {
+              this.gameMatch();
+            }, matchRotationInterval) // 发起轮训，再次游戏匹配
+            this.setData({
+              matchDuration: this.data.matchDuration - matchRotationInterval,
+              gameMatchTimerId
+            });
           }
         }
       })
@@ -258,14 +259,13 @@ Page({
               message: '对手长时间未出拳，游戏结束',
             });
           } else {
-            this.setData(
-              {
-                matchDuration: this.data.matchDuration - matchRotationInterval,
-              },
-              setTimeout(() => {
-                this.getRpsResult();
-              }, matchRotationInterval), // 发起轮训，再次查询游戏结果
-            );
+            const getResultTimerId = setTimeout(() => {
+              this.getRpsResult();
+            }, matchRotationInterval); // 发起轮训，再次查询游戏结果
+            this.setData({
+              matchDuration: this.data.matchDuration - matchRotationInterval,
+              getResultTimerId
+            });
           }
         }
       })
@@ -319,4 +319,14 @@ Page({
   onCloseExplain() {
     this.setData({ showExplain: false });
   },
+
+  onHide() {
+    clearTimeout(this.data.gameMatchTimerId);
+    clearTimeout(this.data.getResultTimerId);
+  },
+
+  onUnload() {
+    clearTimeout(this.data.gameMatchTimerId);
+    clearTimeout(this.data.getResultTimerId);
+  }
 });

@@ -21,6 +21,30 @@ export const commonService = {
       method: 'POST',
     });
   },
+  // 微信支付
+  wechatPay(params) {
+    return request({
+      apiKey: 'wechatPay',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 积分支付
+  pointPay() {
+    return request({
+      apiKey: 'pointPay',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 余额支付
+  accountPay() {
+    return request({
+      apiKey: 'accountPay',
+      method: 'POST',
+      data: params,
+    });
+  },
   // 石头剪刀布，准备阶段
   rpsReady() {
     return request({

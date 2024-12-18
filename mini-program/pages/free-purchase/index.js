@@ -1,4 +1,4 @@
-import list from './data.js';
+import { freePruchaseService } from '../../services/free-pruchase.js';
 
 Page({
   data: {
@@ -25,47 +25,75 @@ Page({
     if (this.moreTimerId != null) {
       clearTimeout(this.moreTimerId);
     }
-    const page = this.data.page;
-    const currentPageData = list.filter(
-      (_, index) => index < page.pageIndex * page.pageSize && index >= (page.pageIndex - 1) * page.pageSize,
-    );
-    if (more) {
-      this.setData({
-        moreLoading: true,
-      });
-      this.moreTimerId = setTimeout(() => {
-        const data = this.data.list.concat(currentPageData);
+    this.setData({
+      loading: true,
+    });
+    const params = {
+      page: this.data.page.pageIndex,
+      pageSize: this.data.page.pageSize,
+    };
+    freePruchaseService
+      .PKList(params)
+      .then((result) => {
         this.setData(
           {
-            list: data,
-            moreLoading: false,
+            list: result.list ?? [],
+            page: {
+              total: result.totalNum ?? 0,
+              pageIndex: result.pageNum ?? 1,
+              pageSize: result.pageSize ?? 10,
+            },
           },
           () => {
-            this.setData({
-              hasMoreData: list.length > this.data.list.length,
-            });
+            const page = this.data.page;
+            const currentPageData = this.data.list.filter(
+              (_, index) => index < page.pageIndex * page.pageSize && index >= (page.pageIndex - 1) * page.pageSize,
+            );
+            if (more) {
+              this.setData({
+                moreLoading: true,
+              });
+              this.moreTimerId = setTimeout(() => {
+                const data = this.data.list.concat(currentPageData);
+                this.setData(
+                  {
+                    list: data,
+                    moreLoading: false,
+                  },
+                  () => {
+                    this.setData({
+                      hasMoreData: page.total > this.data.list.length,
+                    });
+                  },
+                );
+              }, 2000);
+            } else {
+              this.setData({
+                loading: true,
+              });
+              this.timerId = setTimeout(() => {
+                this.setData(
+                  {
+                    list: currentPageData,
+                    loading: false,
+                  },
+                  () => {
+                    this.setData({
+                      hasMoreData: page.total > this.data.list.length,
+                    });
+                  },
+                );
+                wx.stopPullDownRefresh();
+              }, 2000);
+            }
           },
         );
-      }, 2000);
-    } else {
-      this.setData({
-        loading: true,
+      })
+      .finally(() => {
+        this.setData({
+          loading: false,
+        });
       });
-      this.timerId = setTimeout(() => {
-        this.setData(
-          {
-            list: currentPageData,
-            loading: false,
-          },
-          () => {
-            this.setData({
-              hasMoreData: list.length > this.data.list.length,
-            });
-          },
-        );
-        wx.stopPullDownRefresh();
-      }, 2000);
-    }
   },
   getMoreList() {
     this.setData(
