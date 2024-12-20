@@ -33,7 +33,7 @@ const API = {
     pay: '/wechat/pay/test', // 获取微信支付必须参数
     wechatPay: '/pay-order/wechat', // 微信支付
     pointPay: '/pay-order/integral', // 积分支付
-    accountPay: '/pay-order/account', // 余额支付
+    balancePay: '/pay-order/account', // 余额支付
   },
   getAPIUrl: (options) => {
     const origin = 'https://00goo.com/program'; // 正式

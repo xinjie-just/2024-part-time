@@ -30,7 +30,7 @@ export const commonService = {
     });
   },
   // 积分支付
-  pointPay() {
+  pointPay(params) {
     return request({
       apiKey: 'pointPay',
       method: 'POST',
@@ -38,9 +38,9 @@ export const commonService = {
     });
   },
   // 余额支付
-  accountPay() {
+  balancePay(params) {
     return request({
-      apiKey: 'accountPay',
+      apiKey: 'balancePay',
       method: 'POST',
       data: params,
     });

@@ -50,14 +50,8 @@ Page({
     this.setData({
       paymentMethodShow: false,
     });
-    Toast({
-      type: 'success',
-      message: '支付成功',
-      onClose: () => {
-        wx.redirectTo({
-          url: '../../payment/digital-guessing/index?source=freePurchase',
-        });
-      },
+    wx.redirectTo({
+      url: '../../payment/digital-guessing/index?source=freePurchase',
     });
   },
 
