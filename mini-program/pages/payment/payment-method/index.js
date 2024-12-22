@@ -13,6 +13,7 @@ Component({
   },
 
   data: {
+    payReadied: true,
     exchangeRate: 100, // 汇率（1元兑换多少积分）
     radio: 'wechat',
     balance: 0,
@@ -24,6 +25,17 @@ Component({
   lifetimes: {
     attached() {
       // 获取总的可用余额数
+      if (this.data.price === null || this.data.price === undefined) {
+        wx.showToast({
+          title: '订单价格获取失败',
+          icon: 'none',
+          duration: 4000
+        });
+        this.setData({
+          payReadied: false
+        });
+        return;
+      }
       this.getBalance();
       if (!this.data.hidePoints) {
         // 获取总的可用积分数
@@ -49,44 +61,43 @@ Component({
       const params = {
         productPkId: this.data.productId,
       };
-      freePruchaseService.createOrder(params).then((res) => {
+      freePruchaseService.createOrder(params).then(async (res) => {
         const orderNumber = res.orderNumber;
         if (this.data.radio === 'wechat') {
-          commonService.wechatPay({ orderNumber }).then((res) => {
-            wx.requestPayment({
-              ...res,
-              package: res.packageVal,
-              success: (success) => {
-                const msg = success.errMsg;
-                if (msg === 'requestPayment:ok') {
-                  // 成功
-                  wx.showToast({
-                    title: '支付成功',
-                    icon: 'success',
-                    duration: 3000,
-                    success: () => {
-                      this.triggerEvent('confirm');
-                    },
-                  });
-                }
-              },
-              fail: (fail) => {
-                const msg = fail.errMsg;
-                if (msg === 'requestPayment:fail cancel') {
-                  // 用户取消支付
-                  wx.showToast({
-                    title: '用户取消支付',
-                    icon: 'error',
-                    duration: 3000,
-                  });
-                } else if (msg === `requestPayment:fail (${detailMessage})`) {
-                  wx.showToast({
-                    title: detailMessage,
-                    duration: 3000,
-                  });
-                }
-              },
-            });
+          const wechatPayResult = await commonService.wechatPay(orderNumber);
+          wx.requestPayment({
+            ...wechatPayResult,
+            package: wechatPayResult.packageVal,
+            success: (success) => {
+              const msg = success.errMsg;
+              if (msg === 'requestPayment:ok') {
+                // 成功
+                wx.showToast({
+                  title: '支付成功',
+                  icon: 'success',
+                  duration: 3000,
+                  success: () => {
+                    this.triggerEvent('confirm');
+                  },
+                });
+              }
+            },
+            fail: (fail) => {
+              const msg = fail.errMsg;
+              if (msg === 'requestPayment:fail cancel') {
+                // 用户取消支付
+                wx.showToast({
+                  title: '用户取消支付',
+                  icon: 'error',
+                  duration: 3000,
+                });
+              } else if (msg === `requestPayment:fail (${detailMessage})`) {
+                wx.showToast({
+                  title: detailMessage,
+                  duration: 3000,
+                });
+              }
+            },
           });
         } else if (this.data.radio === 'point') {
           commonService.pointPay({ orderNumber }).then((res) => {

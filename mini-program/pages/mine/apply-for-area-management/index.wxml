@@ -1,1 +1,3 @@
-<view class="page">申请区域管理</view>
+<layout>
+  <view class="page">申请区域管理</view>
+</layout>

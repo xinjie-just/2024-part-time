@@ -4,7 +4,8 @@
     <view class="header">
       <view class="cancel-btn btn" bind:tap="onGoBack">取消</view>
       <view class="title">选择支付方式</view>
-      <view class="confirm-btn btn" bind:tap="onConfirm">确定</view>
+      <!-- <view class="confirm-btn btn" disabled="{{ payReadied }}" bind:tap="onConfirm">确定</view> -->
+      <button type="primary" disabled="{{ !payReadied }}" plain="true" size="mini" class="confirm-btn btn" bind:tap="onConfirm">确定</button>
     </view>
     <view class="amount">
       本次应支付金额
@@ -13,7 +14,7 @@
       <text wx:if="{{!hidePoints}}" class="sub">（1 元 = {{ exchangeRate }} 积分）</text>
       。
     </view>
-    <van-radio-group value="{{ radio }}" bind:change="onChange">
+    <van-radio-group wx:if="{{ payReadied }}" value="{{ radio }}" bind:change="onChange">
       <van-cell-group>
         <van-cell title="微信" clickable data-name="wechat">
           <van-radio slot="right-icon" name="wechat" />

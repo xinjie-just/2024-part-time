@@ -30,7 +30,6 @@ const API = {
     dtbStart: '/game-dtb/start', // 双十拳，开始游戏
     dtbSubmit: '/game-dtb/submit', // 双十拳，提交游戏内容
     dtbResult: '/game-dtb/result', // 双十拳，查询游戏结果
-    pay: '/wechat/pay/test', // 获取微信支付必须参数
     wechatPay: '/pay-order/wechat', // 微信支付
     pointPay: '/pay-order/integral', // 积分支付
     balancePay: '/pay-order/account', // 余额支付

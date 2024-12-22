@@ -1,13 +1,11 @@
-import { fetchUserCenter } from '../../services/usercenter/fetchUsercenter';
-
 const menuData = [
-  [
-    {
-      title: '订单',
-      url: './order/index',
-      type: 'order',
-    },
-  ],
+  // [
+  //   {
+  //     title: '订单',
+  //     url: './order/index',
+  //     type: 'order',
+  //   },
+  // ],
   [
     {
       title: '积分',
@@ -51,62 +49,53 @@ const menuData = [
   ],
 ];
 
-const getDefaultData = () => ({
-  showMakePhone: false,
-  userInfo: {
-    avatarUrl: '',
-    nickName: '正在登录...',
-    phoneNumber: '',
-  },
-  menuData,
-  customerServiceInfo: {},
-  currAuthStep: 1, // 1: 未登录的情况，2: 已登录但未授权用户信息情况，3: 已登录且已经授权用户信息的情况
-  showKefu: true,
-  versionNo: '',
-});
+const phone = '13408095200'; // 客服电话号码
+const serviceTime = '每周一至周五 09:00-12:00  13:00-18:00'; // 服务时间
 
 Page({
-  data: getDefaultData(),
+  data: {
+    showMakePhone: false,
+    avatarUrl: '/assets/images/mine/icon-user-avatar@2x.png',
+    nickName: '',
+    menuData,
+    customerServiceInfo: {},
+    currAuthStep: 1, // 1: 未登录的情况，2: 已登录但未授权用户信息情况，3: 已登录且已经授权用户信息的情况
+    showKefu: true,
+    serviceTimeDuration: serviceTime
+  },
 
   onLoad() {
-    this.getVersionInfo();
+    this.getUserInfo();
   },
 
   onShow() {
-    // this.getTabBar().init();
-    this.init();
-  },
-  onPullDownRefresh() {
-    this.init();
+    this.getUserInfo();
   },
 
-  init() {
-    wx.login({
-      success: (res) => {
-        console.log('code', res.code);
-      },
-    });
-    // this.fetUseriInfoHandle();
-  },
-
-  fetUseriInfoHandle() {
-    fetchUserCenter().then(({ userInfo, countsData, customerServiceInfo }) => {
-      // eslint-disable-next-line no-unused-expressions
-      menuData?.[0].forEach((v) => {
-        countsData.forEach((counts) => {
-          if (counts.type === v.type) {
-            // eslint-disable-next-line no-param-reassign
-            v.tit = counts.num;
-          }
-        });
-      });
+  getUserInfo() {
+    const userInfoStringify = wx.getStorageSync('userInfo');
+    if (!userInfoStringify) {
       this.setData({
-        userInfo,
-        menuData,
-        customerServiceInfo,
-        currAuthStep: 2,
+        nickName: ''
       });
-      wx.stopPullDownRefresh();
+    } else {
+      const userInfo = JSON.parse(userInfoStringify);
+      this.setData({
+        avatarUrl: userInfo.headIcon,
+        nickName: userInfo.memberName
+      });
+    }
+  },
+
+  onGoLogin() {
+    wx.navigateTo({
+      url: '/pages/login/index',
+    });
+  },
+
+  call() {
+    wx.makePhoneCall({
+      phoneNumber: phone,
     });
   },
 
@@ -129,38 +118,11 @@ Page({
     }
   },
 
-  jumpAllOrder() {
-    wx.navigateTo({ url: '/pages/order/order-list/index' });
-  },
-
   openMakePhone() {
     this.setData({ showMakePhone: true });
   },
 
   closeMakePhone() {
     this.setData({ showMakePhone: false });
-  },
-
-  call() {
-    wx.makePhoneCall({
-      phoneNumber: this.data.customerServiceInfo.servicePhone,
-    });
-  },
-
-  gotoUserEditPage() {
-    const { currAuthStep } = this.data;
-    if (currAuthStep === 2) {
-      wx.navigateTo({ url: '/pages/usercenter/person-info/index' });
-    } else {
-      this.fetUseriInfoHandle();
-    }
-  },
-
-  getVersionInfo() {
-    const versionInfo = wx.getAccountInfoSync();
-    const { version, envVersion = __wxConfig } = versionInfo.miniProgram;
-    this.setData({
-      versionNo: envVersion === 'release' ? version : envVersion,
-    });
   },
 });

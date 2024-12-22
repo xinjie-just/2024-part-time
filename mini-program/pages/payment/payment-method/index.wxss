@@ -13,10 +13,14 @@
 .header .btn {
   padding: 12rpx 32rpx;
   font-size: 28rpx;
+  margin: 0;
 }
 
 .header .confirm-btn {
   color: #1989fa;
+  border-color: #1989fa;
+  padding: 16rpx 24rpx;
+  line-height: 1.2em;
 }
 
 .header .title {

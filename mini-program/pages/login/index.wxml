@@ -1,10 +1,8 @@
-<layout>
-  <view class="page">
-    <view class="cell-group-wrap">
-      <van-cell-group title="选择登录方式" class="cell-group">
-        <van-cell is-link title="用户名密码登录" value="" link-type="navigateTo" url="./pwdLogin/index" />
-        <van-cell is-link title="微信登录" value="" link-type="navigateTo" url="./wxLogin/index" />
-      </van-cell-group>
-    </view>
+<view class="page">
+  <view class="cell-group-wrap">
+    <van-cell-group title="选择登录方式" class="cell-group">
+      <van-cell is-link title="用户名密码登录" value="" link-type="navigateTo" url="./pwdLogin/index" />
+      <van-cell is-link title="微信登录" value="" link-type="navigateTo" url="./wxLogin/index" />
+    </van-cell-group>
   </view>
-</layout>
+</view>

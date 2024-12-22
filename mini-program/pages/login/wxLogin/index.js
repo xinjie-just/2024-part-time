@@ -9,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    loading: false
   },
 
   /**
@@ -20,6 +20,9 @@ Page({
   },
 
   wxLogin() {
+    this.setData({
+      loading: true
+    });
     wx.login({
       success: (res) => {
         if (res.code) {
@@ -38,8 +41,6 @@ Page({
                 icon: 'error',
                 title: error.message || '登陆失败',
               });
-            })
-            .finally(() => {
               this.setData({
                 loading: false
               });
@@ -47,6 +48,11 @@ Page({
         } else {
           console.log('登录失败！' + res.errMsg)
         }
+      },
+      fail: () => {
+        this.setData({
+          loading: false
+        });
       }
     });
   },

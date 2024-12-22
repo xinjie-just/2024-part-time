@@ -2,8 +2,6 @@
   "navigationBarTitleText": "个人中心",
   "navigationStyle": "custom",
   "usingComponents": {
-    "t-user-center-card": "./components/user-center-card/index",
     "layout": "/components/layout/index"
-  },
-  "enablePullDownRefresh": true
+  }
 }

@@ -1,1 +1,3 @@
-<view class="page">如何获得积分</view>
+<layout>
+  <view class="page">如何获得积分</view>
+</layout>

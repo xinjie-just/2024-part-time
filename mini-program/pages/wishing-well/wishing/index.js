@@ -1,7 +1,7 @@
 import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
 import wishes from './data';
-import { pay } from '../../../utils/index';
+import { wishingWellService } from '../../../services/wishing-well.js';
 
 // pages/wishing-well/wishing/index.js
 Page({
@@ -9,7 +9,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    title: '',
+    shopId: null,
+    wishId: null,
+    wishName: '',
     message: '',
     wishes,
     wishesOptions: [],
@@ -21,28 +23,26 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    // this.setData({
-    //   wishesOptions: wishes
-    // })
-    this.getPayParams();
-  },
-
-  async getPayParams() {
-    const result = await pay();
-    if (result) {
-      console.log('result', result);
-    }
   },
 
   onChangeTitle(event) {
     // event.detail 为当前输入的值
     console.log(event.detail);
-    const title = event.detail;
-    const options = wishes.filter((item) => item.title.includes(title));
-    this.setData({
-      showOptions: true,
-      wishesOptions: title ? options : [],
-    });
+    const word = event.detail;
+    const params = { word };
+    wishingWellService.wishingSuggestList(params)
+      .then(result => {
+        console.log("onChangeTitle---result", result);
+        this.setData({
+          showOptions: true,
+          wishesOptions: word ? result : []
+        });
+      })
+    // const options = wishes.filter((item) => item.wishName.includes(wishName));
+    // this.setData({
+    //   showOptions: true,
+    //   wishesOptions: wishName ? options : [],
+    // });
   },
 
   onChangeMessage(event) {
@@ -51,9 +51,11 @@ Page({
   },
 
   onSelectedWish(e) {
-    const wish = e.currentTarget.dataset.title;
+    const { wishId, wishName, shopId } = e.currentTarget.dataset;
     this.setData({
-      title: wish,
+      wishName: wishName,
+      shopId: shopId,
+      wishId: wishId,
       showOptions: false,
     });
   },
@@ -65,19 +67,16 @@ Page({
   },
 
   onFocusTitle() {
-    const options = this.data.wishesOptions.filter((item) => item.title.includes(this.data.title));
+    const options = this.data.wishesOptions.filter((item) => item.wishName.includes(this.data.wishName));
     this.setData({
       showOptions: true,
-      wishesOptions: this.data.title ? options : [],
+      wishesOptions: this.data.wishName ? options : [],
     });
   },
 
   onSave() {
-    console.log('title', this.data.title);
+    console.log('wishName', this.data.wishName);
     console.log('message', this.data.message);
-    // wx.navigateTo({
-    //   url: '/pages/payment/payment-method/index',
-    // })
     this.setData({
       paymentMethodShow: true,
     });

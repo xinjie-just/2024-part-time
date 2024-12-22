@@ -10,6 +10,7 @@
     "miniprogram",
     "pinia",
     "popconfirm",
+    "Pruchase",
     "Putaway",
     "Putawaying",
     "Putway",
@@ -20,6 +21,7 @@
     "stylelintignore",
     "unplugin",
     "wangeditor",
+    "wechat",
     "Withdrawe"
   ]
 }

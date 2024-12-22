@@ -14,13 +14,6 @@ export const commonService = {
       method: 'GET',
     });
   },
-  // 获取微信支付需要的参数
-  pay() {
-    return request({
-      apiKey: 'pay',
-      method: 'POST',
-    });
-  },
   // 微信支付
   wechatPay(params) {
     return request({

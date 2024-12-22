@@ -23,8 +23,8 @@
             <view class="value">{{ index + 1 }}</view>
           </view>
           <view class="td center">
-            <view class="title">{{ item.name }}</view>
-            <view class="time">许愿时间：{{ item.time || "--" }}</view>
+            <view class="title">{{ item.title }}</view>
+            <view class="time">许愿时间：{{ item.createdTime || "--" }}</view>
           </view>
         </view>
         <view wx:if="{{hasMoreData}}" class="more-btn">
