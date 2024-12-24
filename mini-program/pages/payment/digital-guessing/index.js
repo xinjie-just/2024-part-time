@@ -1,5 +1,6 @@
 import Dialog from '/@vant/weapp/dialog/dialog';
 import Toast from '/@vant/weapp/toast/toast';
+import { freePruchaseService } from '../../../services/free-pruchase.js';
 
 Page({
   /**
@@ -11,6 +12,7 @@ Page({
       2: '猜中',
       3: '未猜中',
     },
+    productId: null,
     result: '1',
     businessNumbers: [],
     activeNames: [],
@@ -24,10 +26,28 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.setData({
-      source: options.source,
-      numbers: new Array(this.data.digit).fill(5),
-      businessNumbers: new Array(this.data.digit).fill('-'),
+    this.setData(
+      {
+        source: options.source,
+        productId: +options.productId,
+      },
+      () => {
+        this.getGuess();
+      },
+    );
+  },
+
+  getGuess() {
+    const params = {
+      productPkId: this.data.productId,
+    };
+    freePruchaseService.getGuessDetail(params).then((res) => {
+      const digit = res.guessDigit;
+      this.setData({
+        digit,
+        numbers: new Array(digit).fill(5),
+        businessNumbers: new Array(digit).fill('-'),
+      });
     });
   },
   onChange(event) {

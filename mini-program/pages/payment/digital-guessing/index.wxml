@@ -46,7 +46,7 @@
       </van-button>
     </block>
   </view>
-  <payment-method wx:if="{{ paymentMethodShow }}" hidePoints="{{true}}" bind:close="onClose" bind:confirm="onConfirm" />
+  <payment-method wx:if="{{ paymentMethodShow }}" source="digitalGuessing" hidePoints="{{true}}" bind:close="onClose" bind:confirm="onConfirm" />
   <van-dialog id="van-dialog" />
   <van-toast id="van-toast" />
 </view>

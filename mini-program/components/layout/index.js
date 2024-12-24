@@ -1,7 +1,7 @@
 // components/layout/index.js
 import { freePruchaseService } from '../../services/free-pruchase.js';
 
-const interval = 20 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 10s 以上
+const interval = 30 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 10s 以上
 
 Component({
   /**

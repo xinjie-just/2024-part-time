@@ -17,6 +17,8 @@ Page({
     wishesOptions: [],
     showOptions: false,
     paymentMethodShow: false,
+    orderNumber: "",
+    orderPrice: 0
   },
 
   /**
@@ -77,9 +79,44 @@ Page({
   onSave() {
     console.log('wishName', this.data.wishName);
     console.log('message', this.data.message);
-    this.setData({
-      paymentMethodShow: true,
+    wx.showToast({
+      title: '创建心愿订单',
+      icon: 'loading'
     });
+    if (this.data.wishId === null || this.data.wishId === undefined) {
+      const createWishingParams = {
+        wishName: this.data.wishName
+      };
+      wishingWellService.createWishing(createWishingParams)
+        .then(result => {
+          const wishId = result.id;
+          const createWishingOrderParams = { wishId };
+          wishingWellService.createWishingOrder(createWishingOrderParams)
+            .then(res => {
+              const orderNumber = res.orderNumber;
+              const orderPrice = res.price;
+              this.setData({
+                wishId,
+                orderNumber,
+                orderPrice,
+                paymentMethodShow: true,
+              });
+            })
+        })
+    } else {
+      const params = { wishId: this.data.wishId };
+      wishingWellService.createWishingOrder(params)
+        .then(res => {
+          const orderNumber = res.orderNumber;
+          const orderPrice = res.price;
+          this.setData({
+            wishId,
+            orderNumber,
+            orderPrice,
+            paymentMethodShow: true,
+          });
+        })
+    }
   },
 
   onCancel() {
@@ -104,7 +141,7 @@ Page({
       message: '支付成功',
       onClose: () => {
         wx.redirectTo({
-          url: `../../payment/digital-guessing/index?source=wishing`,
+          url: `../../payment/digital-guessing/index?source=wishing&productId=${this.data.wishId}`,
         });
       },
     });

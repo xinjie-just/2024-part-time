@@ -8,32 +8,34 @@ Page({
   data: {
     id: null,
     paymentMethodShow: false,
-    detail: {}
+    detail: {},
+    orderNumber: '',
+    orderPrice: 0,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    this.setData({
-      id: +options.id,
-    },
+    this.setData(
+      {
+        id: +options.id,
+      },
       () => {
-        this.getPKDetail()
-      }
+        this.getPKDetail();
+      },
     );
   },
 
   getPKDetail() {
     const params = {
-      id: this.data.id
+      id: this.data.id,
     };
-    freePruchaseService.PKDetail(params)
-      .then(res => {
-        this.setData({
-          detail: res
-        })
-      })
+    freePruchaseService.PKDetail(params).then((res) => {
+      this.setData({
+        detail: res,
+      });
+    });
   },
 
   onToSelectPaymentMethod() {
@@ -51,7 +53,7 @@ Page({
       paymentMethodShow: false,
     });
     wx.redirectTo({
-      url: '../../payment/digital-guessing/index?source=freePurchase',
+      url: `../../payment/digital-guessing/index?source=freePurchase&productId=${this.data.id}`,
     });
   },
 

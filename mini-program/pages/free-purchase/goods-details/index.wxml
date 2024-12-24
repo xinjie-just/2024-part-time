@@ -5,7 +5,7 @@
       <rich-text nodes="{{detail.introduction}}"></rich-text>
     </view>
     <view class="buy-btn" bind:tap="onToSelectPaymentMethod">0 元购</view>
-    <payment-method wx:if="{{ paymentMethodShow }}" price="{{detail.price}}" productId="{{detail.id}}" bind:close="onClose" bind:confirm="onConfirm" />
+    <payment-method wx:if="{{ paymentMethodShow }}" source="pk" orderNumber="{{orderNumber}}" orderPrice="{{orderPrice}}" productId="{{detail.id}}" bind:close="onClose" bind:confirm="onConfirm" />
     <van-toast id="van-toast" />
   </view>
 </layout>

@@ -40,9 +40,9 @@ export const freePruchaseService = {
     });
   },
   // 创建订单
-  createOrder(params) {
+  createPKOrder(params) {
     return request({
-      'apiKey': 'createOrder',
+      'apiKey': 'createPKOrder',
       'method': 'POST',
       'data': params
     });

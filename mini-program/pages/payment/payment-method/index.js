@@ -1,6 +1,6 @@
 import { mineService } from '../../../services/mine.js';
-import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { commonService } from '../../../services/common.js';
+import { wechatPay } from '../../../utils/pay.js';
 
 Component({
   /**
@@ -8,8 +8,9 @@ Component({
    */
   properties: {
     hidePoints: false,
-    price: 0,
-    productId: null,
+    source: 'wishing',
+    orderNumber: '',
+    orderPrice: 0,
   },
 
   data: {
@@ -25,17 +26,6 @@ Component({
   lifetimes: {
     attached() {
       // 获取总的可用余额数
-      if (this.data.price === null || this.data.price === undefined) {
-        wx.showToast({
-          title: '订单价格获取失败',
-          icon: 'none',
-          duration: 4000
-        });
-        this.setData({
-          payReadied: false
-        });
-        return;
-      }
       this.getBalance();
       if (!this.data.hidePoints) {
         // 获取总的可用积分数
@@ -56,71 +46,76 @@ Component({
       });
     },
 
-    onConfirm() {
+    async onConfirm() {
       // 先创建订单
-      const params = {
-        productPkId: this.data.productId,
-      };
-      freePruchaseService.createOrder(params).then(async (res) => {
-        const orderNumber = res.orderNumber;
-        if (this.data.radio === 'wechat') {
-          const wechatPayResult = await commonService.wechatPay(orderNumber);
-          wx.requestPayment({
-            ...wechatPayResult,
-            package: wechatPayResult.packageVal,
-            success: (success) => {
-              const msg = success.errMsg;
-              if (msg === 'requestPayment:ok') {
-                // 成功
-                wx.showToast({
-                  title: '支付成功',
-                  icon: 'success',
-                  duration: 3000,
-                  success: () => {
-                    this.triggerEvent('confirm');
-                  },
-                });
-              }
+      if (this.data.orderPrice === null || this.data.orderPrice === undefined) {
+        wx.showToast({
+          title: '订单价格获取失败',
+          icon: 'none',
+          duration: 4000,
+        });
+        this.setData({
+          payReadied: false,
+        });
+        return;
+      }
+      if (this.data.radio === 'wechat') {
+        const wechatPayResult = await wechatPay(orderNumber);
+        wx.requestPayment({
+          ...wechatPayResult,
+          package: wechatPayResult.packageVal,
+          success: (success) => {
+            const msg = success.errMsg;
+            if (msg === 'requestPayment:ok') {
+              // 成功
+              wx.showToast({
+                title: '支付成功',
+                icon: 'success',
+                duration: 3000,
+                success: () => {
+                  this.triggerEvent('confirm');
+                },
+              });
+            }
+          },
+          fail: (fail) => {
+            const msg = fail.errMsg;
+            if (msg === 'requestPayment:fail cancel') {
+              // 用户取消支付
+              wx.showToast({
+                title: '用户取消支付',
+                icon: 'error',
+                duration: 3000,
+              });
+            } else if (msg === `requestPayment:fail (${detailMessage})`) {
+              wx.showToast({
+                title: detailMessage,
+                duration: 3000,
+              });
+            }
+          },
+        });
+      } else if (this.data.radio === 'point') {
+        commonService.pointPay({ orderNumber }).then((res) => {
+          wx.showToast({
+            title: '支付成功',
+            icon: 'success',
+            success: () => {
+              this.triggerEvent('confirm');
             },
-            fail: (fail) => {
-              const msg = fail.errMsg;
-              if (msg === 'requestPayment:fail cancel') {
-                // 用户取消支付
-                wx.showToast({
-                  title: '用户取消支付',
-                  icon: 'error',
-                  duration: 3000,
-                });
-              } else if (msg === `requestPayment:fail (${detailMessage})`) {
-                wx.showToast({
-                  title: detailMessage,
-                  duration: 3000,
-                });
-              }
+          });
+        });
+      } else if (this.data.radio === 'balance') {
+        commonService.balancePay({ orderNumber }).then((res) => {
+          wx.showToast({
+            title: '支付成功',
+            icon: 'success',
+            success: () => {
+              this.triggerEvent('confirm');
             },
           });
-        } else if (this.data.radio === 'point') {
-          commonService.pointPay({ orderNumber }).then((res) => {
-            wx.showToast({
-              title: '支付成功',
-              icon: 'success',
-              success: () => {
-                this.triggerEvent('confirm');
-              },
-            });
-          });
-        } else if (this.data.radio === 'balance') {
-          commonService.balancePay({ orderNumber }).then((res) => {
-            wx.showToast({
-              title: '支付成功',
-              icon: 'success',
-              success: () => {
-                this.triggerEvent('confirm');
-              },
-            });
-          });
-        }
-      });
+        });
+      }
     },
     onGoBack() {
       this.triggerEvent('close');
@@ -131,7 +126,7 @@ Component({
         const balance = result.balance ?? 0;
         this.setData({
           balance,
-          disabledBalance: this.data.price > balance,
+          disabledBalance: this.data.orderPrice > balance,
         });
       });
     },
@@ -140,7 +135,7 @@ Component({
         const totalIntegral = result.totalIntegral ?? 0;
         this.setData({
           pointTotal: totalIntegral,
-          disabledPoint: this.data.price > totalIntegral / this.data.exchangeRate,
+          disabledPoint: this.data.orderPrice > totalIntegral / this.data.exchangeRate,
         });
       });
     },

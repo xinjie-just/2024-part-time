@@ -9,6 +9,6 @@
       扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容扫一扫商品详情内容
     </view>
   </view>
-  <payment-method wx:if="{{ paymentMethodShow }}" bind:close="onClose" bind:confirm="onConfirm" />
+  <payment-method wx:if="{{ paymentMethodShow }}" source="orderDetail" bind:close="onClose" bind:confirm="onConfirm" />
   <van-toast id="van-toast" />
 </view>

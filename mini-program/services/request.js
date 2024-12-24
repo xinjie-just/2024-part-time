@@ -54,7 +54,7 @@ const request = (options) => {
             icon: 'error',
             success: () => {
               // 用户未登录，跳转登录
-              wx.navigateTo({
+              wx.redirectTo({
                 url: '/pages/login/index',
               });
             },

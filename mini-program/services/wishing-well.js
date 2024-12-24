@@ -16,4 +16,20 @@ export const wishingWellService = {
       'method': 'GET'
     });
   },
+  // 创建订单
+  createWishingOrder(params) {
+    return request({
+      'apiKey': 'createWishingOrder',
+      'data': params,
+      'method': 'POST'
+    });
+  },
+  // 创建心愿
+  createWishing(params) {
+    return request({
+      'apiKey': 'createWishing',
+      'data': params,
+      'method': 'POST'
+    });
+  },
 };

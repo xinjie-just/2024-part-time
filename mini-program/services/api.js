@@ -13,10 +13,12 @@ const API = {
     PKDetail: '/product-pk/detail', // 获取PK商品详细信息
     PKTask: '/product-pk/pk-task', // 获取当前用户是否有可以参加的任务
     getGuessDetail: '/product-pk/guess-detail', // 获取商品竞猜位数
-    createPKTask: '/product-pk/create-pk-task', // 创建PK任务
-    createOrder: '/product-pk/create-order', // 创建订单
+    createPKTask: '/product-pk/create-pk-task', // 创建PK任务，在支付完成后需要进行创建PK对局的时候
+    createPKOrder: '/product-pk/create-order', // 创建订单
+    createWishingOrder: '/product-wish/create-order', // 许愿池创建订单
     refreshOrderPay: '/product-pk/refresh-order-pay', // 刷新订单支付状态
     wishingSuggestList: '/product-wish/suggest-list', // 获取推荐的心愿列表
+    createWishing: '/product-wish/create-wish', // 创建心愿
     wishingRecord: '/product-wish/record-list', // 查询用户的历史心愿
     rpsReady: '/game-rps/ready', // 石头剪刀布，准备阶段
     rpsMatch: '/game-rps/game-match', // 石头剪刀布，开始匹配
