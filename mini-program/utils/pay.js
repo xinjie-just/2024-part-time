@@ -2,7 +2,8 @@ import { commonService } from '../services/common.js';
 
 export const wechatPay = (orderNumber) => {
   return commonService.wechatPay({ orderNumber }).then((res) => {
-    if (!res.signType) {
+    const payParams = res.wechatPrepayParam;
+    if (!payParams.paySign) {
       wx.showToast({
         title: '获取微信支付签名失败',
         icon: 'none',
@@ -10,7 +11,7 @@ export const wechatPay = (orderNumber) => {
       });
       return Promise.reject();
     } else {
-      return Promise.resolve(res);
+      return Promise.resolve(payParams);
     }
   });
 };

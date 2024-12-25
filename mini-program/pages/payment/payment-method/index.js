@@ -1,6 +1,7 @@
 import { mineService } from '../../../services/mine.js';
 import { commonService } from '../../../services/common.js';
 import { wechatPay } from '../../../utils/pay.js';
+import Toast from '/@vant/weapp/toast/toast';
 
 Component({
   /**
@@ -25,6 +26,17 @@ Component({
 
   lifetimes: {
     attached() {
+      if (this.data.orderPrice === null || this.data.orderPrice === undefined) {
+        Toast({
+          type: 'fail',
+          message: '订单价格获取失败',
+          duration: 3500,
+        });
+        this.setData({
+          payReadied: false,
+        });
+        return;
+      }
       // 获取总的可用余额数
       this.getBalance();
       if (!this.data.hidePoints) {
@@ -37,7 +49,7 @@ Component({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {},
+  onLoad(options) { },
 
   methods: {
     onChange(event) {
@@ -47,20 +59,8 @@ Component({
     },
 
     async onConfirm() {
-      // 先创建订单
-      if (this.data.orderPrice === null || this.data.orderPrice === undefined) {
-        wx.showToast({
-          title: '订单价格获取失败',
-          icon: 'none',
-          duration: 4000,
-        });
-        this.setData({
-          payReadied: false,
-        });
-        return;
-      }
       if (this.data.radio === 'wechat') {
-        const wechatPayResult = await wechatPay(orderNumber);
+        const wechatPayResult = await wechatPay(this.data.orderNumber);
         wx.requestPayment({
           ...wechatPayResult,
           package: wechatPayResult.packageVal,
@@ -68,11 +68,10 @@ Component({
             const msg = success.errMsg;
             if (msg === 'requestPayment:ok') {
               // 成功
-              wx.showToast({
-                title: '支付成功',
-                icon: 'success',
-                duration: 3000,
-                success: () => {
+              Toast({
+                type: 'success',
+                message: '支付成功',
+                onClose: () => {
                   this.triggerEvent('confirm');
                 },
               });
@@ -82,39 +81,42 @@ Component({
             const msg = fail.errMsg;
             if (msg === 'requestPayment:fail cancel') {
               // 用户取消支付
-              wx.showToast({
-                title: '用户取消支付',
-                icon: 'error',
+              Toast({
+                type: 'fail',
+                message: '用户取消支付',
                 duration: 3000,
               });
             } else if (msg === `requestPayment:fail (${detailMessage})`) {
-              wx.showToast({
-                title: detailMessage,
+              Toast({
+                type: 'fail',
+                message: detailMessage,
                 duration: 3000,
               });
             }
           },
         });
       } else if (this.data.radio === 'point') {
-        commonService.pointPay({ orderNumber }).then((res) => {
-          wx.showToast({
-            title: '支付成功',
-            icon: 'success',
-            success: () => {
-              this.triggerEvent('confirm');
-            },
+        commonService.pointPay({ orderNumber: this.data.orderNumber })
+          .then(() => {
+            Toast({
+              type: 'success',
+              message: '支付成功',
+              onClose: () => {
+                this.triggerEvent('confirm');
+              },
+            });
           });
-        });
       } else if (this.data.radio === 'balance') {
-        commonService.balancePay({ orderNumber }).then((res) => {
-          wx.showToast({
-            title: '支付成功',
-            icon: 'success',
-            success: () => {
-              this.triggerEvent('confirm');
-            },
+        commonService.balancePay({ orderNumber: this.data.orderNumber })
+          .then(() => {
+            Toast({
+              type: 'success',
+              message: '支付成功',
+              onClose: () => {
+                this.triggerEvent('confirm');
+              },
+            });
           });
-        });
       }
     },
     onGoBack() {

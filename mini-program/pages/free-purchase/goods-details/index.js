@@ -39,21 +39,31 @@ Page({
   },
 
   onToSelectPaymentMethod() {
-    // wx.navigateTo({
-    //   url: '/pages/payment-method/index',
-    // })
-
-    this.setData({
-      paymentMethodShow: true,
+    Toast({
+      type: 'loading',
+      message: '正在创建订单',
     });
+    const params = {
+      productPkId: this.data.id
+    };
+    freePruchaseService.createPKOrder(params)
+      .then(res => {
+        Toast.clear();
+        this.setData({
+          orderPrice: res.price || 0,
+          orderNumber: res.orderNumber,
+          paymentMethodShow: true,
+        });
+      })
   },
 
   onConfirm() {
     this.setData({
       paymentMethodShow: false,
-    });
-    wx.redirectTo({
-      url: `../../payment/digital-guessing/index?source=freePurchase&productId=${this.data.id}`,
+    }, () => {
+      wx.redirectTo({
+        url: `../../payment/digital-guessing/index?source=freePurchase&productId=${this.data.id}`,
+      });
     });
   },
 

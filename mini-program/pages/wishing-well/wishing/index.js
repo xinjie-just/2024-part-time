@@ -1,7 +1,7 @@
 import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
-import wishes from './data';
 import { wishingWellService } from '../../../services/wishing-well.js';
+import _ from 'lodash';
 
 // pages/wishing-well/wishing/index.js
 Page({
@@ -13,43 +13,33 @@ Page({
     wishId: null,
     wishName: '',
     message: '',
-    wishes,
     wishesOptions: [],
     showOptions: false,
     paymentMethodShow: false,
-    orderNumber: "",
-    orderPrice: 0
+    orderNumber: '',
+    orderPrice: 0,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  onLoad() {
+    this.debouncedSearch = _.debounce(this.search, 800);
   },
 
   onChangeTitle(event) {
-    // event.detail 为当前输入的值
-    console.log(event.detail);
     const word = event.detail;
-    const params = { word };
-    wishingWellService.wishingSuggestList(params)
-      .then(result => {
-        console.log("onChangeTitle---result", result);
-        this.setData({
-          showOptions: true,
-          wishesOptions: word ? result : []
-        });
-      })
-    // const options = wishes.filter((item) => item.wishName.includes(wishName));
-    // this.setData({
-    //   showOptions: true,
-    //   wishesOptions: wishName ? options : [],
-    // });
+    this.debouncedSearch(word);
   },
 
-  onChangeMessage(event) {
-    // event.detail 为当前输入的值
-    console.log(event.detail);
+  search(word) {
+    const params = { word };
+    wishingWellService.wishingSuggestList(params).then((result) => {
+      this.setData({
+        showOptions: true,
+        wishesOptions: word ? result : [],
+      });
+    });
   },
 
   onSelectedWish(e) {
@@ -77,45 +67,43 @@ Page({
   },
 
   onSave() {
-    console.log('wishName', this.data.wishName);
-    console.log('message', this.data.message);
-    wx.showToast({
-      title: '创建心愿订单',
-      icon: 'loading'
+    Toast({
+      type: 'loading',
+      message: '创建心愿订单',
     });
     if (this.data.wishId === null || this.data.wishId === undefined) {
       const createWishingParams = {
-        wishName: this.data.wishName
+        wishName: this.data.wishName,
+        introduction: this.data.message,
       };
-      wishingWellService.createWishing(createWishingParams)
-        .then(result => {
-          const wishId = result.id;
-          const createWishingOrderParams = { wishId };
-          wishingWellService.createWishingOrder(createWishingOrderParams)
-            .then(res => {
-              const orderNumber = res.orderNumber;
-              const orderPrice = res.price;
-              this.setData({
-                wishId,
-                orderNumber,
-                orderPrice,
-                paymentMethodShow: true,
-              });
-            })
-        })
-    } else {
-      const params = { wishId: this.data.wishId };
-      wishingWellService.createWishingOrder(params)
-        .then(res => {
+      wishingWellService.createWishing(createWishingParams).then((result) => {
+        const wishId = result.id;
+        const createWishingOrderParams = { wishId };
+        wishingWellService.createWishingOrder(createWishingOrderParams).then((res) => {
+          Toast.clear();
           const orderNumber = res.orderNumber;
-          const orderPrice = res.price;
+          const orderPrice = res.price || 0;
           this.setData({
             wishId,
             orderNumber,
             orderPrice,
             paymentMethodShow: true,
           });
-        })
+        });
+      });
+    } else {
+      const params = { wishId: this.data.wishId };
+      wishingWellService.createWishingOrder(params).then((res) => {
+        Toast.clear();
+        const orderNumber = res.orderNumber;
+        const orderPrice = res.price || 0;
+        this.setData({
+          wishId: this.data.wishId,
+          orderNumber,
+          orderPrice,
+          paymentMethodShow: true,
+        });
+      });
     }
   },
 
@@ -156,35 +144,35 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady() { },
+  onReady() {},
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() { },
+  onShow() {},
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide() { },
+  onHide() {},
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload() { },
+  onUnload() {},
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh() { },
+  onPullDownRefresh() {},
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom() { },
+  onReachBottom() {},
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage() { },
+  onShareAppMessage() {},
 });
