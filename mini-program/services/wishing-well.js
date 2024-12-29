@@ -32,4 +32,20 @@ export const wishingWellService = {
       'method': 'POST'
     });
   },
+  // 获取竞猜信息
+  getGuessInfo(params) {
+    return request({
+      'apiKey': 'getGuessInfo',
+      'data': params,
+      'method': 'GET'
+    });
+  },
+  // 提交竞猜
+  submitGuess(params) {
+    return request({
+      'apiKey': 'submitGuess',
+      'data': params,
+      'method': 'POST'
+    });
+  },
 };

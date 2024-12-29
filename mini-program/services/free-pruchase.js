@@ -23,14 +23,6 @@ export const freePruchaseService = {
       'method': 'GET'
     });
   },
-  // 获取商品竞猜位数
-  getGuessDetail(params) {
-    return request({
-      'apiKey': 'getGuessDetail',
-      'method': 'GET',
-      'data': params
-    });
-  },
   // 创建PK任务
   createPKTask(params) {
     return request({
@@ -47,10 +39,18 @@ export const freePruchaseService = {
       'data': params
     });
   },
-  // 刷新订单支付状态
-  refreshOrderPay(params) {
+  // 获取 PK 订单信息
+  getPKOrderInfo(params) {
     return request({
-      'apiKey': 'refreshOrderPay',
+      'apiKey': 'getPKOrderInfo',
+      'method': 'POST',
+      'data': params
+    });
+  },
+  // 刷新 PK 订单支付状态
+  updatePKOrderPayStatus(params) {
+    return request({
+      'apiKey': 'updatePKOrderPayStatus',
       'method': 'POST',
       'data': params
     });

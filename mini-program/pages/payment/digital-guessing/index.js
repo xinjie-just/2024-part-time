@@ -1,25 +1,22 @@
 import Dialog from '/@vant/weapp/dialog/dialog';
 import Toast from '/@vant/weapp/toast/toast';
-import { freePruchaseService } from '../../../services/free-pruchase.js';
+import { wishingWellService } from '../../../services/wishing-well.js';
 
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    results: {
-      1: '未显示谜底',
-      2: '猜中',
-      3: '未猜中',
-    },
     productId: null,
-    result: '1',
-    businessNumbers: [],
+    orderId: null,
+    result: null, // 猜中 true，未猜中 false
+    rightAnswer: [], // 谜底
     activeNames: [],
     digit: 5,
-    numbers: [],
+    numbers: [], // 我猜的数
     paymentMethodShow: false,
     source: 'wishing', // 'wishing'：许愿，'freePurchase'：0 元购
+    state: 1, // 1: "游戏进行中", 2: "游戏结束", 3: "游戏超时"
   },
 
   /**
@@ -29,27 +26,30 @@ Page({
     this.setData(
       {
         source: options.source,
-        productId: +options.productId,
+        orderId: +options.orderId,
       },
       () => {
-        this.getGuess();
+        this.getGuessInfo();
       },
     );
   },
 
-  getGuess() {
+  getGuessInfo() {
     const params = {
-      productPkId: this.data.productId,
+      orderId: this.data.orderId,
     };
-    freePruchaseService.getGuessDetail(params).then((res) => {
+    wishingWellService.getGuessInfo(params).then((res) => {
+      console.log('getGuessInfo---res', res);
       const digit = res.guessDigit;
+      const state = res.state; // TODO: 如果游戏不是进行中，则一些操作不可用
       this.setData({
         digit,
         numbers: new Array(digit).fill(5),
-        businessNumbers: new Array(digit).fill('-'),
+        rightAnswer: new Array(digit).fill('-'),
       });
     });
   },
+
   onChange(event) {
     this.setData({
       activeNames: event.detail,
@@ -88,20 +88,17 @@ Page({
       message: `确认我猜的数从第 1 - ${this.data.digit} 位分别是：${this.data.numbers.join('、 ')}`,
     })
       .then(() => {
-        this.setData({
-          businessNumbers: this.getRandomNumbers(),
-        });
-        Toast({
-          type: 'loading',
-          message: '正在比较结果',
-          onClose: () => {
-            // this.setData({ // TODO:
-            //   result: areArraysEqual(this.data.numbers, this.data.businessNumbers) ? '2' : '3'
-            // });
-            this.setData({
-              result: '3',
-            });
-          },
+        // 提交竞猜
+        const params = {
+          orderId: this.data.orderId,
+          guessSubmitAnswer: this.data.numbers.join(''),
+        };
+        wishingWellService.submitGuess(params).then((res) => {
+          console.log('submitGuess---res', res);
+          this.setData({
+            rightAnswer: res.guessAnswer,
+            result: res.result,
+          });
         });
       })
       .catch(() => {});
@@ -115,16 +112,12 @@ Page({
 
   onContinue() {
     this.setData({
-      result: '1',
-      businessNumbers: new Array(this.data.digit).fill('-'),
+      result: null,
+      rightAnswer: new Array(this.data.digit).fill('-'),
     });
   },
 
   onBuy() {
-    // wx.navigateTo({
-    //   url: '/pages/payment/payment-method/index',
-    // });
-
     this.setData({
       paymentMethodShow: true,
     });
@@ -133,15 +126,6 @@ Page({
   onConfirm() {
     this.setData({
       paymentMethodShow: false,
-    });
-    Toast({
-      type: 'success',
-      message: '支付成功',
-      onClose: () => {
-        wx.redirectTo({
-          url: 'guessing',
-        });
-      },
     });
   },
 

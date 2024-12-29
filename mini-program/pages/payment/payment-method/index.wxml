@@ -5,14 +5,13 @@
       <view class="cancel-btn btn" bind:tap="onGoBack">取消</view>
       <view class="title">选择支付方式</view>
       <!-- <view class="confirm-btn btn" disabled="{{ payReadied }}" bind:tap="onConfirm">确定</view> -->
-      <button type="info" disabled="{{ !payReadied }}" plain="true" size="mini" class="confirm-btn btn" bind:tap="onConfirm">确定</button>
+      <button type="info" disabled="{{ !payReadied }}" plain="true" size="mini" loading="{{payLoading}}" class="confirm-btn btn" bind:tap="onConfirm">确定</button>
     </view>
     <view class="amount">
       本次应支付金额
-      <text class="value">{{orderPrice}}</text>
+      <text class="value">{{orderPrice / 100}}</text>
       元
       <text wx:if="{{!hidePoints}}" class="sub">（1 元 = {{ exchangeRate }} 积分）</text>
-      。
     </view>
     <van-radio-group wx:if="{{ payReadied }}" value="{{ radio }}" bind:change="onChange">
       <van-cell-group>
@@ -22,7 +21,7 @@
         <van-cell wx:if="{{!hidePoints}}" title="积分（剩余 {{ pointTotal }}）" clickable data-name="point">
           <van-radio disabled="{{ disabledPoint }}" slot="right-icon" name="point" />
         </van-cell>
-        <van-cell title="余额（剩余 {{ balance }} 元）" clickable data-name="balance">
+        <van-cell title="余额（剩余 {{ balance / 100 }} 元）" clickable data-name="balance">
           <van-radio disabled="{{ disabledBalance }}" slot="right-icon" name="balance" />
         </van-cell>
       </van-cell-group>

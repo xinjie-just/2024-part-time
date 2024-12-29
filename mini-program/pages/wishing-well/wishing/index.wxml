@@ -17,7 +17,7 @@
         {{item.wishName}}
       </view>
     </view>
-    <payment-method wx:if="{{ paymentMethodShow }}" source="wishing" orderNumber="{{orderNumber}}" orderPrice="{{orderPrice}}" bind:close="onClose" bind:confirm="onConfirm" />
+    <payment-method wx:if="{{ paymentMethodShow }}" source="wishing" orderId="{{orderId}}" payOrderId="{{payOrderId}}" orderPrice="{{orderPrice}}" bind:close="onClose" bind:confirm="onConfirm" />
     <van-toast id="van-toast" />
     <van-dialog id="van-dialog" />
   </view>

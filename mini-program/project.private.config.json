@@ -9,6 +9,20 @@
     "miniprogram": {
       "list": [
         {
+          "name": "PK品详情",
+          "pathName": "pages/free-purchase/goods-details/index",
+          "query": "id=4",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "数字竞猜",
+          "pathName": "pages/payment/digital-guessing/index",
+          "query": "orderId=26",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "选择登录方式",
           "pathName": "pages/login/index",
           "query": "",
@@ -65,13 +79,6 @@
           "scene": null
         },
         {
-          "name": "数字竞猜",
-          "pathName": "pages/payment/digital-guessing/index",
-          "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
           "name": "选择支付方式",
           "pathName": "pages/payment/payment-method/index",
           "query": "",
@@ -89,13 +96,6 @@
           "name": "许愿池",
           "pathName": "pages/wishing-well/index",
           "query": "",
-          "launchMode": "default",
-          "scene": null
-        },
-        {
-          "name": "PK品详情",
-          "pathName": "pages/free-purchase/goods-details/index",
-          "query": "id=2",
           "launchMode": "default",
           "scene": null
         },

@@ -8,12 +8,16 @@
   <view class="card">
     <view class="title">商家数谜底</view>
     <view class="body">
-      <view wx:for="{{businessNumbers}}" wx:key="index" class="item">{{item}}</view>
+      <view wx:for="{{rightAnswer}}" wx:key="index" class="item">{{item}}</view>
     </view>
   </view>
-  <view class="card">
+  <view class="card right-answer">
     <van-button round size="small" type="info" bind:click="onShowResult">显示谜底</van-button>
-    <text class="result">数字竞猜结果：{{ results[result] }}</text>
+    <view class="result">数字竞猜结果：
+      <text wx:if="{{result === null}}" class="result-tag waiting-guess">未显示谜底</text>
+      <text wx:if="{{result === true}}" class="result-tag not-guess">猜中</text>
+      <text wx:if="{{result === false}}" class="result-tag not-guess">未猜中</text>
+    </view>
   </view>
   <view class="card">
     <view class="title">
@@ -30,18 +34,18 @@
   </view>
   <view class="footer">
     <block wx:if="{{source === 'freePurchase' }}">
-      <van-button wx:if="{{result === '2'}}" round type="info" bind:click="onToPK">
+      <van-button wx:if="{{result === true}}" round type="info" bind:click="onToPK">
         进入 PK 环节
       </van-button>
-      <van-button wx:if="{{result === '3'}}" round type="info" bind:click="onContinue">
+      <van-button wx:if="{{result === false}}" round type="info" bind:click="onContinue">
         继续挑战
       </van-button>
-      <van-button wx:if="{{result === '3'}}" plain hairline round type="info" bind:click="onBuy">
+      <van-button wx:if="{{result === false}}" plain hairline round type="info" bind:click="onBuy">
         直接购买
       </van-button>
     </block>
     <block wx:if="{{source === 'wishing'}}">
-      <van-button wx:if="{{result !== '1'}}" round type="info" bind:click="onExit">
+      <van-button wx:if="{{result !== null}}" round type="info" bind:click="onExit">
         退出
       </van-button>
     </block>

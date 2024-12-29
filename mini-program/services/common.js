@@ -38,6 +38,14 @@ export const commonService = {
       data: params,
     });
   },
+  // 更新订单支付状态
+  updateWishingOrderPayStatus(params) {
+    return request({
+      apiKey: 'updateWishingOrderPayStatus',
+      method: 'POST',
+      data: params,
+    });
+  },
   // 石头剪刀布，准备阶段
   rpsReady() {
     return request({

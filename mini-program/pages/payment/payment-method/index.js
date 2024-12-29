@@ -1,5 +1,6 @@
 import { mineService } from '../../../services/mine.js';
 import { commonService } from '../../../services/common.js';
+import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { wechatPay } from '../../../utils/pay.js';
 import Toast from '/@vant/weapp/toast/toast';
 
@@ -10,7 +11,8 @@ Component({
   properties: {
     hidePoints: false,
     source: 'wishing',
-    orderNumber: '',
+    payOrderId: '',
+    orderId: '',
     orderPrice: 0,
   },
 
@@ -22,6 +24,7 @@ Component({
     pointTotal: 0,
     disabledPoint: false,
     disabledBalance: false,
+    payLoading: false,
   },
 
   lifetimes: {
@@ -49,7 +52,7 @@ Component({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) { },
+  onLoad(options) {},
 
   methods: {
     onChange(event) {
@@ -59,8 +62,11 @@ Component({
     },
 
     async onConfirm() {
+      this.setData({
+        payLoading: true,
+      });
       if (this.data.radio === 'wechat') {
-        const wechatPayResult = await wechatPay(this.data.orderNumber);
+        const wechatPayResult = await wechatPay(this.data.payOrderId);
         wx.requestPayment({
           ...wechatPayResult,
           package: wechatPayResult.packageVal,
@@ -68,16 +74,13 @@ Component({
             const msg = success.errMsg;
             if (msg === 'requestPayment:ok') {
               // 成功
-              Toast({
-                type: 'success',
-                message: '支付成功',
-                onClose: () => {
-                  this.triggerEvent('confirm');
-                },
-              });
+              this.updateOrderPayStatus();
             }
           },
           fail: (fail) => {
+            this.setData({
+              payLoading: false,
+            });
             const msg = fail.errMsg;
             if (msg === 'requestPayment:fail cancel') {
               // 用户取消支付
@@ -96,31 +99,83 @@ Component({
           },
         });
       } else if (this.data.radio === 'point') {
-        commonService.pointPay({ orderNumber: this.data.orderNumber })
+        commonService
+          .pointPay({ payOrderId: this.data.payOrderId })
           .then(() => {
-            Toast({
-              type: 'success',
-              message: '支付成功',
-              onClose: () => {
-                this.triggerEvent('confirm');
-              },
+            this.updateOrderPayStatus();
+          })
+          .catch(() => {
+            this.setData({
+              payLoading: false,
             });
           });
       } else if (this.data.radio === 'balance') {
-        commonService.balancePay({ orderNumber: this.data.orderNumber })
+        commonService
+          .balancePay({ payOrderId: this.data.payOrderId })
           .then(() => {
-            Toast({
-              type: 'success',
-              message: '支付成功',
-              onClose: () => {
-                this.triggerEvent('confirm');
-              },
+            this.updateOrderPayStatus();
+          })
+          .catch(() => {
+            this.setData({
+              payLoading: false,
             });
           });
       }
     },
     onGoBack() {
       this.triggerEvent('close');
+    },
+
+    // 更新订单支付状态
+    updateOrderPayStatus() {
+      if (this.data.source === 'pk') {
+        const params = {
+          orderId: this.data.orderId,
+          payOrderType: 1, // 1：竞猜支付，2：剩余金额支付
+        };
+        freePruchaseService
+          .updatePKOrderPayStatus(params)
+          .then((result) => {
+            const paySuccess = result.paySuccess ?? false;
+            if (paySuccess) {
+              Toast({
+                type: 'success',
+                message: '支付成功',
+                onClose: () => {
+                  this.triggerEvent('confirm');
+                },
+              });
+            }
+          })
+          .finally(() => {
+            this.setData({
+              payLoading: false,
+            });
+          });
+      } else if (this.data.source === 'wishing') {
+        const params = {
+          orderId: this.data.orderId,
+        };
+        commonService
+          .updateWishingOrderPayStatus(params)
+          .then((result) => {
+            const paySuccess = result.paySuccess ?? false;
+            if (paySuccess) {
+              Toast({
+                type: 'success',
+                message: '支付成功',
+                onClose: () => {
+                  this.triggerEvent('confirm');
+                },
+              });
+            }
+          })
+          .finally(() => {
+            this.setData({
+              payLoading: false,
+            });
+          });
+      }
     },
 
     getBalance() {

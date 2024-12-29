@@ -1,7 +1,7 @@
 import { commonService } from '../services/common.js';
 
-export const wechatPay = (orderNumber) => {
-  return commonService.wechatPay({ orderNumber }).then((res) => {
+export const wechatPay = (payOrderId) => {
+  return commonService.wechatPay({ payOrderId }).then((res) => {
     const payParams = res.wechatPrepayParam;
     if (!payParams.paySign) {
       wx.showToast({

@@ -2,7 +2,7 @@ import { mineService } from '../../../services/mine.js';
 
 Page({
   data: {
-    balance: 300,
+    balance: 0,
     list: [],
     page: {
       total: 0,

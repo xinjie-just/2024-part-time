@@ -16,7 +16,8 @@ Page({
     wishesOptions: [],
     showOptions: false,
     paymentMethodShow: false,
-    orderNumber: '',
+    orderId: '',
+    payOrderId: '',
     orderPrice: 0,
   },
 
@@ -81,11 +82,13 @@ Page({
         const createWishingOrderParams = { wishId };
         wishingWellService.createWishingOrder(createWishingOrderParams).then((res) => {
           Toast.clear();
-          const orderNumber = res.orderNumber;
+          const orderId = res.orderId;
+          const payOrderId = res.payOrderId;
           const orderPrice = res.price || 0;
           this.setData({
             wishId,
-            orderNumber,
+            orderId,
+            payOrderId,
             orderPrice,
             paymentMethodShow: true,
           });
@@ -95,11 +98,13 @@ Page({
       const params = { wishId: this.data.wishId };
       wishingWellService.createWishingOrder(params).then((res) => {
         Toast.clear();
-        const orderNumber = res.orderNumber;
+        const orderId = res.orderId;
+        const payOrderId = res.payOrderId;
         const orderPrice = res.price || 0;
         this.setData({
           wishId: this.data.wishId,
-          orderNumber,
+          orderId,
+          payOrderId,
           orderPrice,
           paymentMethodShow: true,
         });
@@ -129,7 +134,7 @@ Page({
       message: '支付成功',
       onClose: () => {
         wx.redirectTo({
-          url: `../../payment/digital-guessing/index?source=wishing&productId=${this.data.wishId}`,
+          url: `../../payment/digital-guessing/index?source=wishing&orderId=${this.data.orderId}`,
         });
       },
     });
@@ -144,35 +149,35 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady() {},
+  onReady() { },
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {},
+  onShow() { },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide() {},
+  onHide() { },
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload() {},
+  onUnload() { },
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh() {},
+  onPullDownRefresh() { },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom() {},
+  onReachBottom() { },
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage() {},
+  onShareAppMessage() { },
 });
