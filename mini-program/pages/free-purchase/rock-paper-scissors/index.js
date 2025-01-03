@@ -59,7 +59,7 @@ Page({
       duration: 0, // 不会消失（不会主动消失）
     });
     commonService
-      .rpsReady()
+      .gameRPSReady()
       .then(() => {
         this.gameMatch();
       })
@@ -76,7 +76,7 @@ Page({
   // 石头剪刀布，游戏匹配
   gameMatch() {
     commonService
-      .rpsMatch()
+      .gameRPSMatch()
       .then(async (result) => {
         if (result?.startTimeMillis && result?.gameKey) {
           // 匹配成功，获取到游戏信息
@@ -108,10 +108,10 @@ Page({
           } else {
             const gameMatchTimerId = setTimeout(() => {
               this.gameMatch();
-            }, matchRotationInterval) // 发起轮训，再次游戏匹配
+            }, matchRotationInterval); // 发起轮训，再次游戏匹配
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
-              gameMatchTimerId
+              gameMatchTimerId,
             });
           }
         }
@@ -140,7 +140,7 @@ Page({
   // 获取对局信息
   getRpsGameInfo() {
     commonService
-      .rpsGameInfo()
+      .getGameRPSInfo()
       .then((result) => {
         if (result?.rivalInfo) {
           const userInfo = result.userInfo || {};
@@ -155,7 +155,7 @@ Page({
             endCountdown: gameDuration * 1000,
           });
           if (this.data.startCountdown <= 0) {
-            commonService.rpsStart();
+            commonService.gameRPSStart();
             Toast('游戏已开始，请选择出拳');
           }
         } else {
@@ -193,7 +193,7 @@ Page({
     Toast('时间到，出拳结束');
   },
   startFinished() {
-    commonService.rpsStart();
+    commonService.gameRPSStart();
   },
 
   // 选择/改变我的选择
@@ -212,7 +212,7 @@ Page({
       punch: this.data.ownRadio,
     };
     commonService
-      .rpsSubmit(params)
+      .gameRPSSubmit(params)
       .then(() => {
         Toast({
           type: 'loading',
@@ -236,7 +236,7 @@ Page({
       gameKey: this.data.gameKey,
     };
     commonService
-      .rpsResult(params)
+      .getGameRPSResult(params)
       .then((result) => {
         if (result?.rivalCommitDetail) {
           // 查询到结果，对局结果(0:平;1:赢;2:输)
@@ -264,7 +264,7 @@ Page({
             }, matchRotationInterval); // 发起轮训，再次查询游戏结果
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
-              getResultTimerId
+              getResultTimerId,
             });
           }
         }
@@ -328,5 +328,5 @@ Page({
   onUnload() {
     clearTimeout(this.data.gameMatchTimerId);
     clearTimeout(this.data.getResultTimerId);
-  }
+  },
 });

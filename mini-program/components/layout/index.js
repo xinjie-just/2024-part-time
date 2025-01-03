@@ -14,7 +14,7 @@ Component({
    */
   data: {
     showNotify: false,
-    timerId: null
+    timerId: null,
   },
 
   lifetimes: {
@@ -29,7 +29,7 @@ Component({
     hide() {
       // 组件所在的页面被隐藏时执行
       clearTimeout(this.data.timerId);
-    }
+    },
   },
 
   /**
@@ -47,21 +47,20 @@ Component({
       });
     },
     getPKTask() {
-      freePruchaseService.PKTask()
-        .then(res => {
-          const hasTask = res.existTask;
+      freePruchaseService.PKTask().then((res) => {
+        const hasTask = res.existTask;
+        this.setData({
+          showNotify: hasTask,
+        });
+        if (!hasTask) {
+          const timerId = setTimeout(() => {
+            this.getPKTask();
+          }, interval); // 发起轮训，再次游戏匹配
           this.setData({
-            showNotify: hasTask
+            timerId,
           });
-          if (!hasTask) {
-            const timerId = setTimeout(() => {
-              this.getPKTask();
-            }, interval); // 发起轮训，再次游戏匹配
-            this.setData({
-              timerId
-            });
-          }
-        })
-    }
+        }
+      });
+    },
   },
 });

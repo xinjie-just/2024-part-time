@@ -1,5 +1,6 @@
 import { mineService } from '../../../services/mine.js';
 import { commonService } from '../../../services/common.js';
+import { wishingWellService } from '../../../services/wishing-well.js';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { wechatPay } from '../../../utils/pay.js';
 import Toast from '/@vant/weapp/toast/toast';
@@ -156,7 +157,7 @@ Component({
         const params = {
           orderId: this.data.orderId,
         };
-        commonService
+        wishingWellService
           .updateWishingOrderPayStatus(params)
           .then((result) => {
             const paySuccess = result.paySuccess ?? false;

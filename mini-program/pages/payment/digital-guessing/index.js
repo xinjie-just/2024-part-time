@@ -29,17 +29,17 @@ Page({
         orderId: +options.orderId,
       },
       () => {
-        this.getGuessInfo();
+        this.getWishingGuessInfo();
       },
     );
   },
 
-  getGuessInfo() {
+  getWishingGuessInfo() {
     const params = {
       orderId: this.data.orderId,
     };
-    wishingWellService.getGuessInfo(params).then((res) => {
-      console.log('getGuessInfo---res', res);
+    wishingWellService.getWishingGuessInfo(params).then((res) => {
+      console.log('getWishingGuessInfo---res', res);
       const digit = res.guessDigit;
       const state = res.state; // TODO: 如果游戏不是进行中，则一些操作不可用
       this.setData({
@@ -93,8 +93,8 @@ Page({
           orderId: this.data.orderId,
           guessSubmitAnswer: this.data.numbers.join(''),
         };
-        wishingWellService.submitGuess(params).then((res) => {
-          console.log('submitGuess---res', res);
+        wishingWellService.submitWishingGuess(params).then((res) => {
+          console.log('submitWishingGuess---res', res);
           this.setData({
             rightAnswer: res.guessAnswer,
             result: res.result,

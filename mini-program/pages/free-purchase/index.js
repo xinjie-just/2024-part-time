@@ -33,7 +33,7 @@ Page({
       pageSize: this.data.page.pageSize,
     };
     freePruchaseService
-      .PKList(params)
+      .getPKList(params)
       .then((result) => {
         this.setData(
           {

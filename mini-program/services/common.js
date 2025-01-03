@@ -38,103 +38,95 @@ export const commonService = {
       data: params,
     });
   },
-  // 更新订单支付状态
-  updateWishingOrderPayStatus(params) {
-    return request({
-      apiKey: 'updateWishingOrderPayStatus',
-      method: 'POST',
-      data: params,
-    });
-  },
   // 石头剪刀布，准备阶段
-  rpsReady() {
+  gameRPSReady() {
     return request({
-      apiKey: 'rpsReady',
+      apiKey: 'gameRPSReady',
       method: 'POST',
     });
   },
   // 石头剪刀布，开始匹配
-  rpsMatch() {
+  gameRPSMatch() {
     return request({
-      apiKey: 'rpsMatch',
+      apiKey: 'gameRPSMatch',
       method: 'POST',
     });
   },
   // 石头剪刀布，获取对局信息
-  rpsGameInfo() {
+  getGameRPSInfo() {
     return request({
-      apiKey: 'rpsGameInfo',
+      apiKey: 'getGameRPSInfo',
       method: 'GET',
     });
   },
   // 石头剪刀布，开始游戏
-  rpsStart() {
+  gameRPSStart() {
     return request({
-      apiKey: 'rpsStart',
+      apiKey: 'gameRPSStart',
       method: 'POST',
     });
   },
   // 石头剪刀布，提交游戏内容
-  rpsSubmit(params) {
+  gameRPSSubmit(params) {
     // punch: 1:石头；2:剪刀；3:布
     return request({
-      apiKey: 'rpsSubmit',
+      apiKey: 'gameRPSSubmit',
       method: 'POST',
       data: params,
     });
   },
   // 石头剪刀布，查询游戏结果
-  rpsResult(params) {
+  getGameRPSResult(params) {
     // punch: 1:石头；2:剪刀；3:布
     return request({
-      apiKey: 'rpsResult',
+      apiKey: 'getGameRPSResult',
       method: 'GET',
       data: params,
     });
   },
 
   // 双十拳，准备阶段
-  dtbReady() {
+  gameDTBReady() {
     return request({
-      apiKey: 'dtbReady',
+      apiKey: 'gameDTBReady',
       method: 'POST',
     });
   },
   // 双十拳，开始匹配
-  dtbMatch() {
+  gameDTBMatch() {
     return request({
-      apiKey: 'dtbMatch',
+      apiKey: 'gameDTBMatch',
       method: 'POST',
     });
   },
   // 双十拳，获取对局信息
-  dtbGameInfo() {
+  getGameDTBInfo() {
     return request({
-      apiKey: 'dtbGameInfo',
+      apiKey: 'getGameDTBInfo',
       method: 'GET',
     });
   },
   // 双十拳，开始游戏
-  dtbStart() {
+  gameDTBStart() {
     return request({
-      apiKey: 'dtbStart',
+      apiKey: 'gameDTBStart',
       method: 'POST',
     });
   },
   // 双十拳，提交游戏内容
-  dtbSubmit(params) {
+  gameDTBSubmit(params) {
     // punch: 1:石头；2:剪刀；3:布
     return request({
-      apiKey: 'dtbSubmit',
+      apiKey: 'gameDTBSubmit',
       method: 'POST',
       data: params,
     });
   },
   // 双十拳，查询游戏结果
-  dtbResult(params) {
+  getGameDTBResult(params) {
     // punch: 1:石头；2:剪刀；3:布
     return request({
-      apiKey: 'dtbResult',
+      apiKey: 'getGameDTBResult',
       method: 'GET',
       data: params,
     });
