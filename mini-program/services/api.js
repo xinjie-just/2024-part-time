@@ -25,13 +25,13 @@ const API = {
     createPKRemainPayOrder: '/product-pk/create-remain-pay', // 创建剩余金额支付订单
     updatePKOrderRemainPayStatus: '/product-pk/update-remain-pay', // 更新剩余金额支付状态
 
-    createPKRps: '/product-pk/create-rps', // 石剪布-创建游戏
-    getPKRpsInfo: '/product-pk/get-rps', // 石剪布-获取游戏信息
     joinGame: '/product-pk/join-game', // PK手-加入游戏
-    getPKRpsArenaInfo: '/product-pk/arena-detail-rps', // 石剪布-获取对手信息
-    startPKRps: '/product-pk/start-rps', // 石剪布-开始游戏
-    submitPKRps: '/product-pk/submit-rps', // 石剪布-提交游戏
-    getPKRpsResult: '/product-pk/result-rps', // 石剪布-获取游戏结果
+    createPKRPS: '/product-pk/create-rps', // 石头剪刀布-创建游戏
+    getPKRPSInfo: '/product-pk/get-rps', // 石头剪刀布-获取游戏信息
+    getPKRPSArenaInfo: '/product-pk/arena-detail-rps', // 石头剪刀布-获取对手信息
+    startPKRPS: '/product-pk/start-rps', // 石头剪刀布-开始游戏
+    submitPKRPS: '/product-pk/submit-rps', // 石头剪刀布-提交游戏
+    getPKRPSResult: '/product-pk/result-rps', // 石头剪刀布-获取游戏结果
 
     getWishingRecord: '/product-wish/record-list', // 查询用户的历史心愿
     getWishingSuggestList: '/product-wish/suggest-list', // 获取推荐的心愿列表

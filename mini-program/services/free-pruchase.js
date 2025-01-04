@@ -103,4 +103,60 @@ export const freePruchaseService = {
       data: params,
     });
   },
+  // 石剪布-创建游戏
+  createPKRPS(params) {
+    return request({
+      apiKey: 'createPKRPS',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 石剪布-获取游戏信息
+  getPKRPSInfo(params) {
+    return request({
+      apiKey: 'getPKRPSInfo',
+      method: 'GET',
+      data: params,
+    });
+  },
+  // PK手-加入游戏
+  joinGame(params) {
+    return request({
+      apiKey: 'joinGame',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 石剪布-获取对手信息
+  getPKRPSArenaInfo(params) {
+    return request({
+      apiKey: 'getPKRPSArenaInfo',
+      method: 'GET',
+      data: params,
+    });
+  },
+  // 石剪布-开始游戏
+  startPKRPS(params) {
+    return request({
+      apiKey: 'startPKRPS',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 石剪布-提交游戏
+  submitPKRPS(params) {
+    return request({
+      apiKey: 'submitPKRPS',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 石剪布-获取游戏结果
+  getPKRPSResult(params) {
+    return request({
+      apiKey: 'getPKRPSResult',
+      method: 'POST',
+      data: params,
+    });
+  },
 };

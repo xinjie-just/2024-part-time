@@ -94,3 +94,17 @@
 .footer .van-button {
   width: 240rpx;
 }
+
+.match-tips {
+  padding: 32rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #1989fa;
+  background: #ecf9ff;
+  display: flex;
+  align-items: center;
+}
+
+.match-tips .text {
+  margin-left: 16rpx;
+}

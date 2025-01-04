@@ -1,13 +1,13 @@
 import Dialog from '/@vant/weapp/dialog/dialog';
 import Toast from '/@vant/weapp/toast/toast';
 import { wishingWellService } from '../../../services/wishing-well.js';
+import { freePruchaseService } from '../../../services/free-pruchase.js';
 
 Page({
   /**
    * 页面的初始数据
    */
   data: {
-    productId: null,
     orderId: null,
     result: null, // 猜中 true，未猜中 false
     rightAnswer: [], // 谜底
@@ -16,7 +16,7 @@ Page({
     numbers: [], // 我猜的数
     paymentMethodShow: false,
     source: 'wishing', // 'wishing'：许愿，'freePurchase'：0 元购
-    state: 1, // 1: "游戏进行中", 2: "游戏结束", 3: "游戏超时"
+    state: 1, // 竞猜状态 1:游戏进行中; 2:游戏结束
   },
 
   /**
@@ -29,21 +29,27 @@ Page({
         orderId: +options.orderId,
       },
       () => {
-        this.getWishingGuessInfo();
+        this.getGuessInfoFn();
       },
     );
   },
 
-  getWishingGuessInfo() {
+  getGuessInfoFn() {
     const params = {
       orderId: this.data.orderId,
     };
-    wishingWellService.getWishingGuessInfo(params).then((res) => {
-      console.log('getWishingGuessInfo---res', res);
+    let request = null;
+    if (this.data.source === 'wishing') {
+      request = wishingWellService.getWishingGuessInfo(params);
+    } else if (this.data.source === 'freePurchase') {
+      request = freePruchaseService.getPKGuessInfo(params);
+    }
+    request.then((res) => {
       const digit = res.guessDigit;
-      const state = res.state; // TODO: 如果游戏不是进行中，则一些操作不可用
+      const state = res.state;
       this.setData({
         digit,
+        state,
         numbers: new Array(digit).fill(5),
         rightAnswer: new Array(digit).fill('-'),
       });
@@ -93,15 +99,42 @@ Page({
           orderId: this.data.orderId,
           guessSubmitAnswer: this.data.numbers.join(''),
         };
-        wishingWellService.submitWishingGuess(params).then((res) => {
-          console.log('submitWishingGuess---res', res);
-          this.setData({
-            rightAnswer: res.guessAnswer,
-            result: res.result,
+        if (this.data.source === 'wishing') {
+          wishingWellService.submitWishingGuess(params).then((res) => {
+            this.setData({
+              rightAnswer: res.guessAnswer,
+              result: res.result,
+            });
           });
-        });
+        } else if (this.data.source === 'freePurchase') {
+          freePruchaseService.submitPKGuess(params).then((res) => {
+            this.setData({
+              rightAnswer: res.guessAnswer,
+              result: res.result,
+            });
+            this.getPKOrderStageFn();
+          });
+        }
       })
       .catch(() => {});
+  },
+
+  // 获取订单阶段
+  async getPKOrderStageFn() {
+    const res = await getPKOrderStage(this.data.orderId);
+    if (res.state === 2) {
+      this.getGuessInfoFn();
+    } else if (res.state === 3) {
+      // TODO: 玩 PK 游戏
+    } else if (res.state === 4) {
+      this.setData({
+        payOrderId: res.payOrderId,
+        orderPrice: res.orderPrice,
+        paymentMethodShow: true,
+      });
+    } else if (res.state === 5) {
+      // TODO: 游戏结束，该退出了
+    }
   },
 
   onToPK() {
@@ -123,10 +156,28 @@ Page({
     });
   },
 
-  onConfirm() {
-    this.setData({
-      paymentMethodShow: false,
-    });
+  async onConfirm() {
+    const res = await getPKOrderStage(this.data.orderId);
+    if (res.state === 2) {
+      this.setData(
+        {
+          paymentMethodShow: false,
+        },
+        () => {
+          this.getGuessInfoFn();
+        },
+      );
+    } else if (res.state === 3) {
+      // TODO: 玩 PK 游戏
+    } else if (res.state === 4) {
+      this.setData({
+        payOrderId: res.payOrderId,
+        orderPrice: res.orderPrice,
+        paymentMethodShow: true,
+      });
+    } else if (res.state === 5) {
+      // TODO: 游戏结束，该退出了
+    }
   },
 
   onClose() {
@@ -138,6 +189,16 @@ Page({
   onExit() {
     wx.switchTab({
       url: '/pages/wishing-well/index',
+    });
+  },
+
+  // 退出确认
+  onBack() {
+    Dialog.confirm({
+      title: '',
+      message: '您确认要返回吗？',
+    }).then(() => {
+      wx.navigateBack();
     });
   },
 });

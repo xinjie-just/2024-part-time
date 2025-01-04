@@ -132,7 +132,6 @@ Component({
       if (this.data.source === 'pk') {
         const params = {
           orderId: this.data.orderId,
-          payOrderType: 1, // 1：竞猜支付，2：剩余金额支付
         };
         freePruchaseService
           .updatePKOrderPayStatus(params)

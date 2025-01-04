@@ -1,5 +1,6 @@
 import Toast from '/@vant/weapp/toast/toast';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
+import { getPKOrderStage } from '../../../utils/common.js';
 
 Page({
   /**
@@ -11,7 +12,7 @@ Page({
     detail: {},
     orderId: '',
     orderPrice: 0,
-    state: null, // 1: 支付竞猜金额，2：玩竞猜游戏，3：创建 PK 游戏，4：完 PK 游戏，5：支付剩余金额，6： 已完成
+    state: null, // 1:支付竞猜金额 2:玩竞猜游戏 3:玩PK游戏 4:支付剩余金额 5:已完成
     payOrderId: '', // 支付订单 ID
     orderGameId: '', // 订单游戏 ID
   },
@@ -53,47 +54,41 @@ Page({
       Toast.clear();
       this.setData(
         {
-          orderId: res.orderId,
+          orderId: res.orderId, // 订单 ID
         },
         () => {
-          this.getPKOrderInfo();
+          this.getPKOrderStageFn();
         },
       );
     });
   },
 
-  // 获取 PK 订单信息
-  getPKOrderInfo() {
-    Toast({
-      type: 'loading',
-      message: '正在获取订单信息',
-    });
-    const params = {
-      orderId: this.data.orderId,
-    };
-    freePruchaseService.getPKOrderInfo(params).then((res) => {
-      Toast.clear();
+  // 获取订单阶段
+  async getPKOrderStageFn() {
+    const res = await getPKOrderStage(this.data.orderId);
+    if (res.state === 1) {
       this.setData({
-        orderPrice: res.price || 0,
-        state: res.state ?? null,
-        payOrderId: res.payOrderId ?? '',
-        orderGameId: res.orderGameId ?? '',
+        payOrderId: res.payOrderId,
+        orderPrice: res.orderPrice || 0,
         paymentMethodShow: true,
       });
-    });
+    }
   },
 
-  onConfirm() {
-    this.setData(
-      {
-        paymentMethodShow: false,
-      },
-      () => {
-        wx.redirectTo({
-          url: `../../payment/digital-guessing/index?source=freePurchase&productId=${this.data.id}`,
-        });
-      },
-    );
+  async onConfirm() {
+    const res = await getPKOrderStage(this.data.orderId);
+    if (res.state === 2) {
+      this.setData(
+        {
+          paymentMethodShow: false,
+        },
+        () => {
+          wx.redirectTo({
+            url: `../../payment/digital-guessing/index?source=freePurchase&orderId=${this.data.orderId}`,
+          });
+        },
+      );
+    }
   },
 
   onClose() {
