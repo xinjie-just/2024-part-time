@@ -103,7 +103,7 @@ export const freePruchaseService = {
       data: params,
     });
   },
-  // 石剪布-创建游戏
+  // 石头剪刀布-创建游戏
   createPKRPS(params) {
     return request({
       apiKey: 'createPKRPS',
@@ -111,10 +111,10 @@ export const freePruchaseService = {
       data: params,
     });
   },
-  // 石剪布-获取游戏信息
-  getPKRPSInfo(params) {
+  // 石头剪刀布-获取游戏信息
+  matchPKRPS(params) {
     return request({
-      apiKey: 'getPKRPSInfo',
+      apiKey: 'matchPKRPS',
       method: 'GET',
       data: params,
     });
@@ -127,7 +127,7 @@ export const freePruchaseService = {
       data: params,
     });
   },
-  // 石剪布-获取对手信息
+  // 石头剪刀布-获取对手信息
   getPKRPSArenaInfo(params) {
     return request({
       apiKey: 'getPKRPSArenaInfo',
@@ -135,7 +135,7 @@ export const freePruchaseService = {
       data: params,
     });
   },
-  // 石剪布-开始游戏
+  // 石头剪刀布-开始游戏
   startPKRPS(params) {
     return request({
       apiKey: 'startPKRPS',
@@ -143,7 +143,7 @@ export const freePruchaseService = {
       data: params,
     });
   },
-  // 石剪布-提交游戏
+  // 石头剪刀布-提交游戏
   submitPKRPS(params) {
     return request({
       apiKey: 'submitPKRPS',
@@ -151,10 +151,66 @@ export const freePruchaseService = {
       data: params,
     });
   },
-  // 石剪布-获取游戏结果
+  // 石头剪刀布-获取游戏结果
   getPKRPSResult(params) {
     return request({
       apiKey: 'getPKRPSResult',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 双十拳-创建游戏
+  createPKDTB(params) {
+    return request({
+      apiKey: 'createPKDTB',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 双十拳-获取游戏信息
+  matchPKDTB(params) {
+    return request({
+      apiKey: 'matchPKDTB',
+      method: 'GET',
+      data: params,
+    });
+  },
+  // 双十拳-加入游戏
+  joinGame(params) {
+    return request({
+      apiKey: 'joinGame',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 双十拳-获取对手信息
+  getPKDTBArenaInfo(params) {
+    return request({
+      apiKey: 'getPKDTBArenaInfo',
+      method: 'GET',
+      data: params,
+    });
+  },
+  // 双十拳-开始游戏
+  startPKDTB(params) {
+    return request({
+      apiKey: 'startPKDTB',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 双十拳-提交游戏
+  submitPKDTB(params) {
+    return request({
+      apiKey: 'submitPKDTB',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 双十拳-获取游戏结果
+  getPKDTBResult(params) {
+    return request({
+      apiKey: 'getPKDTBResult',
       method: 'POST',
       data: params,
     });

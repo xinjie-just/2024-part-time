@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "竞猜 PK 场",
+  "usingComponents": {
+    "layout": "/components/layout/index"
+  }
+}

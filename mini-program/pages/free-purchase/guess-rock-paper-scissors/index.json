@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "竞猜石头剪刀布",
+  "usingComponents": {
+    "layout": "/components/layout/index"
+  }
+}

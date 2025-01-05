@@ -4,35 +4,35 @@ import { jumpExitPage } from '../../../utils/jumpUrl.js';
 import { commonService } from '../../../services/common.js';
 
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
-    loading: false
+    loading: false,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  onLoad() {
     this.wxLogin();
   },
 
   wxLogin() {
     this.setData({
-      loading: true
+      loading: true,
     });
     wx.login({
       success: (res) => {
         if (res.code) {
           //发起网络请求
           const params = {
-            code: res.code
+            code: res.code,
           };
-          loginService.wxLogin(params)
+          loginService
+            .wxLogin(params)
             .then((result) => {
-              const token = result.token;
+              const { token } = result;
               wx.setStorageSync('token', token);
               this.getUserInfo();
             })
@@ -42,23 +42,27 @@ Page({
                 title: error.message || '登陆失败',
               });
               this.setData({
-                loading: false
+                loading: false,
               });
-            })
+            });
         } else {
-          console.log('登录失败！' + res.errMsg)
+          wx.showToast({
+            icon: 'error',
+            title: error.message || '登陆失败',
+          });
         }
       },
       fail: () => {
         this.setData({
-          loading: false
+          loading: false,
         });
-      }
+      },
     });
   },
 
   getUserInfo() {
-    commonService.getUserInfo()
+    commonService
+      .getUserInfo()
       .then((result) => {
         wx.setStorageSync('userInfo', JSON.stringify(result));
         wx.showToast({
@@ -66,8 +70,8 @@ Page({
           icon: 'success',
           success: () => {
             jumpExitPage();
-          }
-        })
+          },
+        });
       })
       .catch((error) => {
         wx.showToast({
@@ -77,57 +81,43 @@ Page({
       })
       .finally(() => {
         this.setData({
-          loading: false
+          loading: false,
         });
-      })
+      });
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady() {
-
-  },
+  onReady() {},
 
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow() {
-
-  },
+  onShow() {},
 
   /**
    * 生命周期函数--监听页面隐藏
    */
-  onHide() {
-
-  },
+  onHide() {},
 
   /**
    * 生命周期函数--监听页面卸载
    */
-  onUnload() {
-
-  },
+  onUnload() {},
 
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh() {
-
-  },
+  onPullDownRefresh() {},
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom() {
-
-  },
+  onReachBottom() {},
 
   /**
    * 用户点击右上角分享
    */
-  onShareAppMessage() {
-
-  }
-})
+  onShareAppMessage() {},
+});

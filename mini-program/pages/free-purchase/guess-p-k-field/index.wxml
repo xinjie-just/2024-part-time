@@ -1,0 +1,56 @@
+<layout>
+  <view class="page">
+    <view class="notice">
+      <view class="left">
+        <van-icon name="volume-o" size="40rpx" color="#ed6a0c" />
+        <text class="text">欢迎进入 PK 场，挣积分，圆梦想</text>
+      </view>
+      <view class="right">
+        <van-button type="info" icon="question-o" plain hairline round size="small" bind:click="onShowRule">
+          游戏规则
+        </van-button>
+      </view>
+    </view>
+    <view class="steps-wrap">
+      <van-steps steps="{{ steps }}" direction="vertical" active-color="#969799" inactive-color="#969799" active-icon="circle" inactive-icon="circle" />
+    </view>
+    <view class="match-tips">
+      <van-icon name="warning-o" size="40rpx" color="#1989fa" />
+      <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>
+    </view>
+    <view class="cell-group-wrap">
+      <van-cell-group title="选择游戏" class="cell-group">
+        <van-cell is-link title="石头剪刀布" value="开始游戏" link-type="navigateTo" url="{{rpsUrl}}" />
+        <van-cell is-link title="双十拳" value="开始游戏" link-type="navigateTo" url="{{dtbUrl}}" />
+      </van-cell-group>
+    </view>
+  </view>
+  <van-dialog use-slot title="" show="{{ show }}" show-cancel-button="{{true}}" cancel-button-text="知道了" show-confirm-button="{{false}}" bind:close="onClose">
+    <view class="game-list">
+      <view class="game-item">
+        <view class="name">剪刀石头布</view>
+        <view class="rule-list">
+          <view class="rule-item">1. 等待游戏开始倒计时为 0 后，即可开始出拳。</view>
+          <view class="rule-item">2. 己方（自己）从石头、剪刀、布中选定一种，然后点击“我选好了”。</view>
+          <view class="rule-item">3. 等待双方出拳完成后显示比赛结果。</view>
+          <view class="rule-item">4. 将由系统判断胜负，双方均无法提前预知对方出拳。</view>
+        </view>
+      </view>
+      <view class="game-item">
+        <view class="name">双十拳</view>
+        <view class="rule-list">
+          <view class="rule-item">1. 游戏由两人进行，两人同时准备好自己的手势，不可提前展示给对方看。</view>
+          <view class="rule-item">
+            2. 每位玩家可以出的手势包括：“零”（双手握拳）、“五”（伸出一手手掌，另手握拳）、“十”（双手打开）。这三个手势分别代表数字0、5、10。
+          </view>
+          <view class="rule-item">
+            3. 两位玩家同时喊出一个数字口号，这个数字是“零”、“五”、“十”、“十五”、“二十”。喊出口号后，两位玩家同时展示自己的手势。
+          </view>
+          <view class="rule-item">
+            4. 如果两位玩家喊出相同的数字，或者两位玩家喊出的数字都不等于两人出拳总数，则平局；如果只有一位玩家喊出的数字和两人出拳数字一样，则该玩家胜，对方败。
+          </view>
+        </view>
+      </view>
+    </view>
+  </van-dialog>
+</layout>

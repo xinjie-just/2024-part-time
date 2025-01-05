@@ -1,6 +1,6 @@
 import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
-import { commonService } from '../../../services/common.js';
+import { freePruchaseService } from '../../../services/common.js';
 
 const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
 const duration = 30 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
@@ -27,14 +27,17 @@ Page({
         other: '/assets/images/free-purchase/paper-other.png',
       },
     },
+
     matchDuration: duration, // 游戏匹配时长，单位毫秒
     startCountdown: 60 * 1000, // 游戏开始倒计时，单位毫秒
     startCountdownData: {},
     endCountdown: 60 * 1000, // 出拳倒计时，单位毫秒
     endCountdownData: {},
     matched: 'waiting', // 匹配对手状态；waiting 未开始、匹配中，success 匹配成功，fail 匹配失败，error 长时间未出拳
-    ownRadio: null, // 1:石头；2:剪刀；3:布
-    otherRadio: null, // 1:石头；2:剪刀；3:布
+    ownRadio: null,
+    otherRadio: null,
+    ownCallPunch: 0,
+    otherCallPunch: 0,
     selected: false,
     showExplain: false,
     result: null, // 0 平局，1 我胜，2 对方胜，null 等待出拳
@@ -43,30 +46,49 @@ Page({
       rivalInfo: {},
       gameDuration: 0,
     },
-    gameKey: '',
     getResultTimerId: null,
     gameMatchTimerId: null,
+    orderId: null,
+    orderGameId: null,
   },
 
   onLoad() {
-    this.gameReady();
+    this.setData(
+      {
+        orderId: +options.orderId,
+      },
+      () => {
+        this.createGame();
+      },
+    );
   },
-  // 游戏准备
-  gameReady() {
+  // 创建游戏
+  createGame() {
     Toast({
       type: 'loading',
       message: '正在匹配对手',
       duration: 0, // 不会消失（不会主动消失）
     });
-    commonService
-      .gameRPSReady()
-      .then(() => {
-        this.gameMatch();
+    const params = {
+      orderId: this.data.orderId,
+    };
+    freePruchaseService
+      .createPKDTB(params)
+      .then((res) => {
+        const { orderGameId } = res;
+        this.setData(
+          {
+            orderGameId,
+          },
+          () => {
+            this.gameMatch();
+          },
+        );
       })
       .catch(() => {
         Toast({
           type: 'fail',
-          message: err.message || '游戏准备失败',
+          message: err.message || '游戏创建失败',
         });
         this.setData({
           matched: 'fail',
@@ -75,24 +97,25 @@ Page({
   },
   // 石头剪刀布，游戏匹配
   gameMatch() {
-    commonService
-      .gameRPSMatch()
+    const params = { orderGameId: this.data.orderGameId };
+    freePruchaseService
+      .matchPKDTB(params)
       .then(async (result) => {
         if (result?.startTimeMillis && result?.gameKey) {
           // 匹配成功，获取到游戏信息
-          const systemTime = await commonService.getSystemTime();
+          const systemTime = await freePruchaseService.getSystemTime();
           const gameStartTime = result.startTimeMillis;
           const startCountdown = gameStartTime - systemTime;
           this.setData({
             matched: 'success',
-            gameKey: result.gameKey,
+            gameId: result.gameId,
             startCountdown: startCountdown < 0 ? 0 : startCountdown,
           });
           Toast({
             type: 'success',
             message: '匹配完成，获取对局信息',
             onClose: () => {
-              this.getRpsGameInfo();
+              this.startGame();
             },
           });
         } else {
@@ -133,18 +156,19 @@ Page({
         matched: 'waiting',
         matchDuration: duration,
       },
-      this.gameReady(),
+      this.createGame(),
     );
   },
 
   // 获取对局信息
-  getRpsGameInfo() {
-    commonService
-      .getGameRPSInfo()
+  getDTBGameInfo() {
+    const params = { orderGameId: this.data.orderGameId };
+    freePruchaseService
+      .getPKDTBArenaInfo(params)
       .then((result) => {
         if (result?.rivalInfo) {
           const userInfo = result.userInfo || {};
-          const rivalInfo = result.rivalInfo;
+          const { rivalInfo } = result;
           const gameDuration = result.gameDuration || 0;
           this.setData({
             gameInfo: {
@@ -154,14 +178,13 @@ Page({
             },
             endCountdown: gameDuration * 1000,
           });
-          if (this.data.startCountdown <= 0) {
-            commonService.gameRPSStart();
-            Toast('游戏已开始，请选择出拳');
-          }
         } else {
           Toast({
             type: 'fail',
             message: '获取对局信息失败',
+          });
+          this.setData({
+            matched: 'fail',
           });
         }
       })
@@ -174,6 +197,19 @@ Page({
           matched: 'fail',
         });
       });
+  },
+
+  startGame() {
+    const params = { orderGameId: this.data.orderGameId };
+    freePruchaseService.gameDTBStart(params).then(() => {
+      Toast({
+        type: 'success',
+        message: '游戏已开始，正在获取对手信息',
+        onClose: () => {
+          this.getDTBGameInfo();
+        },
+      });
+    });
   },
   // 游戏开始倒计时时间改变
   onChangeStartTime(e) {
@@ -193,7 +229,7 @@ Page({
     Toast('时间到，出拳结束');
   },
   startFinished() {
-    commonService.gameRPSStart();
+    freePruchaseService.createGame();
   },
 
   // 选择/改变我的选择
@@ -209,10 +245,12 @@ Page({
       selected: true,
     });
     const params = {
-      punch: this.data.ownRadio,
+      punch: +this.data.ownRadio,
+      callPunch: this.data.ownCallPunch,
+      orderGameId: this.data.orderGameId,
     };
-    commonService
-      .gameRPSSubmit(params)
+    freePruchaseService
+      .submitPKDTB(params)
       .then(() => {
         Toast({
           type: 'loading',
@@ -220,7 +258,7 @@ Page({
           duration: 0,
         });
         setTimeout(() => {
-          this.getRpsResult();
+          this.getDTBResult();
         }, 2000);
       })
       .catch((err) => {
@@ -231,18 +269,19 @@ Page({
       });
   },
   // 石头剪刀布，查询游戏结果
-  getRpsResult() {
+  getDTBResult() {
     const params = {
       gameKey: this.data.gameKey,
     };
-    commonService
-      .getGameRPSResult(params)
+    freePruchaseService
+      .getPKDTBResult(params)
       .then((result) => {
         if (result?.rivalCommitDetail) {
           // 查询到结果，对局结果(0:平;1:赢;2:输)
           this.setData({
             result: result.winner,
             otherRadio: `${result.rivalCommitDetail.punch}`, // 换换成 string
+            otherCallPunch: result.rivalCommitDetail.callPunch,
           });
           Toast({
             type: 'success',
@@ -260,7 +299,7 @@ Page({
             });
           } else {
             const getResultTimerId = setTimeout(() => {
-              this.getRpsResult();
+              this.getDTBResult();
             }, matchRotationInterval); // 发起轮训，再次查询游戏结果
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
@@ -311,13 +350,18 @@ Page({
       );
     });
   },
-  // 打开 'PK双方出拳解释束语'
+  // 打开 'PK双方出拳结束语'
   onViewExplain() {
     this.setData({ showExplain: true });
   },
-  // 关闭 'PK双方出拳解释束语'
+  // 关闭 'PK双方出拳结束语'
   onCloseExplain() {
     this.setData({ showExplain: false });
+  },
+  onChangeStepper(e) {
+    this.setData({
+      ownCallPunch: e.detail,
+    });
   },
 
   onHide() {

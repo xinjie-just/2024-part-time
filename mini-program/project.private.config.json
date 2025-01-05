@@ -45,21 +45,21 @@
         },
         {
           "name": "PK场",
-          "pathName": "pages/free-purchase/p-k-field/index",
+          "pathName": "pages/common/p-k-field/index",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "石头剪刀布",
-          "pathName": "pages/free-purchase/rock-paper-scissors/index",
+          "pathName": "pages/common/rock-paper-scissors/index",
           "query": "",
           "launchMode": "default",
           "scene": null
         },
         {
           "name": "双十拳",
-          "pathName": "pages/free-purchase/double-ten-boxing/index",
+          "pathName": "pages/common/double-ten-boxing/index",
           "query": "",
           "launchMode": "default",
           "scene": null

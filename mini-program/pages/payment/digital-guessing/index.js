@@ -139,7 +139,7 @@ Page({
 
   onToPK() {
     wx.redirectTo({
-      url: '/pages/free-purchase/p-k-field/index',
+      url: '/pages/common/p-k-field/index', // TODO:
     });
   },
 

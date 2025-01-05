@@ -27,17 +27,14 @@ Page({
         other: '/assets/images/free-purchase/paper-other.png',
       },
     },
-
     matchDuration: duration, // 游戏匹配时长，单位毫秒
     startCountdown: 60 * 1000, // 游戏开始倒计时，单位毫秒
     startCountdownData: {},
     endCountdown: 60 * 1000, // 出拳倒计时，单位毫秒
     endCountdownData: {},
     matched: 'waiting', // 匹配对手状态；waiting 未开始、匹配中，success 匹配成功，fail 匹配失败，error 长时间未出拳
-    ownRadio: null,
-    otherRadio: null,
-    ownCallPunch: 0,
-    otherCallPunch: 0,
+    ownRadio: null, // 1:石头；2:剪刀；3:布
+    otherRadio: null, // 1:石头；2:剪刀；3:布
     selected: false,
     showExplain: false,
     result: null, // 0 平局，1 我胜，2 对方胜，null 等待出拳
@@ -62,7 +59,7 @@ Page({
       duration: 0, // 不会消失（不会主动消失）
     });
     commonService
-      .gameDTBReady()
+      .gameRPSReady()
       .then(() => {
         this.gameMatch();
       })
@@ -79,7 +76,7 @@ Page({
   // 石头剪刀布，游戏匹配
   gameMatch() {
     commonService
-      .gameDTBMatch()
+      .gameRPSMatch()
       .then(async (result) => {
         if (result?.startTimeMillis && result?.gameKey) {
           // 匹配成功，获取到游戏信息
@@ -95,7 +92,7 @@ Page({
             type: 'success',
             message: '匹配完成，获取对局信息',
             onClose: () => {
-              this.getDtbGameInfo();
+              this.getRPSGameInfo();
             },
           });
         } else {
@@ -141,9 +138,9 @@ Page({
   },
 
   // 获取对局信息
-  getDtbGameInfo() {
+  getRPSGameInfo() {
     commonService
-      .getGameDTBInfo()
+      .getGameRPSInfo()
       .then((result) => {
         if (result?.rivalInfo) {
           const userInfo = result.userInfo || {};
@@ -158,7 +155,7 @@ Page({
             endCountdown: gameDuration * 1000,
           });
           if (this.data.startCountdown <= 0) {
-            commonService.gameDTBStart();
+            commonService.gameRPSStart();
             Toast('游戏已开始，请选择出拳');
           }
         } else {
@@ -196,7 +193,7 @@ Page({
     Toast('时间到，出拳结束');
   },
   startFinished() {
-    commonService.gameDTBStart();
+    commonService.gameRPSStart();
   },
 
   // 选择/改变我的选择
@@ -212,11 +209,10 @@ Page({
       selected: true,
     });
     const params = {
-      punch: +this.data.ownRadio,
-      callPunch: this.data.ownCallPunch,
+      punch: this.data.ownRadio,
     };
     commonService
-      .gameDTBSubmit(params)
+      .gameRPSSubmit(params)
       .then(() => {
         Toast({
           type: 'loading',
@@ -224,7 +220,7 @@ Page({
           duration: 0,
         });
         setTimeout(() => {
-          this.getDtbResult();
+          this.getRPSResult();
         }, 2000);
       })
       .catch((err) => {
@@ -235,19 +231,18 @@ Page({
       });
   },
   // 石头剪刀布，查询游戏结果
-  getDtbResult() {
+  getRPSResult() {
     const params = {
       gameKey: this.data.gameKey,
     };
     commonService
-      .getGameDTBResult(params)
+      .getGameRPSResult(params)
       .then((result) => {
         if (result?.rivalCommitDetail) {
           // 查询到结果，对局结果(0:平;1:赢;2:输)
           this.setData({
             result: result.winner,
             otherRadio: `${result.rivalCommitDetail.punch}`, // 换换成 string
-            otherCallPunch: result.rivalCommitDetail.callPunch,
           });
           Toast({
             type: 'success',
@@ -265,7 +260,7 @@ Page({
             });
           } else {
             const getResultTimerId = setTimeout(() => {
-              this.getDtbResult();
+              this.getRPSResult();
             }, matchRotationInterval); // 发起轮训，再次查询游戏结果
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
@@ -289,7 +284,7 @@ Page({
       message: '您确认要退出吗？',
     }).then(() => {
       wx.redirectTo({
-        url: '/pages/free-purchase/p-k-field/index',
+        url: '/pages/common/p-k-field/index',
       });
     });
   },
@@ -323,12 +318,6 @@ Page({
   // 关闭 'PK双方出拳解释束语'
   onCloseExplain() {
     this.setData({ showExplain: false });
-  },
-  onChangeStepper(e) {
-    console.log('onChangeStepper', e.detail);
-    this.setData({
-      ownCallPunch: e.detail,
-    });
   },
 
   onHide() {

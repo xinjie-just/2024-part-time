@@ -18,19 +18,18 @@ const ErrorCode = {
 const request = (options) => {
   return new Promise((resolve, reject) => {
     // 默认所有后端接口都要带 token（用户名密码登录除外）
-    options.data = options.data || {};
     const params = {};
     const headerParams = {
       'Content-Type': options.contentType || 'application/json', // 默认值 "application/json"
     };
     const token = wx.getStorageSync('token');
     if (!options.ignoreToken && token) {
-      headerParams['token'] = token;
+      headerParams.token = token;
     }
 
     const requestParams = Object.assign(params, options.data || {});
-    if (requestParams.scene == 1154) {
-      headerParams['scene'] = 1154;
+    if (requestParams.scene === 1154) {
+      headerParams.scene = 1154;
     }
     const urlPath = API.getAPIUrl(options);
     wx.request({
@@ -44,10 +43,11 @@ const request = (options) => {
         const result = data.data || {};
         if (result.code === 200) {
           return resolve(result.data);
-        } else if (result.code == 400) {
+        }
+        if (result.code === 400) {
           const pages = getCurrentPages();
           const currentPage = pages[pages.length - 1]; // 获取当前页面实例
-          const route = currentPage.route; // 输出当前页面的路由
+          const { route } = currentPage; // 输出当前页面的路由
           wx.setStorageSync('exitPage', route);
           wx.showToast({
             title: '未登录',
@@ -77,13 +77,12 @@ const request = (options) => {
         }
       },
       fail: (err) => {
-        console.log(err);
         // 错误提示
         if (!options.ignoreErrorTip) {
           let errorMsg = '请求失败，请稍后再试';
           if (err.statusCode) {
             errorMsg = ErrorCode[err.statusCode];
-          } else if (err.errMsg == 'request:fail timeout') {
+          } else if (err.errMsg === 'request:fail timeout') {
             errorMsg = '请求超时，请稍后再试';
           }
           wx.showToast({
