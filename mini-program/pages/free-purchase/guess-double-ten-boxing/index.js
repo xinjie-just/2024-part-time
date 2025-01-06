@@ -58,12 +58,12 @@ Page({
         orderId: +options.orderId,
       },
       () => {
-        this.createGame();
+        this.createPKDTBFn();
       },
     );
   },
   // 创建游戏
-  createGame() {
+  createPKDTBFn() {
     Toast({
       type: 'loading',
       message: '正在匹配对手',
@@ -81,7 +81,7 @@ Page({
             orderGameId,
           },
           () => {
-            this.gameMatch();
+            this.getPKDTBInfoFn();
           },
         );
       })
@@ -96,10 +96,10 @@ Page({
       });
   },
   // 石头剪刀布，游戏匹配
-  gameMatch() {
+  getPKDTBInfoFn() {
     const params = { orderGameId: this.data.orderGameId };
     freePruchaseService
-      .matchPKDTB(params)
+      .getPKDTBInfo(params)
       .then(async (result) => {
         if (result?.startTimeMillis && result?.gameKey) {
           // 匹配成功，获取到游戏信息
@@ -115,7 +115,7 @@ Page({
             type: 'success',
             message: '匹配完成，获取对局信息',
             onClose: () => {
-              this.startGame();
+              this.gameDTBStartFn();
             },
           });
         } else {
@@ -130,7 +130,7 @@ Page({
             });
           } else {
             const gameMatchTimerId = setTimeout(() => {
-              this.gameMatch();
+              this.getPKDTBInfoFn();
             }, matchRotationInterval); // 发起轮训，再次游戏匹配
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
@@ -156,12 +156,12 @@ Page({
         matched: 'waiting',
         matchDuration: duration,
       },
-      this.createGame(),
+      this.createPKDTBFn(),
     );
   },
 
   // 获取对局信息
-  getDTBGameInfo() {
+  getPKDTBArenaInfoFn() {
     const params = { orderGameId: this.data.orderGameId };
     freePruchaseService
       .getPKDTBArenaInfo(params)
@@ -199,14 +199,14 @@ Page({
       });
   },
 
-  startGame() {
+  gameDTBStartFn() {
     const params = { orderGameId: this.data.orderGameId };
     freePruchaseService.gameDTBStart(params).then(() => {
       Toast({
         type: 'success',
         message: '游戏已开始，正在获取对手信息',
         onClose: () => {
-          this.getDTBGameInfo();
+          this.getPKDTBArenaInfoFn();
         },
       });
     });
@@ -229,7 +229,7 @@ Page({
     Toast('时间到，出拳结束');
   },
   startFinished() {
-    freePruchaseService.createGame();
+    freePruchaseService.createPKDTB();
   },
 
   // 选择/改变我的选择
@@ -258,7 +258,7 @@ Page({
           duration: 0,
         });
         setTimeout(() => {
-          this.getDTBResult();
+          this.getPKDTBResultFn();
         }, 2000);
       })
       .catch((err) => {
@@ -269,7 +269,7 @@ Page({
       });
   },
   // 石头剪刀布，查询游戏结果
-  getDTBResult() {
+  getPKDTBResultFn() {
     const params = {
       gameKey: this.data.gameKey,
     };
@@ -299,7 +299,7 @@ Page({
             });
           } else {
             const getResultTimerId = setTimeout(() => {
-              this.getDTBResult();
+              this.getPKDTBResultFn();
             }, matchRotationInterval); // 发起轮训，再次查询游戏结果
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,

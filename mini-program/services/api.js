@@ -27,13 +27,13 @@ const API = {
 
     joinGame: '/product-pk/join-game', // PK手-加入游戏
     createPKRPS: '/product-pk/create-rps', // 石头剪刀布-创建游戏
-    matchPKRPS: '/product-pk/match-rps', // 石头剪刀布-获取游戏信息
+    getPKRPSInfo: '/product-pk/get-rps', // 石头剪刀布-获取游戏信息
     getPKRPSArenaInfo: '/product-pk/arena-detail-rps', // 石头剪刀布-获取对手信息
     startPKRPS: '/product-pk/start-rps', // 石头剪刀布-开始游戏
     submitPKRPS: '/product-pk/submit-rps', // 石头剪刀布-提交游戏
     getPKRPSResult: '/product-pk/result-rps', // 石头剪刀布-获取游戏结果
     createPKDTB: '/product-pk/create-dtb', // 双十拳-创建游戏
-    matchPKDTBInfo: '/product-pk/match-dtb', // 双十拳-获取游戏信息
+    getPKDTBInfo: '/product-pk/get-dtb', // 双十拳-获取游戏信息
     getPKDTBArenaInfo: '/product-pk/arena-detail-dtb', // 双十拳-获取对手信息
     startPKDTB: '/product-pk/start-dtb', // 双十拳-开始游戏
     submitPKDTB: '/product-pk/submit-dtb', // 双十拳-提交游戏

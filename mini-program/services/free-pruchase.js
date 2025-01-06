@@ -112,9 +112,9 @@ export const freePruchaseService = {
     });
   },
   // 石头剪刀布-获取游戏信息
-  matchPKRPS(params) {
+  getPKRPSInfo(params) {
     return request({
-      apiKey: 'matchPKRPS',
+      apiKey: 'getPKRPSInfo',
       method: 'GET',
       data: params,
     });
@@ -168,9 +168,9 @@ export const freePruchaseService = {
     });
   },
   // 双十拳-获取游戏信息
-  matchPKDTB(params) {
+  getPKDTBInfo(params) {
     return request({
-      apiKey: 'matchPKDTB',
+      apiKey: 'getPKDTBInfo',
       method: 'GET',
       data: params,
     });

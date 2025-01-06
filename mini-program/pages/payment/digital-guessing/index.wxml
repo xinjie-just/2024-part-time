@@ -65,6 +65,17 @@
       </van-button>
     </view>
   </block>
+  <block wx:for="{{state === 5}}">
+    <view class="match-tips">
+      <van-icon name="warning-o" size="40rpx" color="#1989fa" />
+      <text class="text">订单已结束，请返回。</text>
+    </view>
+    <view class="footer">
+      <van-button plain hairline round type="info" custom-class="back-btn" bind:click="onBackHome">
+        返回 0 元购
+      </van-button>
+    </view>
+  </block>
   <van-dialog id="van-dialog" />
   <van-toast id="van-toast" />
 </view>

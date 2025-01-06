@@ -44,7 +44,7 @@ Page({
       gameDuration: 0,
     },
     getResultTimerId: null,
-    gameMatchTimerId: null,
+    getPKRPSInfoFnTimerId: null,
     orderId: null,
     orderGameId: null,
   },
@@ -55,12 +55,12 @@ Page({
         orderId: +options.orderId,
       },
       () => {
-        this.createGame();
+        this.createPKRPSFn();
       },
     );
   },
   // 创建游戏
-  createGame() {
+  createPKRPSFn() {
     Toast({
       type: 'loading',
       message: '正在匹配对手',
@@ -78,7 +78,7 @@ Page({
             orderGameId,
           },
           () => {
-            this.gameMatch();
+            this.getPKRPSInfoFn();
           },
         );
       })
@@ -93,10 +93,10 @@ Page({
       });
   },
   // 石头剪刀布，游戏匹配
-  gameMatch() {
+  getPKRPSInfoFn() {
     const params = { orderGameId: this.data.orderGameId };
     freePruchaseService
-      .matchPKRPS(params)
+      .getPKRPSInfo(params)
       .then(async (result) => {
         if (result?.startTimeMillis && result?.gameId) {
           // 匹配成功，获取到游戏信息
@@ -114,7 +114,7 @@ Page({
                 type: 'success',
                 message: '匹配完成，获取对局信息',
                 onClose: () => {
-                  this.startGame();
+                  this.startPKRPSFn();
                 },
               });
             },
@@ -130,12 +130,12 @@ Page({
               message: '未匹配到对手',
             });
           } else {
-            const gameMatchTimerId = setTimeout(() => {
-              this.gameMatch();
+            const getPKRPSInfoFnTimerId = setTimeout(() => {
+              this.getPKRPSInfoFn();
             }, matchRotationInterval); // 发起轮训，再次游戏匹配
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
-              gameMatchTimerId,
+              getPKRPSInfoFnTimerId,
             });
           }
         }
@@ -151,14 +151,14 @@ Page({
       });
   },
 
-  startGame() {
+  startPKRPSFn() {
     const params = { orderGameId: this.data.orderGameId };
     freePruchaseService.startPKRPS(params).then(() => {
       Toast({
         type: 'success',
         message: '游戏已开始，正在获取对手信息',
         onClose: () => {
-          this.getRPSGameInfo();
+          this.getPKRPSArenaInfoFn();
         },
       });
     });
@@ -170,12 +170,12 @@ Page({
         matched: 'waiting',
         matchDuration: duration,
       },
-      this.createGame(),
+      this.createPKRPSFn(),
     );
   },
 
   // 获取对局信息
-  getRPSGameInfo() {
+  getPKRPSArenaInfoFn() {
     const params = { orderGameId: this.data.orderGameId };
     freePruchaseService
       .getPKRPSArenaInfo(params)
@@ -258,7 +258,7 @@ Page({
           duration: 0,
         });
         setTimeout(() => {
-          this.getRPSResult();
+          this.getPKRPSResultFn();
         }, 2000);
       })
       .catch((err) => {
@@ -269,7 +269,7 @@ Page({
       });
   },
   // 石头剪刀布，查询游戏结果
-  getRPSResult() {
+  getPKRPSResultFn() {
     const params = {
       orderGameId: this.data.orderGameId,
     };
@@ -298,7 +298,7 @@ Page({
             });
           } else {
             const getResultTimerId = setTimeout(() => {
-              this.getRPSResult();
+              this.getPKRPSResultFn();
             }, matchRotationInterval); // 发起轮训，再次查询游戏结果
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
@@ -345,7 +345,7 @@ Page({
           matched: 'waiting',
           matchDuration: duration,
         },
-        this.createGame(),
+        this.createPKRPSFn(),
       );
     });
   },
@@ -359,12 +359,12 @@ Page({
   },
 
   onHide() {
-    clearTimeout(this.data.gameMatchTimerId);
+    clearTimeout(this.data.getPKRPSInfoFnTimerId);
     clearTimeout(this.data.getResultTimerId);
   },
 
   onUnload() {
-    clearTimeout(this.data.gameMatchTimerId);
+    clearTimeout(this.data.getPKRPSInfoFnTimerId);
     clearTimeout(this.data.getResultTimerId);
   },
 });
