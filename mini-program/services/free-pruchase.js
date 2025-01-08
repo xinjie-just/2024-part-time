@@ -175,14 +175,6 @@ export const freePruchaseService = {
       data: params,
     });
   },
-  // 双十拳-加入游戏
-  joinGame(params) {
-    return request({
-      apiKey: 'joinGame',
-      method: 'POST',
-      data: params,
-    });
-  },
   // 双十拳-获取对手信息
   getPKDTBArenaInfo(params) {
     return request({

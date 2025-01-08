@@ -62,5 +62,21 @@ Component({
         }
       });
     },
+    onIntoPKField() {
+      freePruchaseService.joinGame().then((res) => {
+        const { gameType, gamePlayerInfo } = res;
+        // 游戏类型(1:石头剪刀布;2:双十拳)
+        const gamePlayerInfoStringify = JSON.stringify(gamePlayerInfo);
+        if (+gameType === 1) {
+          wx.navigateTo({
+            url: `/pages/free-purchase/guess-rock-paper-scissors/index?gameInfo=${gamePlayerInfoStringify}`,
+          });
+        } else {
+          wx.navigateTo({
+            url: `/pages/free-purchase/guess-double-ten-boxing/index?gameInfo=${gamePlayerInfoStringify}`,
+          });
+        }
+      });
+    },
   },
 });

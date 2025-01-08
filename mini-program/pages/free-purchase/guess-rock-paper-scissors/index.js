@@ -50,12 +50,39 @@ Page({
   },
 
   onLoad(options) {
+    if (options.gameInfo !== undefined && options.gameInfo !== null) {
+      const gameInfo = JSON.parse(options.gameInfo);
+
+      this.setOptionsData(gameInfo);
+    } else if (options.orderId !== undefined && options.orderId !== null) {
+      this.setData(
+        {
+          orderId: +options.orderId,
+        },
+        () => {
+          this.createPKRPSFn();
+        },
+      );
+    }
+  },
+  async setOptionsData(gameInfo) {
+    const systemTime = await freePruchaseService.getSystemTime();
+    const gameStartTime = gameInfo.startTimeMillis;
+    const startCountdown = gameStartTime - systemTime;
     this.setData(
       {
-        orderId: +options.orderId,
+        orderGameId: +gameInfo.gameId,
+        matched: 'success',
+        startCountdown: startCountdown < 0 ? 0 : startCountdown,
       },
       () => {
-        this.createPKRPSFn();
+        Toast({
+          type: 'success',
+          message: '游戏匹配完成，获取对局信息',
+          onClose: () => {
+            this.startPKRPSFn();
+          },
+        });
       },
     );
   },
@@ -112,7 +139,7 @@ Page({
             () => {
               Toast({
                 type: 'success',
-                message: '匹配完成，获取对局信息',
+                message: '游戏匹配完成，获取对局信息',
                 onClose: () => {
                   this.startPKRPSFn();
                 },

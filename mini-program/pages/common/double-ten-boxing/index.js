@@ -48,14 +48,14 @@ Page({
     },
     gameKey: '',
     getResultTimerId: null,
-    gameMatchTimerId: null,
+    gameDTBMatchFnTimerId: null,
   },
 
   onLoad() {
-    this.gameReady();
+    this.gameDTBReadyFn();
   },
   // 游戏准备
-  gameReady() {
+  gameDTBReadyFn() {
     Toast({
       type: 'loading',
       message: '正在匹配对手',
@@ -64,7 +64,7 @@ Page({
     commonService
       .gameDTBReady()
       .then(() => {
-        this.gameMatch();
+        this.gameDTBMatchFn();
       })
       .catch(() => {
         Toast({
@@ -77,7 +77,7 @@ Page({
       });
   },
   // 石头剪刀布，游戏匹配
-  gameMatch() {
+  gameDTBMatchFn() {
     commonService
       .gameDTBMatch()
       .then(async (result) => {
@@ -95,7 +95,7 @@ Page({
             type: 'success',
             message: '匹配完成，获取对局信息',
             onClose: () => {
-              this.getDTBGameInfo();
+              this.getGameDTBInfoFn();
             },
           });
         } else {
@@ -109,12 +109,12 @@ Page({
               message: '未匹配到对手',
             });
           } else {
-            const gameMatchTimerId = setTimeout(() => {
-              this.gameMatch();
+            const gameDTBMatchFnTimerId = setTimeout(() => {
+              this.gameDTBMatchFn();
             }, matchRotationInterval); // 发起轮训，再次游戏匹配
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
-              gameMatchTimerId,
+              gameDTBMatchFnTimerId,
             });
           }
         }
@@ -136,18 +136,18 @@ Page({
         matched: 'waiting',
         matchDuration: duration,
       },
-      this.gameReady(),
+      this.gameDTBReadyFn(),
     );
   },
 
   // 获取对局信息
-  getDTBGameInfo() {
+  getGameDTBInfoFn() {
     commonService
       .getGameDTBInfo()
       .then((result) => {
         if (result?.rivalInfo) {
           const userInfo = result.userInfo || {};
-          const rivalInfo = result.rivalInfo;
+          const { rivalInfo } = result;
           const gameDuration = result.gameDuration || 0;
           this.setData({
             gameInfo: {
@@ -224,7 +224,7 @@ Page({
           duration: 0,
         });
         setTimeout(() => {
-          this.getDTBResult();
+          this.getGameDTBResultFn();
         }, 2000);
       })
       .catch((err) => {
@@ -235,7 +235,7 @@ Page({
       });
   },
   // 石头剪刀布，查询游戏结果
-  getDTBResult() {
+  getGameDTBResultFn() {
     const params = {
       gameKey: this.data.gameKey,
     };
@@ -265,7 +265,7 @@ Page({
             });
           } else {
             const getResultTimerId = setTimeout(() => {
-              this.getDTBResult();
+              this.getGameDTBResultFn();
             }, matchRotationInterval); // 发起轮训，再次查询游戏结果
             this.setData({
               matchDuration: this.data.matchDuration - matchRotationInterval,
@@ -312,7 +312,7 @@ Page({
           matched: 'waiting',
           matchDuration: duration,
         },
-        this.gameReady(),
+        this.gameDTBReadyFn(),
       );
     });
   },
@@ -331,12 +331,12 @@ Page({
   },
 
   onHide() {
-    clearTimeout(this.data.gameMatchTimerId);
+    clearTimeout(this.data.gameDTBMatchFnTimerId);
     clearTimeout(this.data.getResultTimerId);
   },
 
   onUnload() {
-    clearTimeout(this.data.gameMatchTimerId);
+    clearTimeout(this.data.gameDTBMatchFnTimerId);
     clearTimeout(this.data.getResultTimerId);
   },
 });
