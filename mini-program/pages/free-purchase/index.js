@@ -118,12 +118,7 @@ Page({
   },
   onToPKField() {
     wx.redirectTo({
-      url: './p-k-field/index',
-    });
-  },
-  onIntoPKField() {
-    wx.redirectTo({
-      url: './p-k-field/rock-paper-scissors/index',
+      url: '../common/p-k-field/index',
     });
   },
 });

@@ -350,7 +350,7 @@ Page({
       message: '您确认要退出吗？',
     }).then(() => {
       wx.redirectTo({
-        url: '/pages/free-purchase/p-k-field/index',
+        url: '/pages/common/p-k-field/index',
       });
     });
   },

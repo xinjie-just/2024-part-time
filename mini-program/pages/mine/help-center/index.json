@@ -1,6 +1,3 @@
 {
-  "navigationBarTitleText": "帮助中心",
-  "usingComponents": {
-    "layout": "/components/layout/index"
-  }
+  "navigationBarTitleText": "帮助中心"
 }

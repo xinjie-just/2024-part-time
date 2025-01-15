@@ -1,24 +1,22 @@
-<layout>
-  <view class="page">
-    <van-cell-group>
-      <van-field required model:value="{{ wishName }}" name="wishName" label="心愿标题" title-width="5em" type="textarea" placeholder="请输入心愿标题（30字内）" maxlength="{{30}}" show-word-limit autosize bind:change="onChangeTitle" bind:blur="onBlurTitle" bind:focus="onFocusTitle" />
-      <van-field required model:value="{{ message }}" name="message" label="心愿描述" title-width="5em" type="textarea" placeholder="请输入心愿详细描述（200字内）" maxlength="{{200}}" show-word-limit autosize border="{{ false }}" />
-    </van-cell-group>
-    <view class="footer">
-      <van-button plain hairline round type="info" custom-class="cancel-btn" bind:click="onCancel">
-        放弃
-      </van-button>
-      <van-button round type="info" disabled="{{ !wishName.length || !message.length }}" custom-class="save-btn" bind:click="onSave">
-        投下硬币
-      </van-button>
-    </view>
-    <view wx:if="{{showOptions && wishesOptions.length}}" class="wishes">
-      <view wx:for="{{wishesOptions}}" wx:key="wishId" class="wish" data-wish-name="{{item.wishName}}" data-wish-id="{{item.wishId}}" data-shop-id="{{item.shopId}}" bind:tap="onSelectedWish">
-        {{item.wishName}}
-      </view>
-    </view>
-    <payment-method wx:if="{{ paymentMethodShow }}" source="wishing" orderId="{{orderId}}" payOrderId="{{payOrderId}}" orderPrice="{{orderPrice}}" bind:close="onClose" bind:confirm="onConfirm" />
-    <van-toast id="van-toast" />
-    <van-dialog id="van-dialog" />
+<view class="page">
+  <van-cell-group>
+    <van-field required model:value="{{ wishName }}" name="wishName" label="心愿标题" title-width="5em" type="textarea" placeholder="请输入心愿标题（30字内）" maxlength="{{30}}" show-word-limit autosize bind:change="onChangeTitle" bind:blur="onBlurTitle" bind:focus="onFocusTitle" />
+    <van-field required model:value="{{ message }}" name="message" label="心愿描述" title-width="5em" type="textarea" placeholder="请输入心愿详细描述（200字内）" maxlength="{{200}}" show-word-limit autosize border="{{ false }}" />
+  </van-cell-group>
+  <view class="footer">
+    <van-button plain hairline round type="info" custom-class="cancel-btn" bind:click="onCancel">
+      放弃
+    </van-button>
+    <van-button round type="info" disabled="{{ !wishName.length || !message.length }}" custom-class="save-btn" bind:click="onSave">
+      投下硬币
+    </van-button>
   </view>
-</layout>
+  <view wx:if="{{showOptions && wishesOptions.length}}" class="wishes">
+    <view wx:for="{{wishesOptions}}" wx:key="wishId" class="wish" data-wish-name="{{item.wishName}}" data-wish-id="{{item.wishId}}" data-shop-id="{{item.shopId}}" bind:tap="onSelectedWish">
+      {{item.wishName}}
+    </view>
+  </view>
+  <payment-method wx:if="{{ paymentMethodShow }}" source="wishing" orderId="{{orderId}}" payOrderId="{{payOrderId}}" orderPrice="{{orderPrice}}" bind:close="onClose" bind:confirm="onConfirm" />
+  <van-toast id="van-toast" />
+  <van-dialog id="van-dialog" />
+</view>

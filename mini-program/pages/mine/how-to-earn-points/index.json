@@ -1,6 +1,3 @@
 {
-  "navigationBarTitleText": "如何获得积分",
-  "usingComponents": {
-    "layout": "/components/layout/index"
-  }
+  "navigationBarTitleText": "如何获得积分"
 }

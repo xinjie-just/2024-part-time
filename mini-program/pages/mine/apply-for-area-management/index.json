@@ -1,6 +1,3 @@
 {
-  "navigationBarTitleText": "申请区域管理",
-  "usingComponents": {
-    "layout": "/components/layout/index"
-  }
+  "navigationBarTitleText": "申请区域管理"
 }
