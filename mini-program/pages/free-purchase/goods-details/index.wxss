@@ -21,7 +21,8 @@
   letter-spacing: 0.15em;
 }
 
-.content image {
+.content image,
+.content img {
   display: block;
   max-width: 100%;
   height: auto;

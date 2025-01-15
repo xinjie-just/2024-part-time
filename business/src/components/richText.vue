@@ -51,7 +51,7 @@ const editorConfig = {
       },
       // 单个文件上传成功之后
       onSuccess(file: File) {
-        message.error(`${file.name} 上传成功`, 4);
+        message.success(`${file.name} 上传成功`, 4);
       },
       // 单个文件上传失败
       onFailed(file: File) {

@@ -1,6 +1,7 @@
 import Toast from '/@vant/weapp/toast/toast';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { getPKOrderStage } from '../../../utils/common.js';
+import { formatRichText } from '../../../utils/richText';
 
 Page({
   /**
@@ -9,6 +10,7 @@ Page({
   data: {
     id: null,
     paymentMethodShow: false,
+    introduction: "",
     detail: {},
     orderId: '',
     orderPrice: 0,
@@ -38,7 +40,9 @@ Page({
     freePruchaseService.getPKDetail(params).then((res) => {
       this.setData({
         detail: res,
+        introduction: formatRichText(res.introduction)
       });
+      console.log("introduction", formatRichText(res.introduction));
     });
   },
 
