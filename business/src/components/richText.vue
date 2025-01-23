@@ -24,8 +24,9 @@ const token = localStorage.getItem('token');
 
 const toolbarConfig = {};
 const editorConfig = {
-  placeholder: '请输入内容...',
+  placeholder: '请输入内容（3000 个字符以内）...',
   autoFocus: false,
+  maxLength: 3000,
   MENU_CONF: {
     uploadImage: {
       server: uploadFilePath,
@@ -62,7 +63,7 @@ const editorConfig = {
         message.error(`${file.name} 上传出错，${err}`, 4);
       }
     },
-  }
+  },
 };
 
 // 组件销毁时，也及时销毁编辑器

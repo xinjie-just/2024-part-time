@@ -2,18 +2,22 @@
   "cSpell.words": [
     "Antd",
     "Appstore",
+    "BOCOM",
     "browserslistrc",
     "camelcase",
     "commitlint",
     "encryptor",
     "geocoder",
+    "ICBC",
     "Millis",
     "miniprogram",
+    "PAIC",
     "pinia",
     "PKDTB",
     "PKRPS",
     "popconfirm",
     "Pruchase",
+    "PSBC",
     "Putaway",
     "Putawaying",
     "Putway",
@@ -26,6 +30,7 @@
     "wangeditor",
     "weapp",
     "wechat",
-    "Withdrawe"
+    "Withdrawe",
+    "wxml"
   ]
 }

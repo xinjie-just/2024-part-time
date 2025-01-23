@@ -6,7 +6,7 @@
         <a-input v-model:value.trim="form.storeName" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
       </a-form-item>
       <a-form-item label="登录用户名" name="userName">
-        <a-input v-model:value.trim="form.userName" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
+        <a-input v-model:value.trim="form.userName" showCount :maxlength="16" allow-clear placeholder="2-16 位字符" />
       </a-form-item>
       <a-form-item label="手机号码" name="phone">
         <a-input v-model:value.trim="form.phone" showCount :maxlength="11" allow-clear placeholder="请输入正确手机号码" />
@@ -58,7 +58,7 @@ const rules: Record<string, Rule[]> = {
   ],
   userName: [
     { required: true, message: '请输入登录用户名', trigger: 'change' },
-    { min: 2, message: '2-30 位字符！', trigger: 'blur' }
+    { min: 2, message: '2-16 位字符！', trigger: 'blur' }
   ],
   phone: [
     { required: true, message: '请输入手机号码', trigger: 'change' },

@@ -65,9 +65,9 @@ instance.interceptors.response.use(
     // 例如，检查状态码并处理错误
     const { status, data } = response;
     if (status === 200) {
-      if (data.code === 200) {
+      if (+data.code === 200) {
         return response || []; // 假设响应体遵循 IResponseData 格式
-      } else if (data.code === 400) {
+      } else if (+data.code === 400) {
         // 未登录或登录已过期
         localStorage.removeItem('token');
 
@@ -78,7 +78,7 @@ instance.interceptors.response.use(
         message.error('请先登录');
         router?.push('/login');
         return Promise.reject(new Error('未登录或登录已过期'));
-      } else if (data.code === 403) {
+      } else if (+data.code === 403) {
         message.error(data.message || '没有权限');
         return Promise.reject(new Error('没有权限'));
       } else {

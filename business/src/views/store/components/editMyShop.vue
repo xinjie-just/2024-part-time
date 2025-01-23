@@ -89,7 +89,7 @@ const rules: Record<string, Rule[]> = {
   ],
   address: [
     { required: true, message: '请输入店铺地址', trigger: 'change' },
-    { pattern: /^.{2,30}$/, message: '店铺地址应该是 2-50 位字符！', trigger: 'blur' }
+    { pattern: /^.{2,50}$/, message: '店铺地址应该是 2-50 位字符！', trigger: 'blur' }
   ],
   contact: [{ required: true, message: '请输入店铺联系人', trigger: 'change' }],
   contactPhone: [

@@ -3,7 +3,7 @@ import Dialog from '/@vant/weapp/dialog/dialog';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
 
 const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
-const duration = 30 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
+const duration = 300 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
 
 Page({
   /**

@@ -68,8 +68,8 @@ const disabled = computed((): boolean => {
 
 const rules: Record<string, Rule[]> = {
   name: [
-    { required: true, message: '请输入店铺名称', trigger: 'change' },
-    { min: 2, message: '2-30 位字符！', trigger: 'blur' }
+    { required: true, message: '请输入姓名', trigger: 'change' },
+    { min: 2, message: '2-6 位字符！', trigger: 'blur' }
   ],
   loginName: [
     { required: true, message: '请输入登录用户名', trigger: 'change' },

@@ -3,7 +3,7 @@ import Dialog from '/@vant/weapp/dialog/dialog';
 import { freePruchaseService } from '../../../services/common.js';
 
 const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
-const duration = 30 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
+const duration = 300 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
 
 Page({
   /**
@@ -128,7 +128,7 @@ Page({
     freePruchaseService
       .getPKDTBInfo(params)
       .then(async (result) => {
-        if (result?.startTimeMillis && result?.gameKey) {
+        if (result?.startTimeMillis && result?.gameId) {
           // 匹配成功，获取到游戏信息
           const systemTime = await freePruchaseService.getSystemTime();
           const gameStartTime = result.startTimeMillis;

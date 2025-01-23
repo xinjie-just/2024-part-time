@@ -13,7 +13,7 @@
         <a-input v-model:value.trim="form.name" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
       </a-form-item>
       <a-form-item label="创意心愿标题" name="title">
-        <a-input v-model:value.trim="form.title" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
+        <a-input v-model:value.trim="form.title" showCount :maxlength="200" allow-clear placeholder="2-200 位字符" />
       </a-form-item>
       <a-form-item label="参考价值" name="referenceValue">
         <a-input-number v-model:value="form.referenceValue" :min="0.01" :max="9999" :precision="2" placeholder="请输入参考价值"
@@ -82,7 +82,7 @@ const rules: Record<string, Rule[]> = {
   ],
   title: [
     { required: true, message: '请输入创意心愿标题', trigger: 'change' },
-    { min: 2, message: '2-30 位字符！', trigger: 'blur' }
+    { min: 2, message: '2-200 位字符！', trigger: 'blur' }
   ],
   introduce: [
     { required: true, message: '请输入创意心愿介绍', trigger: 'change' },
