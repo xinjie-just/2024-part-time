@@ -15,6 +15,7 @@ Component({
     payOrderId: '',
     orderId: '',
     orderPrice: 0,
+    isPKFirstPay: true,
   },
 
   data: {
@@ -53,7 +54,7 @@ Component({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {},
+  onLoad() {},
 
   methods: {
     onChange(event) {
@@ -129,29 +130,51 @@ Component({
 
     // 更新订单支付状态
     updateOrderPayStatus() {
-      if (this.data.source === 'pk') {
+      if (this.data.source === 'pk' || this.data.source === 'digitalGuessing') {
         const params = {
           orderId: this.data.orderId,
         };
-        freePruchaseService
-          .updatePKOrderPayStatus(params)
-          .then((result) => {
-            const paySuccess = result.paySuccess ?? false;
-            if (paySuccess) {
-              Toast({
-                type: 'success',
-                message: '支付成功',
-                onClose: () => {
-                  this.triggerEvent('confirm');
-                },
+        if (this.data.isPKFirstPay) {
+          freePruchaseService
+            .updatePKOrderPayStatus(params)
+            .then((result) => {
+              const paySuccess = result.paySuccess ?? false;
+              if (paySuccess) {
+                Toast({
+                  type: 'success',
+                  message: '支付成功',
+                  onClose: () => {
+                    this.triggerEvent('confirm');
+                  },
+                });
+              }
+            })
+            .finally(() => {
+              this.setData({
+                payLoading: false,
               });
-            }
-          })
-          .finally(() => {
-            this.setData({
-              payLoading: false,
             });
-          });
+        } else {
+          freePruchaseService
+            .updatePKOrderRemainPayStatus(params)
+            .then((result) => {
+              const paySuccess = result.paySuccess ?? false;
+              if (paySuccess) {
+                Toast({
+                  type: 'success',
+                  message: '支付成功',
+                  onClose: () => {
+                    this.triggerEvent('confirm');
+                  },
+                });
+              }
+            })
+            .finally(() => {
+              this.setData({
+                payLoading: false,
+              });
+            });
+        }
       } else if (this.data.source === 'wishing') {
         const params = {
           orderId: this.data.orderId,

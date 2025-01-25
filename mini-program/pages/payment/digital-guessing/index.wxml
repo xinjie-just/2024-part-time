@@ -1,5 +1,5 @@
 <view class="page">
-  <block wx:if="{{state === 1}}">
+  <view wx:if="{{stage === 1}}">
     <van-notice-bar wx:if="{{source === 'freePurchase'}}" mode="closeable" text="参与数字竞猜，挑战 0 元购" />
     <van-collapse value="{{ activeNames }}" class="desc" bind:change="onChange">
       <van-collapse-item name="1" title="数字竞猜规则">
@@ -13,7 +13,9 @@
       </view>
     </view>
     <view class="card right-answer">
-      <van-button round size="small" type="info" bind:click="onShowResult">显示谜底</van-button>
+      <van-button round size="small" type="info" bind:click="onShowResult" disabled="{{result !== null}}">
+        显示谜底
+      </van-button>
       <view class="result">
         数字竞猜结果：
         <text wx:if="{{result === null}}" class="result-tag waiting-guess">未显示谜底</text>
@@ -24,7 +26,7 @@
     <view class="card">
       <view class="title">
         <text>我猜的数</text>
-        <van-button plain hairline round size="small" type="info" bind:click="onProduceRandom">
+        <van-button plain hairline round size="small" type="info" disabled="{{result !== null}}" bind:click="onProduceRandom">
           生成一组随机数
         </van-button>
       </view>
@@ -52,9 +54,8 @@
         </van-button>
       </block>
     </view>
-    <payment-method wx:if="{{ paymentMethodShow }}" source="digitalGuessing" hidePoints="{{true}}" bind:close="onClose" bind:confirm="onConfirm" />
-  </block>
-  <block wx:for="{{state === 2}}">
+  </view>
+  <view wx:if="{{stage === 2}}">
     <view class="match-tips">
       <van-icon name="warning-o" size="40rpx" color="#1989fa" />
       <text class="text">竞猜已结束，请返回后再发起新一轮竞猜。</text>
@@ -64,8 +65,17 @@
         返回
       </van-button>
     </view>
-  </block>
-  <block wx:for="{{state === 5}}">
+  </view>
+  <view wx:if="{{stage === 4}}">
+    <view class="match-tips">
+      <van-icon name="warning-o" size="40rpx" color="#1989fa" />
+      <text class="text">未猜中，你可以支付剩余金额直接购买。</text>
+    </view>
+    <view class="footer">
+      <van-button plain hairline round type="info" bind:click="onBuy">直接购买</van-button>
+    </view>
+  </view>
+  <view wx:if="{{stage === 5}}">
     <view class="match-tips">
       <van-icon name="warning-o" size="40rpx" color="#1989fa" />
       <text class="text">订单已结束，请返回。</text>
@@ -75,7 +85,8 @@
         返回 0 元购
       </van-button>
     </view>
-  </block>
+  </view>
+  <payment-method wx:if="{{ paymentMethodShow }}" source="digitalGuessing" isPKFirstPay="{{ stage === 4 ? false : true }}" orderId="{{orderId}}" payOrderId="{{payOrderId}}" orderPrice="{{orderPrice}}" hidePoints="{{true}}" bind:close="onClose" bind:confirm="onConfirm" />
   <van-dialog id="van-dialog" />
   <van-toast id="van-toast" />
 </view>

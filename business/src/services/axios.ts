@@ -75,7 +75,6 @@ instance.interceptors.response.use(
         if (!path?.includes('/login')) {
           localStorage.setItem('path', path);
         }
-        message.error('请先登录');
         router?.push('/login');
         return Promise.reject(new Error('未登录或登录已过期'));
       } else if (+data.code === 403) {

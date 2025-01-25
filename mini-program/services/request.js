@@ -41,10 +41,10 @@ const request = (options) => {
       responseType: 'text',
       success: (data) => {
         const result = data.data || {};
-        if (result.code === 200) {
+        if (+result.code === 200) {
           return resolve(result.data);
         }
-        if (result.code === 400) {
+        if (+result.code === 400) {
           const pages = getCurrentPages();
           const currentPage = pages[pages.length - 1]; // 获取当前页面实例
           const { route } = currentPage; // 输出当前页面的路由
@@ -60,13 +60,13 @@ const request = (options) => {
             },
           });
         } else {
-          if (result.code && result.errorMsg) {
+          if (result.code && result.message) {
             wx.showToast({
               icon: 'none',
-              title: result.errorMsg,
+              title: result.message,
               duration: 2500,
             });
-          } else if (data.statusCode && data.statusCode != 200) {
+          } else if (data.statusCode && +data.statusCode !== 200) {
             wx.showToast({
               icon: 'none',
               title: ErrorCode[data.statusCode],

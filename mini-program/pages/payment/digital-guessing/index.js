@@ -2,6 +2,7 @@ import Dialog from '/@vant/weapp/dialog/dialog';
 import Toast from '/@vant/weapp/toast/toast';
 import { wishingWellService } from '../../../services/wishing-well.js';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
+import { getPKOrderStage } from '../../../utils/common.js';
 
 Page({
   /**
@@ -17,6 +18,7 @@ Page({
     paymentMethodShow: false,
     source: 'wishing', // 'wishing'：许愿，'freePurchase'：0 元购
     state: 1, // 竞猜状态 1:游戏进行中; 2:游戏结束
+    stage: 1, // 获取订单阶段 1:支付竞猜金额 2:玩竞猜游戏 3:玩PK游戏 4:支付剩余金额 5:已完成
   },
 
   /**
@@ -107,42 +109,19 @@ Page({
           });
         } else if (this.data.source === 'freePurchase') {
           freePruchaseService.submitPKGuess(params).then((res) => {
-            this.setData({
-              rightAnswer: res.guessAnswer,
-              result: res.result,
-            });
-            this.getPKOrderStageFn();
+            this.setData(
+              {
+                rightAnswer: res.guessAnswer,
+                result: res.result,
+              },
+              () => {
+                this.handleStage(false);
+              },
+            );
           });
         }
       })
       .catch(() => {});
-  },
-
-  // 获取订单阶段
-  async getPKOrderStageFn() {
-    const res = await getPKOrderStage(this.data.orderId);
-    if (res.state === 2) {
-      this.getGuessInfoFn();
-    } else if (res.state === 3) {
-      wx.redirectTo({
-        url: `/pages/free-purchase/guess-p-k-field/index?orderId=${this.data.orderId}`,
-      });
-    } else if (res.state === 4) {
-      this.setData({
-        payOrderId: res.payOrderId,
-        orderPrice: res.orderPrice,
-        paymentMethodShow: true,
-      });
-    } else if (res.state === 5) {
-      this.setData(
-        {
-          state: 5,
-        },
-        () => {
-          Toast('游戏已结束');
-        },
-      );
-    }
   },
 
   onToPK() {
@@ -152,43 +131,53 @@ Page({
   },
 
   onContinue() {
-    this.setData({
-      result: null,
-      rightAnswer: new Array(this.data.guessDigit).fill('-'),
-    });
+    this.handleStage(true);
   },
 
   onBuy() {
-    this.setData({
-      paymentMethodShow: true,
-    });
+    this.handleStage(true);
   },
 
-  async onConfirm() {
+  onConfirm() {
+    this.handleStage(true);
+  },
+
+  async handleStage(isManual = true) {
     const res = await getPKOrderStage(this.data.orderId);
-    if (res.state === 2) {
+    if (res.stage === 2) {
       this.setData(
         {
           paymentMethodShow: false,
+          stage: 2,
         },
         () => {
           this.getGuessInfoFn();
         },
       );
-    } else if (res.state === 3) {
+    } else if (res.stage === 3) {
       wx.redirectTo({
         url: `/pages/free-purchase/guess-p-k-field/index?orderId=${this.data.orderId}`,
       });
-    } else if (res.state === 4) {
-      this.setData({
-        payOrderId: res.payOrderId,
-        orderPrice: res.orderPrice,
-        paymentMethodShow: true,
-      });
-    } else if (res.state === 5) {
+    } else if (res.stage === 4) {
+      if (isManual) {
+        this.setData({
+          stage: 4,
+          payOrderId: res.payOrderId,
+          orderPrice: res.orderPrice,
+          paymentMethodShow: true,
+        });
+      } else {
+        this.setData({
+          stage: 4,
+          paymentMethodShow: false,
+        });
+        Toast('未猜中，你可以支付剩余金额直接购买');
+      }
+    } else if (res.stage === 5) {
       this.setData(
         {
-          state: 5,
+          paymentMethodShow: false,
+          stage: 5,
         },
         () => {
           Toast('游戏已结束');

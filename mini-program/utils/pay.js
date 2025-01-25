@@ -1,7 +1,8 @@
 import { commonService } from '../services/common.js';
 
 export const wechatPay = (payOrderId) => {
-  return commonService.wechatPay({ payOrderId })
+  return commonService
+    .wechatPay({ payOrderId })
     .then((res) => {
       const payParams = res.wechatPrepayParam;
       if (!payParams.paySign) {
@@ -22,5 +23,5 @@ export const wechatPay = (payOrderId) => {
         duration: 3500,
       });
       return Promise.reject();
-    })
+    });
 };

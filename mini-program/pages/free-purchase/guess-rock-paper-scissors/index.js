@@ -194,8 +194,12 @@ Page({
   onTryAgain() {
     this.setData(
       {
+        ownRadio: null,
+        otherRadio: null,
         matched: 'waiting',
         matchDuration: duration,
+        result: null,
+        selected: false,
       },
       this.createPKRPSFn(),
     );
@@ -371,6 +375,8 @@ Page({
           otherRadio: null,
           matched: 'waiting',
           matchDuration: duration,
+          result: null,
+          selected: false,
         },
         this.createPKRPSFn(),
       );

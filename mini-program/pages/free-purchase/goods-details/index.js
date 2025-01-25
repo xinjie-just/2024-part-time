@@ -13,7 +13,6 @@ Page({
     detail: {},
     orderId: '',
     orderPrice: 0,
-    state: null, // 1:支付竞猜金额 2:玩竞猜游戏 3:玩PK游戏 4:支付剩余金额 5:已完成
     payOrderId: '', // 支付订单 ID
     orderGameId: '', // 订单游戏 ID
   },
@@ -68,20 +67,34 @@ Page({
   // 获取订单阶段
   async getPKOrderStageFn() {
     const res = await getPKOrderStage(this.data.orderId);
-    if (res.state === 1) {
+    if (res.stage === 1) {
       this.setData({
+        stage: 1,
         payOrderId: res.payOrderId,
         orderPrice: res.orderPrice || 0,
         paymentMethodShow: true,
       });
+    } else if (res.stage === 2) {
+      this.setData(
+        {
+          stage: 2,
+          paymentMethodShow: false,
+        },
+        () => {
+          wx.redirectTo({
+            url: `../../payment/digital-guessing/index?source=freePurchase&orderId=${this.data.orderId}`,
+          });
+        },
+      );
     }
   },
 
   async onConfirm() {
     const res = await getPKOrderStage(this.data.orderId);
-    if (res.state === 2) {
+    if (res.stage === 2) {
       this.setData(
         {
+          stage: 2,
           paymentMethodShow: false,
         },
         () => {

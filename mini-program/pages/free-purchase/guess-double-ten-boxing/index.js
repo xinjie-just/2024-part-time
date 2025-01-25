@@ -180,8 +180,12 @@ Page({
   onTryAgain() {
     this.setData(
       {
+        ownRadio: null,
+        otherRadio: null,
         matched: 'waiting',
         matchDuration: duration,
+        result: null,
+        selected: false,
       },
       this.createPKDTBFn(),
     );
@@ -298,7 +302,7 @@ Page({
   // 石头剪刀布，查询游戏结果
   getPKDTBResultFn() {
     const params = {
-      gameKey: this.data.gameKey,
+      gameId: this.data.gameId,
     };
     freePruchaseService
       .getPKDTBResult(params)
@@ -372,6 +376,8 @@ Page({
           otherRadio: null,
           matched: 'waiting',
           matchDuration: duration,
+          result: null,
+          selected: false,
         },
         this.gameReady(),
       );

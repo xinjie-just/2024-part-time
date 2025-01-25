@@ -1,41 +1,40 @@
 import { freePruchaseService } from '../services/free-pruchase.js';
 
-// 获取订单阶段
-const getPKOrderStage = (orderId) => {
-  freePruchaseService
+// 获取订单阶段 1:支付竞猜金额 2:玩竞猜游戏 3:玩PK游戏 4:支付剩余金额 5:已完成
+const getPKOrderStage = async (orderId) => {
+  return freePruchaseService
     .getPKOrderStage({ orderId })
     .then((res) => {
-      const { state } = res;
-      switch (state) {
+      const { stage } = res;
+      switch (stage) {
         case 1: {
-          freePruchaseService.createPKGuessPay({ orderId }).then((res) => {
+          return freePruchaseService.createPKGuessPay({ orderId }).then((res) => {
             const data = {
               payOrderId: res.payOrderId,
               orderPrice: res.price,
-              state,
+              stage,
             };
             return Promise.resolve(data);
           });
         }
         case 2: {
-          return Promise.resolve({ state });
+          return Promise.resolve({ stage });
         }
         case 3: {
-          return Promise.resolve({ state });
+          return Promise.resolve({ stage });
         }
         case 4: {
-          freePruchaseService.createPKRemainPayOrder({ orderId }).then((res) => {
+          return freePruchaseService.createPKRemainPayOrder({ orderId }).then((res) => {
             const data = {
               payOrderId: res.payOrderId,
               orderPrice: res.price,
-              state,
+              stage,
             };
             return Promise.resolve(data);
           });
-          break;
         }
         case 5: {
-          return Promise.resolve(data);
+          return Promise.resolve({ stage });
         }
       }
     })

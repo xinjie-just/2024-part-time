@@ -46,7 +46,7 @@ Page({
       rivalInfo: {},
       gameDuration: 0,
     },
-    gameKey: '',
+    gameId: '',
     getResultTimerId: null,
     gameDTBMatchFnTimerId: null,
   },
@@ -88,7 +88,7 @@ Page({
           const startCountdown = gameStartTime - systemTime;
           this.setData({
             matched: 'success',
-            gameKey: result.gameId,
+            gameId: result.gameId,
             startCountdown: startCountdown < 0 ? 0 : startCountdown,
           });
           Toast({
@@ -133,8 +133,12 @@ Page({
   onTryAgain() {
     this.setData(
       {
+        ownRadio: null,
+        otherRadio: null,
         matched: 'waiting',
         matchDuration: duration,
+        result: null,
+        selected: false,
       },
       this.gameDTBReadyFn(),
     );
@@ -237,7 +241,7 @@ Page({
   // 石头剪刀布，查询游戏结果
   getGameDTBResultFn() {
     const params = {
-      gameKey: this.data.gameKey,
+      gameId: this.data.gameId,
     };
     commonService
       .getGameDTBResult(params)
@@ -311,6 +315,8 @@ Page({
           otherRadio: null,
           matched: 'waiting',
           matchDuration: duration,
+          result: null,
+          selected: false,
         },
         this.gameDTBReadyFn(),
       );
