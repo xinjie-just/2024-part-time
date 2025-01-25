@@ -267,7 +267,7 @@ Page({
   // 选择/改变我的选择
   onChangeOwn(e) {
     this.setData({
-      ownRadio: e.detail,
+      ownRadio: +e.detail,
     });
   },
 

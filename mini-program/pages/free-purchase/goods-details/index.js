@@ -1,6 +1,7 @@
 import Toast from '/@vant/weapp/toast/toast';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { getPKOrderStage } from '../../../utils/common.js';
+import Dialog from '@vant/weapp/dialog/dialog';
 
 Page({
   /**
@@ -110,5 +111,28 @@ Page({
     this.setData({
       paymentMethodShow: false,
     });
+  },
+  onViewTips() {
+    Dialog.confirm({
+      title: '',
+      message: `支付 ${this.data.detail.guessSmallPrice / 100} 元即可参与 0 元购`,
+      showCancelButton: false,
+    })
+      .then(() => {
+        // on confirm
+      })
+      .catch(() => {
+        // on cancel
+      });
+  },
+  // 点击分享
+  onShareAppMessage() {
+    const shareInfo = {
+      title: `${this.data.detail.title}`,
+      description: `支付 ${this.data.detail.guessSmallPrice / 100} 元即可参与 0 元购`,
+      path: '/pages/free-purchase/goods-details/index',
+      imageUrl: this.data.detail.url || '../images/0yuan.jpg',
+    };
+    return shareInfo;
   },
 });

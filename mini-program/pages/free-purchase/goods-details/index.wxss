@@ -4,12 +4,45 @@
   height: 100vh;
 }
 
+.header {
+  padding: 24rpx;
+  box-shadow: 0 0 16rpx 8rpx rgba(205, 205, 205, 0.4);
+}
+
 .title {
   font-size: 32rpx;
   font-weight: 600;
-  padding: 24rpx;
   line-height: 1.6em;
-  box-shadow: 0 0 16rpx 8rpx rgba(205, 205, 205, 0.4);
+  margin-bottom: 16rpx;
+}
+
+.goods-desc-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.goods-desc-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 24rpx;
+  line-height: 32rpx;
+}
+
+.goods-desc-item:not(:last-of-type) {
+  margin-right: 24rpx;
+  padding-right: 24rpx;
+  border-right: 1px solid #aaa;
+}
+
+.goods-desc-item .key {
+  color: #999;
+}
+
+.goods-desc-item .value {
+  color: #333;
 }
 
 .content {

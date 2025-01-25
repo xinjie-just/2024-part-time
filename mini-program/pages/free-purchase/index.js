@@ -1,4 +1,5 @@
 import { freePruchaseService } from '../../services/free-pruchase.js';
+import Dialog from '@vant/weapp/dialog/dialog';
 
 Page({
   data: {
@@ -111,7 +112,7 @@ Page({
   },
   onViewDetails(e) {
     const data = e.currentTarget.dataset;
-    const id = data.id;
+    const { id } = data;
     wx.navigateTo({
       url: `./goods-details/index?id=${id}`,
     });
@@ -120,5 +121,21 @@ Page({
     wx.redirectTo({
       url: '../common/p-k-field/index',
     });
+  },
+
+  onViewTips(e) {
+    const data = e.currentTarget.dataset;
+    const { smallPrice } = data;
+    Dialog.confirm({
+      title: '',
+      message: `支付 ${smallPrice} 元即可参与 0 元购`,
+      showCancelButton: false,
+    })
+      .then(() => {
+        // on confirm
+      })
+      .catch(() => {
+        // on cancel
+      });
   },
 });

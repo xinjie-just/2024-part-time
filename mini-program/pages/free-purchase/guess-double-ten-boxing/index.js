@@ -266,7 +266,7 @@ Page({
   // 选择/改变我的选择
   onChangeOwn(e) {
     this.setData({
-      ownRadio: e.detail,
+      ownRadio: +e.detail,
     });
   },
 
@@ -393,7 +393,7 @@ Page({
   },
   onChangeStepper(e) {
     this.setData({
-      ownCallPunch: e.detail,
+      ownCallPunch: +e.detail,
     });
   },
 

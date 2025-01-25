@@ -19,7 +19,7 @@
       <view class="result">
         数字竞猜结果：
         <text wx:if="{{result === null}}" class="result-tag waiting-guess">未显示谜底</text>
-        <text wx:if="{{result === true}}" class="result-tag not-guess">猜中</text>
+        <text wx:if="{{result === true}}" class="result-tag guess">猜中</text>
         <text wx:if="{{result === false}}" class="result-tag not-guess">未猜中</text>
       </view>
     </view>

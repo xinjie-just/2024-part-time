@@ -7,9 +7,27 @@
       <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
     </view>
     <view wx:else class="list">
-      <view class="item van-hairline--bottom" wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bind:tap="onViewDetails">
-        <view class="title van-multi-ellipsis--l2">{{item.title}}</view>
-        <image mode="aspectFill" src="{{item.imgSrc}}" class="img"></image>
+      <view class="item van-hairline--bottom" wx:for="{{list}}" wx:key="id">
+        <view data-id="{{item.id}}" bind:tap="onViewDetails">
+          <image mode="aspectFill" src="{{item.url || './images/0yuan.jpg'}}" class="img"></image>
+          <view class="title van-multi-ellipsis--l2">{{item.title}}</view>
+        </view>
+        <view class="goods-desc-list">
+          <view class="goods-desc-item">
+            <view class="key">原价：</view>
+            <view class="value">{{item.price / 100}} 元</view>
+          </view>
+          <view class="goods-desc-item">
+            <view class="key">现价：</view>
+            <view class="value">{{item.currentPrice / 100}} 元</view>
+          </view>
+          <view class="goods-desc-item">
+            <view class="key" data-small-price="{{item.guessSmallPrice / 100}}" bind:tap="onViewTips">
+              竞猜小价 ？：
+            </view>
+            <view class="value">{{item.guessSmallPrice / 100}} 元</view>
+          </view>
+        </view>
       </view>
       <view wx:if="{{hasMoreData}}" class="more-btn">
         <van-button loading="{{moreLoading}}" loading-text="加载更多..." type="info" size="small" plain hairline round bind:click="getMoreList">
@@ -19,4 +37,5 @@
       <view wx:else class="no-more-data">没有更多数据了 ~</view>
     </view>
   </view>
+  <van-dialog id="van-dialog" />
 </layout>

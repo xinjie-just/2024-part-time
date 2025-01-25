@@ -19,13 +19,13 @@ Page({
     this.getList(false);
   },
   getList(more) {
-    if (this.timerId != null) {
+    if (this.timerId !== null) {
       clearTimeout(this.timerId);
     }
-    if (this.moreTimerId != null) {
+    if (this.moreTimerId !== null) {
       clearTimeout(this.moreTimerId);
     }
-    const page = this.data.page;
+    const { page } = this.data;
     const currentPageData = list.filter(
       (_, index) => index < page.pageIndex * page.pageSize && index >= (page.pageIndex - 1) * page.pageSize,
     );
@@ -83,7 +83,7 @@ Page({
   },
   onViewDetails(e) {
     const data = e.currentTarget.dataset;
-    const id = data.id;
+    const { id } = data;
     wx.navigateTo({
       url: `./order-details/index?id=${id}`,
     });
