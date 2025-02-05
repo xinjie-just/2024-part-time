@@ -246,12 +246,12 @@ Page({
     commonService
       .getGameDTBResult(params)
       .then((result) => {
-        if (result?.rivalCommitDetail) {
+        if (result?.commitDetail) {
           // 查询到结果，对局结果(0:平;1:赢;2:输)
           this.setData({
             result: result.winner,
-            otherRadio: `${result.rivalCommitDetail.punch}`, // 换换成 string
-            otherCallPunch: result.rivalCommitDetail.callPunch,
+            otherRadio: `${result.commitDetail.punch}`, // 换换成 string
+            otherCallPunch: result.commitDetail.callPunch,
           });
           Toast({
             type: 'success',

@@ -22,8 +22,8 @@
           <template #addonAfter>（元）</template>
         </a-input-number>
       </a-form-item>
-      <a-form-item label="投币小额" name="miniPrice">
-        <a-input-number v-model:value="form.miniPrice" :min="0.01" :max="99999" :precision="2" placeholder="请输入投币小额"
+      <a-form-item label="投币小额" name="minPrice">
+        <a-input-number v-model:value="form.minPrice" :min="0.01" :max="99999" :precision="2" placeholder="请输入投币小额"
           style="width: 100%">
           <template #addonBefore>￥</template>
           <template #addonAfter>（元）</template>
@@ -72,7 +72,7 @@ const form: UnwrapRef<IManageWishing> = reactive({
   title: '',
   introduce: '',
   referenceValue: 0.01,
-  miniPrice: 0.01,
+  minPrice: 0.01,
   digit: 1
 });
 const rules: Record<string, Rule[]> = {
@@ -88,7 +88,7 @@ const rules: Record<string, Rule[]> = {
     { required: true, message: '请输入创意心愿介绍', trigger: 'change' },
   ],
   referenceValue: [{ required: true, message: '请输入参考价值', trigger: 'change' }],
-  miniPrice: [{ required: true, message: '请输入投币小额', trigger: 'change' }],
+  minPrice: [{ required: true, message: '请输入投币小额', trigger: 'change' }],
   digit: [{ required: true, message: '请输入竞猜位数', trigger: 'change' }]
 };
 
@@ -97,16 +97,16 @@ const disabled = computed((): boolean => {
   const nameDisabled = values?.name?.trim()?.length < 2;
   const titleDisabled = values?.title?.trim()?.length < 2;
   const referenceValueDisabled = !values?.referenceValue;
-  const miniPriceDisabled = !values?.miniPrice;
+  const minPriceDisabled = !values?.minPrice;
   const digitDisabled = !values?.digit;
 
-  const price = (values?.miniPrice * 10 ** values?.digit) / 2;
+  const price = (values?.minPrice * 10 ** values?.digit) / 2;
   const priceDisabled = values?.referenceValue > price;
   return (
     nameDisabled ||
     titleDisabled ||
     referenceValueDisabled ||
-    miniPriceDisabled ||
+    minPriceDisabled ||
     digitDisabled ||
     priceDisabled
   );
@@ -127,9 +127,9 @@ const getScanDetailsFn = () => {
       form.name = result.name;
       form.title = result.title;
       form.introduce = result.introduction;
-      form.miniPrice = result.coinDrop;
+      form.minPrice = result.coinDrop ? result.coinDrop / 100 : 0;
       form.digit = result.guessDigit;
-      form.referenceValue = result.price;
+      form.referenceValue = result.price ? result.price / 100 : 0;
     })
 }
 
@@ -144,10 +144,10 @@ const onSubmit = async (): Promise<void> => {
     const params: ISaveWishingReq = {
       name: form.name, // 商品名称
       title: form.title, // 商品标题
-      price: form.referenceValue, // 商品价格
+      price: form.referenceValue * 100, // 商品价格
       guessDigit: form.digit, // 竞猜位数
       introduction: form.introduce, // 商品说明
-      coinDrop: form.miniPrice, // 投币小额
+      coinDrop: form.minPrice * 100, // 投币小额
     };
     if (props.isEdit) {
       params.id = props.goodsId;

@@ -79,33 +79,28 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 70,
     fixed: 'left'
   },
   {
     title: '昵称',
     dataIndex: 'nickName',
-    key: 'nickName',
     width: 140,
     fixed: 'left'
   },
   {
     title: '头像',
     dataIndex: 'avatar',
-    key: 'avatar',
     width: 120
   },
   {
     title: '手机号码',
     dataIndex: 'phone',
-    key: 'phone',
     width: 150
   },
   {
     title: '注册时间',
     dataIndex: 'registrationTime',
-    key: 'registrationTime',
     width: 170
   }
 ];

@@ -78,21 +78,18 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 60,
     fixed: 'left'
   },
   {
     title: '订单编号',
     dataIndex: 'orderId',
-    key: 'orderId',
     width: 160,
     fixed: 'left'
   },
   {
     title: '心愿名称',
     dataIndex: 'wishingName',
-    key: 'wishingName',
     width: 220,
     ellipsis: true,
     fixed: 'left'
@@ -100,31 +97,26 @@ const columns = [
   {
     title: '用户手机号码',
     dataIndex: 'phone',
-    key: 'phone',
     width: 110
   },
   {
     title: '小金额（元）',
-    dataIndex: 'miniSum',
-    key: 'miniSum',
+    dataIndex: 'minPrice',
     width: 110
   },
   {
     title: '大金额（元）',
-    dataIndex: 'bigSum',
-    key: 'bigSum',
+    dataIndex: 'maxPrice',
     width: 110
   },
   {
     title: '状态',
     dataIndex: 'status',
-    key: 'status',
     width: 110
   },
   {
     title: '许愿结果',
     dataIndex: 'wishingResult',
-    key: 'wishingResult',
     width: 90
   }
 ];
@@ -178,8 +170,8 @@ const getList = (): void => {
           orderId: item.orderNumber,
           wishingName: item.productName,
           phone: item.userPhone,
-          miniSum: item.minPrice,
-          bigSum: item.maxPrice,
+          minPrice: item.minPrice ? item.minPrice / 100 : 0,
+          maxPrice: item.maxPrice ? item.maxPrice / 100 : 0,
           status: item.status === null || item.status === undefined ? '--' : +item.status,
           wishingResult: item.wishResult === null || item.wishResult === undefined ? '--' : +item.wishResult
         }

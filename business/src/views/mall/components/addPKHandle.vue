@@ -68,34 +68,29 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 60,
     fixed: 'left'
   },
   {
     title: 'PK 手名称',
     dataIndex: 'name',
-    key: 'name',
     width: 220,
     fixed: 'left'
   },
   {
     title: '手机号码',
     dataIndex: 'phone',
-    key: 'phone',
     width: 120
   },
   {
     title: '胜率（%）',
     dataIndex: 'winningPercentage',
-    key: 'winningPercentage',
     width: 100,
     sorter: (a: IPKHandle, b: IPKHandle) => a.winningPercentage - b.winningPercentage
   },
   {
     title: '积分',
     dataIndex: 'points',
-    key: 'points',
     width: 100,
     sorter: (a: IPKHandle, b: IPKHandle) => a.points - b.points
   }

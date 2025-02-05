@@ -37,6 +37,10 @@
   border-right: 1px solid #aaa;
 }
 
+.origin-price {
+  text-decoration: line-through;
+}
+
 .goods-desc-item .key {
   color: #999;
 }

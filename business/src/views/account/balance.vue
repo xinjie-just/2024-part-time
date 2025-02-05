@@ -105,25 +105,21 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 80
   },
   {
     title: '金额（元）',
     dataIndex: 'sum',
-    key: 'sum',
     width: 120
   },
   {
     title: '交易时间',
     dataIndex: 'time',
-    key: 'time',
     width: 120
   },
   {
     title: '来源',
     dataIndex: 'source',
-    key: 'source',
     width: 120
   }
 ];

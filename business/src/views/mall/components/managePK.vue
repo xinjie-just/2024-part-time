@@ -37,8 +37,8 @@
           <template #addonAfter>（元）</template>
         </a-input-number>
       </a-form-item>
-      <a-form-item label="竞猜小价" name="miniPrice">
-        <a-input-number v-model:value="form.miniPrice" :min="0.01" :max="99999" :precision="2" placeholder="请输入竞猜小价"
+      <a-form-item label="竞猜小价" name="minPrice">
+        <a-input-number v-model:value="form.minPrice" :min="0.01" :max="99999" :precision="2" placeholder="请输入竞猜小价"
           style="width: 100%">
           <template #addonBefore>￥</template>
           <template #addonAfter>（元）</template>
@@ -93,7 +93,7 @@ const form: UnwrapRef<IManagePK> = reactive({
   originalPrice: 0.01,
   settlementPrice: 0.01,
   currentPrice: 0.01,
-  miniPrice: 0.01,
+  minPrice: 0.01,
   digit: 1,
   times: 1 // 分母不能为 0，所以从 0 开始
 });
@@ -109,7 +109,7 @@ const rules: Record<string, Rule[]> = {
   originalPrice: [{ required: true, message: '请输入原价', trigger: 'change' }],
   settlementPrice: [{ required: true, message: '请输入结算价', trigger: 'change' }],
   currentPrice: [{ required: true, message: '请输入现价', trigger: 'change' }],
-  miniPrice: [{ required: true, message: '请输入竞猜小价', trigger: 'change' }],
+  minPrice: [{ required: true, message: '请输入竞猜小价', trigger: 'change' }],
   digit: [{ required: true, message: '请输入竞猜位数', trigger: 'change' }],
   times: [{ required: true, message: '请输入 PK 次数', trigger: 'change' }],
   introduce: [
@@ -124,11 +124,11 @@ const disabled = computed((): boolean => {
   const originalPriceDisabled = !values?.originalPrice;
   const settlementPriceDisabled = !values?.settlementPrice;
   const currentPriceDisabled = !values?.currentPrice;
-  const miniPriceDisabled = !values?.miniPrice;
+  const minPriceDisabled = !values?.minPrice;
   const digitDisabled = !values?.digit;
   const timeDisabled = !values?.times;
 
-  const price = (values?.miniPrice * 10 ** values?.digit) / values?.times;
+  const price = (values?.minPrice * 10 ** values?.digit) / values?.times;
   const priceDisabled = values?.settlementPrice > price;
   return (
     nameDisabled ||
@@ -136,7 +136,7 @@ const disabled = computed((): boolean => {
     originalPriceDisabled ||
     settlementPriceDisabled ||
     currentPriceDisabled ||
-    miniPriceDisabled ||
+    minPriceDisabled ||
     digitDisabled ||
     timeDisabled ||
     priceDisabled
@@ -160,10 +160,10 @@ const getPKDetailsFn = () => {
       form.name = result.name;
       form.title = result.title;
       form.introduce = result.introduction;
-      form.originalPrice = result.price;
-      form.settlementPrice = result.settlePrice;
-      form.currentPrice = result.currentPrice;
-      form.miniPrice = result.guessSmallPrice;
+      form.originalPrice = result.price ? result.price / 100 : 0;
+      form.settlementPrice = result.settlePrice ? result.settlePrice / 100 : 0;
+      form.currentPrice = result.currentPrice ? result.currentPrice / 100 : 0;
+      form.minPrice = result.guessSmallPrice ? result.guessSmallPrice / 100 : 0;
       form.digit = result.guessDigit;
       form.times = result.pkNum;
     })
@@ -181,11 +181,11 @@ const onSubmit = async (): Promise<void> => {
     const params: ISavePKReq = {
       name: form.name, // 商品名称
       title: form.title, // 商品标题
-      price: form.originalPrice, // 商品价格
-      settlePrice: form.settlementPrice, // 结算价格
-      currentPrice: form.currentPrice, // 当前价格
+      price: form.originalPrice * 100, // 商品价格
+      settlePrice: form.settlementPrice * 100, // 结算价格
+      currentPrice: form.currentPrice * 100, // 当前价格
       guessDigit: form.digit, // 竞猜位数
-      guessSmallPrice: form.miniPrice, // 竞猜小价
+      guessSmallPrice: form.minPrice * 100, // 竞猜小价
       pkNum: form.times, // PK次数
       introduction: form.introduce // 商品说明
     };

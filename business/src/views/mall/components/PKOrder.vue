@@ -97,21 +97,18 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 60,
     fixed: 'left'
   },
   {
     title: '订单编号',
     dataIndex: 'orderId',
-    key: 'orderId',
     width: 160,
     fixed: 'left'
   },
   {
     title: 'PK 品名称',
     dataIndex: 'PKName',
-    key: 'PKName',
     width: 220,
     ellipsis: true,
     fixed: 'left'
@@ -119,7 +116,6 @@ const columns = [
   {
     title: '用户手机号码',
     dataIndex: 'phone',
-    key: 'phone',
     width: 110
   },
   {
@@ -131,30 +127,25 @@ const columns = [
   {
     title: 'PK 品竞猜小价（元）',
     dataIndex: 'PKSum',
-    key: 'PKSum',
     width: 150
   },
   {
     title: '商品金额（元）',
     dataIndex: 'goodsSum',
-    key: 'goodsSum',
     width: 120
   },
   {
     title: '免费赠送',
     dataIndex: 'sendFree',
-    key: 'sendFree',
     width: 90
   },
   {
     title: '发货状态',
     dataIndex: 'status',
-    key: 'status',
     width: 100
   },
   {
     title: '操作',
-    key: 'action',
     dataIndex: 'action',
     width: 80,
     fixed: 'right'
@@ -214,8 +205,8 @@ const getList = (): void => {
           PKName: item.productName,
           PKPhone: item.playerPhone,
           phone: item.userPhone,
-          PKSum: item.guessSmallPrice,
-          goodsSum: item.price,
+          PKSum: item.guessSmallPrice ? item.guessSmallPrice / 100 : 0,
+          goodsSum: item.price ? item.price / 100 : 0,
           sendFree: +item.freeGift,
           status: +item.deliverGoods
         }

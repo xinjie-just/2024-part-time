@@ -79,38 +79,32 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 70,
     fixed: 'left'
   },
   {
     title: '姓名',
     dataIndex: 'name',
-    key: 'name',
     width: 140,
     fixed: 'left'
   },
   {
     title: '登录用户名',
     dataIndex: 'loginName',
-    key: 'loginName',
     width: 140
   },
   {
     title: '手机号码',
     dataIndex: 'phone',
-    key: 'phone',
     width: 130
   },
   {
     title: '注册时间',
     dataIndex: 'registrationTime',
-    key: 'registrationTime',
     width: 160
   },
   {
     title: '操作',
-    key: 'action',
     dataIndex: 'action',
     width: 130,
     fixed: 'right'

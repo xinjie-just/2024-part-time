@@ -100,14 +100,12 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 70,
     fixed: 'left'
   },
   {
     title: '商品名称',
     dataIndex: 'goodsName',
-    key: 'goodsName',
     width: 220,
     ellipsis: true,
     fixed: 'left'
@@ -115,43 +113,36 @@ const columns = [
   {
     title: '原价（元）',
     dataIndex: 'originalPrice',
-    key: 'originalPrice',
     width: 110
   },
   {
     title: '结算价（元）',
     dataIndex: 'settlementPrice',
-    key: 'settlementPrice',
     width: 110
   },
   {
     title: '现价（元）',
     dataIndex: 'currentPrice',
-    key: 'currentPrice',
     width: 110
   },
   {
     title: '竞猜小价（元）',
-    dataIndex: 'miniPrice',
-    key: 'miniPrice',
+    dataIndex: 'minPrice',
     width: 120
   },
   {
     title: '二维码',
     dataIndex: 'QRCode',
-    key: 'QRCode',
     width: 100
   },
   {
     title: '状态',
     dataIndex: 'state',
-    key: 'state',
     width: 80
   },
   {
     title: '操作',
     dataIndex: 'action',
-    key: 'action',
     width: 160,
     fixed: 'right'
   }
@@ -212,10 +203,10 @@ const getList = (): void => {
           id: item.id,
           goodsName: item.name || "",
           state: item.state,
-          originalPrice: item.price || 0,
-          settlementPrice: item.settlePrice || 0,
-          currentPrice: item.currentPrice || 0,
-          miniPrice: item.guessSmallPrice || 0,
+          originalPrice: item.price ? item.price / 100 : 0,
+          settlementPrice: item.settlePrice ? item.settlePrice / 100 : 0,
+          currentPrice: item.currentPrice ? item.currentPrice / 100 : 0,
+          minPrice: item.guessSmallPrice ? item.guessSmallPrice / 100 : 0,
           QRCode: item?.QRCode || ""
         }
       })

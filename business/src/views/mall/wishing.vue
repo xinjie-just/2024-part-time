@@ -87,14 +87,12 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 80,
     fixed: 'left'
   },
   {
     title: '心愿名称',
     dataIndex: 'wishingName',
-    key: 'wishingName',
     width: 220,
     ellipsis: true,
     fixed: 'left'
@@ -102,19 +100,16 @@ const columns = [
   {
     title: '参考价值（元）',
     dataIndex: 'referenceValue',
-    key: 'referenceValue',
     width: 110
   },
   {
     title: '状态',
     dataIndex: 'state',
-    key: 'state',
     width: 80
   },
   {
     title: '操作',
     dataIndex: 'action',
-    key: 'action',
     width: 160,
     fixed: 'right'
   }
@@ -162,7 +157,7 @@ const getList = (): void => {
         return {
           id: item.id,
           wishingName: item.name || "",
-          referenceValue: item.price || 0,
+          referenceValue: item.price ? item.price / 100 : 0,
           QRCode: item?.QRCode || "",
           state: item.state
         }

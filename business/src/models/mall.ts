@@ -32,7 +32,7 @@ export interface IManagePK {
   originalPrice: number;
   settlementPrice: number;
   currentPrice: number;
-  miniPrice: number;
+  minPrice: number;
   digit: number;
   times: number;
 }
@@ -61,7 +61,7 @@ export interface IManageScan {
   originalPrice: number;
   settlementPrice: number;
   currentPrice: number;
-  miniPrice: number;
+  minPrice: number;
   digit: number;
 }
 
@@ -77,7 +77,7 @@ export interface IManageWishing {
   title: string;
   introduce: string;
   referenceValue: number;
-  miniPrice: number;
+  minPrice: number;
   digit: number;
 }
 
@@ -121,8 +121,8 @@ export interface IWishingOrder {
   orderId: string;
   wishingName: string;
   phone: string;
-  miniSum: number;
-  bigSum: number;
+  minPrice: number;
+  maxPrice: number;
   status: number | string; // 1 成，0 否
   wishingResult: number | string; // 1 已实现，0 未实现
 }

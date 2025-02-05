@@ -90,31 +90,26 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 70,
     fixed: 'left'
   },
   {
     title: '开户银行',
     dataIndex: 'backName',
-    key: 'backName',
     width: 120
   },
   {
     title: '账户姓名',
     dataIndex: 'cardUserName',
-    key: 'cardUserName',
     width: 100
   },
   {
     title: '银行卡号',
     dataIndex: 'cardNumber',
-    key: 'cardNumber',
     width: 160
   },
   {
     title: '操作',
-    key: 'action',
     dataIndex: 'action',
     width: 90,
     fixed: 'right'

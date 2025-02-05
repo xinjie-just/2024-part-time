@@ -71,21 +71,18 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 60,
     fixed: 'left'
   },
   {
     title: '订单编号',
     dataIndex: 'orderId',
-    key: 'orderId',
     width: 160,
     fixed: 'left'
   },
   {
     title: '扫一扫名称',
     dataIndex: 'scanName',
-    key: 'scanName',
     width: 220,
     ellipsis: true,
     fixed: 'left'
@@ -93,19 +90,16 @@ const columns = [
   {
     title: '用户手机号码',
     dataIndex: 'phone',
-    key: 'phone',
     width: 110
   },
   {
     title: '商品金额（元）',
     dataIndex: 'goodsSum',
-    key: 'goodsSum',
     width: 110
   },
   {
     title: '免费赠送',
     dataIndex: 'sendFree',
-    key: 'sendFree',
     width: 90
   }
 ];
@@ -159,7 +153,7 @@ const getList = (): void => {
           orderId: item.orderNumber, // 订单编号
           scanName: item.productName, // 商品名称
           phone: item.userPhone, // 用户手机号
-          goodsSum: item.price, // 商品价格
+          goodsSum: item.price ? item.price / 100 : 0, // 商品价格
           sendFree: item.freeGift === null || item.freeGift === undefined ? '--' : +item.freeGift // 免费赠送
         }
       });

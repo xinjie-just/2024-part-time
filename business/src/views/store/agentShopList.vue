@@ -96,14 +96,12 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 80,
     fixed: 'left'
   },
   {
     title: '店铺名称',
     dataIndex: 'storeName',
-    key: 'storeName',
     width: 380,
     ellipsis: true,
     fixed: 'left'
@@ -111,30 +109,25 @@ const columns = [
   {
     title: '手机号码',
     dataIndex: 'phone',
-    key: 'phone',
     width: 140
   },
   {
     title: '注册时间',
     dataIndex: 'registrationTime',
-    key: 'registrationTime',
     width: 160
   },
   {
     title: '店铺性质',
     dataIndex: 'property',
-    key: 'property',
     width: 90
   },
   {
     title: '店铺状态',
     dataIndex: 'status',
-    key: 'status',
     width: 110
   },
   {
     title: '操作',
-    key: 'action',
     dataIndex: 'action',
     width: 160,
     fixed: 'right'

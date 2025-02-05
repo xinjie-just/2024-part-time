@@ -13,7 +13,7 @@
           <view class="title van-multi-ellipsis--l2">{{item.title}}</view>
         </view>
         <view class="goods-desc-list">
-          <view class="goods-desc-item">
+          <view class="goods-desc-item origin-price">
             <view class="key">原价：</view>
             <view class="value">{{item.price / 100}} 元</view>
           </view>
