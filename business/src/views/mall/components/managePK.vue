@@ -16,6 +16,14 @@
       <a-form-item label="商品标题" name="title">
         <a-input v-model:value.trim="form.title" showCount :maxlength="200" allow-clear placeholder="2-200 位字符" />
       </a-form-item>
+      <a-form-item label="商品图片" name="img">
+        <a-upload v-model:file-list="fileList" list-type="picture" :before-upload="beforeUpload">
+          <a-button>
+            <UploadOutlined />
+            上传
+          </a-button>
+        </a-upload>
+      </a-form-item>
       <a-form-item label="原价" name="originalPrice">
         <a-input-number v-model:value="form.originalPrice" :min="0.01" :max="9999" :precision="2" placeholder="请输入原价"
           style="width: 100%">
@@ -74,6 +82,8 @@ import { ISavePKReq } from '@/services/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue';
+import { UploadOutlined } from '@ant-design/icons-vue';
+import type { UploadProps } from 'ant-design-vue';
 
 const richText = defineAsyncComponent(() => import('@/components/richText.vue'));
 const viewIntroduce = defineAsyncComponent(() => import('@/components/viewIntroduce.vue'));
@@ -83,12 +93,14 @@ const props = defineProps<{ isEdit: boolean; goodsId: number }>();
 
 const visible = ref(true);
 const viewVisible = ref(false);
+const fileList = ref<UploadProps['fileList']>([]);;
 
 const formRef = ref();
 const loading = ref(false);
 const form: UnwrapRef<IManagePK> = reactive({
   name: '',
   title: '',
+  img: '',
   introduce: '',
   originalPrice: 0.01,
   settlementPrice: 0.01,
@@ -159,6 +171,7 @@ const getPKDetailsFn = () => {
       const result = res?.data;
       form.name = result.name;
       form.title = result.title;
+      form.img = result.img;
       form.introduce = result.introduction;
       form.originalPrice = result.price ? result.price / 100 : 0;
       form.settlementPrice = result.settlePrice ? result.settlePrice / 100 : 0;
@@ -181,6 +194,7 @@ const onSubmit = async (): Promise<void> => {
     const params: ISavePKReq = {
       name: form.name, // 商品名称
       title: form.title, // 商品标题
+      img: form.img, // 商品图片
       price: form.originalPrice * 100, // 商品价格
       settlePrice: form.settlementPrice * 100, // 结算价格
       currentPrice: form.currentPrice * 100, // 当前价格
@@ -205,6 +219,12 @@ const onSubmit = async (): Promise<void> => {
     console.log('表单验证失败', error);
     loading.value = false;
   }
+};
+
+const beforeUpload: UploadProps['beforeUpload'] = file => {
+  fileList.value = [...(fileList.value || []), file];
+  return false;
+  // TODO: 上传图片
 };
 
 const onViewViewIntroduce = (): void => {

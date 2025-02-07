@@ -34,6 +34,7 @@ export interface IGetPKDetailsRes {
  */
 export interface ISavePKReq {
   id?: number; // 商品ID
+  img?: string; // 商品图片
   name: string; // 商品名称
   title: string; // 商品标题
   price: number; // 商品价格

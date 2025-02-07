@@ -28,6 +28,7 @@ export interface IPKOutOfSale {
 export interface IManagePK {
   name: string;
   title: string;
+  img: string;
   introduce: string;
   originalPrice: number;
   settlementPrice: number;
