@@ -47,8 +47,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       proxy: {
         // 为开发服务器配置自定义代理规则。
         '/web': {
-          // target: 'https://www.00goo.com', // 测试环境
-          target: 'https://www.00goo.com',
+          target: 'https://www.00goo.com', // 测试环境
+          // target: 'https://54b7d2a1.r36.cpolar.top',
           changeOrigin: true
           // rewrite: (path) => path.replace(/^\/web/, '')
         }

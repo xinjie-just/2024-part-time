@@ -9,7 +9,7 @@
     <view wx:else class="list">
       <view class="item van-hairline--bottom" wx:for="{{list}}" wx:key="id">
         <view data-id="{{item.id}}" bind:tap="onViewDetails">
-          <image mode="aspectFill" src="{{item.url || './images/0yuan.jpg'}}" class="img"></image>
+          <image mode="aspectFill" src="{{item.img || './images/0yuan.jpg'}}" class="img"></image>
           <view class="title van-multi-ellipsis--l2">{{item.title}}</view>
         </view>
         <view class="goods-desc-list">

@@ -48,6 +48,7 @@ declare module 'vue' {
     ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATooltip: typeof import('ant-design-vue/es')['Tooltip']
     ATree: typeof import('ant-design-vue/es')['Tree']
+    AUpload: typeof import('ant-design-vue/es')['Upload']
     BaiduMap: typeof import('./src/components/baiduMap.vue')['default']
     RichText: typeof import('./src/components/richText.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

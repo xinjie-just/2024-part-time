@@ -83,7 +83,7 @@ Page({
         },
         () => {
           wx.redirectTo({
-            url: `../../payment/digital-guessing/index?source=freePurchase&orderId=${this.data.orderId}`,
+            url: `/pages/payment/digital-guessing/index?source=freePurchase&orderId=${this.data.orderId}`,
           });
         },
       );
@@ -100,7 +100,7 @@ Page({
         },
         () => {
           wx.redirectTo({
-            url: `../../payment/digital-guessing/index?source=freePurchase&orderId=${this.data.orderId}`,
+            url: `/pages/payment/digital-guessing/index?source=freePurchase&orderId=${this.data.orderId}`,
           });
         },
       );
@@ -131,7 +131,7 @@ Page({
       title: `${this.data.detail.title}`,
       description: `支付 ${this.data.detail.guessSmallPrice / 100} 元即可参与 0 元购`,
       path: '/pages/free-purchase/goods-details/index',
-      imageUrl: this.data.detail.url || '../images/0yuan.jpg',
+      imageUrl: this.data.detail.img || '../images/0yuan.jpg',
     };
     return shareInfo;
   },

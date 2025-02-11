@@ -257,7 +257,7 @@ Page({
   },
 
   endFinished() {
-    Toast('时间到，出拳结束');
+    Toast('时间到，出拳结束'); // TODO:
   },
   startFinished() {
     freePruchaseService.createPKDTB();

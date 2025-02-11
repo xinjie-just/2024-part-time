@@ -119,7 +119,7 @@ Page({
   },
   onToPKField() {
     wx.redirectTo({
-      url: '../common/p-k-field/index',
+      url: '/pages/common/p-k-field/index',
     });
   },
 

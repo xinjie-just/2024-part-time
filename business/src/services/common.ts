@@ -24,7 +24,7 @@ export const sendPhoneCode = (data: ISendPhoneCodeReq) => {
   });
 };
 
-export const uploadFile = (data: IUploadFileReq) => {
+export const uploadFile = (data: any) => {
   return request<{}>({
     url: API.uploadFile,
     method: 'post',

@@ -134,7 +134,7 @@ Page({
       message: '支付成功',
       onClose: () => {
         wx.redirectTo({
-          url: `../../payment/digital-guessing/index?source=wishing&orderId=${this.data.orderId}`,
+          url: `/pages/payment/digital-guessing/index?source=wishing&orderId=${this.data.orderId}`,
         });
       },
     });

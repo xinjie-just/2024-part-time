@@ -17,8 +17,9 @@
         <a-input v-model:value.trim="form.title" showCount :maxlength="200" allow-clear placeholder="2-200 位字符" />
       </a-form-item>
       <a-form-item label="商品图片" name="img">
-        <a-upload v-model:file-list="fileList" list-type="picture" :before-upload="beforeUpload">
-          <a-button>
+        <a-upload v-model:file-list="fileList" :max-count="1" :accept="acceptType" list-type="picture"
+          :action="uploadFilePath">
+          <a-button :loading="uploading">
             <UploadOutlined />
             上传
           </a-button>
@@ -77,7 +78,7 @@
 
 <script setup lang="ts">
 import { IManagePK } from '@/models';
-import { getPKDetails, savePK } from '@/services';
+import { getPKDetails, savePK, uploadFile, uploadFilePath } from '@/services';
 import { ISavePKReq } from '@/services/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
@@ -93,7 +94,10 @@ const props = defineProps<{ isEdit: boolean; goodsId: number }>();
 
 const visible = ref(true);
 const viewVisible = ref(false);
-const fileList = ref<UploadProps['fileList']>([]);;
+const fileList = ref<UploadProps['fileList']>([]);
+const uploading = ref(false);
+const acceptType = ".jpeg,.jpg,.png";
+const url = "https://www.00goo.com";
 
 const formRef = ref();
 const loading = ref(false);
@@ -222,9 +226,36 @@ const onSubmit = async (): Promise<void> => {
 };
 
 const beforeUpload: UploadProps['beforeUpload'] = file => {
-  fileList.value = [...(fileList.value || []), file];
+  const fileType = file.name
+    .substring(file.name.lastIndexOf(".") + 1)
+    .toLowerCase();
+  if (!acceptType.includes(fileType)) {
+    message.error("你上传的图片不符合格式，从重新上传！");
+    return false;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    message.error("你上传的图片超过了 5M，从重新上传！");
+    return false;
+  }
+  fileList.value = [file];
+  // onUpload();
   return false;
   // TODO: 上传图片
+};
+
+const onUpload = (): void => {
+  const formData = new FormData();
+  formData.append("file", fileList.value?.[0] as any);
+  uploading.value = true;
+
+  uploadFile({ file: formData })
+    .then((res) => {
+      console.log("res", res);
+      message.success('上传成功');
+    })
+    .finally(() => {
+      uploading.value = false;
+    })
 };
 
 const onViewViewIntroduce = (): void => {
