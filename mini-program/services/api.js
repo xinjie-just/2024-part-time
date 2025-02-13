@@ -65,8 +65,8 @@ const API = {
     balancePay: '/pay-order/account', // 余额支付
   },
   getAPIUrl: (options) => {
-    const origin = 'https://00goo.com/program'; // 正式
-    // const origin = 'https://69085f97.r36.cpolar.top/program'; // 测试
+    // const origin = 'https://00goo.com/program'; // 正式
+    const origin = 'https://6fa8d689.r36.cpolar.top/program'; // 测试
     const route = API.address[options.apiKey];
     const result = `${origin}${route}`;
     return result;

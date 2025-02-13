@@ -105,6 +105,7 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
+    key: 'index',
     width: 80
   },
   {

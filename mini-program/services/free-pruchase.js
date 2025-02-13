@@ -155,7 +155,7 @@ export const freePruchaseService = {
   getPKRPSResult(params) {
     return request({
       apiKey: 'getPKRPSResult',
-      method: 'POST',
+      method: 'GET',
       data: params,
     });
   },
@@ -203,7 +203,7 @@ export const freePruchaseService = {
   getPKDTBResult(params) {
     return request({
       apiKey: 'getPKDTBResult',
-      method: 'POST',
+      method: 'GET',
       data: params,
     });
   },

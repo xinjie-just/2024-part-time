@@ -20,9 +20,9 @@ const menuData = [
   ],
   [
     {
-      title: '申请区域管理',
-      url: './apply-for-area-management/index',
-      type: 'apply-for-area-management',
+      title: '我的地址',
+      url: './address/index',
+      type: 'address',
     },
     {
       title: '如何获得积分',

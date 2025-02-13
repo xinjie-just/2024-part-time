@@ -108,3 +108,21 @@
 .match-tips .text {
   margin-left: 16rpx;
 }
+
+.result-tips {
+  margin-bottom: 48rpx;
+  font-size: 24rpx;
+  text-align: center;
+  line-height: 1.6em;
+  padding: 16rpx 24rpx;
+}
+
+.result-tips.success {
+  color: #b7eb8f;
+  background-color: #f6ffed;
+}
+
+.result-tips.fail {
+  color: #ed6a0c;
+  background-color: #fffbe8;
+}

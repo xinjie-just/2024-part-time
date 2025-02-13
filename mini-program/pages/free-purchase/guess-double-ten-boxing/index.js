@@ -1,6 +1,7 @@
 import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
 import { freePruchaseService } from '../../../services/common.js';
+import { commonService } from '../../../services/common.js';
 
 const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
 const duration = 300 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
@@ -69,7 +70,7 @@ Page({
     }
   },
   async setOptionsData(gameInfo) {
-    const systemTime = await freePruchaseService.getSystemTime();
+    const systemTime = await commonService.getSystemTime();
     const gameStartTime = gameInfo.startTimeMillis;
     const startCountdown = gameStartTime - systemTime;
     this.setData(
@@ -130,7 +131,7 @@ Page({
       .then(async (result) => {
         if (result?.startTimeMillis && result?.gameId) {
           // 匹配成功，获取到游戏信息
-          const systemTime = await freePruchaseService.getSystemTime();
+          const systemTime = await commonService.getSystemTime();
           const gameStartTime = result.startTimeMillis;
           const startCountdown = gameStartTime - systemTime;
           this.setData({
@@ -193,7 +194,7 @@ Page({
 
   // 获取对局信息
   getPKDTBArenaInfoFn() {
-    const params = { orderGameId: this.data.orderGameId };
+    const params = { gameId: this.data.gameId };
     freePruchaseService
       .getPKDTBArenaInfo(params)
       .then((result) => {
@@ -231,7 +232,7 @@ Page({
   },
 
   startPKDTBFn() {
-    const params = { orderGameId: this.data.orderGameId };
+    const params = { gameId: this.data.gameId };
     freePruchaseService.startPKDTB(params).then(() => {
       Toast({
         type: 'success',
@@ -257,7 +258,9 @@ Page({
   },
 
   endFinished() {
-    Toast('时间到，出拳结束'); // TODO:
+    if (!this.data.selected) {
+      Toast('时间到，出拳结束');
+    }
   },
   startFinished() {
     freePruchaseService.createPKDTB();
@@ -278,14 +281,14 @@ Page({
     const params = {
       punch: +this.data.ownRadio,
       callPunch: this.data.ownCallPunch,
-      orderGameId: this.data.orderGameId,
+      gameId: this.data.gameId,
     };
     freePruchaseService
       .submitPKDTB(params)
       .then(() => {
         Toast({
           type: 'loading',
-          message: '提交成功，正在查询结果',
+          message: '提交成功，正在查询结果，请耐心等待',
           duration: 0,
         });
         setTimeout(() => {

@@ -49,6 +49,8 @@
         </van-button>
       </block>
       <block wx:if="{{source === 'wishing'}}">
+        <view wx:if="{{result === false}}" class="result-tips success">每日一愿，终可实现！</view>
+        <view wx:if="{{result === true}}" class="result-tips fail">您是幸运之人，愿望可期！</view>
         <van-button wx:if="{{result !== null}}" round type="info" bind:click="onExit">
           退出
         </van-button>

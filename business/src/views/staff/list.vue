@@ -79,6 +79,7 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
+    key: 'index',
     width: 70,
     fixed: 'left'
   },
@@ -106,6 +107,7 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
+    key: 'action',
     width: 130,
     fixed: 'right'
   }

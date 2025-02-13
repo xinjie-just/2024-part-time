@@ -1,6 +1,7 @@
 import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
+import { commonService } from '../../../services/common.js';
 
 const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
 const duration = 300 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
@@ -66,7 +67,7 @@ Page({
     }
   },
   async setOptionsData(gameInfo) {
-    const systemTime = await freePruchaseService.getSystemTime();
+    const systemTime = await commonService.getSystemTime();
     const gameStartTime = gameInfo.startTimeMillis;
     const startCountdown = gameStartTime - systemTime;
     this.setData(
@@ -127,7 +128,7 @@ Page({
       .then(async (result) => {
         if (result?.startTimeMillis && result?.gameId) {
           // 匹配成功，获取到游戏信息
-          const systemTime = await freePruchaseService.getSystemTime();
+          const systemTime = await commonService.getSystemTime();
           const gameStartTime = result.startTimeMillis;
           const startCountdown = gameStartTime - systemTime;
           this.setData(
@@ -179,7 +180,7 @@ Page({
   },
 
   startPKRPSFn() {
-    const params = { orderGameId: this.data.orderGameId };
+    const params = { gameId: this.data.gameId };
     freePruchaseService.startPKRPS(params).then(() => {
       Toast({
         type: 'success',
@@ -207,7 +208,7 @@ Page({
 
   // 获取对局信息
   getPKRPSArenaInfoFn() {
-    const params = { orderGameId: this.data.orderGameId };
+    const params = { gameId: this.data.gameId };
     freePruchaseService
       .getPKRPSArenaInfo(params)
       .then((result) => {
@@ -258,7 +259,9 @@ Page({
   },
 
   endFinished() {
-    Toast('时间到，出拳结束'); // TODO:
+    if (!this.data.selected) {
+      Toast('时间到，出拳结束');
+    }
   },
   startFinished() {
     freePruchaseService.createPKRPS();
@@ -278,14 +281,14 @@ Page({
     });
     const params = {
       punch: this.data.ownRadio,
-      orderGameId: this.data.orderGameId,
+      gameId: this.data.gameId,
     };
     freePruchaseService
       .submitPKRPS(params)
       .then(() => {
         Toast({
           type: 'loading',
-          message: '提交成功，正在查询结果',
+          message: '提交成功，正在查询结果，请耐心等待',
           duration: 0,
         });
         setTimeout(() => {
@@ -302,7 +305,7 @@ Page({
   // 石头剪刀布，查询游戏结果
   getPKRPSResultFn() {
     const params = {
-      orderGameId: this.data.orderGameId,
+      gameId: this.data.gameId,
     };
     freePruchaseService
       .getPKRPSResult(params)

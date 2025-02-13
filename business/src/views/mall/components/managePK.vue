@@ -16,13 +16,24 @@
       <a-form-item label="商品标题" name="title">
         <a-input v-model:value.trim="form.title" showCount :maxlength="200" allow-clear placeholder="2-200 位字符" />
       </a-form-item>
-      <a-form-item label="商品图片" name="img">
-        <a-upload v-model:file-list="fileList" :max-count="1" :accept="acceptType" list-type="picture"
-          :action="uploadFilePath">
+      <a-form-item name="img">
+        <template #label>
+          <a-tooltip placement="topLeft">
+            <template #title>
+              <p>图片大小：5M</p>
+              <p>图片格式：jpg、jpeg、png</p>
+            </template>
+            商品图片
+            <QuestionOutlined />
+          </a-tooltip>
+        </template>
+        <a-upload v-model:file-list="fileList" :max-count="1" :accept="acceptType" :beforeUpload="beforeUpload"
+          list-type="picture" :action="uploadFilePath" :headers="{ token }" @change="onChangeFile">
           <a-button :loading="uploading">
             <UploadOutlined />
             上传
           </a-button>
+          <span></span>
         </a-upload>
       </a-form-item>
       <a-form-item label="原价" name="originalPrice">
@@ -78,13 +89,13 @@
 
 <script setup lang="ts">
 import { IManagePK } from '@/models';
-import { getPKDetails, savePK, uploadFile, uploadFilePath } from '@/services';
+import { getPKDetails, savePK, uploadFilePath } from '@/services';
 import { ISavePKReq } from '@/services/models';
-import { message } from 'ant-design-vue';
+import { message, Upload } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue';
-import { UploadOutlined } from '@ant-design/icons-vue';
-import type { UploadProps } from 'ant-design-vue';
+import { UploadOutlined, QuestionOutlined } from '@ant-design/icons-vue';
+import type { UploadChangeParam, UploadProps } from 'ant-design-vue';
 
 const richText = defineAsyncComponent(() => import('@/components/richText.vue'));
 const viewIntroduce = defineAsyncComponent(() => import('@/components/viewIntroduce.vue'));
@@ -97,7 +108,8 @@ const viewVisible = ref(false);
 const fileList = ref<UploadProps['fileList']>([]);
 const uploading = ref(false);
 const acceptType = ".jpeg,.jpg,.png";
-const url = "https://www.00goo.com";
+const token = localStorage.getItem('token');
+const imgUrl = ref('');
 
 const formRef = ref();
 const loading = ref(false);
@@ -160,7 +172,6 @@ const disabled = computed((): boolean => {
 });
 
 onMounted(() => {
-  console.log('goodsId', props.goodsId);
   if (props.isEdit) {
     getPKDetailsFn();
   }
@@ -194,11 +205,14 @@ const onSubmit = async (): Promise<void> => {
   loading.value = true;
   try {
     await formRef.value?.validate();
-
+    let origin = location.origin;
+    if (origin.includes('localhost')) {
+      origin = 'https://www.00goo.com';
+    }
     const params: ISavePKReq = {
       name: form.name, // 商品名称
       title: form.title, // 商品标题
-      img: form.img, // 商品图片
+      img: `${origin}${imgUrl.value}`, // 商品图片
       price: form.originalPrice * 100, // 商品价格
       settlePrice: form.settlementPrice * 100, // 结算价格
       currentPrice: form.currentPrice * 100, // 当前价格
@@ -231,31 +245,21 @@ const beforeUpload: UploadProps['beforeUpload'] = file => {
     .toLowerCase();
   if (!acceptType.includes(fileType)) {
     message.error("你上传的图片不符合格式，从重新上传！");
-    return false;
+    return false || Upload.LIST_IGNORE;
   }
   if (file.size > 5 * 1024 * 1024) {
     message.error("你上传的图片超过了 5M，从重新上传！");
-    return false;
+    return false || Upload.LIST_IGNORE;
   }
-  fileList.value = [file];
-  // onUpload();
-  return false;
-  // TODO: 上传图片
 };
 
-const onUpload = (): void => {
-  const formData = new FormData();
-  formData.append("file", fileList.value?.[0] as any);
-  uploading.value = true;
-
-  uploadFile({ file: formData })
-    .then((res) => {
-      console.log("res", res);
-      message.success('上传成功');
-    })
-    .finally(() => {
-      uploading.value = false;
-    })
+const onChangeFile = ({ file, fileList }: UploadChangeParam) => {
+  if (file.status !== 'uploading') {
+    console.log(file, fileList);
+    console.log(file.response);
+    console.log(file.response.data);
+    imgUrl.value = file.response.data;
+  }
 };
 
 const onViewViewIntroduce = (): void => {

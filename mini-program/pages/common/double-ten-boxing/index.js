@@ -197,7 +197,9 @@ Page({
   },
 
   endFinished() {
-    Toast('时间到，出拳结束'); // TODO:
+      if (!this.data.selected) {
+        Toast('时间到，出拳结束');
+      }
   },
   startFinished() {
     commonService.gameDTBStart();
@@ -224,7 +226,7 @@ Page({
       .then(() => {
         Toast({
           type: 'loading',
-          message: '提交成功，正在查询结果',
+          message: '提交成功，正在查询结果，请耐心等待',
           duration: 0,
         });
         setTimeout(() => {

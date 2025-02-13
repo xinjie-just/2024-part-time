@@ -19,6 +19,7 @@
     "pages/mine/apply-for-area-management/index",
     "pages/mine/how-to-earn-points/index",
     "pages/mine/help-center/index",
+    "pages/mine/address/index",
     "pages/payment/payment-method/index",
     "pages/payment/digital-guessing/index",
     "pages/login/index",

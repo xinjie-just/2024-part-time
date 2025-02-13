@@ -155,6 +155,11 @@ Page({
         },
       );
     } else if (res.stage === 3) {
+      if (this.data.result) {
+        Toast('恭喜你猜中了，直接进入 PK 环节');
+      } else {
+        Toast('很遗憾未猜中');
+      }
       wx.redirectTo({
         url: `/pages/free-purchase/guess-p-k-field/index?orderId=${this.data.orderId}`,
       });
