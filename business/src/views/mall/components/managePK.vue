@@ -6,7 +6,7 @@
     <a-alert type="info" class="alert">
       <template #message>
         <p>现价是指线上销售价</p>
-        <p>结算价必须 ≤ 竞猜小价 * 10 ^ 竞猜位数 / PK 次数，否则不能提交</p>
+        <p>结算价必须 ≤ 10 ^ 竞猜位数 * 竞猜小价 / 0.5 ^ PK 次数 * 2，否则不能提交</p>
       </template>
     </a-alert>
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 3 }">
@@ -69,7 +69,7 @@
           style="width: 100%" />
       </a-form-item>
       <a-form-item label="PK 次数" name="times">
-        <a-input-number v-model:value="form.times" :min="1" :max="99" :precision="0" placeholder="请输入 PK 次数"
+        <a-input-number v-model:value="form.times" :min="0" :max="99" :precision="0" placeholder="请输入 PK 次数"
           style="width: 100%" />
       </a-form-item>
       <a-form-item label="商品介绍" name="introduce">
@@ -123,7 +123,7 @@ const form: UnwrapRef<IManagePK> = reactive({
   currentPrice: 0.01,
   minPrice: 0.01,
   digit: 1,
-  times: 1 // 分母不能为 0，所以从 0 开始
+  times: 1
 });
 const rules: Record<string, Rule[]> = {
   name: [
@@ -156,7 +156,7 @@ const disabled = computed((): boolean => {
   const digitDisabled = !values?.digit;
   const timeDisabled = !values?.times;
 
-  const price = (values?.minPrice * 10 ** values?.digit) / values?.times;
+  const price = (10 ** values?.digit * values?.minPrice) / 0.5 ** values?.times * 2;
   const priceDisabled = values?.settlementPrice > price;
   return (
     nameDisabled ||

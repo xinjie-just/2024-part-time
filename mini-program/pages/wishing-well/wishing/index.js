@@ -70,6 +70,7 @@ Page({
   onSave() {
     Toast({
       type: 'loading',
+      forbidClick: true,
       message: '创建心愿订单',
     });
     if (this.data.wishId === null || this.data.wishId === undefined) {
@@ -132,6 +133,7 @@ Page({
     Toast({
       type: 'success',
       message: '支付成功',
+      forbidClick: true,
       onClose: () => {
         wx.redirectTo({
           url: `/pages/payment/digital-guessing/index?source=wishing&orderId=${this.data.orderId}`,

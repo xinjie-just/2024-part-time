@@ -36,9 +36,17 @@ Page({
     freePruchaseService
       .getPKList(params)
       .then((result) => {
+        const list = result.list.map(item => {
+          return {
+            ...item,
+            img: item.img
+              ? (item.img.startsWith('http') ? item.img : `https://00goo.com/web/${item.img}`)
+              : '',
+          };
+        });
         this.setData(
           {
-            list: result.list ?? [],
+            list,
             page: {
               total: result.totalNum ?? 0,
               pageIndex: result.pageNum ?? 1,

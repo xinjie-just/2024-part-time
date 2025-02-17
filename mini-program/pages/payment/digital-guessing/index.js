@@ -156,13 +156,22 @@ Page({
       );
     } else if (res.stage === 3) {
       if (this.data.result) {
-        Toast('恭喜你猜中了，直接进入 PK 环节');
+        Toast({
+          type: 'success',
+          message: '恭喜您猜中了，直接进入 PK 环节',          
+          forbidClick: true,
+          onClose: () => {
+            wx.redirectTo({
+              url: `/pages/free-purchase/guess-p-k-field/index?orderId=${this.data.orderId}`,
+            });
+          },
+        });        
       } else {
-        Toast('很遗憾未猜中');
+        Toast({
+          message:'很遗憾未猜中',
+          forbidClick: true,
+        });
       }
-      wx.redirectTo({
-        url: `/pages/free-purchase/guess-p-k-field/index?orderId=${this.data.orderId}`,
-      });
     } else if (res.stage === 4) {
       if (isManual) {
         this.setData({
@@ -176,7 +185,10 @@ Page({
           stage: 4,
           paymentMethodShow: false,
         });
-        Toast('未猜中，你可以支付剩余金额直接购买');
+        Toast({
+          message: '未猜中，您可以支付剩余金额直接购买',
+          forbidClick: true,
+        });
       }
     } else if (res.stage === 5) {
       this.setData(
@@ -185,7 +197,10 @@ Page({
           stage: 5,
         },
         () => {
-          Toast('游戏已结束');
+          Toast({
+            message: '游戏已结束',
+            forbidClick: true,
+          });
         },
       );
     }

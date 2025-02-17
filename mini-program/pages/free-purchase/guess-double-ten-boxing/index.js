@@ -1,6 +1,6 @@
 import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
-import { freePruchaseService } from '../../../services/common.js';
+import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { commonService } from '../../../services/common.js';
 
 const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
@@ -83,6 +83,7 @@ Page({
         Toast({
           type: 'success',
           message: '游戏匹配完成，获取对局信息',
+          forbidClick: true,
           onClose: () => {
             this.startPKDTBFn();
           },
@@ -96,6 +97,7 @@ Page({
       type: 'loading',
       message: '正在匹配对手',
       duration: 0, // 不会消失（不会主动消失）
+      forbidClick: true,
     });
     const params = {
       orderId: this.data.orderId,
@@ -117,6 +119,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '游戏创建失败',
+          forbidClick: true,
         });
         this.setData({
           matched: 'fail',
@@ -142,6 +145,7 @@ Page({
           Toast({
             type: 'success',
             message: '匹配完成，获取对局信息',
+            forbidClick: true,
             onClose: () => {
               this.startPKDTBFn();
             },
@@ -155,6 +159,7 @@ Page({
             Toast({
               type: 'fail',
               message: '未匹配到对手',
+              forbidClick: true,
             });
           } else {
             const gameMatchTimerId = setTimeout(() => {
@@ -171,6 +176,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '游戏匹配失败',
+          forbidClick: true,
         });
         this.setData({
           matched: 'fail',
@@ -214,6 +220,7 @@ Page({
           Toast({
             type: 'fail',
             message: '获取对局信息失败',
+            forbidClick: true,
           });
           this.setData({
             matched: 'fail',
@@ -224,6 +231,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '获取对局信息失败',
+          forbidClick: true,
         });
         this.setData({
           matched: 'fail',
@@ -237,6 +245,7 @@ Page({
       Toast({
         type: 'success',
         message: '游戏已开始，正在获取对手信息',
+        forbidClick: true,
         onClose: () => {
           this.getPKDTBArenaInfoFn();
         },
@@ -260,10 +269,13 @@ Page({
   endFinished() {
     if (!this.data.selected) {
       Toast('时间到，出拳结束');
+    } else {
+      const countDown = this.selectComponent('.end-countdown');
+      countDown.pause(); 
     }
   },
   startFinished() {
-    freePruchaseService.createPKDTB();
+    // freePruchaseService.createPKDTB();
   },
 
   // 选择/改变我的选择
@@ -289,6 +301,7 @@ Page({
         Toast({
           type: 'loading',
           message: '提交成功，正在查询结果，请耐心等待',
+          forbidClick: true,
           duration: 0,
         });
         setTimeout(() => {
@@ -299,6 +312,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '提交失败',
+          forbidClick: true,
         });
       });
   },
@@ -320,6 +334,7 @@ Page({
           Toast({
             type: 'success',
             message: '已查询到结果，比赛结束',
+            forbidClick: true,
           });
         } else {
           // 未匹配成功
@@ -330,6 +345,7 @@ Page({
             Toast({
               type: 'fail',
               message: '对手长时间未出拳，游戏结束',
+              forbidClick: true,
             });
           } else {
             const getResultTimerId = setTimeout(() => {
@@ -346,6 +362,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '提交失败',
+          forbidClick: true,
         });
       });
   },

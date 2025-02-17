@@ -57,6 +57,7 @@ Page({
       type: 'loading',
       message: '正在匹配对手',
       duration: 0, // 不会消失（不会主动消失）
+      forbidClick: true,
     });
     commonService
       .gameRPSReady()
@@ -67,6 +68,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '游戏准备失败',
+          forbidClick: true,
         });
         this.setData({
           matched: 'fail',
@@ -91,6 +93,7 @@ Page({
           Toast({
             type: 'success',
             message: '匹配完成，获取对局信息',
+            forbidClick: true,
             onClose: () => {
               this.getGameRPSInfoFn();
             },
@@ -104,6 +107,7 @@ Page({
             Toast({
               type: 'fail',
               message: '未匹配到对手',
+              forbidClick: true,
             });
           } else {
             const gameRPSMatchFnTimerId = setTimeout(() => {
@@ -120,6 +124,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '游戏匹配失败',
+          forbidClick: true,
         });
         this.setData({
           matched: 'fail',
@@ -166,6 +171,7 @@ Page({
           Toast({
             type: 'fail',
             message: '获取对局信息失败',
+            forbidClick: true,
           });
         }
       })
@@ -173,6 +179,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '获取对局信息失败',
+          forbidClick: true,
         });
         this.setData({
           matched: 'fail',
@@ -196,6 +203,9 @@ Page({
   endFinished() {
     if (!this.data.selected) {
       Toast('时间到，出拳结束');
+    } else {
+      const countDown = this.selectComponent('.end-countdown');
+      countDown.pause(); 
     }
   },
   startFinished() {
@@ -223,6 +233,7 @@ Page({
         Toast({
           type: 'loading',
           message: '提交成功，正在查询结果，请耐心等待',
+          forbidClick: true,
           duration: 0,
         });
         setTimeout(() => {
@@ -233,6 +244,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '提交失败',
+          forbidClick: true,
         });
       });
   },
@@ -253,6 +265,7 @@ Page({
           Toast({
             type: 'success',
             message: '已查询到结果，比赛结束',
+            forbidClick: true,
           });
         } else {
           // 未匹配成功
@@ -263,6 +276,7 @@ Page({
             Toast({
               type: 'fail',
               message: '对手长时间未出拳，游戏结束',
+              forbidClick: true,
             });
           } else {
             const getResultTimerId = setTimeout(() => {
@@ -279,6 +293,7 @@ Page({
         Toast({
           type: 'fail',
           message: err.message || '提交失败',
+          forbidClick: true,
         });
       });
   },

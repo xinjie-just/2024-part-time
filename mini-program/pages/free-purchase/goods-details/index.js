@@ -48,6 +48,7 @@ Page({
     Toast({
       type: 'loading',
       message: '正在创建订单',
+      forbidClick: true,
     });
     const params = {
       productPkId: this.data.id,
@@ -127,11 +128,15 @@ Page({
   },
   // 点击分享
   onShareAppMessage() {
+    let img = this.data.detail.img;
+    img = img
+            ? (img.startsWith('http') ? img : `https://00goo.com/web/${img}`)
+            : '../images/0yuan.jpg';
     const shareInfo = {
       title: `${this.data.detail.title}`,
       description: `支付 ${this.data.detail.guessSmallPrice / 100} 元即可参与 0 元购`,
       path: '/pages/free-purchase/goods-details/index',
-      imageUrl: this.data.detail.img || '../images/0yuan.jpg',
+      imageUrl: img,
     };
     return shareInfo;
   },

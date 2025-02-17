@@ -35,6 +35,7 @@ Component({
         Toast({
           type: 'fail',
           message: '订单价格获取失败',
+          forbidClick: true,
           duration: 3500,
         });
         this.setData({
@@ -89,12 +90,14 @@ Component({
               Toast({
                 type: 'fail',
                 message: '用户取消支付',
+                forbidClick: true,
                 duration: 3000,
               });
             } else if (msg === `requestPayment:fail (${detailMessage})`) {
               Toast({
                 type: 'fail',
                 message: detailMessage,
+                forbidClick: true,
                 duration: 3000,
               });
             }
@@ -143,6 +146,7 @@ Component({
                 Toast({
                   type: 'success',
                   message: '支付成功',
+                  forbidClick: true,
                   onClose: () => {
                     this.triggerEvent('confirm');
                   },
@@ -163,6 +167,7 @@ Component({
                 Toast({
                   type: 'success',
                   message: '支付成功',
+                  forbidClick: true,
                   onClose: () => {
                     this.triggerEvent('confirm');
                   },
@@ -187,6 +192,7 @@ Component({
               Toast({
                 type: 'success',
                 message: '支付成功',
+                forbidClick: true,
                 onClose: () => {
                   this.triggerEvent('confirm');
                 },

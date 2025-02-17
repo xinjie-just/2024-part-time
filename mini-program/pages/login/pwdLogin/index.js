@@ -63,6 +63,7 @@ Page({
         });
         Toast({
           type: 'fail',
+          forbidClick: true,
           message: error.message || '登陆失败'
         });
       })
@@ -75,6 +76,7 @@ Page({
         Toast({
           type: 'success',
           message: '登录成功',
+          forbidClick: true,
           onClose: () => {
             jumpExitPage();
           },
@@ -83,6 +85,7 @@ Page({
       .catch((error) => {
         Toast({
           type: 'fail',
+          forbidClick: true,
           message: error.message || '获取用户信息失败'
         });
       })
