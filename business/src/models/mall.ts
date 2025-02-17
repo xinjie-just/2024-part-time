@@ -58,6 +58,7 @@ export interface IScanOutOfSale {
 export interface IManageScan {
   name: string;
   title: string;
+  img: string;
   introduce: string;
   originalPrice: number;
   settlementPrice: number;
@@ -76,6 +77,7 @@ export interface IMayWishing {
 export interface IManageWishing {
   name: string;
   title: string;
+  img: string;
   introduce: string;
   referenceValue: number;
   minPrice: number;

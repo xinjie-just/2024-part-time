@@ -1,7 +1,7 @@
 <!-- 添加或编辑商品 -->
 <template>
   <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" :width="800"
-    :title="props.isEdit ? '编辑商品' : '添加商品'" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
+    :title="props.isEdit ? '编辑 PK 品' : '添加 PK 品'" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
     @cancel="onCancel">
     <a-alert type="info" class="alert">
       <template #message>
@@ -20,15 +20,15 @@
         <template #label>
           <a-tooltip placement="topLeft">
             <template #title>
-              <p>图片大小：5M</p>
-              <p>图片格式：jpg、jpeg、png</p>
+              <p>图片大小：不超过 5MB</p>
+              <p>图片格式：只能是 jpg、jpeg、png</p>
             </template>
             商品图片
             <QuestionOutlined />
           </a-tooltip>
         </template>
         <a-upload v-model:file-list="fileList" :max-count="1" :accept="acceptType" :beforeUpload="beforeUpload"
-          list-type="picture" :action="uploadFilePath" :headers="{ token }" @change="onChangeFile">
+          list-type="picture" :action="uploadFilePath" :headers="{ token }" @change="onChangeImg" @remove="onRemoveImg">
           <a-button :loading="uploading">
             <UploadOutlined />
             上传
@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { IManagePK } from '@/models';
-import { getPKDetails, savePK, uploadFilePath } from '@/services';
+import { getPKDetails, savePK, uploadFilePath, defaultOrigin } from '@/services';
 import { ISavePKReq } from '@/services/models';
 import { message, Upload } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
@@ -194,6 +194,20 @@ const getPKDetailsFn = () => {
       form.minPrice = result.guessSmallPrice ? result.guessSmallPrice / 100 : 0;
       form.digit = result.guessDigit;
       form.times = result.pkNum;
+
+      // 处理图片
+      if (result.img) {
+        let url = result.img as string;
+        let obj = {
+          uid: result.img,
+          name: result.img,
+          status: 'done',
+          url
+        }
+        obj.url = defaultOrigin + url;
+        fileList.value = [obj as any];
+        imgUrl.value = result.img;
+      }
     })
 }
 
@@ -205,14 +219,10 @@ const onSubmit = async (): Promise<void> => {
   loading.value = true;
   try {
     await formRef.value?.validate();
-    let origin = location.origin;
-    if (origin.includes('localhost')) {
-      origin = 'https://www.00goo.com';
-    }
     const params: ISavePKReq = {
       name: form.name, // 商品名称
       title: form.title, // 商品标题
-      img: `${origin}${imgUrl.value}`, // 商品图片
+      img: imgUrl.value, // 商品图片
       price: form.originalPrice * 100, // 商品价格
       settlePrice: form.settlementPrice * 100, // 结算价格
       currentPrice: form.currentPrice * 100, // 当前价格
@@ -234,7 +244,6 @@ const onSubmit = async (): Promise<void> => {
         loading.value = false;
       })
   } catch (error) {
-    console.log('表单验证失败', error);
     loading.value = false;
   }
 };
@@ -244,22 +253,24 @@ const beforeUpload: UploadProps['beforeUpload'] = file => {
     .substring(file.name.lastIndexOf(".") + 1)
     .toLowerCase();
   if (!acceptType.includes(fileType)) {
-    message.error("你上传的图片不符合格式，从重新上传！");
+    message.error("你上传的文件不符合格式，只能上传 jpeg, jpg, png 格式的图片！");
     return false || Upload.LIST_IGNORE;
   }
   if (file.size > 5 * 1024 * 1024) {
-    message.error("你上传的图片超过了 5M，从重新上传！");
+    message.error("你上传的图片超过了 5MB，从重新上传！");
     return false || Upload.LIST_IGNORE;
   }
 };
 
-const onChangeFile = ({ file, fileList }: UploadChangeParam) => {
+const onChangeImg = ({ file }: UploadChangeParam) => {
   if (file.status !== 'uploading') {
-    console.log(file, fileList);
-    console.log(file.response);
-    console.log(file.response.data);
     imgUrl.value = file.response.data;
   }
+};
+
+const onRemoveImg: UploadProps['onRemove'] = () => {
+  fileList.value = [];
+  imgUrl.value = '';
 };
 
 const onViewViewIntroduce = (): void => {

@@ -15,6 +15,26 @@
       <a-form-item label="创意心愿标题" name="title">
         <a-input v-model:value.trim="form.title" showCount :maxlength="200" allow-clear placeholder="2-200 位字符" />
       </a-form-item>
+      <a-form-item name="img">
+        <template #label>
+          <a-tooltip placement="topLeft">
+            <template #title>
+              <p>图片大小：不超过 5MB</p>
+              <p>图片格式：只能是 jpg、jpeg、png</p>
+            </template>
+            商品图片
+            <QuestionOutlined />
+          </a-tooltip>
+        </template>
+        <a-upload v-model:file-list="fileList" :max-count="1" :accept="acceptType" :beforeUpload="beforeUpload"
+          list-type="picture" :action="uploadFilePath" :headers="{ token }" @change="onChangeImg" @remove="onRemoveImg">
+          <a-button :loading="uploading">
+            <UploadOutlined />
+            上传
+          </a-button>
+          <span></span>
+        </a-upload>
+      </a-form-item>
       <a-form-item label="参考价值" name="referenceValue">
         <a-input-number v-model:value="form.referenceValue" :min="0.01" :max="9999" :precision="2" placeholder="请输入参考价值"
           style="width: 100%">
@@ -50,9 +70,10 @@
 
 <script setup lang="ts">
 import { IManageWishing } from '@/models';
-import { getWishingDetails, saveWishing } from '@/services';
+import { getWishingDetails, saveWishing, uploadFilePath, defaultOrigin } from '@/services';
 import { ISaveWishingReq } from '@/services/models';
-import { message } from 'ant-design-vue';
+import { UploadOutlined, QuestionOutlined } from '@ant-design/icons-vue';
+import { message, Upload, UploadChangeParam, UploadProps } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue';
 
@@ -64,12 +85,18 @@ const props = defineProps<{ isEdit: boolean; goodsId: number }>();
 
 const visible = ref(true);
 const viewVisible = ref(false);
+const fileList = ref<UploadProps['fileList']>([]);
+const uploading = ref(false);
+const acceptType = ".jpeg,.jpg,.png";
+const token = localStorage.getItem('token');
+const imgUrl = ref('');
 
 const formRef = ref();
 const loading = ref(false);
 const form: UnwrapRef<IManageWishing> = reactive({
   name: '',
   title: '',
+  img: '',
   introduce: '',
   referenceValue: 0.01,
   minPrice: 0.01,
@@ -126,15 +153,55 @@ const getScanDetailsFn = () => {
       const result = res?.data;
       form.name = result.name;
       form.title = result.title;
+      form.img = result.img;
       form.introduce = result.introduction;
       form.minPrice = result.coinDrop ? result.coinDrop / 100 : 0;
       form.digit = result.guessDigit;
       form.referenceValue = result.price ? result.price / 100 : 0;
+
+      // 处理图片
+      if (result.img) {
+        let url = result.img as string;
+        let obj = {
+          uid: result.img,
+          name: result.img,
+          status: 'done',
+          url
+        }
+        obj.url = defaultOrigin + url;
+        fileList.value = [obj as any];
+        imgUrl.value = result.img;
+      }
     })
 }
 
 const onBlur = (html: string) => {
   form.introduce = html;
+};
+
+const beforeUpload: UploadProps['beforeUpload'] = file => {
+  const fileType = file.name
+    .substring(file.name.lastIndexOf(".") + 1)
+    .toLowerCase();
+  if (!acceptType.includes(fileType)) {
+    message.error("你上传的文件不符合格式，只能上传 jpeg, jpg, png 格式的图片！");
+    return false || Upload.LIST_IGNORE;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    message.error("你上传的图片超过了 5MB，从重新上传！");
+    return false || Upload.LIST_IGNORE;
+  }
+};
+
+const onChangeImg = ({ file }: UploadChangeParam) => {
+  if (file.status !== 'uploading') {
+    imgUrl.value = file.response.data;
+  }
+};
+
+const onRemoveImg: UploadProps['onRemove'] = () => {
+  fileList.value = [];
+  imgUrl.value = '';
 };
 
 const onSubmit = async (): Promise<void> => {
@@ -144,6 +211,7 @@ const onSubmit = async (): Promise<void> => {
     const params: ISaveWishingReq = {
       name: form.name, // 商品名称
       title: form.title, // 商品标题
+      img: imgUrl.value, // 商品图片
       price: form.referenceValue * 100, // 商品价格
       guessDigit: form.digit, // 竞猜位数
       introduction: form.introduce, // 商品说明
@@ -162,7 +230,6 @@ const onSubmit = async (): Promise<void> => {
         loading.value = false;
       })
   } catch (error) {
-    console.log('表单验证失败', error);
     loading.value = false;
   }
 };

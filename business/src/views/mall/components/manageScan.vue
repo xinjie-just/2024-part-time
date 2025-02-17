@@ -1,7 +1,7 @@
 <!-- 添加或编辑商品 -->
 <template>
   <a-modal v-model:open="visible" :mask-closable="false" :keyboard="false" :width="800"
-    :title="props.isEdit ? '编辑商品' : '添加商品'" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
+    :title="props.isEdit ? '编辑扫一扫商品' : '添加扫一扫商品'" :body-style="{ paddingTop: '32px', paddingBottom: '8px' }"
     @cancel="onCancel">
     <a-alert type="info" class="alert">
       <template #message>
@@ -15,6 +15,26 @@
       </a-form-item>
       <a-form-item label="商品标题" name="title">
         <a-input v-model:value.trim="form.title" showCount :maxlength="200" allow-clear placeholder="2-200 位字符" />
+      </a-form-item>
+      <a-form-item name="img">
+        <template #label>
+          <a-tooltip placement="topLeft">
+            <template #title>
+              <p>图片大小：不超过 5MB</p>
+              <p>图片格式：只能是 jpg、jpeg、png</p>
+            </template>
+            商品图片
+            <QuestionOutlined />
+          </a-tooltip>
+        </template>
+        <a-upload v-model:file-list="fileList" :max-count="1" :accept="acceptType" :beforeUpload="beforeUpload"
+          list-type="picture" :action="uploadFilePath" :headers="{ token }" @change="onChangeImg" @remove="onRemoveImg">
+          <a-button :loading="uploading">
+            <UploadOutlined />
+            上传
+          </a-button>
+          <span></span>
+        </a-upload>
       </a-form-item>
       <a-form-item label="原价" name="originalPrice">
         <a-input-number v-model:value="form.originalPrice" :min="0.01" :max="9999" :precision="2" placeholder="请输入原价"
@@ -65,10 +85,11 @@
 
 <script setup lang="ts">
 import { IManageScan } from '@/models';
-import { getScanDetails, saveScan } from '@/services';
+import { defaultOrigin, getScanDetails, saveScan, uploadFilePath } from '@/services';
 import { ISaveScanReq } from '@/services/models';
-import { message } from 'ant-design-vue';
+import { message, Upload, UploadChangeParam, UploadProps } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
+import { UploadOutlined, QuestionOutlined } from '@ant-design/icons-vue';
 import { ref, onMounted, computed, UnwrapRef, reactive, defineAsyncComponent } from 'vue';
 
 const richText = defineAsyncComponent(() => import('@/components/richText.vue'));
@@ -79,12 +100,18 @@ const props = defineProps<{ isEdit: boolean; goodsId: number }>();
 
 const visible = ref(true);
 const viewVisible = ref(false);
+const fileList = ref<UploadProps['fileList']>([]);
+const uploading = ref(false);
+const acceptType = ".jpeg,.jpg,.png";
+const token = localStorage.getItem('token');
+const imgUrl = ref('');
 
 const formRef = ref();
 const loading = ref(false);
 const form: UnwrapRef<IManageScan> = reactive({
   name: '',
   title: '',
+  img: '',
   introduce: '',
   originalPrice: 0.01,
   settlementPrice: 0.01,
@@ -149,12 +176,27 @@ const getScanDetailsFn = () => {
       const result = res?.data;
       form.name = result.name;
       form.title = result.title;
+      form.img = result.img;
       form.introduce = result.introduction;
       form.originalPrice = result.price ? result.price / 100 : 0;
       form.settlementPrice = result.settlePrice ? result.settlePrice / 100 : 0;
       form.currentPrice = result.currentPrice ? result.currentPrice / 100 : 0;
       form.minPrice = result.guessSmallPrice ? result.guessSmallPrice / 100 : 0;
       form.digit = result.guessDigit;
+
+      // 处理图片
+      if (result.img) {
+        let url = result.img as string;
+        let obj = {
+          uid: result.img,
+          name: result.img,
+          status: 'done',
+          url
+        }
+        obj.url = defaultOrigin + url;
+        fileList.value = [obj as any];
+        imgUrl.value = result.img;
+      }
     })
 }
 
@@ -162,15 +204,40 @@ const onBlur = (html: string) => {
   form.introduce = html;
 };
 
+const beforeUpload: UploadProps['beforeUpload'] = file => {
+  const fileType = file.name
+    .substring(file.name.lastIndexOf(".") + 1)
+    .toLowerCase();
+  if (!acceptType.includes(fileType)) {
+    message.error("你上传的文件不符合格式，只能上传 jpeg, jpg, png 格式的图片！");
+    return false || Upload.LIST_IGNORE;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    message.error("你上传的图片超过了 5MB，从重新上传！");
+    return false || Upload.LIST_IGNORE;
+  }
+};
+
+const onChangeImg = ({ file }: UploadChangeParam) => {
+  if (file.status !== 'uploading') {
+    imgUrl.value = file.response.data;
+  }
+};
+
+const onRemoveImg: UploadProps['onRemove'] = () => {
+  fileList.value = [];
+  imgUrl.value = '';
+};
+
 const onSubmit = async (): Promise<void> => {
   loading.value = true;
   try {
     await formRef.value?.validate();
-    console.log('表单验证成功', form);
 
     const params: ISaveScanReq = {
       name: form.name, // 商品名称
       title: form.title, // 商品标题
+      img: imgUrl.value, // 商品图片
       price: form.originalPrice * 100, // 商品价格
       settlePrice: form.settlementPrice * 100, // 结算价格
       currentPrice: form.currentPrice * 100, // 当前价格
@@ -191,7 +258,6 @@ const onSubmit = async (): Promise<void> => {
         loading.value = false;
       })
   } catch (error) {
-    console.log('表单验证失败', error);
     loading.value = false;
   }
 };

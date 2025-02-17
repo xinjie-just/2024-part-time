@@ -41,4 +41,4 @@ export const getDict = (data: IGetDictReq) => {
 };
 
 export const uploadFilePath = `/web/manage${API.uploadFile}`;
-export const defaultOrigin = 'https://www.00goo.com';
+export const defaultOrigin = 'https://www.00goo.com/web';

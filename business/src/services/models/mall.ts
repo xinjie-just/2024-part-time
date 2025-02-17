@@ -34,9 +34,9 @@ export interface IGetPKDetailsRes {
  */
 export interface ISavePKReq {
   id?: number; // 商品ID
-  img?: string; // 商品图片
   name: string; // 商品名称
   title: string; // 商品标题
+  img?: string; // 商品图片
   price: number; // 商品价格
   settlePrice: number; // 结算价格
   currentPrice: number; // 当前价格
@@ -92,6 +92,7 @@ export interface ISaveScanReq {
   id?: number; // 商品ID
   name: string; // 商品名称
   title: string; // 商品标题
+  img?: string; // 商品图片
   price: number; // 商品价格
   settlePrice: number; // 结算价格
   currentPrice: number; // 当前价格
@@ -143,6 +144,7 @@ export interface ISaveWishingReq {
   id?: number; // 商品ID
   name: string; // 商品名称
   title: string; // 商品标题
+  img?: string; // 商品图片
   price: number; // 参考价格
   coinDrop: number; // 投币小额
   guessDigit: number; // 竞猜位数

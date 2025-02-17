@@ -104,6 +104,7 @@ onMounted(() => {
     localStorage.setItem('path', path);
     message.error('请先登录');
     router.push('/login');
+    return;
   }
   const userInfoStr = localStorage.getItem('userInfo');
   if (userInfoStr) {
