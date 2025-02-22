@@ -273,7 +273,7 @@ Page({
             forbidClick: true,
           });
         } else {
-          // 未匹配成功
+          // 未查询到结果
           if (this.data.matchDuration <= 0) {
             this.setData({
               matched: 'error',

@@ -19,11 +19,11 @@ const menuData = [
     },
   ],
   [
-    {
-      title: '我的地址',
-      url: './address/index',
-      type: 'address',
-    },
+    // {
+    //   title: '我的地址',
+    //   url: './address/index',
+    //   type: 'address',
+    // },
     {
       title: '如何获得积分',
       url: './how-to-earn-points/index',

@@ -20,7 +20,7 @@ const onCancel = (): void => {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .html-content {
     img {
         display: block;

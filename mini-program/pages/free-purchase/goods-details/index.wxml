@@ -17,7 +17,7 @@
     </view>
   </div>
   <view class="content">
-    <rich-text nodes="{{introduction}}"></rich-text>
+    <rich-text nodes="{{introduction}}" class="rich-text"></rich-text>
   </view>
   <view class="buy-btn" bind:tap="onToSelectPaymentMethod">0 元购</view>
   <payment-method wx:if="{{ paymentMethodShow }}" source="pk" isPKFirstPay="{{ true }}" orderId="{{orderId}}" payOrderId="{{payOrderId}}" orderPrice="{{orderPrice}}" bind:close="onClose" bind:confirm="onConfirm" />

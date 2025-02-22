@@ -221,7 +221,6 @@ const onConfirmOutOf = (id: number): void => {
   setScanState(params)
     .then(() => {
       message.success('下架操作成功');
-      page.value.current = 1;
       getList();
     })
 };
@@ -237,7 +236,6 @@ const onConfirmPutaway = (id: number): void => {
   setScanState(params)
     .then(() => {
       message.success('上架操作成功');
-      page.value.current = 1;
       getList();
     })
 };

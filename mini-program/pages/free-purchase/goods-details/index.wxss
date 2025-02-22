@@ -58,12 +58,17 @@
   letter-spacing: 0.15em;
 }
 
-.content image,
-.content img {
+.rich-text {
   display: block;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow:ellipsis;
+}
+
+rich-text img {
   max-width: 100%;
   height: auto;
-  margin: 32rpx auto;
 }
 
 .content view {

@@ -11,7 +11,7 @@
         {
           "name": "PK品详情",
           "pathName": "pages/free-purchase/goods-details/index",
-          "query": "id=4",
+          "query": "id=15",
           "launchMode": "default",
           "scene": null
         },

@@ -123,7 +123,7 @@ const form: UnwrapRef<IManagePK> = reactive({
   currentPrice: 0.01,
   minPrice: 0.01,
   digit: 1,
-  times: 1
+  times: 0
 });
 const rules: Record<string, Rule[]> = {
   name: [
@@ -154,7 +154,6 @@ const disabled = computed((): boolean => {
   const currentPriceDisabled = !values?.currentPrice;
   const minPriceDisabled = !values?.minPrice;
   const digitDisabled = !values?.digit;
-  const timeDisabled = !values?.times;
 
   const price = (10 ** values?.digit * values?.minPrice) / 0.5 ** values?.times * 2;
   const priceDisabled = values?.settlementPrice > price;
@@ -166,7 +165,6 @@ const disabled = computed((): boolean => {
     currentPriceDisabled ||
     minPriceDisabled ||
     digitDisabled ||
-    timeDisabled ||
     priceDisabled
   );
 });

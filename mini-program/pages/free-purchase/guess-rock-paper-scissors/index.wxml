@@ -103,13 +103,15 @@
     <van-button plain hairline round type="info" custom-class="exit-btn" bind:click="onExit">
       退出
     </van-button>
-    <van-button round type="info" custom-class="continue-btn" bind:click="onContinue">
+    <van-button wx:if="{{remainingPKNumber > 0}}" round type="info" custom-class="continue-btn" bind:click="onContinue">
       继续游戏
     </van-button>
   </view>
 </view>
 <block wx:if="{{ matched === 'fail' || matched === 'error' }}">
-  <view class="matched-fail">{{ matched === 'fail' ? '未匹配到对手。' : '对手长时间未出拳，游戏结束。' }}您可以选择 “退出” 或稍后 “再试一次”。</view>
+  <view class="matched-fail">
+    {{ matched === 'fail' ? '未匹配到对手。' : '对手长时间未出拳，游戏结束。' }}您可以选择 “退出” 或稍后 “再试一次”。
+  </view>
   <view class="match-tips">
     <van-icon name="warning-o" size="40rpx" color="#1989fa" />
     <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>

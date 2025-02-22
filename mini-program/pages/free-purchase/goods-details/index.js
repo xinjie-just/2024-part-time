@@ -39,9 +39,15 @@ Page({
     freePruchaseService.getPKDetail(params).then((res) => {
       this.setData({
         detail: res,
-        introduction: res.introduction,
+        introduction: this.processHtml(res.introduction),
       });
     });
+  },
+
+  // 处理富文本内容的方法
+  processHtml(html) {
+    // 使用正则表达式为 img 标签添加 style 属性
+    return html.replace(/<img/g, '<img style="max-width: 100%; height: auto;"');
   },
 
   onToSelectPaymentMethod() {

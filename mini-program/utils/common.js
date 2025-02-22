@@ -5,7 +5,7 @@ const getPKOrderStage = async (orderId) => {
   return freePruchaseService
     .getPKOrderStage({ orderId })
     .then((res) => {
-      const { stage } = res;
+      const { stage, pkNum } = res;
       switch (stage) {
         case 1: {
           return freePruchaseService.createPKGuessPay({ orderId }).then((res) => {
@@ -21,7 +21,7 @@ const getPKOrderStage = async (orderId) => {
           return Promise.resolve({ stage });
         }
         case 3: {
-          return Promise.resolve({ stage });
+          return Promise.resolve({ stage, pkNum });
         }
         case 4: {
           return freePruchaseService.createPKRemainPayOrder({ orderId }).then((res) => {

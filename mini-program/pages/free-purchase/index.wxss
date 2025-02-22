@@ -13,16 +13,13 @@
 
 .list {
   background-color: #fff;
-  padding-right: 24rpx;
-  padding-left: 24rpx;
   flex: 1;
   overflow-y: auto;
   border-radius: 8rpx;
 }
 
 .item {
-  padding-top: 32rpx;
-  padding-bottom: 32rpx;
+  padding: 40rpx 24rpx;
   border-bottom: 1px solid #ddd;
 }
 

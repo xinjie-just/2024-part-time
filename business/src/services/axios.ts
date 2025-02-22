@@ -76,17 +76,17 @@ instance.interceptors.response.use(
           localStorage.setItem('path', path);
         }
         router?.push('/login');
-        return Promise.reject(new Error('未登录或登录已过期'));
+        return Promise.reject('未登录或登录已过期');
       } else if (+data.code === 403) {
         message.error(data.message || '没有权限');
-        return Promise.reject(new Error('没有权限'));
+        return Promise.reject('没有权限');
       } else {
         message.error(data.message || '请求失败');
-        return Promise.reject(new Error('请求失败'));
+        return Promise.reject('请求失败');
       }
     } else {
       message.error(data.message || '请求失败');
-      return Promise.reject(new Error('Error: ' + data.message));
+      return Promise.reject(data.message);
     }
   },
   (error: any) => {

@@ -2,6 +2,7 @@ import Toast from '/@vant/weapp/toast/toast';
 import Dialog from '/@vant/weapp/dialog/dialog';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { commonService } from '../../../services/common.js';
+import { getPKOrderStage } from '../../../utils/common.js';
 
 const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
 const duration = 300 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
@@ -48,6 +49,7 @@ Page({
     getPKRPSInfoFnTimerId: null,
     orderId: null,
     orderGameId: null,
+    remainingPKNumber: 0,
   },
 
   onLoad(options) {
@@ -323,7 +325,7 @@ Page({
     };
     freePruchaseService
       .getPKRPSResult(params)
-      .then((result) => {
+      .then(async (result) => {
         if (result?.rivalCommitDetail) {
           // 查询到结果，对局结果(0:平;1:赢;2:输)
           this.setData({
@@ -335,8 +337,16 @@ Page({
             forbidClick: true,
             message: '已查询到结果，比赛结束',
           });
+          
+          const res = await getPKOrderStage(this.data.orderId);
+          if (res.stage === 3) {
+            const pkNum = res.pkNum;
+            this.setData({
+              remainingPKNumber: +pkNum,
+            });
+          }
         } else {
-          // 未匹配成功
+          // 未查询到结果
           if (this.data.matchDuration <= 0) {
             this.setData({
               matched: 'error',

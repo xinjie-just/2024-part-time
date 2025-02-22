@@ -31,7 +31,7 @@ const editorConfig = {
     uploadImage: {
       server: uploadFilePath,
       fieldName: 'file',
-      maxFileSize: 1 * 1024 * 1024, // 单个文件的最大体积限制，默认为 2M
+      maxFileSize: 5 * 1024 * 1024, // 单个文件的最大体积限制，默认为 2M
       maxNumberOfFiles: 10, // 最多可上传几个文件，默认为 100
       allowedFileTypes: ['image/*'], // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
       withCredentials: false, // 跨域是否传递 cookie ，默认为 false
