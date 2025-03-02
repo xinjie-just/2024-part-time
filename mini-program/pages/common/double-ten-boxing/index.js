@@ -3,6 +3,7 @@ import Dialog from '/@vant/weapp/dialog/dialog';
 import { commonService } from '../../../services/common.js';
 
 const matchRotationInterval = 6 * 1000; // 游戏匹配轮训时间间隔，单位毫秒，建议设置 5s 以上
+const resultRotationInterval = 2 * 1000; // 获取结果轮训时间间隔，单位毫秒，建议设置 5s 以上
 const duration = 300 * 1000; // 游戏匹配时长，单位毫秒，建议设置 30s 以上
 
 Page({
@@ -157,6 +158,8 @@ Page({
         if (result?.rivalInfo) {
           const userInfo = result.userInfo || {};
           const { rivalInfo } = result;
+          rivalInfo.phone = rivalInfo.phone.replace(/(\d{3})\d{0,}(\d{4})/, '$1****$2');
+          userInfo.phone = userInfo.phone.replace(/(\d{3})\d{0,}(\d{4})/, '$1****$2');
           const gameDuration = result.gameDuration || 0;
           this.setData({
             gameInfo: {
@@ -286,9 +289,9 @@ Page({
           } else {
             const getResultTimerId = setTimeout(() => {
               this.getGameDTBResultFn();
-            }, matchRotationInterval); // 发起轮训，再次查询游戏结果
+            }, resultRotationInterval); // 发起轮训，再次查询游戏结果
             this.setData({
-              matchDuration: this.data.matchDuration - matchRotationInterval,
+              matchDuration: this.data.matchDuration - resultRotationInterval,
               getResultTimerId,
             });
           }
