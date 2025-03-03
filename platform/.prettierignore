@@ -1,0 +1,13 @@
+/dist/*
+.local
+.output.js
+/node_modules/**
+
+.yarnrc
+/.github/*
+/.husky/*
+
+**/*.svg
+**/*.sh
+
+/public/*
