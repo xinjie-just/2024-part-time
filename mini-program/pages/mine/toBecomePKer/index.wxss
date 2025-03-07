@@ -1,0 +1,26 @@
+.page {
+  padding: 24rpx 16rpx;
+}
+
+.footer {
+  margin-top: 64rpx;
+  text-align: center;
+}
+
+.footer .van-button {
+  width: 320rpx;
+}
+
+.tips {
+  padding: 32rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+  color: #1989fa;
+  background: #ecf9ff;
+  display: flex;
+  align-items: center;
+}
+
+.tips .text {
+  margin-left: 16rpx;
+}

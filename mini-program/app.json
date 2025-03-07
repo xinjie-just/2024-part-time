@@ -13,6 +13,7 @@
     "pages/common/double-ten-boxing/index",
     "pages/common/rock-paper-scissors/index",
     "pages/mine/about/index",
+    "pages/mine/toBecomePKer/index",
     "pages/mine/wallet/index",
     "pages/mine/order/index",
     "pages/mine/order/order-details/index",

@@ -9,6 +9,13 @@
     "miniprogram": {
       "list": [
         {
+          "name": "设置成为PK手",
+          "pathName": "pages/mine/toBecomePKer/index",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
           "name": "PK品详情",
           "pathName": "pages/free-purchase/goods-details/index",
           "query": "id=15",

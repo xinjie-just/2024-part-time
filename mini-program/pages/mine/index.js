@@ -19,6 +19,13 @@ const menuData = [
     },
   ],
   [
+    {
+      title: '申请成为 PK 手',
+      url: './toBecomePKer/index',
+      type: 'toBecomePKer',
+    },
+  ],
+  [
     // {
     //   title: '我的地址',
     //   url: './address/index',
@@ -65,7 +72,7 @@ Page({
   },
 
   onLoad() {
-    this.getUserInfo();
+    // this.getUserInfo();
   },
 
   onShow() {

@@ -292,6 +292,13 @@ Page({
 
   // 点击“我选好了”，就提交游戏结果
   onSelectFinish() {
+    if (+this.data.ownRadio > +this.data.ownCallPunch) {
+      Toast({
+        duration: 3500,
+        message: '出拳数不能大于叫数，请重新选择'
+      });
+      return;
+    }
     this.setData({
       selected: true,
     });

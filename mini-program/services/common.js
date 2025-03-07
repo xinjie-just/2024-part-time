@@ -7,6 +7,14 @@ export const commonService = {
       method: 'GET',
     });
   },
+  // 发送短信验证码
+  sendCode(params) {
+    return request({
+      apiKey: 'sendCode',
+      method: 'PUT',
+      data: params,
+    });
+  },
   // 获取用户信息
   getUserInfo() {
     return request({

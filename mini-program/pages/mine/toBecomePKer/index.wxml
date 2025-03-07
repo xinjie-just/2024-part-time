@@ -1,0 +1,32 @@
+<view class="page">
+    <block wx:if="{{isPkPlayer}}">
+        <view class="tips">
+            <van-icon name="warning-o" size="40rpx" color="#1989fa" />
+            <text class="text">您已经是 PK 手了，无需再次申请。</text>
+        </view>
+        <view class="footer">
+            <van-button plain hairline round type="info" custom-class="back-btn" bind:click="onBack">
+                返回
+            </van-button>
+        </view>
+    </block>
+    <block wx:else>
+        <van-cell-group>
+            <van-field value="{{ phone }}" clearable required label="手机号" placeholder="请输入手机号" error-message="{{phoneDisabled && phone.length ? '手机号格式错误' : ''}}" border="{{ false }}" use-button-slot bind:change="onChangePhone">
+                <van-button wx:if="{{hasBeenSent === false}}" slot="button" size="small" type="info" disabled="{{phoneDisabled}}" bind:click="onSendCode">
+                    发送验证码
+                </van-button>
+                <van-button wx:else slot="button" size="small" disabled>
+                    {{ cuntDown }} 秒后重新发送
+                </van-button>
+            </van-field>
+            <van-field value="{{ code }}" label="短信验证码" clearable required placeholder="请输入短信验证码（6位数字）" error-message="{{codeDisabled && code.length ? '短信验证码格式错误' : ''}}" border="{{ false }}" bind:change="onChangeCode" />
+        </van-cell-group>
+        <view class="footer">
+            <van-button round type="info" disabled="{{phoneDisabled || codeDisabled}}" loading="{{loading}}" loading-text="提交中..." bind:click="onToBecomePKer">
+                提交
+            </van-button>
+        </view>
+    </block>
+</view>
+<van-toast id="van-toast" />

@@ -2,6 +2,7 @@ import Toast from '/@vant/weapp/toast/toast';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { getPKOrderStage } from '../../../utils/common.js';
 import Dialog from '@vant/weapp/dialog/dialog';
+import {splitRichTextWithWrappedImages} from '../../../utils/richText.js';
 
 Page({
   /**
@@ -10,7 +11,7 @@ Page({
   data: {
     id: null,
     paymentMethodShow: false,
-    introduction: '',
+    introduction: [],
     detail: {},
     orderId: '',
     orderPrice: 0,
@@ -39,15 +40,16 @@ Page({
     freePruchaseService.getPKDetail(params).then((res) => {
       this.setData({
         detail: res,
-        introduction: this.processHtml(res.introduction),
+        introduction: splitRichTextWithWrappedImages(res.introduction),
       });
     });
   },
 
-  // 处理富文本内容的方法
-  processHtml(html) {
-    // 使用正则表达式为 img 标签添加 style 属性
-    return html.replace(/<img/g, '<img style="max-width: 100%; height: auto;"');
+  extractArcAttribute(htmlStr) {
+    // 匹配 <img> 标签中的 arc 属性（支持单/双引号和无引号）
+    const arcReg = /<img\s+[^>]*?src\s*=\s*(["']?)([^"' >]+)\1[^>]*>/i;
+    const match = htmlStr.match(arcReg);
+    return match ? match[2] : null;
   },
 
   onToSelectPaymentMethod() {

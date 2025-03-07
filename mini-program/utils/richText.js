@@ -1,47 +1,54 @@
-export const formatRichText = (html) => {
-  let newContent = html.replace(/<img[^>]*>/gi, function (match, capture) {
-    match = match.replace(/style="[^"]+"/gi, '').replace(/style='[^']+'/gi, '');
-    match = match.replace(/width="[^"]+"/gi, '').replace(/width='[^']+'/gi, '');
-    match = match.replace(/height="[^"]+"/gi, '').replace(/height='[^']+'/gi, '');
-    return match;
-  });
-  newContent = newContent.replace(/style="[^"]+"/gi, function (match, capture) {
-    match = match.replace(/width:[^;]+;/gi, 'width:100%;').replace(/width:[^;]+;/gi, 'width:100%;');
-    return match;
-  });
-  newContent = newContent.replace(/<br[^>]*\/>/gi, '');
-  newContent = newContent.replace(/\<img/gi, '<img style="max-width:350rpx;height:auto;display:block;margin:10px 0;"');
-  return newContent;
+const splitRichTextWithWrappedImages = (htmlStr) => {
+  const result = [];
+  let lastIndex = 0;
+  let depth = 0;
+  let currentTag = '';
+  
+  // 正则匹配图片或包裹图片的父标签起始位置
+  const tagReg = /<(\/?)(\w+)([^>]*)>/g;
+  const imgReg = /<img\b[^>]*>/i;
+
+  let match;
+  let startTagIndex = -1;
+
+  while ((match = tagReg.exec(htmlStr)) !== null) {
+    const [fullTag, isClose, tagName, attrs] = match;
+    const tagStart = match.index;
+
+    if (!isClose) {
+      // 检测到开始标签
+      if (depth === 0) {
+        // 新父标签开始
+        startTagIndex = tagStart;
+        currentTag = tagName;
+      }
+      depth++;
+    } else {
+      depth = Math.max(0, depth - 1);
+      if (depth === 0 && currentTag === tagName) {
+        // 匹配到父标签闭合
+        const endIndex = tagReg.lastIndex;
+        const fragment = htmlStr.slice(startTagIndex, endIndex);
+        
+        // 检查片段是否包含图片
+        if (imgReg.test(fragment)) {
+          // 添加前面的文本
+          const textBefore = htmlStr.slice(lastIndex, startTagIndex);
+          if (textBefore) result.push(textBefore);
+          
+          // 添加包裹的图片片段
+          result.push(fragment);
+          lastIndex = endIndex;
+        }
+      }
+    }
+  }
+
+  // 处理剩余文本
+  const remainingText = htmlStr.slice(lastIndex);
+  if (remainingText) result.push(remainingText);
+
+  return result;
 }
 
-export const formatRichText2 = (html) => {
-  let nodes = [];
-  const fragments = html.split('</p><img');
-  fragments.forEach(fragment => {
-    if (fragment.includes('<p')) {
-      const pTag = fragment.match(/<p[^>]*>(.*?)<\/p>/)[0];
-      const text = pTag.match(/<p[^>]*>(.*?)<\/p>/)[1];
-      nodes.push({
-        name: 'p',
-        attrs: {
-          style: pTag.match(/style="([^"]*)"/)?.[1] || ''
-        },
-        children: [{
-          type: 'text',
-          text: text
-        }]
-      });
-    }
-    if (fragment.includes('<img')) {
-      const imgTag = '<img' + fragment.match(/<img[^>]*>/)[0].slice(4);
-      nodes.push({
-        name: 'img',
-        attrs: {
-          src: imgTag.match(/src="([^"]*)"/)?.[1] || '',
-          style: imgTag.match(/style="([^"]*)"/)?.[1] || ''
-        }
-      });
-    }
-  });
-  return nodes;
-};
+export {splitRichTextWithWrappedImages};

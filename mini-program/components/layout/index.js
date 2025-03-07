@@ -48,17 +48,19 @@ Component({
     },
     getPKTask() {
       freePruchaseService.getPKTask().then((res) => {
-        const hasTask = res.existTask;
-        this.setData({
-          showNotify: hasTask,
-        });
-        if (!hasTask) {
-          const timerId = setTimeout(() => {
-            this.getPKTask();
-          }, interval); // 发起轮训，再次游戏匹配
+        if (res) {
+          const hasTask = res.existTask;
           this.setData({
-            timerId,
+            showNotify: hasTask,
           });
+          if (!hasTask) {
+            const timerId = setTimeout(() => {
+              this.getPKTask();
+            }, interval); // 发起轮训，再次游戏匹配
+            this.setData({
+              timerId,
+            });
+          }
         }
       });
     },

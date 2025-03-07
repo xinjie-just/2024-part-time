@@ -71,6 +71,13 @@ rich-text img {
   height: auto;
 }
 
+::v-deep img {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+}
+
 .content view {
   word-break: break-word;
   margin-top: 32rpx;

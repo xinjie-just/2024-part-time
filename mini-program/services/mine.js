@@ -30,4 +30,12 @@ export const mineService = {
       'method': 'GET'
     });
   },
+  // 成为PK手
+  toBecomePKer(params) {
+    return request({
+      'apiKey': 'toBecomePKer',
+      'method': 'POST',
+      'data': params,
+    });
+  }
 };

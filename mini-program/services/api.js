@@ -2,6 +2,7 @@
 const API = {
   address: {
     getSystemTime: '/common-server/system-time', // 获取系统时间
+    sendCode: '/common-server/send-phone-code', // 发送短信验证码
     wxLogin: '/login-wechat', // 微信登录
     passwordLogin: '/login-pw', // 账号密码登录
     getUserInfo: '/user-info', // 获取用户信息
@@ -10,6 +11,7 @@ const API = {
     pointDetailList: '/integral/detail-list', // 获取用户积分明细列表
     walletInfo: '/wallet/info', // 获取用户钱包信息
     walletDetailList: '/wallet/detail-list', // 获取用户钱包明细列表
+    toBecomePKer: '/player-pk/open', // 设置成为PK手
 
     getPKTask: '/product-pk/pk-task', // 获取当前用户是否有可以参加的任务
     getPKList: '/product-pk/list', // 获取PK商品信息列表
@@ -66,7 +68,7 @@ const API = {
   },
   getAPIUrl: (options) => {
     const origin = 'https://00goo.com/program'; // 正式
-    // const origin = 'https://6fa8d689.r36.cpolar.top/program'; // 测试
+    // const origin = 'https://79e28bc9.r37.cpolar.top/program'; // 测试
     const route = API.address[options.apiKey];
     const result = `${origin}${route}`;
     return result;
