@@ -17,9 +17,8 @@
     </view>
   </div>
   <view class="content">
-    <view wx:for="{{ introduction }}" wx:key="index" class="rich-text">
-      <rich-text wx:if="{{ !item.includes('<img') }}" nodes="{{item}}" class="rich-text"></rich-text>
-      <image wx:else src="{{extractArcAttribute(item)}}" mode="aspectFit"></image>
+    <view class="rich-text">
+      <rich-text nodes="{{introduction}}" class="rich-text"></rich-text>
     </view>
   </view>
   <view class="buy-btn" bind:tap="onToSelectPaymentMethod">0 元购</view>

@@ -2,7 +2,6 @@ import Toast from '/@vant/weapp/toast/toast';
 import { freePruchaseService } from '../../../services/free-pruchase.js';
 import { getPKOrderStage } from '../../../utils/common.js';
 import Dialog from '@vant/weapp/dialog/dialog';
-import {splitRichTextWithWrappedImages} from '../../../utils/richText.js';
 
 Page({
   /**
@@ -11,7 +10,7 @@ Page({
   data: {
     id: null,
     paymentMethodShow: false,
-    introduction: [],
+    introduction: '',
     detail: {},
     orderId: '',
     orderPrice: 0,
@@ -40,16 +39,9 @@ Page({
     freePruchaseService.getPKDetail(params).then((res) => {
       this.setData({
         detail: res,
-        introduction: splitRichTextWithWrappedImages(res.introduction),
+        introduction: res.introduction,
       });
     });
-  },
-
-  extractArcAttribute(htmlStr) {
-    // 匹配 <img> 标签中的 arc 属性（支持单/双引号和无引号）
-    const arcReg = /<img\s+[^>]*?src\s*=\s*(["']?)([^"' >]+)\1[^>]*>/i;
-    const match = htmlStr.match(arcReg);
-    return match ? match[2] : null;
   },
 
   onToSelectPaymentMethod() {
@@ -137,9 +129,7 @@ Page({
   // 点击分享
   onShareAppMessage() {
     let img = this.data.detail.img;
-    img = img
-            ? (img.startsWith('http') ? img : `https://00goo.com/web/${img}`)
-            : '../images/0yuan.jpg';
+    img = img ? (img.startsWith('http') ? img : `https://00goo.com/web/${img}`) : '../images/0yuan.jpg';
     const shareInfo = {
       title: `${this.data.detail.title}`,
       description: `支付 ${this.data.detail.guessSmallPrice / 100} 元即可参与 0 元购`,
