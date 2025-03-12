@@ -1,0 +1,13 @@
+import { IRouterType } from '@/models';
+import { UserSwitchOutlined } from '@ant-design/icons-vue';
+import { h } from 'vue';
+
+// 员工管理模块路由列表
+export const config: IRouterType[] = [
+  {
+    path: '/config',
+    name: '配置管理',
+    icon: () => h(UserSwitchOutlined),
+    component: () => import('@/views/config/list.vue')
+  }
+];
