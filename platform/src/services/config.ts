@@ -1,41 +1,25 @@
 /*
  * “配置管理”模块
  */
-import {
-  IGetConfigInfoReq,
-  IGetConfigInfoRes,
-  IGetConfigListReq,
-  IGetConfigListRes,
-  ISaveConfigInfoReq
-} from './models';
+import { ISaveConfigReq, IGetConfigListRes } from './models';
 import request from '@/services/axios';
 
 const enum API {
-  getConfigList = '/admin/list', // 获取员工列表
-  getConfigInfo = '/admin/info', // 查询员工详细信息（包括权限）
-  saveConfigInfo = '/admin/save', // 保存员工信息
-  deleteConfig = '/admin/remove' // 删除员工
+  getConfigList = '/dict/list', // 获取配置列表
+  saveConfig = '/dict/save', // 新增修改配置
+  deleteConfig = '/dict/remove' // 删除配置
 }
 
-export const getConfigList = (data: IGetConfigListReq) => {
+export const getConfigList = () => {
   return request<IGetConfigListRes>({
     url: API.getConfigList,
-    method: 'get',
-    data
+    method: 'get'
   });
 };
 
-export const getConfigInfo = (data: IGetConfigInfoReq) => {
-  return request<IGetConfigInfoRes>({
-    url: API.getConfigInfo,
-    method: 'get',
-    data
-  });
-};
-
-export const saveConfigInfo = (data: ISaveConfigInfoReq) => {
+export const saveConfig = (data: ISaveConfigReq) => {
   return request<null>({
-    url: API.saveConfigInfo,
+    url: API.saveConfig,
     method: 'post',
     data
   });

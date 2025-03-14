@@ -1,22 +1,12 @@
 /**
- * @description 查询代营店铺列表 /shop/shop-proxy-list
+ * @description 店铺列表 /shop/list
  */
-export interface IGetAgentShopListReq {
-  name?: string;
-  page: number; // 页码
-  pageSize: number; // 每页数量
-}
-export interface IGetAgentShopListRes {
-  totalNum: number;
-  list: IAgentShopList[];
-}
-export interface IAgentShopList {
-  id: string;
-  name: string;
-  phone: string;
-  registerTime: string;
-  type: number; // 1:自营店; 2:代营店
-  state: number; // 0：锁定；1：启用
+export interface IGetShopListRes {
+  id: string; // 店铺 ID
+  shopName: string; // 店铺名称
+  phone: string; // 联系电话
+  type: number; // 店铺类型(1:自营店; 2:代营店)
+  state: number; // 店铺状态(0:已锁定; 1:已启用)
 }
 
 /**
@@ -27,48 +17,19 @@ export interface IDeleteShopReq {
 }
 
 /**
- * @description 锁定/解锁店铺 /shop/update-state
+ * @description 锁定/解锁店铺 /shop/lock
  */
 export interface ILockUnLockReq {
   id: number;
-  state: boolean;
+  lockState: number; // 0:已锁定 1:已启用
 }
 
 /**
- * @description 查询店铺明细信息 /shop/info
+ * @description 添加店铺 /shop/add
  */
-export interface IGetShopDetailsRes {
-  id?: number;
-  type: number;
-  shopName: string;
-  address: string;
-  lonLat: string; // 经度纬度，使用 “,” 隔开
-  phone: string;
-  linkman: string;
-  introduce: string;
-  registerTime: string;
-  state: number;
-}
-
-/**
- * @description 修改我的店铺信息 /shop/save
- */
-export interface IUpdateMyShopReq {
-  id: number; // 店铺 ID
-  shopName: string;
-  address: string;
-  lonLat: string;
-  phone: string;
-  linkman: string;
-  introduce: string;
-}
-
-/**
- * @description 添加代理店铺 /shop/proxy-create
- */
-export interface IAddAgentShopReq {
-  shopName: string;
-  loginName: string;
-  phone: string;
-  password: string;
+export interface IAddShopReq {
+  shopName: string; // 店铺名称
+  loginName: string; // 登录名
+  phone: string; // 手机号
+  password: string; // 登录密码
 }

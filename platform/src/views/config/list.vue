@@ -46,27 +46,18 @@
     :show-total="(total: number) => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination"
     @change="onChange" />
 
-  <manage-config v-if="visible" :is-edit="isEdit" :config-id="selectedConfigId" @cancel="onCancel"
-    @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
+import { onMounted, Ref, ref } from 'vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
-import { IConfig, IPage } from '@/models';
+import { IConfig } from '@/models';
 import { message } from 'ant-design-vue';
 import { deleteConfig, getConfigList } from '@/services';
 import { formatTime } from '@/utils';
 
-const manageConfig = defineAsyncComponent(() => import('./components/manageConfig.vue'));
-
 const name = ref<string>('');
 const phone = ref<string>('');
-const page: Ref<IPage> = ref({
-  total: 0,
-  current: 1,
-  pageSize: 10
-});
 const data: Ref<IConfig[]> = ref([]);
 const selectedConfigId = ref(0);
 const visible = ref(false);
@@ -124,8 +115,6 @@ onMounted(() => {
 });
 
 const onSearch = (): void => {
-  page.value.current = 1;
-  page.value.pageSize = 10;
   searchLoading.value = true;
   tableLoading.value = true;
   getList();
@@ -134,16 +123,8 @@ const onSearch = (): void => {
 const onReset = (): void => {
   name.value = '';
   phone.value = '';
-  page.value.current = 1;
-  page.value.pageSize = 10;
   resetLoading.value = true;
   tableLoading.value = true;
-  getList();
-};
-
-const onChange = (current: number, pageSize: number): void => {
-  page.value.current = current;
-  page.value.pageSize = pageSize;
   getList();
 };
 
@@ -160,7 +141,6 @@ const getList = (): void => {
   getConfigList(params)
     .then(res => {
       const result = res.data;
-      page.value.total = result.totalNum;
 
       data.value = result.list.map(item => {
         return {
@@ -199,14 +179,6 @@ const onEdit = (row: IConfig): void => {
 const onAdd = (): void => {
   isEdit.value = false;
   visible.value = true;
-};
-const onCancel = (): void => {
-  visible.value = false;
-};
-const onConfirm = (): void => {
-  visible.value = false;
-  page.value.current = 1;
-  getList();
 };
 </script>
 

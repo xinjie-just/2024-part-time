@@ -1,38 +1,26 @@
 /*
  * “店铺”模块
  */
-import {
-  IGetAgentShopListReq,
-  IGetAgentShopListRes,
-  IDeleteShopReq,
-  ILockUnLockReq,
-  IGetShopDetailsRes,
-  IUpdateMyShopReq,
-  IAddAgentShopReq
-} from './models';
+import { IGetShopListRes, IDeleteShopReq, ILockUnLockReq, IAddShopReq } from './models';
 import request from '@/services/axios';
 
 const enum API {
-  getAgentShopList = '/shop/proxy-list', // 查询代营店铺列表
-  addAgentShop = '/shop/proxy-create', // 添加代理店铺
+  getShopList = '/shop/list', // 店铺列表
+  addShop = '/shop/add', // 添加店铺
   deleteShop = '/shop/remove', // 删除店铺
-  lockUnLockShop = '/shop/update-state', // 锁定/解锁
-  getMyShopDetails = '/shop/info', // 查询店铺明细信息
-  updateMyShop = '/shop/save', // 编辑我的店铺
-  upgradeMyShop = '/shop/upgrade' // 升级我的店铺
+  lockUnLockShop = '/shop/lock' // 锁定/解锁
 }
 
-export const getAgentShopList = (data: IGetAgentShopListReq) => {
-  return request<IGetAgentShopListRes>({
-    url: API.getAgentShopList,
-    method: 'get',
-    data
+export const getShopList = () => {
+  return request<IGetShopListRes>({
+    url: API.getShopList,
+    method: 'get'
   });
 };
 
-export const addAgentShop = (data: IAddAgentShopReq) => {
+export const addShop = (data: IAddShopReq) => {
   return request<null>({
-    url: API.addAgentShop,
+    url: API.addShop,
     method: 'post',
     data
   });
@@ -51,28 +39,5 @@ export const lockUnLockShop = (data: ILockUnLockReq) => {
     url: API.lockUnLockShop,
     method: 'put',
     data
-  });
-};
-
-export const getMyShopDetails = (data: { id: number }) => {
-  return request<IGetShopDetailsRes>({
-    url: API.getMyShopDetails,
-    method: 'get',
-    data
-  });
-};
-
-export const updateMyShop = (data: IUpdateMyShopReq) => {
-  return request<null>({
-    url: API.updateMyShop,
-    method: 'put',
-    data
-  });
-};
-
-export const upgradeMyShop = () => {
-  return request<null>({
-    url: API.upgradeMyShop,
-    method: 'post'
   });
 };
