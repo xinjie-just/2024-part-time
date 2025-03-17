@@ -34,10 +34,11 @@
         <a-popconfirm placement="topRight" :title="`确认删除员工 ${record.name} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" :disabled="loginUserId === record.id"
           @confirm="onConfirmDelete(record.id)" @cancel="onCancelDelete">
-          <a-button type="link" :disabled="loginUserId === record.id">删除</a-button>
+          <a-button type="link" :disabled="loginUserId === record.id || !record.isOperate">删除</a-button>
         </a-popconfirm>
         <a-divider type="vertical" />
-        <a-button type="link" @click="onEdit(record)" :disabled="loginUserId === record.id">编辑</a-button>
+        <a-button type="link" @click="onEdit(record)"
+          :disabled="loginUserId === record.id || !record.isOperate">编辑</a-button>
       </template>
     </template>
   </a-table>
@@ -167,6 +168,7 @@ const getList = (): void => {
           name: item.name || '--',
           loginName: item.loginName || '--',
           phone: item.phone || '--',
+          isOperate: item.isOperate,
           registrationTime: formatTime(item.registerTime)
         }
       })

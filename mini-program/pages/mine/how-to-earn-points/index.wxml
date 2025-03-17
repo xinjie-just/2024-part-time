@@ -1,1 +1,16 @@
-<view class="page">如何获得积分</view>
+<view class="page">
+  <view class="list">
+    <view class="title">获取积分：</view>
+    <view class="item">1、PK 场参与游戏，获胜方可获得相应积分。</view>
+    <view class="item">2、向朋友成功分享小程序或某样商品与服务，可获得一定积分。</view>
+    <view class="item">3、申请成为 PK 手，在商品 0 元购 PK 环节与用户 PK，获胜可得一定积分。</view>
+  </view>
+  <view class="list">
+    <view class="title">积分使用规则：</view>
+    <view class="item">1、首次通过二维码扫一扫参与“霸王餐”的用户，必须向朋友分享该商品或服务，且获得一定量的积分。</view>
+    <view class="item">2、积分可用于挑战“霸王餐”。</view>
+    <view class="item">3、积分可用于参与 PK 场游戏。</view>
+    <view class="item">4、积分可用于参与所有 0 元购活动。</view>
+    <view class="item">5、积分可用于许愿池投币环节。</view>
+  </view>
+</view>

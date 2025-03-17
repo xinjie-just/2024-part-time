@@ -4,6 +4,7 @@ export interface IStaff {
   name: string;
   loginName: string;
   phone: string;
+  isOperate: boolean;
   registrationTime: string;
 }
 

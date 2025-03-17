@@ -1,4 +1,4 @@
-<!-- 代营店铺 -->
+<!-- 店铺管理 -->
 <template>
   <a-form ref="formRef" layout="inline" autocomplete="off" :model="formState" class="search">
     <a-form-item html-for="storeName" label="店铺名称" name="storeName" class="search-item">

@@ -1,13 +1,7 @@
 /*
  * “公共”模块
  */
-import {
-  ISendPhoneCodeReq,
-  ISendPhoneCodeRes,
-  IUploadFileReq,
-  IGetDictReq,
-  IGetDictRes
-} from './models';
+import { ISendPhoneCodeReq, ISendPhoneCodeRes, IGetDictReq, IGetDictRes } from './models';
 import request from '@/services/axios';
 
 const enum API {

@@ -6,18 +6,6 @@
       </div>
       <a-menu v-model:openKeys="state.openKeys" v-model:selectedKeys="state.selectedKeys" mode="inline" theme="dark"
         :items="menus" @click="onSelectMenu" class="menu"></a-menu>
-      <div :class="collapsed ? 'phone' : 'fold-phone phone'">
-        <a-tooltip v-if="collapsed" placement="right">
-          <template #title>
-            <span>客服电话：{{ servicePhone }}</span>
-          </template>
-          <PhoneOutlined class="phone-icon" />
-        </a-tooltip>
-        <template v-else>
-          <PhoneOutlined class="phone-icon" />
-          <span class="phone-num">客服电话：{{ servicePhone }}</span>
-        </template>
-      </div>
     </a-layout-sider>
     <a-layout>
       <a-layout-header class="header">
@@ -56,20 +44,16 @@ import {
   MenuUnfoldOutlined,
   DownOutlined,
   QuestionCircleOutlined,
-  PhoneOutlined
 } from '@ant-design/icons-vue';
-import { routes } from '@/routers';
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue';
-import { getDict, logout } from '@/services';
+import { logout } from '@/services';
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const visible = ref(false);
 
 const userName = ref('');
-const phone = ref('');
-const servicePhone = ref('');
 
 const route = useRoute();
 const router = useRouter();
@@ -80,7 +64,6 @@ const state = reactive({
 });
 const collapsed = ref(false);
 const menus: Ref<IRouterType[]> = ref([]);
-const menuPathList: Ref<string[]> = ref([]);
 
 const onSelectMenu = ({ item }) => {
   router.push(item.path);
@@ -106,94 +89,7 @@ onMounted(() => {
     router.push('/login');
     return;
   }
-  const userInfoStr = localStorage.getItem('userInfo');
-  if (userInfoStr) {
-    const userInfo = JSON.parse(userInfoStr);
-    userName.value = userInfo.name;
-    phone.value = userInfo.phone;
-
-    const menuPaths: string[] = [];
-    userInfo.menuPathList.forEach((item: string) => {
-      menuPaths.push(item);
-      if (item.includes('/')) {
-        const parentPath = item.substring(0, item.indexOf('/'));
-        menuPaths.push(parentPath);
-      }
-    })
-    menuPathList.value = [...new Set(menuPaths)];
-  }
-  const newRoutes = routes.find((item) => item.path === '/')?.children;
-  const menuRoutes = newRoutes.filter((item) => item.redirect !== '/');
-  menus.value = convertToAntdMenu(menuRoutes);
-  handleMenu();
-  getServicePhoneFn();
 });
-/**
- * 将菜单数据转换为 Ant Design 的菜单格式
- * @param {IRouterType[]} menuData - 要转换的菜单数据数组
- * @returns {IRouterType[]} 转换后的菜单数据数组
- */
-const convertToAntdMenu = (menuData: IRouterType[]): IRouterType[] => {
-  const data = menuData.map((menuItem) => {
-    if (menuItem.children && menuItem.children.length > 0) {
-      // 如果有子菜单，则创建一个 SubMenu 类型的对象
-      return {
-        title: menuItem.name,
-        label: menuItem.name,
-        icon: menuItem.icon,
-        key: menuItem.path,
-        path: menuItem.path,
-        children: convertToAntdMenu(
-          menuItem.children.map((child) => ({
-            path: child.path,
-            name: child.name,
-            label: child.name
-          }))
-        )
-      };
-    } else {
-      // 如果没有子菜单，则创建一个 Item 类型的对象
-      return {
-        title: menuItem.name,
-        label: menuItem.name,
-        icon: menuItem.icon,
-        key: menuItem.path,
-        path: menuItem.path
-      };
-    }
-  });
-  let menus: IRouterType[] = data;
-  // 查询 menuPathList.value 中是否包含 data 的 key 值，如果没有，则查询 data 的 children 中的 key 如果还是没有则将 data 的当前对象从 data 中移除，否则保留
-  data.forEach((item) => {
-    if (!menuPathList.value.includes(item?.key?.substring(1) as string)) {
-      menus = menus.filter((filterItem) => filterItem !== item);
-    } else {
-      if (item.children) {
-        item.children.forEach((child) => {
-          if (!menuPathList.value.includes(child.key?.substring(1) as string)) {
-            item.children = item.children.filter((filterSubItem) => filterSubItem !== child);
-          }
-        });
-      }
-    }
-  });
-  return menus;
-};
-
-// 刷新页面，将菜单置为选中，并且将一级菜单打开
-const handleMenu = () => {
-  const path = route.path;
-  state.selectedKeys = [path];
-  // 判断是否为二级菜单，取最后一个 "/" 看是否为第一个字符
-  const lastIndex = path.lastIndexOf('/');
-  let parentPath = '';
-  if (lastIndex !== 0) {
-    parentPath = path.substring(0, lastIndex);
-  }
-  // 找到 path 为 parentPath 的那个菜单的 label
-  const openKey = menus.value.find((item) => item.path === parentPath)?.path;
-  state.openKeys = [openKey as string];
-};
 
 const onLogout = () => {
   Modal.confirm({
@@ -212,17 +108,6 @@ const onLogout = () => {
       });
     }
   });
-};
-
-const getServicePhoneFn = () => {
-  const params = {
-    type: 'SERVICE_HOTLINE'
-  };
-  getDict(params)
-    .then((res) => {
-      const result = res.data;
-      servicePhone.value = result[0].value;
-    });
 };
 
 const onUpdatePassword = (): void => {
@@ -260,30 +145,6 @@ const onCancel = (): void => {
   .menu {
     flex: 1;
     overflow-y: auto;
-  }
-
-  .phone {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 500;
-    color: #fff;
-    height: 64px;
-    line-height: 64px;
-    justify-content: center;
-
-    &.fold-phone {
-      padding-left: 24px;
-      justify-content: flex-start;
-    }
-
-    .phone-icon {
-      font-size: 18px;
-    }
-
-    .phone-num {
-      margin-left: 8px;
-    }
   }
 
   .header.header {

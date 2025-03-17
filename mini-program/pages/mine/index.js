@@ -37,17 +37,17 @@ const menuData = [
       type: 'how-to-earn-points',
     },
     {
-      title: '关于我们',
+      title: '商务合作',
       url: './about/index',
       type: 'about',
     },
   ],
   [
-    {
-      title: '帮助中心',
-      url: './help-center/index',
-      type: 'help-center',
-    },
+    // {
+    //   title: '帮助中心',
+    //   url: './help-center/index',
+    //   type: 'help-center',
+    // },
     {
       title: '客服热线',
       type: 'service',
@@ -56,7 +56,7 @@ const menuData = [
   ],
 ];
 
-const phone = '13408095200'; // 客服电话号码
+const phone = '13111888207'; // 客服电话号码
 const serviceTime = '每周一至周五 09:00-12:00  13:00-18:00'; // 服务时间
 
 Page({

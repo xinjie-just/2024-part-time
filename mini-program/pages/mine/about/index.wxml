@@ -1,1 +1,9 @@
-<view class="page">关于我们关于我们</view>
+<view class="page">
+    <view class="list">
+        <view class="title">商务合作：</view>
+        <view class="item">一、申请保护性区域管理，设计、兑付“0元购”和“霸王餐”商品服务。</view>
+        <view class="item">二、电商产品和实体店均可申请向平台提供可售或用于“0元购”兑付的商品与服务，从而无成本推广自身产品与服务。</view>
+        <view class="item">三、餐饮店可申请实施“霸王餐”的促销活动。</view>
+        <view class="item">商务合作咨询电话：13111888207</view>
+    </view>
+</view>

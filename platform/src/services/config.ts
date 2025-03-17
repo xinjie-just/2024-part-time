@@ -11,7 +11,7 @@ const enum API {
 }
 
 export const getConfigList = () => {
-  return request<IGetConfigListRes>({
+  return request<IGetConfigListRes[]>({
     url: API.getConfigList,
     method: 'get'
   });

@@ -16,6 +16,7 @@ export interface IStaffList {
   name: string; // 员工名称
   loginName: string; // 员工昵称
   phone: string; // 手机号码
+  isOperate: boolean; // 是否可操作（删除/编辑，true 表示可以删除/编辑）
   registerTime: string; // 注册时间
 }
 

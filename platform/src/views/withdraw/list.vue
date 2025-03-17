@@ -1,4 +1,4 @@
-<!-- 配置管理 -->
+<!-- 提现管理 -->
 <template>
   <a-button type="primary" class="add-btn" @click="onAdd">
     <template #icon>
