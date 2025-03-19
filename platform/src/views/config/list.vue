@@ -18,22 +18,28 @@
           @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>
         </a-popconfirm>
+        <a-button type="link" @click="onEdit">编辑</a-button>
       </template>
     </template>
   </a-table>
+
+  <manage-config v-if="visible" :is-edit="isEdit" :edit-info="selectedConfig" @cancel="onCancel" @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
-import { onMounted, Ref, ref } from 'vue';
+import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { deleteConfig, getConfigList } from '@/services';
 import { IGetConfigListRes } from '@/services/models';
 
+const manageConfig = defineAsyncComponent(() => import('./components/manageConfig.vue'));
+
 const data: Ref<IGetConfigListRes[]> = ref([]);
 const visible = ref(false);
 const isEdit = ref(false);
 const tableLoading = ref(false);
+const selectedConfig: Ref<IGetConfigListRes> = ref({} as IGetConfigListRes);
 
 const columns = [
   {
@@ -110,6 +116,20 @@ const onAdd = (): void => {
   isEdit.value = false;
   visible.value = true;
 };
+
+const onEdit = (): void => {
+  isEdit.value = true;
+  visible.value = true;
+};
+const onCancel = (): void => {
+  visible.value = false;
+};
+
+const onConfirm = (): void => {
+  visible.value = false;
+  getList();
+};
+
 </script>
 
 <style lang="scss" scoped>
