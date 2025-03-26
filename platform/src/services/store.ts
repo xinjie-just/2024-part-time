@@ -1,7 +1,13 @@
 /*
  * “店铺”模块
  */
-import { IGetShopListRes, IDeleteShopReq, ILockUnLockReq, IAddShopReq } from './models';
+import {
+  IGetShopListReq,
+  IGetShopListRes,
+  IDeleteShopReq,
+  ILockUnLockReq,
+  IAddShopReq
+} from './models';
 import request from '@/services/axios';
 
 const enum API {
@@ -11,10 +17,11 @@ const enum API {
   lockUnLockShop = '/shop/lock' // 锁定/解锁
 }
 
-export const getShopList = () => {
+export const getShopList = (data: IGetShopListReq) => {
   return request<IGetShopListRes>({
     url: API.getShopList,
-    method: 'get'
+    method: 'get',
+    data
   });
 };
 

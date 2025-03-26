@@ -2,11 +2,11 @@
   <a-modal v-model:open="visible" :width="640" :mask-closable="false" :keyboard="false" title="添加店铺"
     :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
-      <a-form-item label="店铺名称" name="storeName">
-        <a-input v-model:value.trim="form.storeName" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
+      <a-form-item label="店铺名称" name="shopName">
+        <a-input v-model:value.trim="form.shopName" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
       </a-form-item>
-      <a-form-item label="登录用户名" name="userName">
-        <a-input v-model:value.trim="form.userName" showCount :maxlength="16" allow-clear placeholder="2-16 位字符" />
+      <a-form-item label="登录用户名" name="loginName">
+        <a-input v-model:value.trim="form.loginName" showCount :maxlength="16" allow-clear placeholder="2-16 位字符" />
       </a-form-item>
       <a-form-item label="手机号码" name="phone">
         <a-input v-model:value.trim="form.phone" showCount :maxlength="11" allow-clear placeholder="请输入正确手机号码" />
@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { IAddShop } from '@/models';
-import { addAgentShop } from '@/services';
+import { addShop } from '@/services';
+import { IAddShopReq } from '@/services/models';
 import { encryption } from '@/utils';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
@@ -34,9 +34,9 @@ import { ref, reactive, UnwrapRef, computed } from 'vue';
 const emits = defineEmits(['cancel', 'confirm']);
 
 const visible = ref(true);
-const form: UnwrapRef<IAddShop> = reactive({
-  storeName: '',
-  userName: '',
+const form: UnwrapRef<IAddShopReq> = reactive({
+  shopName: '',
+  loginName: '',
   phone: '',
   password: ''
 });
@@ -44,19 +44,19 @@ const formRef = ref();
 const loading = ref(false);
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
-  const storeNameDisabled = values?.storeName?.trim()?.length < 2;
-  const userNameDisabled = values?.userName?.trim()?.length < 2;
+  const shopNameDisabled = values?.shopName?.trim()?.length < 2;
+  const loginNameDisabled = values?.loginName?.trim()?.length < 2;
   const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
   const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password?.trim());
-  return storeNameDisabled || userNameDisabled || phoneDisabled || passwordDisabled;
+  return shopNameDisabled || loginNameDisabled || phoneDisabled || passwordDisabled;
 });
 
 const rules: Record<string, Rule[]> = {
-  storeName: [
+  shopName: [
     { required: true, message: '请输入店铺名称', trigger: 'change' },
     { min: 2, message: '2-30 位字符！', trigger: 'blur' }
   ],
-  userName: [
+  loginName: [
     { required: true, message: '请输入登录用户名', trigger: 'change' },
     { min: 2, message: '2-16 位字符！', trigger: 'blur' }
   ],
@@ -79,12 +79,12 @@ const onSubmit = async (): Promise<void> => {
   try {
     await formRef.value?.validate();
     const params = {
-      shopName: form.storeName,
-      loginName: form.userName,
+      shopName: form.shopName,
+      loginName: form.loginName,
       phone: form.phone,
       password: encryption(form.password)
     };
-    addAgentShop(params)
+    addShop(params)
       .then(() => {
         message.success('店铺添加成功');
         emits('confirm');

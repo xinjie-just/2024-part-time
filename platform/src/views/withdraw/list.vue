@@ -1,11 +1,5 @@
 <!-- 提现管理 -->
 <template>
-  <a-button type="primary" class="add-btn" @click="onAdd">
-    <template #icon>
-      <PlusOutlined />
-    </template>
-    添加
-  </a-button>
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
@@ -13,27 +7,35 @@
         {{ index + 1 }}
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm placement="topRight" :title="`确认删除该配置吗？`" ok-text="确定"
-          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
-          @cancel="onCancelDelete">
-          <a-button type="link">删除</a-button>
-        </a-popconfirm>
+        <a-button type="link" @click="onAudit(record)">处理</a-button>
       </template>
     </template>
   </a-table>
+  <a-pagination v-if="page.total" v-model:current="page.current" v-model:pageSize="page.pageSize"
+    :page-size-options="['10', '20', '30', '40', '50']" show-size-changer show-quick-jumper :total="page.total"
+    :show-total="(total: number) => `共 ${total} 条`" size="small" :disabled="tableLoading" class="pagination"
+    @change="onChange" />
+
+  <audit-withdraw v-if="visible" :id="selectedId" @cancel="onCancel" @confirm="onConfirm" />
 </template>
 
 <script setup lang="ts">
-import { onMounted, Ref, ref } from 'vue';
-import { PlusOutlined } from '@ant-design/icons-vue';
-import { message } from 'ant-design-vue';
-import { deleteConfig, getConfigList } from '@/services';
-import { IGetConfigListRes } from '@/services/models';
+import { defineAsyncComponent, onMounted, Ref, ref } from 'vue';
+import { getWithdrawList } from '@/services';
+import { IWithdrawListItem } from '@/services/models';
+import { IPage } from '@/models';
 
-const data: Ref<IGetConfigListRes[]> = ref([]);
+const auditWithdraw = defineAsyncComponent(() => import('./components/auditWithdraw.vue'));
+
+const data: Ref<IWithdrawListItem[]> = ref([]);
 const visible = ref(false);
-const isEdit = ref(false);
 const tableLoading = ref(false);
+const selectedId = ref(0);
+const page: Ref<IPage> = ref({
+  total: 0,
+  current: 1,
+  pageSize: 10
+});
 
 const columns = [
   {
@@ -44,36 +46,51 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '数据分类',
-    dataIndex: 'type',
-    width: 140,
+    title: '商户手机号',
+    dataIndex: 'shopPhone',
+    width: 110,
     fixed: 'left'
   },
   {
-    title: '数据名称',
-    dataIndex: 'name',
+    title: '商户名称',
+    dataIndex: 'shopName',
     width: 140
   },
   {
-    title: '数据值',
-    dataIndex: 'value',
-    width: 130
+    title: '开户银行',
+    dataIndex: 'bankName',
+    width: 120
   },
   {
-    title: '数据排序',
-    dataIndex: 'sort',
+    title: '银行账号',
+    dataIndex: 'cardNumber',
     width: 160
   },
   {
-    title: '数据备注',
-    dataIndex: 'remark',
+    title: '账户姓名',
+    dataIndex: 'cardUserName',
+    width: 100
+  },
+  {
+    title: '提现金额（元）',
+    dataIndex: 'amount',
+    width: 110
+  },
+  {
+    title: '申请时间',
+    dataIndex: 'submitTime',
+    width: 200
+  },
+  {
+    title: '处理状态',
+    dataIndex: 'status',
     width: 200
   },
   {
     title: '操作',
     dataIndex: 'action',
     key: 'action',
-    width: 130,
+    width: 190,
     fixed: 'right'
   }
 ];
@@ -84,32 +101,40 @@ onMounted(() => {
 
 const getList = (): void => {
   tableLoading.value = true;
-
-  getConfigList()
+  const params = {
+    page: page.value.current,
+    pageSize: page.value.pageSize
+  };
+  getWithdrawList(params)
     .then(res => {
       const result = res.data;
-      data.value = result;
+      page.value.total = result.totalNum;
+      data.value = result.list;
     })
     .finally(() => {
       tableLoading.value = false;
     })
 };
-
-const onConfirmDelete = (id: number): void => {
-  deleteConfig({ id })
-    .then(() => {
-      message.success('删除成功');
-      getList();
-    })
-};
-const onCancelDelete = (): void => {
-  message.info('您取消了删除');
+const onChange = (current: number, pageSize: number): void => {
+  page.value.current = current;
+  page.value.pageSize = pageSize;
+  getList();
 };
 
-const onAdd = (): void => {
-  isEdit.value = false;
+const onAudit = (record: IWithdrawListItem): void => {
   visible.value = true;
+  selectedId.value = record.id;
 };
+
+const onConfirm = (): void => {
+  visible.value = false;
+  getList();
+}
+
+const onCancel = (): void => {
+  visible.value = false;
+}
+
 </script>
 
 <style lang="scss" scoped>

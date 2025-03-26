@@ -1,7 +1,17 @@
 /**
  * @description 店铺列表 /shop/list
  */
+
+export interface IGetShopListReq {
+  shopName: string; // 店铺名称
+  page: number; // 页码
+  pageSize: number; // 每页条数
+}
 export interface IGetShopListRes {
+  totalNum: number; // 总条数
+  list: IShopListItem[]; // 店铺列表
+}
+export interface IShopListItem {
   id: string; // 店铺 ID
   shopName: string; // 店铺名称
   phone: string; // 联系电话

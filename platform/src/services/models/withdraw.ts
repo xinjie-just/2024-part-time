@@ -1,7 +1,16 @@
 /**
  * @description 提现申请列表 /withdraw-deposit/list
  */
+export interface IGetWithdrawListReq {
+  page: number; // 页码
+  pageSize: number; // 每页条数
+}
 export interface IGetWithdrawListRes {
+  totalNum: number; // 总条数
+  list: IWithdrawListItem[]; // 店铺列表
+}
+
+export interface IWithdrawListItem {
   id: number; // ID
   shopPhone: string; // 商户手机号
   shopName: string; // 商户名称

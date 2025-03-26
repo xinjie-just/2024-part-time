@@ -1,8 +1,8 @@
 <!-- 店铺管理 -->
 <template>
   <a-form ref="formRef" layout="inline" autocomplete="off" :model="formState" class="search">
-    <a-form-item html-for="storeName" label="店铺名称" name="storeName" class="search-item">
-      <a-input v-model:value.trim="formState.storeName" id="storeName" allow-clear placeholder="请输入店铺名称" class="input"
+    <a-form-item html-for="shopName" label="店铺名称" name="shopName" class="search-item">
+      <a-input v-model:value.trim="formState.shopName" id="shopName" allow-clear placeholder="请输入商户名称" class="input"
         @pressEnter="onSearch" />
     </a-form-item>
     <a-form-item class="search-item">
@@ -38,7 +38,7 @@
         </a-tag>
       </template>
       <template v-else-if="column.key === 'action'">
-        <a-popconfirm placement="topRight" :title="`确认删除店铺 ${record.storeName} 吗？`" ok-text="确定"
+        <a-popconfirm placement="topRight" :title="`确认删除店铺 ${record.shopName} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
           @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>
@@ -47,7 +47,7 @@
         <template v-if="record.status === 1">
           <a-button type="link" @click="onConfirmUnLock(record.id)">解锁</a-button>
         </template>
-        <a-popconfirm placement="topRight" v-else :title="`锁定后将无法登录，确认锁定店铺 ${record.storeName} 吗？`" ok-text="确定"
+        <a-popconfirm placement="topRight" v-else :title="`锁定后商家将无法登录，确认锁定店铺 ${record.shopName} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmLock(record.id)"
           @cancel="onCancelLock">
           <a-button type="link">锁定</a-button>
@@ -66,18 +66,18 @@
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, reactive, Ref, ref } from 'vue';
 import { PlusOutlined, UnlockOutlined, LockOutlined } from '@ant-design/icons-vue';
-import { IPage, IStore } from '@/models';
+import { IPage } from '@/models';
 import { message } from 'ant-design-vue';
-import { deleteShop, getAgentShopList, lockUnLockShop } from '@/services';
-import { formatTime } from '@/utils';
+import { deleteShop, getShopList, lockUnLockShop } from '@/services';
+import { IShopListItem } from '@/services/models';
 
 const addShop = defineAsyncComponent(() => import('./components/addShop.vue'));
 
 interface FormState {
-  storeName: string;
+  shopName: string;
 }
 const formState = reactive<FormState>({
-  storeName: ''
+  shopName: ''
 });
 const formRef = ref();
 
@@ -86,7 +86,7 @@ const page: Ref<IPage> = ref({
   current: 1,
   pageSize: 10
 });
-const data: Ref<IStore[]> = ref([]);
+const data: Ref<IShopListItem[]> = ref([]);
 const visible = ref(false);
 const searchLoading = ref(false);
 const resetLoading = ref(false);
@@ -102,7 +102,7 @@ const columns = [
   },
   {
     title: '店铺名称',
-    dataIndex: 'storeName',
+    dataIndex: 'shopName',
     width: 380,
     ellipsis: true,
     fixed: 'left'
@@ -113,19 +113,14 @@ const columns = [
     width: 140
   },
   {
-    title: '注册时间',
-    dataIndex: 'registrationTime',
+    title: '店铺类型',
+    dataIndex: 'type',
     width: 160
   },
   {
-    title: '店铺性质',
-    dataIndex: 'property',
-    width: 90
-  },
-  {
     title: '店铺状态',
-    dataIndex: 'status',
-    width: 110
+    dataIndex: 'state',
+    width: 90
   },
   {
     title: '操作',
@@ -178,25 +173,16 @@ const onConfirm = (): void => {
 const getList = (): void => {
   const values = formRef.value?.getFieldsValue();
   const params = {
-    name: values.storeName.trim(),
+    shopName: values.shopName.trim(),
     page: page.value.current,
     pageSize: page.value.pageSize
   };
   tableLoading.value = true;
-  getAgentShopList(params)
+  getShopList(params)
     .then((res) => {
       const result = res.data;
       page.value.total = result.totalNum;
-      data.value = result.list.map(item => {
-        return {
-          id: item.id,
-          storeName: item.name,
-          phone: item.phone,
-          registrationTime: formatTime(item.registerTime),
-          property: item.type,
-          status: item.state
-        }
-      });
+      data.value = result.list;
     })
     .finally(() => {
       searchLoading.value = false;
@@ -222,7 +208,7 @@ const onCancelDelete = (): void => {
 const onConfirmLock = (id: number): void => {
   const params = {
     id,
-    state: true
+    lockState: 0
   }
   lockUnLockShop(params).then(() => {
     message.success('锁定成功');
@@ -237,7 +223,7 @@ const onCancelLock = (): void => {
 const onConfirmUnLock = (id: number): void => {
   const params = {
     id,
-    state: false
+    lockState: 1
   }
   lockUnLockShop(params).then(() => {
     message.success('解锁成功');

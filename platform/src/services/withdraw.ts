@@ -1,7 +1,7 @@
 /*
  * “提现管理”模块
  */
-import { IAuditWithdrawReq, IGetWithdrawListRes } from './models';
+import { IGetWithdrawListReq, IAuditWithdrawReq, IGetWithdrawListRes } from './models';
 import request from '@/services/axios';
 
 const enum API {
@@ -10,10 +10,11 @@ const enum API {
   downloadWithdraw = '/withdraw-deposit/download' // 下载提现申请记录
 }
 
-export const getWithdrawList = () => {
+export const getWithdrawList = (data: IGetWithdrawListReq) => {
   return request<IGetWithdrawListRes>({
     url: API.getWithdrawList,
-    method: 'get'
+    method: 'get',
+    data
   });
 };
 
