@@ -20,7 +20,7 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 
 // 创建一个 axios 实例
 const instance: AxiosInstance = axios.create({
-  baseURL: '/manage/', // API基础URL
+  baseURL: '/api/system/', // API基础URL
   timeout: 10000, // 请求超时时间（毫秒）
   headers: { 'Content-Type': 'application/json;charset=utf-8' }, // 默认请求头
   withCredentials: true // 允许跨域请求时携带凭证

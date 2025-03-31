@@ -33,6 +33,3 @@ export const getDict = (data: IGetDictReq) => {
     data
   });
 };
-
-export const uploadFilePath = `/manage${API.uploadFile}`;
-export const defaultOrigin = 'https://www.00goo.com';
