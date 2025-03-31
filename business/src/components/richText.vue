@@ -47,7 +47,7 @@ const editorConfig = {
         // res 即服务端的返回结果，从 res 中找到 url alt href ，然后插入图片
         const result = res.data;
         const alt = fileName.value || 'result';
-        const url = `${location.origin}/web${result}`;
+        const url = `${location.origin}/api${result}`;
         insertFn(url, alt, url)
       },
       // 单个文件上传成功之后
