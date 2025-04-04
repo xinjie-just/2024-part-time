@@ -38,12 +38,15 @@
   <update-password v-if="visible" @cancel="onCancel" />
 </template>
 <script lang="ts" setup>
-import { reactive, ref, onMounted, Ref, watch, createVNode, defineAsyncComponent } from 'vue';
+import { reactive, ref, onMounted, Ref, watch, createVNode, defineAsyncComponent, h } from 'vue';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   DownOutlined,
   QuestionCircleOutlined,
+  DollarOutlined,
+  AppstoreAddOutlined,
+  SettingOutlined,
 } from '@ant-design/icons-vue';
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
@@ -63,7 +66,29 @@ const state = reactive({
   openKeys: ['']
 });
 const collapsed = ref(false);
-const menus: Ref<IRouterType[]> = ref([]);
+const menus: Ref<IRouterType[]> = ref([
+  {
+    icon: () => h(AppstoreAddOutlined),
+    key: "/store/list",
+    label: "店铺管理",
+    path: "/store/list",
+    title: "店铺管理"
+  },
+  {
+    icon: () => h(SettingOutlined),
+    key: "/config/list",
+    label: "配置管理",
+    path: "/config/list",
+    title: "配置管理"
+  },
+  {
+    icon: () => h(DollarOutlined),
+    key: "/withdraw/list",
+    label: "提现管理",
+    path: "/withdraw/list",
+    title: "提现管理"
+  }
+]);
 
 const onSelectMenu = ({ item }) => {
   router.push(item.path);
