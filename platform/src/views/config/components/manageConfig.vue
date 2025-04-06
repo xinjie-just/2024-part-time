@@ -3,7 +3,7 @@
     :body-style="{ paddingTop: '32px', paddingBottom: '8px' }" @cancel="onCancel">
     <a-form :model="form" :rules="rules" ref="formRef" autocomplete="off" :label-col="{ span: 4 }">
       <a-form-item label="数据分类" name="type">
-        <a-input v-model:value.trim="form.type" showCount :maxlength="10" allow-clear placeholder="2-10 位字符" />
+        <a-input v-model:value.trim="form.type" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
       </a-form-item>
       <a-form-item label="数据名称" name="name">
         <a-input v-model:value.trim="form.name" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
@@ -11,11 +11,9 @@
       <a-form-item label="数据值" name="value">
         <a-input v-model:value.trim="form.value" showCount :maxlength="30" allow-clear placeholder="2-30 位字符" />
       </a-form-item>
-      <a-form-item label="数据排序" name="sort">
-        <a-input-number id="inputNumber" v-model:value="form.sort" :min="1" :max="99" />
-      </a-form-item>
       <a-form-item label="数据备注" name="remark">
-        <a-input v-model:value.trim="form.remark" showCount :maxlength="100" allow-clear placeholder="2-100 位字符" />
+        <a-textarea v-model:value.trim="form.remark" showCount :maxlength="100" allow-clear placeholder="2-100 位字符"
+          rows="2" :autosize="{ minRows: 2, maxRows: 6 }" />
       </a-form-item>
     </a-form>
     <template #footer>
@@ -27,21 +25,20 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
-import { IGetConfigListRes, ISaveConfigReq } from '@/services/models';
+import { IConfigListItem, ISaveConfigReq } from '@/services/models';
 import { message } from 'ant-design-vue';
 import { Rule } from 'ant-design-vue/es/form';
 import { ref, reactive, UnwrapRef, computed, onMounted } from 'vue';
 import { saveConfig } from '@/services';
 
 const emits = defineEmits(['cancel', 'confirm']);
-const props = defineProps<{ isEdit: boolean; editInfo: IGetConfigListRes }>();
+const props = defineProps<{ isEdit: boolean; editInfo: IConfigListItem }>();
 
 const visible = ref(true);
 const form: UnwrapRef<ISaveConfigReq> = reactive({
   type: '',
   name: '',
   value: '',
-  sort: 1,
   remark: ''
 });
 const formRef = ref();
@@ -57,7 +54,7 @@ const disabled = computed((): boolean => {
 const rules: Record<string, Rule[]> = {
   type: [
     { required: true, message: '请输入数据分类', trigger: 'change' },
-    { min: 2, message: '2-10 位字符！', trigger: 'blur' }
+    { min: 2, message: '2-30 位字符！', trigger: 'blur' }
   ],
   name: [
     { required: true, message: '请输入数据名称', trigger: 'change' },
@@ -75,7 +72,6 @@ onMounted(() => {
     form.type = editInfo.type;
     form.name = editInfo.name;
     form.value = editInfo.value;
-    form.sort = editInfo.sort;
     form.remark = editInfo.remark;
   }
 });
@@ -88,7 +84,6 @@ const onSubmit = async (): Promise<void> => {
       type: form.type,
       name: form.name,
       value: form.value,
-      sort: form.sort,
       remark: form.remark
     };
     if (props.isEdit) {

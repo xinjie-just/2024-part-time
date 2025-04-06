@@ -1,7 +1,7 @@
 /*
  * “配置管理”模块
  */
-import { ISaveConfigReq, IGetConfigListRes } from './models';
+import { IGetConfigListReq, ISaveConfigReq, IGetConfigListRes } from './models';
 import request from '@/services/axios';
 
 const enum API {
@@ -10,10 +10,11 @@ const enum API {
   deleteConfig = '/dict/remove' // 删除配置
 }
 
-export const getConfigList = () => {
-  return request<IGetConfigListRes[]>({
+export const getConfigList = (data: IGetConfigListReq) => {
+  return request<IGetConfigListRes>({
     url: API.getConfigList,
-    method: 'get'
+    method: 'get',
+    data
   });
 };
 

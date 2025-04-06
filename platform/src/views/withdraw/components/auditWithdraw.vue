@@ -9,7 +9,7 @@
         </a-radio-group>
       </a-form-item>
       <a-form-item label="备注" name="remark">
-        <a-textarea v-model:value="form.remark" maxlength="200" showCount allowClear placeholder="请输入备注"
+        <a-textarea v-model:value="form.remark" maxlength="200" showCount allowClear placeholder="请输入备注" rows="2"
           autosize="{ minRows: 2, maxRows: 6 }" />
       </a-form-item>
     </a-form>

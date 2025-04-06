@@ -1,13 +1,24 @@
 <!-- 提现管理 -->
 <template>
-  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
+  <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 470 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
-        {{ index + 1 }}
+      <template v-if="column.dataIndex === 'index'">
+        {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-else-if="column.key === 'action'">
-        <a-button type="link" @click="onAudit(record)">处理</a-button>
+      <template v-if="column.dataIndex === 'status'">
+        <a-tag v-if="+record.status === 0" color="default">
+          未处理
+        </a-tag>
+        <a-tag v-if="+record.status === 1" color="success">
+          已处理
+        </a-tag>
+        <a-tag v-if="+record.status === 2" color="error">
+          已拒绝
+        </a-tag>
+      </template>
+      <template v-else-if="column.dataIndex === 'action'">
+        <a-button type="link" :disabled="+record.status !== 0" @click="onAudit(record)">处理</a-button>
       </template>
     </template>
   </a-table>
@@ -54,7 +65,7 @@ const columns = [
   {
     title: '商户名称',
     dataIndex: 'shopName',
-    width: 140
+    width: 160
   },
   {
     title: '开户银行',
@@ -64,7 +75,7 @@ const columns = [
   {
     title: '银行账号',
     dataIndex: 'cardNumber',
-    width: 160
+    width: 170
   },
   {
     title: '账户姓名',
@@ -74,23 +85,23 @@ const columns = [
   {
     title: '提现金额（元）',
     dataIndex: 'amount',
-    width: 110
+    width: 120
   },
   {
     title: '申请时间',
     dataIndex: 'submitTime',
-    width: 200
+    width: 160
   },
   {
     title: '处理状态',
     dataIndex: 'status',
-    width: 200
+    width: 90
   },
   {
     title: '操作',
     dataIndex: 'action',
     key: 'action',
-    width: 190,
+    width: 100,
     fixed: 'right'
   }
 ];
@@ -109,7 +120,12 @@ const getList = (): void => {
     .then(res => {
       const result = res.data;
       page.value.total = result.totalNum;
-      data.value = result.list;
+      data.value = result.list.map(item => {
+        return {
+          ...item,
+          amount: item.amount / 100
+        };
+      });
     })
     .finally(() => {
       tableLoading.value = false;

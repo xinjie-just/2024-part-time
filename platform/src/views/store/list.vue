@@ -21,30 +21,34 @@
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-if="column.key === 'property'">
+      <template v-if="column.dataIndex === 'property'">
         <a-tag color="blue">{{ record.property }}</a-tag>
       </template>
-      <template v-if="column.key === 'status'">
-        <a-tag v-if="record.status === 1" color="warning">
-          <LockOutlined />
-          已锁定
-        </a-tag>
-        <a-tag v-if="record.status === 0" color="processing">
+      <template v-if="column.dataIndex === 'state'">
+        <a-tag v-if="+record.state === 1" color="processing">
           <UnlockOutlined />
           未锁定
         </a-tag>
+        <a-tag v-if="+record.state === 0" color="warning">
+          <LockOutlined />
+          已锁定
+        </a-tag>
       </template>
-      <template v-else-if="column.key === 'action'">
+      <template v-if="column.dataIndex === 'type'">
+        <a-tag v-if="+record.type === 1" color="orange">自营</a-tag>
+        <a-tag v-if="+record.type === 2" color="purple">代营</a-tag>
+      </template>
+      <template v-else-if="column.dataIndex === 'action'">
         <a-popconfirm placement="topRight" :title="`确认删除店铺 ${record.shopName} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
           @cancel="onCancelDelete">
           <a-button type="link">删除</a-button>
         </a-popconfirm>
         <a-divider type="vertical" />
-        <template v-if="record.status === 1">
+        <template v-if="record.state === 0">
           <a-button type="link" @click="onConfirmUnLock(record.id)">解锁</a-button>
         </template>
         <a-popconfirm placement="topRight" v-else :title="`锁定后商家将无法登录，确认锁定店铺 ${record.shopName} 吗？`" ok-text="确定"
