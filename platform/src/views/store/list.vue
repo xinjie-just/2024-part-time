@@ -38,8 +38,9 @@
         </a-tag>
       </template>
       <template v-if="column.dataIndex === 'type'">
-        <a-tag v-if="+record.type === 1" color="orange">自营</a-tag>
-        <a-tag v-if="+record.type === 2" color="purple">代营</a-tag>
+        <a-tag v-if="+record.type === 1" color="orange">自营店铺</a-tag>
+        <a-tag v-if="+record.type === 2" color="purple">代营店铺</a-tag>
+        <a-tag v-if="+record.type === 0" color="default">平台</a-tag>
       </template>
       <template v-else-if="column.dataIndex === 'action'">
         <a-popconfirm placement="topRight" :title="`确认删除店铺 ${record.shopName} 吗？`" ok-text="确定"
