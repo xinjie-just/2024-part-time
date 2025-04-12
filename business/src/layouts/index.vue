@@ -59,10 +59,17 @@ import {
   PhoneOutlined
 } from '@ant-design/icons-vue';
 import { routes } from '@/routers';
+import * as allMenus from '@/routers/modules';
 import { IRouterType } from '@/models';
 import { useRoute, useRouter } from 'vue-router';
 import { message, Modal } from 'ant-design-vue';
 import { getDict, logout } from '@/services';
+
+interface IMenu {
+  path: string;
+  name: string;
+  children?: IMenu[];
+}
 
 const updatePassword = defineAsyncComponent(() => import('@/views/updatePassword.vue'));
 const visible = ref(false);
@@ -112,14 +119,18 @@ onMounted(() => {
     userName.value = userInfo.name;
     phone.value = userInfo.phone;
 
-    const menuPaths: string[] = [];
-    userInfo.menuPathList.forEach((item: string) => {
-      menuPaths.push(item);
-      if (item.includes('/')) {
-        const parentPath = item.substring(0, item.indexOf('/'));
-        menuPaths.push(parentPath);
-      }
-    })
+    let menuPaths: string[] = [];
+    if (!userInfo.menuPathList?.length || userInfo.menuPathList?.every(item => !item?.trim()?.length)) {
+      menuPaths = getAllPaths(allMenus);
+    } else {
+      userInfo.menuPathList.forEach((item: string) => {
+        menuPaths.push(item);
+        if (item.includes('/')) {
+          const parentPath = item.substring(0, item.indexOf('/'));
+          menuPaths.push(parentPath);
+        }
+      })
+    }
     menuPathList.value = [...new Set(menuPaths)];
   }
   const newRoutes = routes.find((item) => item.path === '/')?.children;
@@ -128,6 +139,36 @@ onMounted(() => {
   handleMenu();
   getServicePhoneFn();
 });
+/**
+ * 将路由中的 path 收集起来，转换成菜单
+ * @param data 路由数据
+ * @returns 菜单路径数组
+ */
+const getAllPaths = (data: any): string[] => {
+  const result: string[] = [];
+
+  // 递归收集路径的函数
+  function collectPaths(node: IMenu) {
+    if (node.path) {
+      if (node.path.startsWith('/')) {
+        const parentPath = node.path.substring(1);
+        result.push(parentPath);
+      }
+    }
+    if (node.children && Array.isArray(node.children)) {
+      node.children.forEach(child => collectPaths(child));
+    }
+  }
+
+  // 遍历每个顶级键（如 account、mall 等）
+  Object.values(data).forEach(category => {
+    if (Array.isArray(category)) {
+      category.forEach(item => collectPaths(item));
+    }
+  });
+
+  return result;
+}
 /**
  * 将菜单数据转换为 Ant Design 的菜单格式
  * @param {IRouterType[]} menuData - 要转换的菜单数据数组
