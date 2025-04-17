@@ -23,7 +23,7 @@
             @click="sum = balance">全部金额</a-button>
         </template>
       </a-input-number>
-      <a-button type="primary" ghost class="withdrawe-btn" :disabled="!(selectedIds.length && sum)"
+      <a-button type="primary" ghost class="withdrawe-btn" :disabled="!selectedIds.length || sum === 0 || sum > balance"
         @click="onWithdrawe">
         <template #icon>
           <MoneyCollectOutlined />
@@ -31,7 +31,7 @@
         提现
       </a-button>
     </div>
-    <a-button type="primary" class="add-btn" @click="onAdd">
+    <a-button type="primary" class="add-account-btn" @click="onAdd">
       <template #icon>
         <PlusOutlined />
       </template>

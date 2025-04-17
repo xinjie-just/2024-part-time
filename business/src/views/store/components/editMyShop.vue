@@ -26,7 +26,7 @@
       </a-form-item>
     </a-form>
     <template #footer>
-      <a-button key="view" type="primary" ghost :disabled="!form.introduce.length" @click="onViewViewIntroduce"
+      <a-button key="view" type="primary" ghost :disabled="!form.introduce?.length" @click="onViewViewIntroduce"
         class="view-btn">预览店铺介绍</a-button>
       <a-button key="back" :disabled="loading" @click="onCancel">取消</a-button>
       <a-button key="submit" type="primary" :loading="loading" :disabled="disabled" @click="onSubmit">提交</a-button>

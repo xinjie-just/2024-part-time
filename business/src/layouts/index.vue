@@ -122,6 +122,12 @@ onMounted(() => {
     let menuPaths: string[] = [];
     if (!userInfo.menuPathList?.length || userInfo.menuPathList?.every(item => !item?.trim()?.length)) {
       menuPaths = getAllPaths(allMenus);
+      const userInfoStr = localStorage.getItem("userInfo");
+      if (userInfoStr) {
+        const userInfo = JSON.parse(userInfoStr);
+        userInfo.menuPathList = menuPaths;
+        localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      }
     } else {
       userInfo.menuPathList.forEach((item: string) => {
         menuPaths.push(item);

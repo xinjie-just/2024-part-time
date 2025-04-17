@@ -165,7 +165,7 @@ const getList = (): void => {
       data.value = result.list.map(item => {
         return {
           id: item.id,
-          name: item.name || '--',
+          name: item.name || item.loginName || '--',
           loginName: item.loginName || '--',
           phone: item.phone || '--',
           isOperate: item.isOperate,
