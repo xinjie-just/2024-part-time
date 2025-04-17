@@ -116,7 +116,7 @@ onMounted(() => {
   const userInfoStr = localStorage.getItem('userInfo');
   if (userInfoStr) {
     const userInfo = JSON.parse(userInfoStr);
-    userName.value = userInfo.name;
+    userName.value = userInfo.name || userInfo.loginName;
     phone.value = userInfo.phone;
 
     let menuPaths: string[] = [];
