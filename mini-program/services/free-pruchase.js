@@ -207,4 +207,20 @@ export const freePruchaseService = {
       data: params,
     });
   },
+  // 创建商品分享Code
+  createShareCode(params) {
+    return request({
+      apiKey: 'createShareCode',
+      method: 'POST',
+      data: params,
+    });
+  },
+  // 保存分享关系
+  saveShareRel(params) {
+    return request({
+      apiKey: 'saveShareRel',
+      method: 'POST',
+      data: params,
+    });
+  },
 };

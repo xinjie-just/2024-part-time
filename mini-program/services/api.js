@@ -40,6 +40,8 @@ const API = {
     startPKDTB: '/product-pk/start-dtb', // 双十拳-开始游戏
     submitPKDTB: '/product-pk/submit-dtb', // 双十拳-提交游戏
     getPKDTBResult: '/product-pk/result-dtb', // 双十拳-获取游戏结果
+    createShareCode: '/product-pk/create-share-code', // 创建商品分享Code
+    saveShareRel: '/product-pk/save-share-rel', // 保存分享关系
 
     getWishingRecord: '/product-wish/record-list', // 查询用户的历史心愿
     getWishingSuggestList: '/product-wish/suggest-list', // 获取推荐的心愿列表

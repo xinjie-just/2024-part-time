@@ -16,6 +16,7 @@ Page({
     orderPrice: 0,
     payOrderId: '', // 支付订单 ID
     orderGameId: '', // 订单游戏 ID
+    shareCode: '', // 分享 Code
   },
 
   /**
@@ -28,8 +29,22 @@ Page({
       },
       () => {
         this.getPKDetail();
+        this.initShareData();
+
+        const code = options.shareCode;
+        if (!!code?.trim()) {
+          const params = { shareCode: code };
+          freePruchaseService.saveShareRel(params);
+        }
       },
     );
+  },
+
+  initShareData() {    
+    const params = { id: this.data.id };
+    freePruchaseService.createShareCode(params).then((res) => {
+      this.setData({ shareCode: res.shareCode });
+    });
   },
 
   getPKDetail() {
@@ -133,9 +148,13 @@ Page({
     const shareInfo = {
       title: `${this.data.detail.title}`,
       description: `支付 ${this.data.detail.guessSmallPrice / 100} 元即可参与 0 元购`,
-      path: '/pages/free-purchase/goods-details/index',
       imageUrl: img,
     };
+    if (!!this.data.shareCode.trim()) {
+      shareInfo.path = `/pages/free-purchase/goods-details/index?shareCode=${this.data.shareCode}`;
+    } else {
+      shareInfo.path = '/pages/free-purchase/goods-details/index';
+    }
     return shareInfo;
   },
 });
