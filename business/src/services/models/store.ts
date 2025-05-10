@@ -68,7 +68,6 @@ export interface IUpdateMyShopReq {
  */
 export interface IAddAgentShopReq {
   shopName: string;
-  loginName: string;
   phone: string;
   password: string;
 }

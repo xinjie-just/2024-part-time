@@ -5,11 +5,11 @@
       <h1 class="title">登 录</h1>
       <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form"
         :disabled="loading">
-        <a-form-item label="用户名" name="username">
-          <a-input v-model:value.trim="form.username" showCount :maxlength="16" allow-clear
-            placeholder="请输入用户名（2-16 位字符）" @pressEnter="onSubmit">
+        <a-form-item label="手机号码" name="phone">
+          <a-input v-model:value.trim="form.phone" showCount :maxlength="11" allow-clear placeholder="请输入正确手机号码"
+            @pressEnter="onSubmit">
             <template #prefix>
-              <UserOutlined />
+              <PhoneOutlined />
             </template>
           </a-input>
         </a-form-item>
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, reactive, ref, UnwrapRef } from 'vue';
-import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
+import { PhoneOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import { Rule } from 'ant-design-vue/es/form';
 import { login, getUserInfo } from '@/services';
@@ -51,7 +51,7 @@ import { message } from 'ant-design-vue';
 import { encryption } from '@/utils';
 
 interface ILogin {
-  username: string;
+  phone: string;
   password: string;
   remember: boolean;
 }
@@ -63,23 +63,23 @@ const formRef = ref();
 const loading = ref(false);
 
 const form: UnwrapRef<ILogin> = reactive({
-  username: '',
+  phone: '',
   password: '',
   remember: false
 });
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
-  const usernameDisabled = values?.username?.trim()?.length < 2;
+  const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
   const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password.trim());
-  return usernameDisabled || passwordDisabled;
+  return phoneDisabled || passwordDisabled;
 });
 
-const validateUsername = async (_rule: Rule, value: string) => {
-  const username = value.trim();
-  if (username === '') {
-    return Promise.reject('请输入用户名');
-  } else if (username?.length < 2) {
-    return Promise.reject('用户名应该 2-16 位');
+const validatePhone = async (_rule: Rule, value: string) => {
+  const phone = value.trim();
+  if (phone === '') {
+    return Promise.reject('请输入手机号码');
+  } else if (!/^1[3-9]\d{9}$/.test(phone?.trim())) {
+    return Promise.reject('手机号码应该是 1 开头的 11 位数字！');
   } else {
     return Promise.resolve();
   }
@@ -99,14 +99,14 @@ const validatePassword = async (_rule: Rule, value: string) => {
   }
 };
 const rules: Record<string, Rule[]> = {
-  username: [{ required: true, validator: validateUsername, trigger: 'change' }],
+  phone: [{ required: true, validator: validatePhone, trigger: 'change' }],
   password: [{ required: true, validator: validatePassword, trigger: 'blur' }]
 };
 
 onMounted(() => {
-  const username = localStorage.getItem('username');
-  if (username) {
-    form.username = username;
+  const phone = localStorage.getItem('phone');
+  if (phone) {
+    form.phone = phone;
     form.remember = true;
   }
 });
@@ -117,7 +117,7 @@ const onSubmit = async (): Promise<void> => {
     // 这里可以添加提交表单的逻辑
     loading.value = true;
     const params = {
-      loginName: form.username,
+      phone: form.phone,
       password: encryption(form.password)
     };
     login(params)
@@ -126,9 +126,9 @@ const onSubmit = async (): Promise<void> => {
         const token = result.token || "";
 
         if (form.remember) {
-          localStorage.setItem('username', form.username);
+          localStorage.setItem('phone', form.phone);
         } else {
-          localStorage.removeItem('username');
+          localStorage.removeItem('phone');
         }
         // 登录后存一份 token，后续通过本地存储中有没有 token 来判断用户有没有登录
         localStorage.setItem('token', token);

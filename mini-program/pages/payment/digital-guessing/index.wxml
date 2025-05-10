@@ -14,7 +14,7 @@
     </view>
     <view class="card right-answer">
       <van-button round size="small" type="info" bind:click="onShowResult" disabled="{{result !== null}}">
-        显示谜底
+        确认并显示谜底
       </van-button>
       <view class="result">
         数字竞猜结果：

@@ -2,7 +2,7 @@
  * @description 登录 /login
  */
 export interface ILoginReq {
-  loginName: string;
+  phone: string;
   password: string;
 }
 export interface ILoginRes {

@@ -225,8 +225,8 @@ Page({
         if (result?.rivalInfo) {
           const userInfo = result.userInfo || {};
           const { rivalInfo } = result;
-          rivalInfo.phone = rivalInfo.phone.replace(/(\d{3})\d{0,}(\d{4})/, '$1****$2');
-          userInfo.phone = userInfo.phone.replace(/(\d{3})\d{0,}(\d{4})/, '$1****$2');
+          rivalInfo.phone = rivalInfo.phone?.replace(/(\d{3})\d{0,}(\d{4})/, '$1****$2');
+          userInfo.phone = userInfo.phone?.replace(/(\d{3})\d{0,}(\d{4})/, '$1****$2');
           const gameDuration = result.gameDuration || 0;
           this.setData({
             gameInfo: {

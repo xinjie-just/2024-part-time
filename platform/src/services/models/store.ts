@@ -39,7 +39,6 @@ export interface ILockUnLockReq {
  */
 export interface IAddShopReq {
   shopName: string; // 店铺名称
-  loginName: string; // 登录名
   phone: string; // 手机号
   password: string; // 登录密码
 }

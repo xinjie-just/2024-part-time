@@ -91,11 +91,6 @@ const columns = [
     fixed: 'left'
   },
   {
-    title: '登录用户名',
-    dataIndex: 'loginName',
-    width: 140
-  },
-  {
     title: '手机号码',
     dataIndex: 'phone',
     width: 130
@@ -165,8 +160,7 @@ const getList = (): void => {
       data.value = result.list.map(item => {
         return {
           id: item.id,
-          name: item.name || item.loginName || '--',
-          loginName: item.loginName || '--',
+          name: item.name || '--',
           phone: item.phone || '--',
           isOperate: item.isOperate,
           registrationTime: formatTime(item.registerTime)

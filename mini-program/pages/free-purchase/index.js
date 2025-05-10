@@ -32,7 +32,7 @@ Page({
           return {
             ...item,
             img: item.img
-              ? (item.img.startsWith('http') ? item.img : `https://00goo.com/web/${item.img}`)
+              ? (item.img.startsWith('http') ? item.img : `https://00goo.com/${item.img}`)
               : '',
           };
         });

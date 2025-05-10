@@ -14,7 +14,6 @@ export interface IGetStaffListRes {
 export interface IStaffList {
   id: number; // 员工ID
   name: string; // 员工名称
-  loginName: string; // 员工昵称
   phone: string; // 手机号码
   isOperate: boolean; // 是否可操作（删除/编辑，true 表示可以删除/编辑）
   registerTime: string; // 注册时间
@@ -41,7 +40,6 @@ export interface IGetStaffInfoRes {
 export interface ISaveStaffInfoReq {
   id?: number; // 员工ID
   name: string; // 员工名称
-  loginName: string; // 员工登录名称
   password: string; // 员工登录密码
   phone: string; // 员工手机号码
   email?: string; // 员工电子邮件地址

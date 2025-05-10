@@ -7,9 +7,6 @@
       <a-form-item label="姓名" name="name">
         <a-input v-model:value.trim="form.name" showCount :maxlength="6" allow-clear placeholder="2-6 位字符" />
       </a-form-item>
-      <a-form-item label="登录用户名" name="loginName">
-        <a-input v-model:value.trim="form.loginName" showCount :maxlength="16" allow-clear placeholder="2-16 位字符" />
-      </a-form-item>
       <a-form-item label="手机号码" name="phone">
         <a-input v-model:value.trim="form.phone" showCount :maxlength="11" allow-clear placeholder="请输入正确手机号码" />
       </a-form-item>
@@ -44,7 +41,6 @@ const props = defineProps<{ isEdit: boolean; staffId: number }>();
 const visible = ref(true);
 const form: UnwrapRef<IManageStaff> = reactive({
   name: '',
-  loginName: '',
   phone: '',
   password: ''
 });
@@ -59,21 +55,16 @@ const loading = ref(false);
 const disabled = computed((): boolean => {
   const values = formRef.value?.getFieldsValue();
   const nameDisabled = values?.name?.trim()?.length < 2;
-  const loginNameDisabled = values?.loginName?.trim()?.length < 2;
   const phoneDisabled = !/^1[3-9]\d{9}$/.test(values?.phone?.trim());
   const passwordDisabled = !/^(?=.*[0-9])(?=.*[a-zA-Z]).{6,16}$/.test(values?.password?.trim());
   const permissionDisabled = !checkedKeys.value.length;
-  return nameDisabled || loginNameDisabled || phoneDisabled || passwordDisabled || permissionDisabled;
+  return nameDisabled || phoneDisabled || passwordDisabled || permissionDisabled;
 });
 
 const rules: Record<string, Rule[]> = {
   name: [
     { required: true, message: '请输入姓名', trigger: 'change' },
     { min: 2, message: '2-6 位字符！', trigger: 'blur' }
-  ],
-  loginName: [
-    { required: true, message: '请输入登录用户名', trigger: 'change' },
-    { min: 2, message: '2-16 位字符！', trigger: 'blur' }
   ],
   phone: [
     { required: true, message: '请输入手机号码', trigger: 'change' },
@@ -167,7 +158,6 @@ const getStaffInfoFn = () => {
     const result = res.data;
 
     form.name = result.name;
-    form.loginName = result.loginName;
     form.phone = result.phone;
     form.password = decryption(result.password);
 
@@ -183,7 +173,6 @@ const onSubmit = async (): Promise<void> => {
     console.log('treeData', treeData.value);
     const params: ISaveStaffInfoReq = {
       name: form.name,
-      loginName: form.loginName,
       password: encryption(form.password),
       phone: form.phone,
       menuPathList: checkedKeys.value
