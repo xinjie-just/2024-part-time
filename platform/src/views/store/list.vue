@@ -43,12 +43,6 @@
         <a-tag v-if="+record.type === 0" color="default">平台</a-tag>
       </template>
       <template v-else-if="column.dataIndex === 'action'">
-        <a-popconfirm placement="topRight" :title="`确认删除店铺 ${record.shopName} 吗？`" ok-text="确定"
-          :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
-          @cancel="onCancelDelete">
-          <a-button type="link">删除</a-button>
-        </a-popconfirm>
-        <a-divider type="vertical" />
         <template v-if="record.state === 0">
           <a-button type="link" @click="onConfirmUnLock(record.id)">解锁</a-button>
         </template>
@@ -73,7 +67,7 @@ import { defineAsyncComponent, onMounted, reactive, Ref, ref } from 'vue';
 import { PlusOutlined, UnlockOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { IPage } from '@/models';
 import { message } from 'ant-design-vue';
-import { deleteShop, getShopList, lockUnLockShop } from '@/services';
+import { getShopList, lockUnLockShop } from '@/services';
 import { IShopListItem } from '@/services/models';
 
 const addShop = defineAsyncComponent(() => import('./components/addShop.vue'));
@@ -131,7 +125,7 @@ const columns = [
     title: '操作',
     dataIndex: 'action',
     key: 'action',
-    width: 160,
+    width: 110,
     fixed: 'right'
   }
 ];
@@ -194,20 +188,6 @@ const getList = (): void => {
       resetLoading.value = false;
       tableLoading.value = false;
     })
-};
-
-const onConfirmDelete = (id: number): void => {
-  const params = {
-    id
-  }
-  deleteShop(params).then(() => {
-    message.success('删除成功');
-    page.value.current = 1;
-    getList();
-  })
-};
-const onCancelDelete = (): void => {
-  message.info('您取消了删除');
 };
 
 const onConfirmLock = (id: number): void => {

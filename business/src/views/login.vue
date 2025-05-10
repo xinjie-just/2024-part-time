@@ -2,14 +2,14 @@
 <template>
   <div class="page">
     <div class="container">
-      <h1 class="title">登 录</h1>
+      <h1 class="title">商 家 登 录</h1>
       <a-form layout="vertical" :label-col="{ span: 4 }" :rules="rules" ref="formRef" autocomplete="off" :model="form"
         :disabled="loading">
         <a-form-item label="手机号码" name="phone">
           <a-input v-model:value.trim="form.phone" showCount :maxlength="11" allow-clear placeholder="请输入正确手机号码"
             @pressEnter="onSubmit">
             <template #prefix>
-              <<PhoneOutlined />
+              <PhoneOutlined />
             </template>
           </a-input>
         </a-form-item>
@@ -32,6 +32,9 @@
             @click="onSubmit">登录</a-button>
         </a-form-item>
       </a-form>
+      <div class="platform-login-wrap">
+        <a-button type="link" size="small" @click="onGoPlatform" :disabled="loading">去平台登录</a-button>
+      </div>
     </div>
     <div class="footer">
       Copyright@2024 驼背信息科技成都有限责任公司版权所有 <a href="http://beian.miit.gov.cn/" target="_blank">蜀ICP备2024096901号-1</a>
@@ -46,7 +49,7 @@ import { computed, defineAsyncComponent, onMounted, reactive, ref, UnwrapRef } f
 import { PhoneOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import { Rule } from 'ant-design-vue/es/form';
-import { login, getUserInfo } from '@/services';
+import { login, getUserInfo, defaultOrigin } from '@/services';
 import { message } from 'ant-design-vue';
 import { encryption } from '@/utils';
 
@@ -167,6 +170,14 @@ const onConfirm = (): void => {
   form.password = '';
   visible.value = false;
 };
+const onGoPlatform = (): void => {
+  const origin = window.location.origin;
+  if (origin.includes('localhost')) {
+    window.open(`${defaultOrigin}/web/system`);
+  } else {
+    window.open('/web/system');
+  }
+};
 </script>
 <style lang="scss" scoped>
 .page {
@@ -204,5 +215,10 @@ const onConfirm = (): void => {
     margin-bottom: 48px;
     text-align: center;
   }
+}
+
+.platform-login-wrap {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
