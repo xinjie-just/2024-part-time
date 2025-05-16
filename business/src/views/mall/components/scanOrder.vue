@@ -33,10 +33,10 @@
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-if="column.key === 'sendFree'">
+      <template v-if="column.dataIndex === 'sendFree'">
         <a-tag v-if="record.sendFree === 1" color="green">是</a-tag>
         <a-tag v-if="record.sendFree === 0" color="orange">否</a-tag>
       </template>

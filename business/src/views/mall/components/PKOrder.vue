@@ -45,18 +45,18 @@
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-if="column.key === 'sendFree'">
+      <template v-if="column.dataIndex === 'sendFree'">
         <a-tag v-if="record.sendFree" color="green">是</a-tag>
         <a-tag v-else color="orange">否</a-tag>
       </template>
-      <template v-if="column.key === 'status'">
+      <template v-if="column.dataIndex === 'status'">
         <a-switch v-model:checked="record.status" :checked-value="1" checked-children="已发货" :un-checked-value="0"
           un-checked-children="未发货" @change="onChangeStatus(record.id, record.status)" />
       </template>
-      <template v-else-if="column.key === 'action'">
+      <template v-else-if="column.dataIndex === 'action'">
         <a-popconfirm placement="topRight" title="参与竞猜的小价不退，其余款项将原路退回" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmRefund(record.id)"
           @cancel="onCancelRefund">

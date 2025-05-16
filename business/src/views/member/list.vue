@@ -28,10 +28,10 @@
     :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false" size="small"
     :scroll="{ x: 1000, y: 360 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-if="column.key === 'avatar'">
+      <template v-if="column.dataIndex === 'avatar'">
         <a-popover trigger="click">
           <template #title>
             <span class="popover-title"> {{ record.nickName }}</span>
@@ -79,7 +79,6 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 70,
     fixed: 'left'
   },

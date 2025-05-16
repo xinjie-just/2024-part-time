@@ -33,14 +33,14 @@
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-if="column.key === 'status'">
+      <template v-if="column.dataIndex === 'status'">
         <a-tag v-if="record.status === 1" color="green">成</a-tag>
         <a-tag v-if="record.status === 0" color="orange">否</a-tag>
       </template>
-      <template v-if="column.key === 'wishingResult'">
+      <template v-if="column.dataIndex === 'wishingResult'">
         <a-tag v-if="record.wishingResult === 1" color="green">已实现</a-tag>
         <a-switch v-if="record.wishingResult === 0" :checked="false" checked-children="已实现" un-checked-children="未实现"
           :loading="statusLoading" @change="onChangeWishingResult(record.orderId)" />

@@ -24,7 +24,7 @@
       :row-selection="{ selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false" size="small"
       :scroll="{ x: 600, y: 360 }" :loading="tableLoading" row-key="id">
       <template #bodyCell="{ column, _, index }">
-        <template v-if="column.key === 'index'">
+        <template v-if="column.dataIndex === 'index'">
           {{ page.pageSize * (page.current - 1) + index + 1 }}
         </template>
       </template>

@@ -22,15 +22,15 @@
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 380 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-if="column.key === 'state'">
+      <template v-if="column.dataIndex === 'state'">
         <a-tag v-if="record.state === 0" color="default">未使用</a-tag>
         <a-tag v-if="record.state === 1" color="processing">可使用</a-tag>
         <a-tag v-if="record.state === 2" color="default">已停用</a-tag>
       </template>
-      <template v-if="column.key === 'action'">
+      <template v-if="column.dataIndex === 'action'">
         <a-button type="link" :disabled="record.state === 1" @click="onEdit(record)">编辑</a-button>
         <a-divider type="vertical" />
         <a-popconfirm v-if="record.state === 1" placement="topRight" :title="`确认下架愿望 ${record.wishingName} 吗？`"
@@ -87,7 +87,6 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 80,
     fixed: 'left'
   },
@@ -111,7 +110,6 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    key: 'action',
     width: 160,
     fixed: 'right'
   }

@@ -37,10 +37,10 @@
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 320 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-else-if="column.key === 'source'">
+      <template v-else-if="column.dataIndex === 'source'">
         <a-tag v-if="record.source === 1" color="orange">订单</a-tag>
         <a-tag v-else-if="record.source === 2" color="blue">扣款</a-tag>
         <a-tag v-else-if="record.source === 3" color="purple">返点</a-tag>
@@ -105,7 +105,6 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 80
   },
   {

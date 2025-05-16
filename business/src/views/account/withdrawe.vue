@@ -43,10 +43,10 @@
     :row-selection="{ type: 'radio', selectedRowKeys: selectedIds, onChange: onSelectChange }" :pagination="false"
     size="small" :scroll="{ x: 1000, y: 320 }" :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ index + 1 }}
       </template>
-      <template v-else-if="column.key === 'action'">
+      <template v-else-if="column.dataIndex === 'action'">
         <a-popconfirm placement="topRight" :title="`确认删除账户 ${record.cardNumber} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" @confirm="onConfirmDelete(record.id)"
           @cancel="onCancelDelete">
@@ -90,7 +90,6 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 70,
     fixed: 'left'
   },
@@ -112,7 +111,6 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    key: 'action',
     width: 90,
     fixed: 'right'
   }

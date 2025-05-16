@@ -5,7 +5,7 @@ export interface IStore {
   phone: string;
   registrationTime: string;
   property: number;
-  status: number;
+  state: number;
   action?: () => void;
 }
 

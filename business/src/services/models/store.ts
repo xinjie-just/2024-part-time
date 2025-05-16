@@ -31,7 +31,7 @@ export interface IDeleteShopReq {
  */
 export interface ILockUnLockReq {
   id: number;
-  state: boolean;
+  state: number; // 0：锁定；1：启用;
 }
 
 /**

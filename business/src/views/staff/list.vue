@@ -27,10 +27,10 @@
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-else-if="column.key === 'action'">
+      <template v-else-if="column.dataIndex === 'action'">
         <a-popconfirm placement="topRight" :title="`确认删除员工 ${record.name} 吗？`" ok-text="确定"
           :ok-button-props="{ type: 'default', danger: true }" cancel-text="取消" :disabled="loginUserId === record.id"
           @confirm="onConfirmDelete(record.id)" @cancel="onCancelDelete">
@@ -80,7 +80,6 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 70,
     fixed: 'left'
   },
@@ -103,7 +102,6 @@ const columns = [
   {
     title: '操作',
     dataIndex: 'action',
-    key: 'action',
     width: 130,
     fixed: 'right'
   }

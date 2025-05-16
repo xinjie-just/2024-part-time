@@ -21,24 +21,24 @@
   <a-table :columns="columns" :data-source="data" :pagination="false" size="small" :scroll="{ x: 1000, y: 360 }"
     :loading="tableLoading" row-key="id">
     <template #bodyCell="{ column, record, index }">
-      <template v-if="column.key === 'index'">
+      <template v-if="column.dataIndex === 'index'">
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
-      <template v-if="column.key === 'property'">
+      <template v-if="column.dataIndex === 'property'">
         <a-tag color="blue">{{ record.property }}</a-tag>
       </template>
-      <template v-if="column.key === 'status'">
-        <a-tag v-if="record.status === 1" color="warning">
+      <template v-if="column.dataIndex === 'state'">
+        <a-tag v-if="+record.state === 0" color="warning">
           <LockOutlined />
           已锁定
         </a-tag>
-        <a-tag v-if="record.status === 0" color="processing">
+        <a-tag v-if="+record.state === 1" color="processing">
           <UnlockOutlined />
           未锁定
         </a-tag>
       </template>
-      <template v-else-if="column.key === 'action'">
-        <template v-if="record.status === 1">
+      <template v-else-if="column.dataIndex === 'action'">
+        <template v-if="record.state === 0">
           <a-button type="link" @click="onConfirmUnLock(record.id)">解锁</a-button>
         </template>
         <a-popconfirm placement="topRight" v-else :title="`锁定后将无法登录，确认锁定店铺 ${record.storeName} 吗？`" ok-text="确定"
@@ -90,7 +90,6 @@ const columns = [
   {
     title: '序号',
     dataIndex: 'index',
-    key: 'index',
     width: 80,
     fixed: 'left'
   },
@@ -118,13 +117,12 @@ const columns = [
   },
   {
     title: '店铺状态',
-    dataIndex: 'status',
+    dataIndex: 'state',
     width: 110
   },
   {
     title: '操作',
     dataIndex: 'action',
-    key: 'action',
     width: 110,
     fixed: 'right'
   }
@@ -188,7 +186,7 @@ const getList = (): void => {
           phone: item.phone,
           registrationTime: formatTime(item.registerTime),
           property: item.type,
-          status: item.state
+          state: item.state
         }
       });
     })
@@ -202,7 +200,7 @@ const getList = (): void => {
 const onConfirmLock = (id: number): void => {
   const params = {
     id,
-    state: true
+    state: 0
   }
   lockUnLockShop(params).then(() => {
     message.success('锁定成功');
@@ -217,7 +215,7 @@ const onCancelLock = (): void => {
 const onConfirmUnLock = (id: number): void => {
   const params = {
     id,
-    state: false
+    state: 1
   }
   lockUnLockShop(params).then(() => {
     message.success('解锁成功');
