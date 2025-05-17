@@ -25,7 +25,8 @@
         {{ page.pageSize * (page.current - 1) + index + 1 }}
       </template>
       <template v-if="column.dataIndex === 'property'">
-        <a-tag color="blue">{{ record.property }}</a-tag>
+        <a-tag v-if="+record.property === 1" color="warning">自营店</a-tag>
+        <a-tag v-if="+record.property === 2" color="processing">代营店</a-tag>
       </template>
       <template v-if="column.dataIndex === 'state'">
         <a-tag v-if="+record.state === 0" color="warning">

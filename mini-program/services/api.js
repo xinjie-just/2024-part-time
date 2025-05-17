@@ -70,7 +70,7 @@ const API = {
   },
   getAPIUrl: (options) => {
     const origin = 'https://00goo.com/program'; // 正式
-    // const origin = 'https://79e28bc9.r37.cpolar.top/program'; // 测试
+    // const origin = 'https://71104339.r36.cpolar.top/program'; // 测试
     const route = API.address[options.apiKey];
     const result = `${origin}${route}`;
     return result;

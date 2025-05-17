@@ -46,7 +46,7 @@ const onConfirm = () => {
   loading.value = true;
   const params = {
     backCardId: props.account.id, // 银行卡ID
-    amount: props.sum // 提现金额(单位分)
+    amount: props.sum * 100 // 提现金额(单位分)
   };
   accountWithdraw(params)
     .then(() => {

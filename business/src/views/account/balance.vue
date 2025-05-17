@@ -150,7 +150,7 @@ const getAccountInfoFn = () => {
   getAccountInfo()
     .then(res => {
       const result = res.data;
-      balance.value = result.balance;
+      balance.value = result.balance / 100;
     })
     .finally(() => {
       balanceLoading.value = false;
@@ -206,7 +206,7 @@ const getList = (): void => {
       data.value = result.list.map(item => {
         return {
           id: item.id,
-          sum: item.balance,
+          sum: item.balance / 100,
           time: formatTime(item.completeTime),
           source: item.source
         }

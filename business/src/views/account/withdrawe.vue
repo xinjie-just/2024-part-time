@@ -130,7 +130,7 @@ const getAccountInfoFn = () => {
   getAccountInfo()
     .then(res => {
       const result = res.data;
-      balance.value = result.balance;
+      balance.value = result.balance / 100;
     })
     .finally(() => {
       balanceLoading.value = false;
