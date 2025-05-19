@@ -37,11 +37,11 @@
       <view class="side own-match-side">
         <view class="own">
           <text>己方：</text>
-          <van-button round size="small" color="#0958d9" disabled="{{ ownRadio === null || endCountdownData.seconds <= 0  || selected }}" bind:click="onSelectFinish">
+          <van-button round size="small" color="#0958d9" disabled="{{ ownRadio === null || endCountdownData.seconds === 0  || selected }}" bind:click="onSelectFinish">
             我选好了
           </van-button>
         </view>
-        <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ endCountdownData.seconds <= 0 || startCountdownData.seconds > 0 || selected }}" class="radio-group">
+        <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ endCountdownData.seconds === 0 || startCountdownData.seconds > 0 || selected }}" class="radio-group">
           <van-radio name="1" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 1 ? 'radio own' : 'radio'}}">
             <image src="{{ ownRadio === 1 ? icon.rock.own : icon.rock.default }}" class="img"></image>
             石头
@@ -109,7 +109,9 @@
   </view>
 </view>
 <block wx:if="{{ matched === 'fail' || matched === 'error' }}">
-  <view class="matched-fail">{{ matched === 'fail' ? '未匹配到对手。' : '对手长时间未出拳，游戏结束。' }}您可以选择 “退出” 或稍后 “再试一次”。</view>
+  <view class="matched-fail">
+    {{ matched === 'fail' ? '未匹配到对手。' : '对手长时间未出拳，游戏结束。' }}您可以选择 “退出” 或稍后 “再试一次”。
+  </view>
   <view class="match-tips">
     <van-icon name="warning-o" size="40rpx" color="#1989fa" />
     <text class="text">匹配对手可能需要几分钟时间，请你耐心等待。</text>

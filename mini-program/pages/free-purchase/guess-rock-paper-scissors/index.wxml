@@ -37,11 +37,11 @@
       <view class="side own-match-side">
         <view class="own">
           <text>己方：</text>
-          <van-button round size="small" color="#0958d9" disabled="{{ ownRadio === null || endCountdownData.seconds <= 0  || selected }}" bind:click="onSelectFinish">
+          <van-button round size="small" color="#0958d9" disabled="{{ ownRadio === null || endCountdownData.seconds === 0  || selected }}" bind:click="onSelectFinish">
             我选好了
           </van-button>
         </view>
-        <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ endCountdownData.seconds <= 0 || startCountdownData.seconds > 0 || selected }}" class="radio-group">
+        <van-radio-group value="{{ ownRadio }}" bind:change="onChangeOwn" direction="horizontal" disabled="{{ endCountdownData.seconds === 0 || startCountdownData.seconds > 0 || selected }}" class="radio-group">
           <van-radio name="1" checked-color="#0958d9" icon-size="40rpx" class="{{ownRadio === 1 ? 'radio own' : 'radio'}}">
             <image src="{{ ownRadio === 1 ? icon.rock.own : icon.rock.default }}" class="img"></image>
             石头

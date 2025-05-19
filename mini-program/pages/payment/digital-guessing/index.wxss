@@ -110,7 +110,6 @@
 }
 
 .result-tips {
-  margin-bottom: 48rpx;
   font-size: 24rpx;
   text-align: center;
   line-height: 1.6em;
