@@ -1,7 +1,7 @@
 <layout>
   <view class="user-info">
     <image src="{{ avatarUrl }}" class="avatar"></image>
-    <text wx:if="{{nickName}}" class="nick-name">{{nickName}}</text>
+    <text wx:if="{{!!openId}}" class="nick-name">{{nickName}}</text>
     <text wx:else class="nick-name" bind:tap="onGoLogin">请登录</text>
   </view>
   <view wx:for="{{menuData}}" wx:key="item" class="cell-box">

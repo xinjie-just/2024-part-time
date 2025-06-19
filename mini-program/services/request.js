@@ -55,7 +55,7 @@ const request = (options) => {
             success: () => {
               // 用户未登录，跳转登录
               wx.redirectTo({
-                url: '/pages/login/index',
+                url: '/pages/login/wxLogin/index',
               });
             },
           });

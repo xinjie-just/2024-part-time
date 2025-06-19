@@ -64,6 +64,7 @@ Page({
     showMakePhone: false,
     avatarUrl: '/assets/images/mine/icon-user-avatar@2x.png',
     nickName: '',
+    openId: '',
     menuData,
     customerServiceInfo: {},
     currAuthStep: 1, // 1: 未登录的情况，2: 已登录但未授权用户信息情况，3: 已登录且已经授权用户信息的情况
@@ -89,14 +90,15 @@ Page({
       const userInfo = JSON.parse(userInfoStringify);
       this.setData({
         avatarUrl: userInfo.headIcon,
-        nickName: userInfo.memberName
+        nickName: userInfo.memberName,
+        openId: userInfo.openId,
       });
     }
   },
 
   onGoLogin() {
     wx.navigateTo({
-      url: '/pages/login/index',
+      url: '/pages/login/wxLogin/index',
     });
   },
 
