@@ -11,8 +11,8 @@
         <view class="value">{{detail.currentPrice / 100}} 元</view>
       </view>
       <view class="goods-desc-item">
-        <view class="key" bind:tap="onViewTips">竞猜小价 ？：</view>
-        <view class="value">{{detail.guessSmallPrice / 100}} 元</view>
+        <view class="key" bind:tap="onViewTips">{{detail.guessSmallPrice / 100}} 元</view>
+        <view class="value">挑战 0 元购</view>
       </view>
     </view>
   </div>
@@ -21,7 +21,7 @@
       <rich-text nodes="{{introduction}}" class="rich-text"></rich-text>
     </view>
   </view>
-  <view class="buy-btn" bind:tap="onToSelectPaymentMethod">0 元购</view>
+  <view class="buy-btn" bind:tap="onToSelectPaymentMethod">挑战 0 元购</view>
   <payment-method wx:if="{{ paymentMethodShow }}" source="pk" isPKFirstPay="{{ true }}" orderId="{{orderId}}" payOrderId="{{payOrderId}}" orderPrice="{{orderPrice}}" bind:close="onClose" bind:confirm="onConfirm" />
   <van-toast id="van-toast" />
   <van-dialog id="van-dialog" />

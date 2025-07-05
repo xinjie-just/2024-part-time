@@ -14,7 +14,7 @@ Page({
     rightAnswer: [], // 谜底
     activeNames: [],
     guessDigit: 5,
-    numbers: [], // 我猜的数
+    numbers: [], // 我的参奖数
     paymentMethodShow: false,
     source: 'wishing', // 'wishing'：许愿，'freePurchase'：0 元购
     state: 1, // 竞猜状态 1:游戏进行中; 2:游戏结束
@@ -92,7 +92,7 @@ Page({
       title: '',
       showCancelButton: true,
       cancelButtonText: '再想想',
-      message: `确认我猜的数从第 1 - ${this.data.guessDigit} 位分别是：${this.data.numbers.join('、 ')}`,
+      message: `确认我的参奖数从第 1 - ${this.data.guessDigit} 位分别是：${this.data.numbers.join('、 ')}`,
     })
       .then(() => {
         // 提交竞猜

@@ -87,8 +87,8 @@ rich-text img {
 .buy-btn {
   position: fixed;
   bottom: 16rpx;
-  right: 264rpx;
-  left: 264rpx;
+  right: 238rpx;
+  left: 238rpx;
   height: 72rpx;
   line-height: 72rpx;
   border-radius: 100rpx;

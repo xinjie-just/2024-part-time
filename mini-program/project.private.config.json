@@ -23,7 +23,7 @@
           "scene": null
         },
         {
-          "name": "数字竞猜",
+          "name": "商家开奖",
           "pathName": "pages/payment/digital-guessing/index",
           "query": "orderId=26",
           "launchMode": "default",

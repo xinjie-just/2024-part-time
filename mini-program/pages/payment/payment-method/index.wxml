@@ -1,11 +1,13 @@
-<!-- 选择支付方式。入口方式一：许愿-投下硬币；入口方式二：0 元购-没有猜中数字竞猜-花钱购买商品 -->
+<!-- 选择支付方式。入口方式一：许愿-投下硬币；入口方式二：0 元购-没有猜中商家开奖-花钱购买商品 -->
 <view class="page">
   <van-popup show="{{ true }}" position="bottom" round custom-style="height: 480rpx" bind:close="onClose">
     <view class="header">
       <view class="cancel-btn btn" bind:tap="onGoBack">取消</view>
       <view class="title">选择支付方式</view>
       <!-- <view class="confirm-btn btn" disabled="{{ payReadied }}" bind:tap="onConfirm">确定</view> -->
-      <button type="info" disabled="{{ !payReadied }}" plain="true" size="mini" loading="{{payLoading}}" class="confirm-btn btn" bind:tap="onConfirm">确定</button>
+      <button type="info" disabled="{{ !payReadied }}" plain="true" size="mini" loading="{{payLoading}}" class="confirm-btn btn" bind:tap="onConfirm">
+        确定
+      </button>
     </view>
     <view class="amount">
       本次应支付金额

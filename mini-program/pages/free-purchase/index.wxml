@@ -23,9 +23,9 @@
           </view>
           <view class="goods-desc-item">
             <view class="key" data-small-price="{{item.guessSmallPrice / 100}}" bind:tap="onViewTips">
-              竞猜小价 ？：
+              {{item.guessSmallPrice / 100}} 元
             </view>
-            <view class="value">{{item.guessSmallPrice / 100}} 元</view>
+            <view class="value">挑战 0 元购</view>
           </view>
         </view>
       </view>

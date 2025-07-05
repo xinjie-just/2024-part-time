@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "数字竞猜",
+  "navigationBarTitleText": "商家开奖",
   "usingComponents": {
     "payment-method": "/pages/payment/payment-method/index"
   }
