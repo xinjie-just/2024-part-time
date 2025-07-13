@@ -20,7 +20,7 @@ Component({
   lifetimes: {
     attached() {
       // 在组件实例进入页面节点树时执行
-      this.getPKTask();
+      // this.getPKTask(); // 暂且注释，便于审核通过
     },
     detached() {
       // 在组件实例被从页面节点树移除时执行

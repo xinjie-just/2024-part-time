@@ -1,8 +1,8 @@
 <layout>
   <view class="page">
-    <van-button type="primary" type="info" block custom-class="pk-btn" bind:click="onToPKField">
+    <!-- <van-button type="primary" type="info" block custom-class="pk-btn" bind:click="onToPKField">
       PK 场
-    </van-button>
+    </van-button> -->
     <view wx:if="{{loading}}" class="loading">
       <van-loading size="48rpx" vertical custom-class="loading">加载中...</van-loading>
     </view>

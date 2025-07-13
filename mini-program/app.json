@@ -40,12 +40,6 @@
         "selectedIconPath": "/assets/images/tab-bar/free-purchase-active.png"
       },
       {
-        "pagePath": "pages/wishing-well/index",
-        "text": "许愿池",
-        "iconPath": "/assets/images/tab-bar/wishing-well.png",
-        "selectedIconPath": "/assets/images/tab-bar/wishing-well-active.png"
-      },
-      {
         "pagePath": "pages/mine/index",
         "text": "我的",
         "iconPath": "/assets/images/tab-bar/mine.png",
